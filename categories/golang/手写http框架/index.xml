@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>golang/手写http框架 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/golang/%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6/</link>
+    <description>Recent content in golang/手写http框架 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 17 Jul 2020 09:22:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/categories/golang/%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[手写http框架 (六) | golang recover]</title>
+      <link>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-recover/</link>
+      <pubDate>Fri, 17 Jul 2020 09:22:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-recover/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;在go中，比较常见的错误处理方式是返回error，由调用者巨顶后续如何处理。但是如果是无法恢复的错误，可以手动触</description>
+    </item>
+    
+    <item>
+      <title>[手写http框架 (五) | golang middleware]</title>
+      <link>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-middleware/</link>
+      <pubDate>Thu, 16 Jul 2020 10:30:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-middleware/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不</description>
+    </item>
+    
+    <item>
+      <title>[手写http框架 (四) | golang group]</title>
+      <link>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-group/</link>
+      <pubDate>Thu, 16 Jul 2020 09:19:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-group/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行</description>
+    </item>
+    
+    <item>
+      <title>[手写http框架 (三) | golang router]</title>
+      <link>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/</link>
+      <pubDate>Tue, 14 Jul 2020 16:19:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/</guid>
+      <description>摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 &amp;emsp;&amp;emsp;上一节，我们用了一个非常简单的</description>
+    </item>
+    
+    <item>
+      <title>[手写http框架 (二) | golang context]</title>
+      <link>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-context/</link>
+      <pubDate>Wed, 24 Jun 2020 11:19:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-context/</guid>
+      <description># 摘要 将路由router独立出来，方便之后增强。 设计上下文context，封装Request和Response，提供对JSON、HTML等返</description>
+    </item>
+    
+    <item>
+      <title>[手写http框架 (一) | golang http-handler]</title>
+      <link>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-httphandler/</link>
+      <pubDate>Tue, 23 Jun 2020 15:19:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-httphandler/</guid>
+      <description>摘要 简单介绍net/http库以及http.Handler接口 搭建Gee框架的雏形 标准库启动Web服务 &amp;emsp;&amp;emsp;Go语言内置了</description>
+    </item>
+    
+  </channel>
+</rss>

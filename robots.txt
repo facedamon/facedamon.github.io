@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: http://facedamon.github.io/sitemap.xml

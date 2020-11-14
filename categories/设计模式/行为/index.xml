@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式/行为 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A1%8C%E4%B8%BA/</link>
+    <description>Recent content in 设计模式/行为 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 02 Sep 2020 11:04:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A1%8C%E4%B8%BA/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[设计模式 | 行为 | 观察者模式实践之电商业务]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E8%A7%82%E5%AF%9F%E8%80%85%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Wed, 02 Sep 2020 11:04:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E8%A7%82%E5%AF%9F%E8%80%85%E5%AE%9E%E8%B7%B5/</guid>
+      <description>什么是观察者模式 观察者观察被观察者，被观察者通知观察者 &amp;emsp;&amp;emsp;我们用&amp;rdquo;订阅通知&amp;rdquo;翻译下[观察者模式]</description>
+    </item>
+    
+  </channel>
+</rss>

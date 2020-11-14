@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[Git (三) | 分支原理] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 &amp;e" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/git/3.-git%E5%88%86%E6%94%AF%E5%8E%9F%E7%90%86/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[Git (三) | 分支原理]" />
+<meta property="og:description" content="摘要 &emsp;&emsp;之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 &e" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/git/3.-git%E5%88%86%E6%94%AF%E5%8E%9F%E7%90%86/" />
+<meta property="article:published_time" content="2020-04-29T16:04:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-04-29T16:04:56&#43;08:00"/>
+
+<meta itemprop="name" content="[Git (三) | 分支原理]">
+<meta itemprop="description" content="摘要 &emsp;&emsp;之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 &e">
+
+
+<meta itemprop="datePublished" content="2020-04-29T16:04:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-29T16:04:56&#43;08:00" />
+<meta itemprop="wordCount" content="1462">
+
+
+
+<meta itemprop="keywords" content="Git," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Git (三) | 分支原理]"/>
+<meta name="twitter:description" content="摘要 &emsp;&emsp;之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 &e"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Git (三) | 分支原理]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-29 </span>
+        <div class="post-category">
+            <a href="/categories/git/"> Git </a>
+            </div>
+          <span class="more-meta"> 约 1462 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#摘要">摘要</a>
+<ul>
+<li><a href="#简介">简介</a></li>
+<li><a href="#创建分支原理">创建分支原理</a></li>
+<li><a href="#切换分支原理">切换分支原理</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="摘要">摘要</h1>
+
+<p>&emsp;&emsp;<strong>之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。</strong></p>
+
+<h2 id="简介">简介</h2>
+
+<p>&emsp;&emsp;为了真正理解Git处理分支的方式，我们需要回顾以下Git是如何保存数据的。</p>
+
+<p>&emsp;&emsp;获取你还记得第一节的内容，Git保存的不是文件的变化，而是一系列的文件快照。在提交操作时，Git会保存一个提交对象(<code>commit object</code>)。知道了Git保存数据的方式，我们可以很自然的想到&mdash;该提交对象会包含一个指向暂存内容快照的<code>指针</code>。不仅仅是指针，该对象还包含了作者、email、提交信息以及<code>指向它父对象的指针</code>。首次提交产生的提交对象没有父对象，普通提交操作产生的提交对象有一个父对象，而由多个分支合并产生的提交对象有多个父对象。</p>
+
+<p>&emsp;&emsp;为了更加形象地说明，我们假设现在有一个工作目录，里面包含了三个将要被暂存和提交的文件。暂存操作会为每个文件计算hash，然后会把当前版本的文件快照保存到Git仓库中(Git使用blob对象保存它)，最终将hash加入到暂存区等待提交。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git add README test.rb LICENSE
+    $ git commit -m &#39;the initial commit of my project&#39;</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;当使用<code>git commit</code>提交时，Git会先计算每个子目录(本例指含有一个根目录)的hash，然后在Git仓库中这些hash保存为<code>树对象</code>.之后，Git便会创建一个提交对象，它包含了上面提到的信息外，还包含<code>指向这个树对象的指针</code>。如此一来，Git就可以在需要的时候重现此次保存的快照。</p>
+
+<p>&emsp;&emsp;ok,现在Git仓库中有五个对象：三个blob(保存文件快照)，一个树对象(记录目录结构和blob对象索引)以及一个提交对象(包含指向树对象和所有提交信息)</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/首次提交对象及树对象.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;做些修改后再次提交，产生的提交对象会包含一个指向上次提交对象的指针。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/提交对象及父对象.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;<strong>Git分支，其实本质上仅仅是指向提交对象的可变指针。</strong>Git默认分支是master，在多次提交后，其实已经又一个指向最后那个提交对象的master分支，它会在每次提交的操作中自动向前移动。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/分支及其提交历史.png" alt="avatar" /></p>
+
+<h2 id="创建分支原理">创建分支原理</h2>
+
+<p>&emsp;&emsp;Git是如何创建新分支的呢？很简单，它只是为你创建了一个可以移动的新的指针。比如，创建一个testing分支，<code>git branch</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch testing</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/两个指向相同提交历史的分支.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;so，Git怎么知道当前在哪一个分支上？它有一个名为HEAD的特殊指针。在本例中，你仍然在master分支上，因为<code>git branch</code>仅仅创建了一个新分支，并不会自动切换过去.</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/HEAD指向当前所在的分支.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;可以使用<code>git log --decorate</code>查看各个分区当前所指的对象。如下，master和testing分支均指向hash f30ab开头的提交对象</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git log --oneline --decorate
+    f30ab (HEAD, master, testing) add feature</pre></td></tr></table>
+</div>
+</div>
+<h2 id="切换分支原理">切换分支原理</h2>
+
+<p>&emsp;&emsp;切换分支<code>git checkout</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout testing</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/HEAD指向当前所在分支.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;so，这样的实现方式会带来什么好处呢？我们不妨再提交一次</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git commit -am &#39;made a change&#39;</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/HEAD分支随着提交操作自动向前移动.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;如图，testing分支向前移动了，但是master分支却没有，它仍然指向运行checkout之前的提交对象。我们切换回master分支看看：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout master</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/检出时HEAD随之移动.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;这条命令做了两件事：</p>
+
+<ol>
+<li>使HEAD指向master分支</li>
+<li>将工作目录恢复成master分支所指向的快照内容</li>
+</ol>
+
+<p>&emsp;&emsp;如果你现在做修改操作的化，项目将始较旧的版本。这就是忽略testing分支所做的事情，以便于向另一个方向开发。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-04-29
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/git/3.-git%E5%88%86%E6%94%AF%E5%8E%9F%E7%90%86/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/git/">Git</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/git/4.-git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[Git (四) | 分支管理(案例驱动)]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/git/2.-git%E4%B8%8A%E6%89%8B/">
+            <span class="next-text nav-default">[Git (二) | 上手]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

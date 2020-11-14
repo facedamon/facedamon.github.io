@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>微服务设计 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/</link>
+    <description>Recent content in 微服务设计 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 24 Aug 2020 16:55:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[微服务设计(三) | 集成技术]</title>
+      <link>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/3.-%E9%9B%86%E6%88%90/</link>
+      <pubDate>Mon, 24 Aug 2020 16:55:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/3.-%E9%9B%86%E6%88%90/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;微服务之间通信方式的选择非常多样化，但哪个是正确的呢？SOAP? XML-RPC? REST? Protocol Buffers? 后面会逐一讨论，在此之前需要考虑的是，我</description>
+    </item>
+    
+    <item>
+      <title>[微服务设计(二) | 如何建模服务]</title>
+      <link>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/2.-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E6%9C%8D%E5%8A%A1/</link>
+      <pubDate>Mon, 13 Apr 2020 09:55:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/2.-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E6%9C%8D%E5%8A%A1/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨</description>
+    </item>
+    
+    <item>
+      <title>[微服务设计(一) | 微服务]</title>
+      <link>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/1.-%E5%BE%AE%E6%9C%8D%E5%8A%A1/</link>
+      <pubDate>Sun, 12 Apr 2020 13:14:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/1.-%E5%BE%AE%E6%9C%8D%E5%8A%A1/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而</description>
+    </item>
+    
+  </channel>
+</rss>

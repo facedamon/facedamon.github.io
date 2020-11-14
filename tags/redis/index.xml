@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Redis on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/tags/redis/</link>
+    <description>Recent content in Redis on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 31 Aug 2020 16:14:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Redis | 进阶]</title>
+      <link>http://facedamon.github.io/post/redis/%E8%BF%9B%E9%98%B6/</link>
+      <pubDate>Mon, 31 Aug 2020 16:14:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/redis/%E8%BF%9B%E9%98%B6/</guid>
+      <description>事务 &amp;emsp;&amp;emsp;在微博中，用户之间是&amp;rdquo;关注&amp;rdquo;和&amp;rdquo;被关注&amp;rdquo;的关系。如果要使用Red</description>
+    </item>
+    
+    <item>
+      <title>[Redis | 基础]</title>
+      <link>http://facedamon.github.io/post/redis/%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B/</link>
+      <pubDate>Fri, 14 Aug 2020 10:14:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/redis/%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B/</guid>
+      <description>基础类型 string list hash set zset string &amp;emsp;&amp;emsp;一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回e</description>
+    </item>
+    
+    <item>
+      <title>[Redis | 缓存更新策略]</title>
+      <link>http://facedamon.github.io/post/redis/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5/</link>
+      <pubDate>Thu, 13 Aug 2020 14:16:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/redis/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5/</guid>
+      <description>转载自 https://coolshell.cn/articles/17416.html 问题引入 &amp;emsp;&amp;emsp;很多人在写更新缓存数据代码时，先删除缓存，然后再更新数据库，而后续的操作会把数据再装载到缓存中。这是</description>
+    </item>
+    
+    <item>
+      <title>[Redis | 分布式集群环境搭建]</title>
+      <link>http://facedamon.github.io/post/redis/redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Wed, 12 Aug 2020 09:16:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/redis/redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98%E6%90%AD%E5%BB%BA/</guid>
+      <description>转载自 https://www.cnblogs.com/esofar/p/10486621.html 摘要 &amp;emsp;&amp;emsp;Redis Cluster 即 Redis 集群，是 Redis 官方在 3.0 版本推出的一套分布式存储方案。完全去中心化，由多个节点组成，所有节点彼此互联。Redis 客户端可以直接</description>
+    </item>
+    
+  </channel>
+</rss>

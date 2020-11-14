@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Prometheus on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/tags/prometheus/</link>
+    <description>Recent content in Prometheus on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 03 Jul 2020 15:43:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/tags/prometheus/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[系统监控 | Prometheus (二)]</title>
+      <link>http://facedamon.github.io/post/promethues/prometheus%E4%BA%8C/</link>
+      <pubDate>Fri, 03 Jul 2020 15:43:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/promethues/prometheus%E4%BA%8C/</guid>
+      <description>参见 https://yunlzheng.gitbook.io/prometheus-book/</description>
+    </item>
+    
+    <item>
+      <title>[系统监控 | Prometheus (一)]</title>
+      <link>http://facedamon.github.io/post/promethues/prometheus%E4%B8%80/</link>
+      <pubDate>Fri, 03 Jul 2020 11:03:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/promethues/prometheus%E4%B8%80/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点</description>
+    </item>
+    
+  </channel>
+</rss>

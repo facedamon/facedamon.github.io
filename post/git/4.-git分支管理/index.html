@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[Git (四) | 分支管理(案例驱动)] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 &amp;emsp;&amp;em" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/git/4.-git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[Git (四) | 分支管理(案例驱动)]" />
+<meta property="og:description" content="摘要 &emsp;&emsp;案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 &emsp;&em" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/git/4.-git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/" />
+<meta property="article:published_time" content="2020-04-30T09:44:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-05-06T09:37:56&#43;08:00"/>
+
+<meta itemprop="name" content="[Git (四) | 分支管理(案例驱动)]">
+<meta itemprop="description" content="摘要 &emsp;&emsp;案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 &emsp;&em">
+
+
+<meta itemprop="datePublished" content="2020-04-30T09:44:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-06T09:37:56&#43;08:00" />
+<meta itemprop="wordCount" content="6054">
+
+
+
+<meta itemprop="keywords" content="Git," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Git (四) | 分支管理(案例驱动)]"/>
+<meta name="twitter:description" content="摘要 &emsp;&emsp;案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 &emsp;&em"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Git (四) | 分支管理(案例驱动)]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-30 </span>
+        <div class="post-category">
+            <a href="/categories/git/"> Git </a>
+            <a href="/categories/%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD/"> 未完待续 </a>
+            </div>
+          <span class="more-meta"> 约 6054 字 </span>
+          <span class="more-meta"> 预计阅读 13 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#摘要">摘要</a>
+<ul>
+<li><a href="#新建分支">新建分支</a></li>
+</ul></li>
+<li><a href="#上述命令等效于">上述命令等效于：</a>
+<ul>
+<li><a href="#分支合并">分支合并</a></li>
+<li><a href="#遇到冲突时的分支合并">遇到冲突时的分支合并</a></li>
+</ul></li>
+<li><a href="#分支管理">分支管理</a></li>
+<li><a href="#分支工作流">分支工作流</a></li>
+<li><a href="#远程分支">远程分支</a></li>
+<li><a href="#推送">推送</a></li>
+<li><a href="#跟踪分支">跟踪分支</a></li>
+<li><a href="#拉取">拉取</a></li>
+<li><a href="#删除远程分支">删除远程分支</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="摘要">摘要</h1>
+
+<p>&emsp;&emsp;案例，实际工作中你会用到类似的流程。</p>
+
+<ol>
+<li>开发某个网站</li>
+<li>为实现某个新的需求，创建分支</li>
+<li>在该分支上开展工作</li>
+</ol>
+
+<p>&emsp;&emsp;正在此时，你接到通知，有一个很严重的bug需要紧急修复。你将按照如下方式来处理：</p>
+
+<ol>
+<li>切换到线上分支(production branch)</li>
+<li>为这个紧急任务新建一个新分支，并在其中修复它</li>
+<li>测试通过后，切换回线上分支，然后合并这个补丁分支，最后推送到线上</li>
+<li>切换回你最初的工作分支，继续工作</li>
+</ol>
+
+<h2 id="新建分支">新建分支</h2>
+
+<p>&emsp;&emsp;我们就使用上述案例来讲解分支的创建和切换。假设，你当前的工作目录已经有一些提交对象了，如图所示。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/一个简单提交历史.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;ok, 现在你需要解决问题编号#53,新建一个分支并同时切换到该分支。<code>git checkout -b [branchname]</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout -b iss53
+    Switch to a new branch &#39;iss53&#39;</pre></td></tr></table>
+</div>
+</div>
+<h1 id="上述命令等效于">上述命令等效于：</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch iss53
+    $ git checkout iss53</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/创建一个新分支指针.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;然后你在iss53分支上开始修复问题#53，此时iss53分支开始向前推进。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ vim index.html
+    $ git commit -am &#39;added a nre footer [iss 53]&#39;</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/分支随着工作的进展向前推进.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;假设，你此时又接到通知，有一个新的问题需要紧急修复。那么我们站在Git分支的角度来思考，你仅仅需要做的是：提交你当前iss53分支的工作目录，然后再切换回master分支<code>git checkout master</code>，此时你的工作目录和你创建iss53分支时一摸一样，ok，现在你可以专心的修改新问题了。你需要创建一个针对新紧急问题的分支(hotfix branch):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout -b hotfix
+    Switch to a new branch &#39;hotfix&#39;
+    $ vim index.html
+    $ git commit -am &#39;fixed the broken email address&#39;
+    [hotfix 1fb7853] fixed the broken email address
+        1 file changed, 2 insertions(+)</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/基于master分支的紧急问题分支.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;假设你已经在hotfix分支完成了测试，现在需要合并到master分支并部署到线上，你可以使用<code>git merge</code>目录来达到此目的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout master
+    $ git merge hotfix
+    Updating f42c576..3a0874c
+    # 注意这里[快进]
+    Fast-forward
+        index.html | 2 ++
+        1 file changed, 2 insertions(+)</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;注意上面的[快进 fast-formard]，由于当前master分支所指向的提交对象是你当前分支提交对象的父对象，所以merge时，只是简单的将master指针向前移动。当你试图合并两个分支时，如果顺着一个分支走下去能够到达另一个分支，那么Git在合并两者时，只会简单的将指针向前推进，因为这种情况下的合并操作没有需要解决的分歧。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/master被快进到hotfix.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;在你修复了hotfix问题后，你准备回到被打断之前的工作中。然而，你应该先删除hotfix分支，因为你已经不需要它了，master分支已经指向了同一个位置。你可以使用<code>git branch -d</code>来删除分支.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch -d hotfix
+    Deleted branch hotfix (3a0874c)
+
+
+    $ git checkout iss53
+    $ Switched to branch &#39;iss53&#39;
+    $ vim index.html
+    $ git commit -am &#39;finished the new footer [issue 53]&#39;
+    [iss53 ad82d7a] finished the new footer [issue 53]
+        1 file changed, 1 insertion(+)</pre></td></tr></table>
+</div>
+</div>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/继续在iss53分支上工作.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;你在hotfix分支上所做的工作并没有合并到iss53分支中。如果你需要拉取hotfix所做的修改，你可以使用<code>git merge master</code>目录将master分支合并到iss53分支，或者你也可以等到iss53分支完成任务后，再将其合并回master分支。</p>
+
+<h2 id="分支合并">分支合并</h2>
+
+<p>&emsp;&emsp;假设此时你已经修正了#53问题，打算将iss53分支合并到master分支。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout master
+    $ Switch to branch &#39;master&#39;
+    $ git merge iss53
+    Merge made by the &#39;recursive&#39; strategy.
+    index.html | 1 +
+        1 file changed, 1 insertion(+)</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;你会发现和上次的合并信息不太一样。在这种情况下，你的开发历史从一个更早的地方开始分叉开来，因为，master分支所在提交并不是iss53分支所在提交的直接父对象，Git不得不做一些额外工作。出现这种情况时，Git会使用两个分支的末端所指的快照(C4和C5)以及这两个分支的共同工作父对象(C2)，做一个简单的<code>三方合并</code>.</p>
+
+<p>&emsp;&emsp;和之前将分支指针向前推进所不同的是，Git将此次三方合并的结果做了一个新快照并且自动创建一个新的提交对象指向它。这个被称作一次合并提交，<code>它的特别之处在于它有不止一个父对象</code>。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/一个合并提交.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;既然你的修改已经合并进来了，就不再需要iss53分支了。现在你可以删除这个分支了.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch -d iss53</pre></td></tr></table>
+</div>
+</div>
+<h2 id="遇到冲突时的分支合并">遇到冲突时的分支合并</h2>
+
+<p>&emsp;&emsp;<strong>如果你在两个不同的分支中，对同一个文件的同一部分进行了不同的修改，Git就没法顺利的合并它们。</strong>如果你对#53问题的修改和有关hotfix的修改都车技到同一个文件的同一处，在合并时就会产生冲突：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git merge iss53
+    Auto-mergeing index.html
+    CONFLICT (content): Merge conflict in index.html
+    Automatic merge failed; fix conflicts and
+    then commit the result.</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;此时Git做了合并，但没有自动创建新的合并提交。Git暂停下来，等待你去解决合并产生的冲突。你可以在合并冲突后使用<code>git status</code>来查看那些因为包含合并冲突而处于未合并(unmerged)状态的文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git status
+    On branch master
+    You have unmerged paths
+        (fix conflicts and run &#39;git commit&#39;)
+    Unmerged paths:
+        (use &#39;git add &lt;file&gt;...&#39; to mark resolution)
+        both modified: index.html
+    no changes added to commit (use &#39;git add&#39; and/or &#39;git commit -a&#39;)</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;任何因包含合并冲突而待解决的文件，都会以未合并状态标识出来。<code>Git会在有冲突的文件中加入标准的冲突解决标记，这样你可以打开这些包含冲突的文件手动解决。</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD index.html
+    &lt;div id=&#34;footer&#34;&gt;contract :
+    email.support@github.com&lt;/div&gt;
+    =======
+    &lt;div id=&#34;footer&#34;&gt;
+    please contact us at support@github.com
+    &lt;/div&gt;
+    &gt;&gt;&gt;&gt;&gt;&gt;&gt; iss53: index.html</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上述表示HEAD所指示的版本(也就是你master分支所在的位置，因为你在运行merge目录时已经检出到了该分支)在(======)的上半部分，而iss53分支所指示的版本在======的下半部分。为了解决冲突，你必须选择使用其中一个，或者自行合并这些内容。比如，你可以通过把这段内容替换成下面的样子以解决冲突：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    &lt;div id=&#34;footer&#34;&gt;
+    please contact us at email.support@github.com
+    &lt;/div&gt;</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;在你解决了所有文件里的冲突后，对每个文件使用<code>git add</code>目录将其标记未已解决，你可以再次运行<code>git status</code>来确认所有的合并冲突都以解决。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git status
+    On branch master
+    All conflicts fixed but you are still merging.
+        (use &#39;git commit&#39; to conclude merge)
+    Changes to be committed:
+        modified: index.html</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如果你对结果满意，并确定之前冲突文件都以暂存，此时你可以使用<code>git commit</code>来完成合并提交：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    Merge branch &#39;iss53&#39;
+    Conflicts:
+        index.html
+    #
+    # It looks like you may be committing a merge
+    # If this is not correct, please remove the file
+    #   .git/MERGE_HEAD
+    # and try again
+
+    # Please enter the commit message for your changes. Lines starting
+    # with &#39;#&#39; will be ignored, and an empty message aborts the commmit.
+    # On branch master
+    # All conflicts flixed but you are still merging.
+    # 
+    # Changes to be committed:
+    #   modified: index.html
+    #</pre></td></tr></table>
+</div>
+</div>
+<h1 id="分支管理">分支管理</h1>
+
+<p>&emsp;&emsp;<code>git branch</code> 命令不只是可以创建与删除分支，如果不加任何参数，会得到所有分支列表：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch
+    iss53
+    * master
+    testing</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;master前面的*字符，它代表现在HEAD指针检出的那一个分支。如果你需要查看每一个分支的最后一次提交，可以运行<code>git branch -v</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch -v
+        iss53   93b412c fix javascript issue
+    *   master  7a98805 Merge branch &#39;iss53&#39;
+        testing 782fd34 add scott to the author list in the readmes</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如果你想查看哪些分支已经合并到当前分支，可以运行<code>git branch --merged</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch --merged
+        iss53
+    *   master</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;同理，如果你想查看所有包含未合并工作的分支，可以运行<code>git branch --no-merged</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch --no-merged</pre></td></tr></table>
+</div>
+</div>
+<h1 id="分支工作流">分支工作流</h1>
+
+<p>&emsp;&emsp;在整个项目开发周期的不同阶段，你可以同时拥有多个开放的分支，你可以定期把某些分支合并入其它分支。许多Git开发者都喜欢使用这种方式来工作，比如只在master分支上保留完全稳定的代码。还有一些名为develop或者next的平行分支，被用来做后续开发或者测试稳定性，一旦这些分支达到稳定状态，就可以被合并入master分支。</p>
+
+<p>&emsp;&emsp;通常把它们想像成流水线可能更好理解一点，哪些经过测试考验的提交会被遴选到更加稳定的流水线上去。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/渐进稳定分支流水线视图.png" alt="avatar" /></p>
+
+<blockquote>
+<p>举个例子</p>
+</blockquote>
+
+<p>&emsp;&emsp;假设，你在master分支上工作到C1，这时为了解决一个问题新建iss91分支，在iss91分支上工作到C4，然而对于那个问题你又有了新的想法，于是你再次新建iss91v2分支视图用另一种方法解决那个问题，接着你回到master分支工作了一会，你又冒出了一个不太确定的想法，你便在C10的时候新建dumbidea分支，并在上面开始了实验。那么你的提交历史看起来像下面这样：</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/拥有多个特性分支的提交历史.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;假设，你决定使用iss91v2分支方案来解决这个问题，另外，你将dumbidea分支拿给你的同事看后，结果发现是惊人之举。这是你选择抛弃iss91分支(丢弃C5, C6)，然后把另外两个分支合并进master主分支。最终你的提交历史看起来像下面这样:</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/合并dumbidea和iss91v2分支之后的提交历史.png" alt="avatar" /></p>
+
+<blockquote>
+<p>我们将会在<strong>分布式Git</strong>中揭示更多有关分支工作流的细节</p>
+</blockquote>
+
+<h1 id="远程分支">远程分支</h1>
+
+<p>&emsp;&emsp;假设你的网络里有一个在git.ourcompany.com的Git服务器。如果你从这里克隆，Git的clone命令会为你自动将其命名为origin，拉取它的所有数据，创建一个指向它的master分支指针，并且在本地将其命名为origin/master。Git也会给你一个与origin的master分支在指向同一个地方的本地master分支，这样你就有工作的基础了。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/克隆之后的服务器与本地仓库.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;如果你在本地master分支做了一些工作，于此同时，其他人推送提交到git.outcompary.com并更新了它的maste分支，那么你的提交历史将向不同的方向前进。另外，只要你不与origin服务器连接，你的origin/master指针就不会移动.</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/本地与远程的工作可以分叉.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;如果要同步你的工作，运行<code>git fetch origin</code>命令。这个命令查找origin是哪一个服务器，从中抓取本地没有的数据，并且更新本地数据库，移动origin/master指针指向新的、更新后的位置。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/fetch更新你的远程仓库引用.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;假设你还有一台内部Git服务器，仅仅用于sprint小组的开发工作，地址：git.team1.outcompary.com。你可以运行<code>git remote add</code>命令添加一个新的远程仓库。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/添加另一个远程仓库.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;现在，运行<code>git fetch teamone</code>来抓取远程仓库teamone有而本地没有的数据。因为那台服务器上现有的数据是origin服务器上的一个子集，所以Git并不会抓取数据而是会设置远程跟踪分支teamone/master指向teamone的master分支</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/远程跟踪分支teamone.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;综上，<strong>远程跟踪分支是远程分支状态的引用.</strong>它们是你不能移动的本地引用，当你做任何网络通信操作时，它们会自动移动。远程跟踪分支像是你上次连接到远程仓库时，哪些分支所处状态的书签。</p>
+
+<p>&emsp;&emsp;<strong>它们以(remote)/(branch)形式命名。</strong>如果你想看你最后一次与远程仓库origin通信时master分支的状态，你可以查看origin/master分支。你与同时合作解决了问题并且它们推送了iss53分支，你可能自己本地有自己的iss53分支，在服务器上的分支会指向origin/iss53的提交。</p>
+
+<h1 id="推送">推送</h1>
+
+<p>&emsp;&emsp;你可以将不愿意分享的内容放到私人分支上，而将需要和别人协作的内容推送到共来分支。</p>
+
+<p>&emsp;&emsp;如果你希望和别人一起在名为serverfix的分支上工作，你可以像推送第一个分支那样，运行<code>git push (remote) (branch)</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git push origin serverfix
+    Counting objects: 24, done.
+    Delta compression using up to 8 threads.
+    Compressing objects: 100%(15/15), done.
+    Writing objects: 100% (24/24), 1.91kib | 0 bytes/s, done.
+    Total 24 (delta 2), reused 0 (delta 0) To https://github.com/schacon/simplegit
+    * [new branch] serverfix -&gt; serverfix</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;你也可以运行<code>git push origin serverfix:serverfix</code>，它会推送本地的serverfix分支，将其作为远程仓库的serverfix分支。如果你并不想让远程仓库上的分支叫serverfix，可以运行git push origin serverfix:awesomebranch来将本地的serverfix分支推送到远程仓库上的awesomebranch分支。</p>
+
+<p>&emsp;&emsp;下一次其他协作者从服务器上抓取数据时，他们会在本地生成一个远程分支origin/serverfix,指向服务器的servefix分支的引用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git fetch origin
+    remote: Counting objects: 7, done.
+    remote: Compressing objects: 100% (2/2), done.
+    remote: Total 3 (delta 0), reused 3 (delta 0)
+    Unpacking objects: 100% (3/3), done.
+    From https://github.com/schacon/simplegit
+    * [new branch]      serverfix    -&gt; origin/serverfix</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;<strong>注意</strong>，当抓取到新的远程跟踪分支时，本地不会自动生成一份可编辑的副本。这种情况下，<strong>不会有一个新的serverfix分支，只有一个不可以修改的origin/servefix指针。</strong></p>
+
+<p>&emsp;&emsp;那么，你可以运行<code>git merge origin/serverfix</code>将这些工作合并到当前分支。如果你想在自己的serverfix分支上工作，可以将其建立在远程跟踪分支之上,这回给你一个用于工作的本地分支，并且起点位于origin/serverfix.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout -b serverfix
+    origin/serverfix
+    Branch serverfix set up to track remote
+    branch serverfix from origin.
+    Switched to a new branch &#39;serverfix&#39;</pre></td></tr></table>
+</div>
+</div>
+<h1 id="跟踪分支">跟踪分支</h1>
+
+<p>&emsp;&emsp;从一个远程跟踪分支检出一个本地分支会自动创建“跟踪分支”(它跟踪的分支叫做&rsquo;上游分支&rsquo;)。跟踪分支是与远程分支有直接关系的本地分支。</p>
+
+<p>&emsp;&emsp;当克隆一个仓库时，它通常会自动创建一个跟踪origin/master的master分支。如果你想设置其他跟踪分支，可以运行<code>git checkout -b [branch] [remotename]/[branch]</code>.这是一个十分常用的操作，所以Git提供了&ndash;track快捷方式：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout --track origin/serverfix
+    Branch serverfix set up to track remote
+    branch serverfix from origin.
+    Switched to a new branch &#39;serverfix&#39;</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如果想要将本地分支与远程分支设置为不同名，可以轻松地使用上一个命令增加一个不同名字的本地分支：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git checkout -b sf origin/serverfix
+    Branch sf set up to track remote branch
+    serverfix from origin
+    Switch to a new branch &#39;sf&#39;</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如果你本地本来就有一个本地分支，你想要跟踪上游分支：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch -u origin/serverfix
+    Branch serverfix set up to track remote
+    branch serverfix from origin</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如果你想查看跟踪分支，可以使用<code>git branch -vv</code>.这会将所有的本地分支列出来并且包含更多的信息，例如每一个分支正在跟踪哪个远程分支与本地分支是否是领先、落后或是都有。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git branch -vv
+    iss53     7e424c3 [origin/iss53: ahead 2] forgot the brackets
+    master    1ae2a45 [origin/master] deploying index fix
+    * serverfix f8674d9 [teamone/server-fix-good: ahead 3, behind 1] this should do it
+    testing   5ea463a trying something new</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;我们解析一下上面的含义。iss53分支正在跟踪origin/iss53并且ahead是2，意味着本地有两个提交还没有推送到服务器上。master分支正在跟踪origin/master分支并且进度是最新的。serverfix分支正在跟踪teamone服务器上的server-fix-good分支并且领先3落后1，意味着服务器上又一次提交还没有合并，同时本地有三次提交还没有推送。testing分支没有跟踪任何分支。</p>
+
+<h1 id="拉取">拉取</h1>
+
+<p>&emsp;&emsp;当<code>git fetch</code>命令从服务器上抓取本地没有的数据时，它并不会修改工作目录中的内容。它并不会修改工作目录中的内容，它只会获取数据然后让你自己合并。然而，<code>git pull</code>大多数情况下它是git fetch紧接着git merge命令。<strong>由于git pull的魔法经常令人困惑所以通常单独显式地使用fetch与merge命令会更好一些</strong></p>
+
+<h1 id="删除远程分支">删除远程分支</h1>
+
+<p>&emsp;&emsp;假设你和协作者已经完成了一个特性并且将其合并到了远程仓库的master分支。可以运行<code>--delete</code>选项的git push命令来删除一个远程分支。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ git push origin --delete serverfix
+    To https://github.com/schacon/simplegit
+        - [deleted]     serverfix</pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-05-06
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/git/4.-git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/git/">Git</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/life/travel/2.%E5%B7%9D%E8%A5%BF%E5%B0%8F%E7%8E%AF%E7%BA%BF/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[生活 | 旅游 | 川西小环线]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/git/3.-git%E5%88%86%E6%94%AF%E5%8E%9F%E7%90%86/">
+            <span class="next-text nav-default">[Git (三) | 分支原理]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

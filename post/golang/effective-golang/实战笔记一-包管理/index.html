@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[实战笔记(一) | 包管理] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flysnow" /><meta name="description" content="转载自 https://www.flysnow.org 1. 包的命名 go语言的包的命名，遵循简洁、小写、和go文件所在目录同名的原则，这样便于引用，书写以及快速定位查找。 比如go自带的htt" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B8%80-%E5%8C%85%E7%AE%A1%E7%90%86/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[实战笔记(一) | 包管理]" />
+<meta property="og:description" content="转载自 https://www.flysnow.org 1. 包的命名 go语言的包的命名，遵循简洁、小写、和go文件所在目录同名的原则，这样便于引用，书写以及快速定位查找。 比如go自带的htt" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B8%80-%E5%8C%85%E7%AE%A1%E7%90%86/" />
+<meta property="article:published_time" content="2019-10-14T01:40:56&#43;08:00"/>
+<meta property="article:modified_time" content="2019-10-14T01:40:56&#43;08:00"/>
+
+<meta itemprop="name" content="[实战笔记(一) | 包管理]">
+<meta itemprop="description" content="转载自 https://www.flysnow.org 1. 包的命名 go语言的包的命名，遵循简洁、小写、和go文件所在目录同名的原则，这样便于引用，书写以及快速定位查找。 比如go自带的htt">
+
+
+<meta itemprop="datePublished" content="2019-10-14T01:40:56&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-14T01:40:56&#43;08:00" />
+<meta itemprop="wordCount" content="1929">
+
+
+
+<meta itemprop="keywords" content="golang," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[实战笔记(一) | 包管理]"/>
+<meta name="twitter:description" content="转载自 https://www.flysnow.org 1. 包的命名 go语言的包的命名，遵循简洁、小写、和go文件所在目录同名的原则，这样便于引用，书写以及快速定位查找。 比如go自带的htt"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[实战笔记(一) | 包管理]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-10-14 </span>
+        <div class="post-category">
+            <a href="/categories/golang/%E5%AE%9E%E6%88%98%E7%B3%BB%E5%88%97/"> golang/实战系列 </a>
+            </div>
+          <span class="more-meta"> 约 1929 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-包的命名">1. 包的命名</a></li>
+<li><a href="#2-main包">2. main包</a></li>
+<li><a href="#3-导入包">3. 导入包</a></li>
+<li><a href="#3-远程包导入">3. 远程包导入</a></li>
+<li><a href="#4-命名导入">4. 命名导入</a></li>
+<li><a href="#5-init函数">5. init函数</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<blockquote>
+<p>转载自 <a href="https://www.flysnow.org">https://www.flysnow.org</a></p>
+</blockquote>
+
+<h2 id="1-包的命名">1. 包的命名</h2>
+
+<p>go语言的包的命名，遵循简洁、小写、和go文件所在目录同名的原则，这样便于引用，书写以及快速定位查找。
+比如go自带的http包，它这个http目录下的所有go文件都属于http包，所以我们使用http包里面的函数、接口的时候，导入这个http包就可以了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+    <span class="kn">import</span> <span class="s">&#34;net/http&#34;</span>
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServer</span><span class="p">(</span><span class="s">&#34;127.0.0.1:80&#34;</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>从这个案例可以看到，我们导入的是<code>net/http</code>，这在go里叫做全路径，因为http包在net里面，net是最顶级的包，所以必须使用<code>全路径</code>导入，go编译程序才能找到http这个包，和我们文件系统的目录路径是一样的。
+因为有了全路径，所以命名的包可以和其它库一样，只要它们的全路径不同就可以了，使用全路径的导入，也增加了包名命名的灵活性。
+        package main
+        import &ldquo;github.com/rujews/tools&rdquo;</p>
+
+<h2 id="2-main包">2. main包</h2>
+
+<p>当把一个go文件的包名声明为main时，就等于告诉go编译器，我这个是一个可执行的程序，那么go编译程序就会尝试把它编译为一个二进制的可执行文件。
+一个main包，一定会包含一个main函数。
+在go语言中，同时要满足main包和包含main()函数，才会被编译成一个可执行文件。
+我们来看一个Hello World的go语言版本：
+        package main
+        import &ldquo;fmt&rdquo;
+        func main(){
+            fmt.Println(&ldquo;Hello World&rdquo;)
+        }
+假设该go文件叫hello.go放在<code>$GOPATH/src/hello</code>目录下，那么我们在这个目录下执行<code>go build</code>就会生成二进制文件，在windows系统下生成的是hello.exe，在unix，mac和linux下生成的是hello，我们在cmd或终端里执行它，就可以看待控制台打印的:</p>
+
+<h2 id="3-导入包">3. 导入包</h2>
+
+<p>要想使用一个包，必须先导入它才可以使用，Go语言提供了import关键字来导入一个包，这个关键字go编译器到磁盘的哪里去找想要导入的包，所以导入的包必须是一个全路径难过的包，也即是包所在的位置。
+        import &ldquo;fmt&rdquo;
+这就表示我们导入了fmt包，也就等于告诉go编译器，我们要使用这个包下面的代码。如果要导入多个包怎么办？go语言还为我们提供了导入块。
+        import(
+            &ldquo;net/http&rdquo;
+            &ldquo;fmt&rdquo;
+        )
+使用一对括号包含的导入块，每个包独占一行。
+现在我们导入了包，那么编译的时候，go编译器去什么位置找它们呢？这里就要介绍go的环境变量了。go有两个很重要的环境变量<code>GOROOT</code>和<code>GOPATH</code>，这是两个定义路径的环境变量，goroot是安装go的路径，比如/user/local/go；gopath是我们自定义的工作空间，比如/home/facedamon/go。
+编译器会使用我们设置的这两个路径，再加上import导入的相对全路径来查找磁盘上的包，比如我们导入放入fmt包，编译器最终找到的是/usr/local/go/fmt这个位置
+值得了解的是：对于包的查找是有优先级的，编译器会优先在goroot里搜索，其次是gopath，一旦找到，就会马上停止搜索。如果最终都没找到，就会编译异常</p>
+
+<h2 id="3-远程包导入">3. 远程包导入</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    import &#34;github.com/spf13/cobra&#34;</pre></td></tr></table>
+</div>
+</div>
+<p>这种导入，前提必须是该包托管在一个分布式的版本控制系统上，比如github、bitbucket等，并且是public的权限，可以让我们直接访问它们。
+编译在导入它们的时候会先在gopath下搜索这个包，如果没有找到，就会使用<code>go get</code>工具从版本控制系统GitHub获取，并且会把获取到的源代码存储在gopath目录下对应的url的目录里，以供编译使用。
+go get工具可以递归获取依赖包。</p>
+
+<h2 id="4-命名导入">4. 命名导入</h2>
+
+<p>在使用import关键字导入包之后，我们就可以在代码中通过包名使用包下相应的函数、接口等。如果我们导入的包名正好有重复的怎么办？针对这种情况，go可以让我们对导入的包重新命名，这就是命名导入。
+        package main
+        import(
+            &ldquo;fmt&rdquo;
+            myfmt &ldquo;mylib/fmt&rdquo;
+        )</p>
+
+<h2 id="5-init函数">5. init函数</h2>
+
+<p>每个包都可以有任意多个init函数，这些init函数都会在main函数之前执行。init函数通常来说用来做初始化变量、设置包活着其它需要在程序执行前的引导工作。比如使用_空标志符来导入一个包的目的就是想执行这个包的init函数。
+我们以数据库驱动为例，go语言为了统一关于数据库的访问，使用<code>databases/sql</code>抽象了一层数据库操作，可以满足我们操作mysql、postgre等数据库，这样不管我们使用这些数据库的哪个驱动，编码操作都是一样的，想换驱动的时候，就直接换掉，而不是修改具体的代码。
+这些数据库驱动的实现，就是具体的，可以由任何人实现，它的原理就是定义了init函数，在程序运行之前把实现好的驱动注册到sql包里，这样我们就使用它操作数据库了。
+        package mysql
+        import(
+            &ldquo;database/sql&rdquo;
+        )
+        func init(){
+            sql.Register(&ldquo;mysql&rdquo;, &amp;MySQLDriver{})
+        }
+因为我们只想执行这个mysql包的init方法，并不想使用这个包，所以我们在导入这个包的时候，需要使用_重命名包名，避免编译报错
+        import (
+            &ldquo;database/sql&rdquo;
+           _ &ldquo;github.com/go-sql-driver/mysql&rdquo;
+        )
+        db, err := sql.Open(&ldquo;mysql&rdquo;, &ldquo;user:password@/dbname&rdquo;)
+看起来非常简洁，剩下针对的数据库的操作，都是使用database/sql标准接口。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flysnow</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-10-14
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B8%80-%E5%8C%85%E7%AE%A1%E7%90%86/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%BA%8C-go-command/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[实战笔记(二) | Go command]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/golang/effective-golang/%E5%86%85%E5%BB%BA%E7%B1%BB%E5%9E%8B/">
+            <span class="next-text nav-default">[Golang内建类型]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

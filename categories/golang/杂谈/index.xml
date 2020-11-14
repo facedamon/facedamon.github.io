@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>golang/杂谈 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/golang/%E6%9D%82%E8%B0%88/</link>
+    <description>Recent content in golang/杂谈 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 22 May 2020 09:19:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/categories/golang/%E6%9D%82%E8%B0%88/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[杂谈 | golang接口型函数]</title>
+      <link>http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/</link>
+      <pubDate>Fri, 22 May 2020 09:19:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/</guid>
+      <description>转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 &amp;emsp;&amp;emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接</description>
+    </item>
+    
+    <item>
+      <title>[杂谈 | golang database/sql使用]</title>
+      <link>http://facedamon.github.io/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 11 May 2020 14:09:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/</guid>
+      <description>转载自 https://segmentfault.com/a/1190000003036452 概述 &amp;emsp;&amp;emsp;sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正</description>
+    </item>
+    
+    <item>
+      <title>[杂谈 | golang设计哲学 ]</title>
+      <link>http://facedamon.github.io/post/golang/golang%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</link>
+      <pubDate>Thu, 02 Jan 2020 14:21:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/golang%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</guid>
+      <description>世界是并行的 先不说宇宙，就整个地球来说，世界万物都是并行发生的；天生对并发支持良好的go语言更容易描述并行的世界。 #世界是由物质组合构成的 微</description>
+    </item>
+    
+    <item>
+      <title>[杂谈 | golang发现序列]</title>
+      <link>http://facedamon.github.io/post/golang/golang%E5%8F%91%E7%8E%B0%E5%BA%8F%E5%88%97/</link>
+      <pubDate>Thu, 02 Jan 2020 14:09:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/golang%E5%8F%91%E7%8E%B0%E5%BA%8F%E5%88%97/</guid>
+      <description>发现了一个好用的golang sql package sqlx，有点类似与java中的dbutils，可以实现结果集的自动映射 sqlx它没有传统ORM的繁琐，毕竟</description>
+    </item>
+    
+    <item>
+      <title>[杂谈 | golang是值传递 ]</title>
+      <link>http://facedamon.github.io/post/golang/golang%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92/</link>
+      <pubDate>Thu, 02 Jan 2020 12:36:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/golang/golang%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92/</guid>
+      <description>什么是值传递 &amp;emsp;&amp;emsp;值传递的意思是：函数传递总是原来这个东西的一个副本，一幅拷贝。比如我们传递一个int类型的参数，传递的其</description>
+    </item>
+    
+  </channel>
+</rss>

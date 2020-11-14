@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[手写http框架 (二) | golang context] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="# 摘要 将路由router独立出来，方便之后增强。 设计上下文context，封装Request和Response，提供对JSON、HTML等返" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-context/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[手写http框架 (二) | golang context]" />
+<meta property="og:description" content="# 摘要 将路由router独立出来，方便之后增强。 设计上下文context，封装Request和Response，提供对JSON、HTML等返" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-context/" />
+<meta property="article:published_time" content="2020-06-24T11:19:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-06-24T11:19:56&#43;08:00"/>
+
+<meta itemprop="name" content="[手写http框架 (二) | golang context]">
+<meta itemprop="description" content="# 摘要 将路由router独立出来，方便之后增强。 设计上下文context，封装Request和Response，提供对JSON、HTML等返">
+
+
+<meta itemprop="datePublished" content="2020-06-24T11:19:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-06-24T11:19:56&#43;08:00" />
+<meta itemprop="wordCount" content="2694">
+
+
+
+<meta itemprop="keywords" content="golang," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[手写http框架 (二) | golang context]"/>
+<meta name="twitter:description" content="# 摘要 将路由router独立出来，方便之后增强。 设计上下文context，封装Request和Response，提供对JSON、HTML等返"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[手写http框架 (二) | golang context]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-06-24 </span>
+        <div class="post-category">
+            <a href="/categories/golang/%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6/"> golang/手写http框架 </a>
+            </div>
+          <span class="more-meta"> 约 2694 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#使用效果">使用效果</a></li>
+<li><a href="#设计context">设计Context</a>
+<ul>
+<li><a href="#context-go">context.go</a></li>
+<li><a href="#router-go">router.go</a></li>
+<li><a href="#geew-go-入口">geew.go (入口)</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p># 摘要</p>
+
+<ul>
+<li>将路由<code>router</code>独立出来，方便之后增强。</li>
+<li>设计上下文<code>context</code>，封装Request和Response，提供对JSON、HTML等返回类型的支持。</li>
+</ul>
+
+<h1 id="使用效果">使用效果</h1>
+
+<p>&emsp;&emsp;为了展示第二天的成果，我们看一看在使用时的效果。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func main() {
+        r := geew.New()
+        r.GET(&#34;/&#34;, func(c *geew.Context){
+            c.HTML(http.StatucOK, &#34;&lt;h1&gt;Hello Gee&lt;/h1&gt;&#34;)
+        })
+        r.GET(&#34;/hello&#34;, func(c *geew.Context){
+            c.String(http.StatusOK, &#34;htllo %s, you are at %s\n&#34;, c.Query(&#34;name&#34;), c.Path)
+        })
+
+        r.POST(&#34;/login&#34;, func(c *geew.Context){
+            c.JSON(http.StatusOK, geew.H{
+                &#34;username&#34;: c.PostForm(&#34;username&#34;),
+                &#34;password&#34;: c.PostForm(&#34;password&#34;)
+            })
+        })
+
+        r.Run(&#34;:9999&#34;)
+    }</pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li><code>Handler</code>的参数变成了<code>geew.Context</code>，提供了查询Query/PostForm参数的功能。</li>
+<li><code>geew.COntext</code>封装了<code>HTML/String/JSON</code>函数，能够快速构造HTTP响应。</li>
+</ul>
+
+<h1 id="设计context">设计Context</h1>
+
+<ul>
+<li>必要性</li>
+</ul>
+
+<p>&emsp;&emsp;对Web服务来说，无非是根据请求<code>*http.Request</code>，构造响应<code>http.ResponseWriter</code>。但是这两个对象提供的接口粒度太细，比如我们要构造一个完整的响应，需要考虑消息头Header和消息题Body，而Header包含了状态码StatusCode，消息类型ContentType等几乎每次请求都需要设置的信息。因此，如果不进行有效的封装，那么框架的用户将需要写大量重复繁杂的代码，而且容易出错。针对常用场景，能够高效地构造出HTTP响应是一个好框架必须考虑的点。</p>
+
+<p>&emsp;&emsp;用返回JSON数据做比较，感受下封装前后的差距。</p>
+
+<ul>
+<li><p>封装前</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">obj = map[string]interface{}{
+    &#34;name&#34;: &#34;gee&#34;,
+    &#34;password&#34;: &#34;1234&#34;,
+}
+w.Header().Set(&#34;Content-Type&#34;, &#34;application/json&#34;)
+w.WriteHeader(http.StatusOK)
+encoder := json.NewEncoder(w)
+if err := encoder.Encode(obj); err != nil {
+    http.Error(w, err.Error(), 500)
+}</pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>封装后</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">c.JSON(http.StatucOK, geew.H{
+   &#34;name&#34;: c.PostForm(&#34;name&#34;),
+    &#34;password&#34;: c.PostForm(&#34;password&#34;),
+})</pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+
+<p>&emsp;&emsp;针对使用场景，封装<code>*http.Request</code>和<code>http.ResponseWriter</code>的方法，简化相关接口的调用，只是设计Context的原因之一。对于框架来说，还需要支撑额外的功能。例如，将来解析动态路由<code>/hello:name</code>，参数<code>:name</code>的值放在哪呢？再比如，框架需要支持中间件，那中间件产生的信息放在哪？Context随着每一个请求的出现而产生，请求的结束而销毁，和当前请求强相关的信息都应该由Context承载。因此，设计Context结构，扩展性和复杂性留在了内部，而对外简化接口。路由的处理函数，以及将要实现的中间件，参数都统一使用Context实例，Context就像一次会话的百宝箱，可以找到任何东西。</p>
+
+<h2 id="context-go">context.go</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    // H is aslias of JSON
+    type H map[string]interface{}
+
+    type Context struct {
+        Writer http.ResponseWriter
+        Req *http.Request
+        Path string
+        Method string
+        StatusCode int
+
+        // queryCache use url.ParseQuery cached the param query result from c.Req.URL.Query
+        queryCache url.Values
+        //formCache use url.ParseQuery cached PostForm contains the parsed form data from POST,
+        //PUT body parameters.
+        formCache url.Values
+    }
+
+    func newContext()(w http.ResponseWriter, req *http.Request) *Context {
+        return &amp;Context{
+            Writer: w,
+            Req: req,
+            Path: req.URL.Path,
+            Method: req.Method,
+            quaryCache: nil,
+            formCache: nil,
+        }
+    }
+
+    func (c *Context) initQueryCache() {
+            if c.queryCache == nil {
+                    c.queryCache = c.Req.URL.Query()
+            }
+    }
+
+    func (c *Context) GetQueryArray(key string) ([]string, bool) {
+            c.initQueryCache()
+            if values, ok := c.queryCache[key]; ok &amp;&amp; len(values) &gt; 0 {
+                    return values, true
+            }
+            return []string{}, false
+    }
+
+    // QueryArray returns a slice of strings for given query key
+    // the length od the slice depends on the number of params with the given key
+    func (c *Context) QueryArray(key string) []string {
+            values, _ := c.GetQueryArray(key)
+            return values
+    }
+
+    func (c *Context) GetQuery(key string) (string, bool) {
+            if values, ok := c.GetQueryArray(key); ok {
+                    return values[0], ok
+            }
+            return &#34;&#34;, false
+    }
+
+    func (c *Context) DefaultQuery(key, defaultValue string) string {
+            if value, ok := c.GetQuery(key); ok {
+                    return value
+            }
+            return defaultValue
+    }
+
+    func (c *Context) Query(key string) string {
+            value, _ := c.GetQuery(key)
+            return value
+    }
+
+    func (c *Context) initFormCache() {
+            if c.formCache == nil {
+                    c.formCache = make(url.Values)
+                    r := c.Req
+                    if err := r.ParseMultipartForm(MaxMultipartMemory); err != nil {
+                            if err != http.ErrNotMultipart {
+                                    L.Error(&#34;error on parse multipart form array: %v&#34;, err)
+                            }
+                    }
+                    c.formCache = r.PostForm
+            }
+    }
+
+    // GetPostFormArray returns a slice of strings for a given form key
+    func (c *Context) GetPostFormArray(key string) ([]string, bool) {
+            c.initFormCache()
+            if values := c.formCache[key]; len(values) &gt; 0 {
+                    return values, true
+            }
+            return []string{}, false
+    }
+
+    // PostFormArray returns a slice of strings for a given form key
+    // the length of slice depends on the number of params with the given key
+    func (c *Context) PostFormArray(key string) []string {
+            values, _ := c.GetPostFormArray(key)
+            return values
+    }
+
+    func (c *Context) GetPostForm(key string) (string, bool) {
+            if values, ok := c.GetPostFormArray(key); ok {
+                    return values[0], ok
+            }
+            return &#34;&#34;, false
+    }
+
+    func (c *Context) DefaultPostForm(key, defaultValue string) string {
+            if value, ok := c.GetPostForm(key); ok {
+                    return value
+            }
+            return defaultValue
+    }
+
+    // PostForm returns the specified key from a POST urlencoded from or multipart form
+    func (c *Context) PostForm(key string) string {
+            value, _ := c.GetPostForm(key)
+            return value
+    }
+
+    func (c *Context) Param(key string) string {
+            c.Req.ParseMultipartForm(MaxMultipartMemory)
+            v, _ := c.Params[key]
+            return v
+    }
+
+    func (c *Context) FormFile(name string) (*multipart.FileHeader, error) {
+            if c.Req.MultipartForm == nil {
+                    if err := c.Req.ParseMultipartForm(MaxMultipartMemory); err != nil {
+                            return nil, err
+                    }
+            }
+            f, fh, err := c.Req.FormFile(name)
+            if err != nil {
+                    return nil, err
+            }
+            f.Close()
+            return fh, err
+    }
+
+    func (c *Context) MultipartForm() (*multipart.Form, error) {
+            err := c.Req.ParseMultipartForm(MaxMultipartMemory)
+            return c.Req.MultipartForm, err
+    }
+
+    func (c *Context) Status(code int) {
+        c.StatusCode = code
+        c.Writer.WriteHeader(code)
+    }
+
+    func (c *Context) SetHeader(key string, value string) {
+        c.Writer.Header().Set(key, value)
+    }
+
+    func (c *Context) String(code int, format string, values ...interface{}) {
+        c.SetHeader(&#34;Content-Type&#34;, &#34;text/plain&#34;)
+        c.Status(code)
+        c.Writer.Write([]byte(fmt.Sprintf(format, values...)))
+    }
+
+    func (c *Context) JSON(code int, obj interface{}) {
+        c.SetHeader(&#34;Content-Type&#34;, &#34;application/json&#34;)
+        c.Status(code)
+        encoder := json.NewENcoder(c.Writer)
+        if err := encoder.Encode(obj); err != nil {
+            http.Error(c.Writer, err.Error(), 500)
+        }
+    }
+
+    func (c *Context) Data(code int, data []byte) {
+        c.Status(code)
+        c.Writer.Write(data)
+    }
+
+    func (c *Context) HTML(code int, html string) {
+        c.SetHeader(&#34;Content-Type&#34;, &#34;text/html&#34;)
+        c.Status(code)
+        c.Writer.write([]byte(html))
+    }</pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>代码最开头，给<code>map[string]interface{}</code>起了一个别名<code>geew.H</code>，构建JSON数据时，显的更简洁。</li>
+<li><code>Context</code>目前只包含了http.ResponseWriter和*http.Request, 另外提供了对Method和Path这两个常用属性的直接访问.</li>
+<li>对Form的封装(采用了cache缓存), 供了访问Query和PostForm参数的方法。</li>
+<li>提供了快速构造String/Data/JSON/HTML响应的方法。</li>
+</ul>
+
+<h2 id="router-go">router.go</h2>
+
+<p>&emsp;&emsp;我们将路由相关的方法和结构提取出来，放到一个新的文件中的router.go，方便我们下一次对router的功能进行增强，例如提供动态路由的支持。router的handle方法做了一个细微的调整，即handler的参数，变成了Context。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">geew</span>
+
+    <span class="kn">import</span> <span class="p">(</span>
+            <span class="s">&#34;log&#34;</span>
+            <span class="s">&#34;net/http&#34;</span>
+    <span class="p">)</span>
+
+    <span class="kd">type</span> <span class="nx">router</span> <span class="kd">struct</span> <span class="p">{</span>
+            <span class="nx">handlers</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">HandlerFunc</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">newRouter</span><span class="p">()</span> <span class="o">*</span><span class="nx">router</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="o">&amp;</span><span class="nx">router</span><span class="p">{</span><span class="nx">handlers</span><span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">HandlerFunc</span><span class="p">)}</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">router</span><span class="p">)</span> <span class="nf">addRoute</span><span class="p">(</span><span class="nx">method</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Route %4s - %s&#34;</span><span class="p">,</span> <span class="nx">method</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">)</span>
+            <span class="nx">key</span> <span class="o">:=</span> <span class="nx">method</span> <span class="o">+</span> <span class="s">&#34;-&#34;</span> <span class="o">+</span> <span class="nx">pattern</span>
+            <span class="nx">r</span><span class="p">.</span><span class="nx">handlers</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="p">=</span> <span class="nx">handler</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">router</span><span class="p">)</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">key</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Method</span> <span class="o">+</span> <span class="s">&#34;-&#34;</span> <span class="o">+</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span>
+            <span class="k">if</span> <span class="nx">handler</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">handlers</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
+                    <span class="nf">handler</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusNotFound</span><span class="p">,</span> <span class="s">&#34;404 NOT FOUND: %s\n&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
+            <span class="p">}</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<h2 id="geew-go-入口">geew.go (入口)</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">geew</span>
+
+    <span class="kn">import</span> <span class="p">(</span>
+            <span class="s">&#34;net/http&#34;</span>
+    <span class="p">)</span>
+
+    <span class="c1">// HandlerFunc defines the request handler used by geew
+</span><span class="c1"></span>    <span class="c1">//type HandlerFunc func(http.ResponseWriter, *http.Request)
+</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">HandlerFunc</span> <span class="kd">func</span><span class="p">(</span><span class="o">*</span><span class="nx">Context</span><span class="p">)</span>
+
+    <span class="c1">// Engine implement the interface of ServeHTTP
+</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">Engine</span> <span class="kd">struct</span> <span class="p">{</span>
+            <span class="c1">//router map[string]HandlerFunc
+</span><span class="c1"></span>            <span class="nx">router</span> <span class="o">*</span><span class="nx">router</span>
+    <span class="p">}</span>
+
+    <span class="c1">// New is the constructor of geew.Engine
+</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">New</span><span class="p">()</span> <span class="o">*</span><span class="nx">Engine</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="o">&amp;</span><span class="nx">Engine</span><span class="p">{</span><span class="nx">router</span><span class="p">:</span> <span class="nf">newRouter</span><span class="p">()}</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Engine</span><span class="p">)</span> <span class="nf">addRoute</span><span class="p">(</span><span class="nx">method</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">e</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// GET defines the method to add GET request
+</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Engine</span><span class="p">)</span> <span class="nf">GET</span><span class="p">(</span><span class="nx">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">e</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// POST defines the method to add POST request
+</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Engine</span><span class="p">)</span> <span class="nf">POST</span><span class="p">(</span><span class="nx">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">e</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;POST&#34;</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Run defines the method to start up a http server
+</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Engine</span><span class="p">)</span> <span class="nf">Run</span><span class="p">(</span><span class="nx">addr</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="nx">addr</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Implement the HTTP ServeHTTP
+</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Engine</span><span class="p">)</span> <span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">req</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">c</span> <span class="o">:=</span> <span class="nf">newContext</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span>
+            <span class="nx">e</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;将<code>router</code>相关的代码独立后，<code>geew.go</code>简单了不少。最终要的还是通过实现<code>ServeHTTP</code>接口，接管了所有的HTTP请求。相比第一天的代码，这个方法也有细微的调整，在调用router.handle之前，构造了一个<code>Context</code>对象。这个对象目前还非常简单，仅仅是包装了原来的两个参数，之后我们会慢慢地给Context插上翅膀。</p>
+
+<p>&emsp;&emsp;如何使用，运行<code>go test -v -run TestDay2 day2_test.go</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">example</span>
+
+    <span class="kn">import</span> <span class="p">(</span>
+            <span class="s">&#34;geew&#34;</span>
+            <span class="s">&#34;net/http&#34;</span>
+            <span class="s">&#34;testing&#34;</span>
+    <span class="p">)</span>
+
+    <span class="kd">func</span> <span class="nf">TestDay2</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">r</span> <span class="o">:=</span> <span class="nx">geew</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
+            <span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">c</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;&lt;h1&gt;Hello Geew&lt;/h1&gt;&#34;</span><span class="p">)</span>
+            <span class="p">})</span>
+            <span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;hello %s, you`re at %s\n&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Query</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">),</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
+            <span class="p">})</span>
+            <span class="nx">r</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/login&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">geew</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
+                            <span class="s">&#34;username&#34;</span><span class="p">:</span> <span class="nx">c</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">),</span>
+                            <span class="s">&#34;password&#34;</span><span class="p">:</span> <span class="nx">c</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;password&#34;</span><span class="p">),</span>
+                    <span class="p">})</span>
+            <span class="p">})</span>
+
+            <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:9999&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="err">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">i</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:9999/
+</span><span class="c1"></span>    <span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">200</span> <span class="nx">OK</span>
+    <span class="nx">Date</span><span class="p">:</span> <span class="nx">Mon</span><span class="p">,</span> <span class="mi">12</span> <span class="nx">Aug</span> <span class="mi">2019</span> <span class="mi">16</span><span class="p">:</span><span class="mi">52</span><span class="p">:</span><span class="mi">52</span> <span class="nx">GMT</span>
+    <span class="nx">Content</span><span class="o">-</span><span class="nx">Length</span><span class="p">:</span> <span class="mi">18</span>
+    <span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="p">:</span> <span class="nx">text</span><span class="o">/</span><span class="nx">html</span><span class="p">;</span> <span class="nx">charset</span><span class="p">=</span><span class="nx">utf</span><span class="o">-</span><span class="mi">8</span>
+    <span class="p">&lt;</span><span class="nx">h1</span><span class="p">&gt;</span><span class="nx">Hello</span> <span class="nx">Gee</span><span class="p">&lt;</span><span class="o">/</span><span class="nx">h1</span><span class="p">&gt;</span>
+
+    <span class="err">$</span> <span class="nx">curl</span> <span class="s">&#34;http://localhost:9999/hello?name=geektutu&#34;</span>
+    <span class="nx">hello</span> <span class="nx">geektutu</span><span class="p">,</span> <span class="nx">you</span><span class="err">&#39;</span><span class="nx">re</span> <span class="nx">at</span> <span class="o">/</span><span class="nx">hello</span>
+
+    <span class="err">$</span> <span class="nx">curl</span> <span class="s">&#34;http://localhost:9999/login&#34;</span> <span class="o">-</span><span class="nx">X</span> <span class="nx">POST</span> <span class="o">-</span><span class="nx">d</span> <span class="err">&#39;</span><span class="nx">username</span><span class="p">=</span><span class="nx">geektutu</span><span class="o">&amp;</span><span class="nx">password</span><span class="p">=</span><span class="mi">1234</span><span class="err">&#39;</span>
+    <span class="p">{</span><span class="s">&#34;password&#34;</span><span class="p">:</span><span class="s">&#34;1234&#34;</span><span class="p">,</span><span class="s">&#34;username&#34;</span><span class="p">:</span><span class="s">&#34;geektutu&#34;</span><span class="p">}</span>
+
+    <span class="err">$</span> <span class="nx">curl</span> <span class="s">&#34;http://localhost:9999/xxx&#34;</span>
+    <span class="mi">404</span> <span class="nx">NOT</span> <span class="nx">FOUND</span><span class="p">:</span> <span class="o">/</span><span class="nx">xxx</span></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-06-24
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-context/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/promethues/prometheus%E4%B8%80/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[系统监控 | Prometheus (一)]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-httphandler/">
+            <span class="next-text nav-default">[手写http框架 (一) | golang http-handler]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nginx on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/nginx/</link>
+    <description>Recent content in nginx on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 16 Apr 2020 14:23:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/categories/nginx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[nginx (一) | nginx准备]</title>
+      <link>http://facedamon.github.io/post/nginx/1.nginx%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Thu, 16 Apr 2020 14:23:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/nginx/1.nginx%E5%9F%BA%E7%A1%80/</guid>
+      <description>准备环境 &amp;emsp;&amp;emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在l</description>
+    </item>
+    
+  </channel>
+</rss>

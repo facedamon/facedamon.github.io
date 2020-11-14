@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[系统监控 | Prometheus (一)] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/promethues/prometheus%E4%B8%80/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[系统监控 | Prometheus (一)]" />
+<meta property="og:description" content="摘要 &emsp;&emsp;由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/promethues/prometheus%E4%B8%80/" />
+<meta property="article:published_time" content="2020-07-03T11:03:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-07-03T11:03:56&#43;08:00"/>
+
+<meta itemprop="name" content="[系统监控 | Prometheus (一)]">
+<meta itemprop="description" content="摘要 &emsp;&emsp;由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点">
+
+
+<meta itemprop="datePublished" content="2020-07-03T11:03:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-07-03T11:03:56&#43;08:00" />
+<meta itemprop="wordCount" content="2753">
+
+
+
+<meta itemprop="keywords" content="Prometheus," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[系统监控 | Prometheus (一)]"/>
+<meta name="twitter:description" content="摘要 &emsp;&emsp;由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[系统监控 | Prometheus (一)]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-03 </span>
+        <div class="post-category">
+            <a href="/categories/prometheus/"> Prometheus </a>
+            </div>
+          <span class="more-meta"> 约 2753 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#摘要">摘要</a></li>
+<li><a href="#系统架构">系统架构</a></li>
+<li><a href="#简略解释">简略解释</a></li>
+<li><a href="#环境准备">环境准备</a></li>
+<li><a href="#prometheus-配置">prometheus 配置</a></li>
+<li><a href="#alertmanager-配置">AlertManager 配置</a></li>
+<li><a href="#启动服务">启动服务</a></li>
+<li><a href="#面板配置">面板配置</a>
+<ul>
+<li><a href="#配置数据源">配置数据源</a></li>
+<li><a href="#配置面板">配置面板</a></li>
+<li><a href="#主页配置">主页配置</a></li>
+</ul></li>
+<li><a href="#测试预警">测试预警</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="摘要">摘要</h1>
+
+<p>&emsp;&emsp;<strong>由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点。</strong>
+</br></p>
+
+<h1 id="系统架构">系统架构</h1>
+
+<p></br></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/architecture.png" alt="avator" />
+</br></p>
+
+<h1 id="简略解释">简略解释</h1>
+
+<p></br></p>
+
+<p>&emsp;&emsp;<strong>Prometheus</strong>是一个开放性的监控解决方案，用户可以非常方便的安装和使用Prometheus并且能够非常方便的对其进行扩展。为了能够更加直观的了解Prometheus Server，接下来我们将在本地部署并运行一个Prometheus Server实例，通过<strong>Node Exporter</strong>采集当前主机的系统资源使用情况。 并通过<strong>Grafana</strong>创建一个简单的可视化仪表盘。
+&emsp;&emsp;<strong>Prometheus Server</strong>是Prometheus组件中的核心部分，负责实现对监控数据的获取，存储以及查询。 Prometheus Server可以通过静态配置管理监控目标，也可以配合使用<strong>Service Discovery</strong>的方式动态管理监控目标，并从这些监控目标中获取数据。其次Prometheus Server需要对采集到的监控数据进行存储，Prometheus Server本身就是一个时序数据库，将采集到的监控数据按照时间序列的方式存储在本地磁盘当中。最后Prometheus Server对外提供了自定义的<strong>PromQL</strong>语言，实现对数据的查询以及分析。
+&emsp;&emsp;Prometheus Server内置的<strong>Express Browser UI</strong>，通过这个UI可以直接通过PromQL实现数据的查询以及可视化。
+&emsp;&emsp;Prometheus Server的集群能力可以使其从其他的Prometheus Server实例中获取数据，因此在大规模监控的情况下，可以通过集群以及功能分区的方式对Prometheus Server进行扩展。
+&emsp;&emsp;<strong>Exporter</strong>将监控数据采集的端点通过HTTP服务的形式暴露给Prometheus Server，Prometheus Server通过访问该Exporter提供的Endpoint端点，即可获取到需要采集的监控数据。
+&emsp;&emsp;一般来说可以将Exporter分为2类：
+- 直接采集：这一类Exporter直接内置了对Prometheus监控的支持，比如cAdvisor，Kubernetes，<strong>Etcd</strong>(最好用)，Gokit等，都直接内置了用于向Prometheus暴露监控数据的端点。
+- 间接采集：间接采集，原有监控目标并不直接支持Prometheus，因此我们需要通过Prometheus提供的Client Library编写该监控目标的监控采集程序。例如： <strong>Mysqld Exporter，JMX Exporter，Nginx Exporter</strong>等。
+&emsp;&emsp;在Prometheus Server中支持基于PromQL创建告警规则，如果满足PromQL定义的规则，则会产生一条告警，而告警的后续处理流程则由AlertManager进行管理。在AlertManager中我们可以与<strong>邮件</strong>，Slack等等内置的通知方式进行集成，也可以通过<strong>Webhook</strong>自定义告警处理方式。AlertManager即Prometheus体系中的告警处理中心。
+</br></p>
+
+<h1 id="环境准备">环境准备</h1>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    # useradd -d /home/ddd -s /bin/bash ddd
+    # su - ddd
+    $ wget https://github.com/prometheus/prometheus/releases/download/v2.19.2/prometheus-2.19.2.linux-amd64.tar.gz
+    $ wget https://github.com/prometheus/alertmanager/releases/download/v0.21.0/alertmanager-0.21.0.linux-amd64.tar.gz
+    $ wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
+    $ for i in (ls *.tar.gz);do tar -zxvf $i;done
+    $ wget https://dl.grafana.com/oss/release/grafana-7.0.4-1.x86_64.rpm
+    $ sudo yum install grafana-7.0.4-1.x86_64.rpm</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+
+<h1 id="prometheus-配置">prometheus 配置</h1>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ cd /home/ddd/prometheus-2.19.1.linux-amd64
+    $ vim prometheus.yml
+    # my global config
+    global:
+      scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+      evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+      # scrape_timeout is set to the global default (10s).
+    # Alertmanager configuration
+    alerting:
+      alertmanagers:
+      - static_configs:
+        - targets: [&#39;127.0.0.1:9093&#39;]
+          # - alertmanager:9093
+    # Load rules once and periodically evaluate them according to the global &#39;evaluation_interval&#39;.
+    rule_files:
+      # - &#34;first_rules.yml&#34;
+      # - &#34;second_rules.yml&#34;
+      - /home/ddd/prometheus-2.19.1.linux-amd64/rules/*.rules
+    # A scrape configuration containing exactly one endpoint to scrape:
+    # Here it&#39;s Prometheus itself.
+    scrape_configs:
+      # The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.
+      - job_name: &#39;prometheus&#39;
+        # metrics_path defaults to &#39;/metrics&#39;
+        # scheme defaults to &#39;http&#39;.
+        scrape_interval: 5s
+        static_configs:
+        - targets: [&#39;127.0.0.1:9090&#39;]
+      # operating system
+      - job_name: &#39;OS&#39;
+        scrape_interval: 3s
+        static_configs:
+            - targets: [&#39;127.0.0.1:9100&#39;]
+      # mysqld
+      # - job_name: &#39;mysqld&#39;
+      #  static_configs:
+      #      - targets: [&#39;127.0.0.1:9104&#39;]
+    $ mkdir rules &amp;&amp; cd rules
+    $ vim hoststats-alert.rules
+     groups:
+     - name: memoryrules
+       rules:
+       - alert: MemoryUsageTooHigh
+         expr: (1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes) * 100 &gt; 85
+         for: 5m
+         labels:
+           #team: node
+           severity: warning
+           action: text
+           kind: node_export
+         annotations:
+           summary: &#34;{{$labels.instance}}: Memory usage is too high&#34;
+           description: &#34;{{$labels.instance}}: job {{$labels.job}} memory usage is more than 85% last 5min &#34;
+           value: &#34;{{$value}}&#34;
+     - name: cpurules
+       rules:
+       - alert: CpuUsageTooHigh
+         expr: 100-avg(irate(node_cpu_seconds_total{mode=&#34;idle&#34;}[5m])) by(instance)*100 &gt; 80
+         for: 1m
+         labels:
+           severity: warning
+         annotations:
+           summary: &#34;Instance {{ $labels.instance }} cpu使用率过高&#34;
+           description: &#34;{{ $labels.instance }} of job {{ $labels.job }}cpu使用率超过80%,当前使用率[{{ $value }}].&#34;</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+
+<h1 id="alertmanager-配置">AlertManager 配置</h1>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ cd /home/ddd/alertmanager-0.21.0.linux-amd64
+    $ vim alertmanager.yml
+    global:
+      resolve_timeout: 5m
+      smtp_smarthost: smtp.263.net:25
+      smtp_from: th@ddddian.com
+      smtp_auth_username: th@ddddian.com
+      smtp_auth_identity: th@ddddian.com
+      smtp_auth_password: ******
+    templates:
+      - &#39;template/*.tmpl&#39;
+    route:
+      group_by: [&#39;alertname&#39;]
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 1m
+      receiver: &#39;default-receiver&#39;
+      routes:
+      - receiver: &#39;os-pager&#39;
+        group_wait: 10s
+        match_re:
+          service: cpu|mem|network
+      - receiver: &#39;database-pager&#39;
+        group_wait: 10s
+        match_re:
+          service: mysql|mariadb
+     # - receiver: &#39;frontend-pager&#39;
+     #   group_by: [product, environment]
+     #   match:
+     #     team: frontend
+    receivers:
+      - name: &#39;default-receiver&#39;
+        email_configs:
+        - to: &#39;tsq@ddddian.com&#39;
+          require_tls: false
+          html: &#39;{{ template &#34;test.html&#34; . }}&#39;
+          headers: { Subject: &#34;[WARNING] Alertmanager 告警提醒&#34; }
+      - name: &#39;os-pager&#39;
+        email_configs:
+        - to: &#39;tsq@ddddian.com&#39;
+          require_tls: false
+       #   html:
+       #   headers:
+      - name: &#39;database-pager&#39;
+        email_configs:
+        - to: &#39;tsq@ddddian.com&#39;
+          require_tls: false
+       #   html:
+       #   headers:
+    inhibit_rules:
+      - source_match:
+           severity: &#39;critical&#39;
+        target_match:
+           severity: &#39;warning&#39;
+        equal: [&#39;alertname&#39;, &#39;dev&#39;, &#39;instance&#39;]
+    $ mkdir template &amp;&amp; cd template
+    $ vim hoststats-alert.tmpl
+    {{ define &#34;test.html&#34; }}
+     &lt;table border=&#34;1&#34;&gt;
+             &lt;tr&gt;
+                     &lt;td&gt;报警项&lt;/td&gt;
+                     &lt;td&gt;实例IP&lt;/td&gt;
+                     &lt;td&gt;报警阀值&lt;/td&gt;
+                     &lt;td&gt;开始时间&lt;/td&gt;
+             &lt;/tr&gt;
+             {{ range $i, $alert := .Alerts }}
+                     &lt;tr&gt;
+                             &lt;td&gt;{{ index $alert.Labels &#34;alertname&#34; }}&lt;/td&gt;
+                             &lt;td&gt;{{ index $alert.Labels &#34;instance&#34; }}&lt;/td&gt;
+                             &lt;td&gt;{{ index $alert.Annotations &#34;description&#34; }}&lt;/td&gt;
+                             &lt;td&gt;{{ ($alert.StartsAt.Add 28800e9).Format &#34;2006-02-02 15:04:05&#34; }}&lt;/td&gt;
+                     &lt;/tr&gt;
+             {{ end }}
+     &lt;/table&gt;
+     {{ end }}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+
+<h1 id="启动服务">启动服务</h1>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ cd /home/ddd/prometheus-2.19.1.linux-amd64
+    $ nohup ./prometheus &amp;
+    $ cd /home/ddd/alertmanager-0.21.0.linux-amd64
+    $ nohup ./alertmanager &amp;
+    $ cd /home/ddd/node_exporter-1.0.1.linux-amd64
+    $ nohup ./node_exporter
+    $ sudo systemctl status grafana-server.service
+    $ sudo systemctl restart grafana-server.service
+    $ sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
+    $ sudo firewall-cmd --zone=public --add-port=9090/tcp --permanent
+    $ sudo firewall-cmd --reload</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+
+<h1 id="面板配置">面板配置</h1>
+
+<p>&emsp;&emsp;登入前台系统<code>http://xxx:3000</code>，默认用户/密码：admin/123456
+<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/4668b31c615a7536fcfac05f19a2a3a.png" alt="avaror" />
+</br></p>
+
+<h2 id="配置数据源">配置数据源</h2>
+
+<p></br></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/072978f6b21acaa7cca66a179df2bb5.png" alt="avaror" />
+</br></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/1d4fe0c1ea5e8eec1038a6ac79ac511.png" alt="avaror" />
+</br></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/1342122957529bf8fb5406129ea2adc.png" alt="avaror" />
+</br></p>
+
+<h2 id="配置面板">配置面板</h2>
+
+<p></br></p>
+
+<p>&emsp;&emsp;这里的<strong>8919</strong>编号是grafana官网给出的面板主题编号，你可以在官网下载自己喜欢的面板样式。
+</br></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/874251548bbd2e1e6ae3cf71df720d5.png" alt="avaror" />
+</br></p>
+
+<h2 id="主页配置">主页配置</h2>
+
+<p></br></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/fcc22e5936aded76abe5da97b00853d.png" alt="avaror" />
+</br>
+&emsp;&emsp;<strong>点击收藏</strong></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/71094e1f412c50c774960f47cc608ee.png" alt="avaror" />
+</br>
+&emsp;&emsp;<strong>回到个人设置页面</strong></p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/f22efb03f5f090c2d7bb02fc2f2a26d.png" alt="avaror" /></p>
+
+<blockquote>
+<p><strong>点击左上角主页按钮</strong></p>
+</blockquote>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/9ea46edb06ea3970640df7daa30ee79.png" alt="avaror" /></p>
+
+<p>&emsp;&emsp;<strong>grafana最新版也自带了Alert&amp;Rules组件，但是功能太过单一，最主要的是没有通知策略，所以我们还是选择prometheus的AlertManager组件作为通知载体。</strong></p>
+
+<h1 id="测试预警">测试预警</h1>
+
+<p>&emsp;&emsp;登入该主机，手动执行以下shell来拉高CPU占用率。（该语句的含义是遍历主机的每一个CPU，让其都循环加载磁盘。请勿长时间运行）
+        $ for i in <code>seq 1 $(cat /proc/cpuinfo |grep &quot;physical id&quot; |wc -l)</code>; do dd if=/dev/zero of=/dev/null &amp; done
+</br></p>
+
+<p>&emsp;&emsp;检查一下配置的接收邮箱。</p>
+
+<p></br>
+<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/prometheus/20200629/5a7aec9ad3df19ad19d91735f05d479.png" alt="avaror" /></p>
+
+<p>&emsp;&emsp;也许你发现了问题，开始时间不对，开始时间采用的是UTC，差了8个小时。我们后面会修改这一问题。还有，你可能觉得不太美观，没关系，后面可以自己编写html来美化。下一期我们将继续讲解各个组件的配置，以此来解决通知的<strong>沉默、抑制、合并</strong>，Alertmanager的抑制机制可以避免当某种问题告警产生之后用户接收到大量由此问题导致的一系列的其它告警通知。例如当集群不可用时，用户可能只希望接收到一条告警，告诉他这时候集群出现了问题，而不是大量的如集群中的应用异常、中间件服务异常的告警通知。</p>
+
+<blockquote>
+<p>别忘了关闭拉高CPU的线程</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    $ killall dd</pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-07-03
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/promethues/prometheus%E4%B8%80/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/prometheus/">Prometheus</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/promethues/prometheus%E4%BA%8C/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[系统监控 | Prometheus (二)]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-context/">
+            <span class="next-text nav-default">[手写http框架 (二) | golang context]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
