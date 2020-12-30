@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>大型网站技术架构 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/</link>
+    <description>Recent content in 大型网站技术架构 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 30 Dec 2020 16:46:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/categories/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[大型网站技术架构 | 漏桶算法与令牌桶算法]</title>
+      <link>http://facedamon.github.io/post/books/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Wed, 30 Dec 2020 16:46:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/books/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95/</guid>
+      <description>转载自 https://www.cnblogs.com/xuwc/p/9123078.html 问题描述 &amp;emsp;&amp;emsp;某天A君突然发现自己的接口请求量突然涨到之前的10倍，没多久该接口几乎不可使用，并引发连锁反应导致整</description>
+    </item>
+    
+    <item>
+      <title>[大型网站技术架构 | 架构模式]</title>
+      <link>http://facedamon.github.io/post/books/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/1.-%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Tue, 15 Oct 2019 10:13:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/books/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/1.-%E6%9E%B6%E6%9E%84%E6%A8%A1%E5%BC%8F/</guid>
+      <description>概述 为了解决大型网站面临的高并发访问、海量数据处理、高可靠运行等一系列问题和挑战，大型互联网概述在实践中提出了许多解决方案，以实现网站高性能</description>
+    </item>
+    
+  </channel>
+</rss>
