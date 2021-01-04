@@ -45,7 +45,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://facedamon.github.io/" />
 
-<meta property="og:updated_time" content="2020-12-30T16:46:56&#43;08:00"/>
+<meta property="og:updated_time" content="2021-01-02T17:28:56&#43;08:00"/>
 
 <meta itemprop="name" content="FaceDamon`s Blog">
 <meta itemprop="description" content="Hugo theme even example site.">
@@ -119,6 +119,52 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/golang/base/10.%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/">[golang base(十) | 广度优先搜索]</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-03-05 </span>
+      <div class="post-category">
+          <a href="/categories/golang/base/"> golang/base </a>
+          </div>
+        <span class="more-meta"> 约 1410 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      广度优先算法 为爬虫实战做好准备 应用广泛，综合性强 面试常见 &emsp;&emsp;上图中是一个6*5的迷宫，0 代表可以走，1 代表墙，从左上角进
+    </div>
+    <div class="read-more">
+      <a href="/post/golang/base/10.%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/golang/base/9.http%E6%A0%87%E5%87%86%E5%BA%93/">[golang base(九) | 标准库]</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2020-03-05 </span>
+      <div class="post-category">
+          <a href="/categories/golang/base/"> golang/base </a>
+          </div>
+        <span class="more-meta"> 约 343 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      http 使用http客户端发送请求 使用http.Client控制请求头部等 使用httputil简化工作 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+    </div>
+    <div class="read-more">
+      <a href="/post/golang/base/9.http%E6%A0%87%E5%87%86%E5%BA%93/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/golang/base/8.channel/">[golang base(八) | 再谈channel]</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2020-03-04 </span>
@@ -186,52 +232,6 @@
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/golang/base/6.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">[golang base(六) | 错误处理]</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-02-28 </span>
-      <div class="post-category">
-          <a href="/categories/golang/base/"> golang/base </a>
-          </div>
-        <span class="more-meta"> 约 928 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      资源管理与出错处理 defer调用 确保在函数结束时调用 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 package main func tryDefer() { defer fmt.Println(1) defer fmt.Println(2) fmt.Println(3) panic(&#34;error occurr&#34;) /
-    </div>
-    <div class="read-more">
-      <a href="/post/golang/base/6.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/golang/base/5.%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">[golang base(五) | 函数式编程]</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2020-02-28 </span>
-      <div class="post-category">
-          <a href="/categories/golang/base/"> golang/base </a>
-          </div>
-        <span class="more-meta"> 约 646 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main func adder() func(int) int { sum := 0 // 自由变
-    </div>
-    <div class="read-more">
-      <a href="/post/golang/base/5.%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
@@ -276,7 +276,7 @@
   <span class="copyright-year">
     &copy; 
     2019 - 
-    2020
+    2021
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

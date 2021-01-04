@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[杂谈 | golang database/sql使用] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="gopher_linuxer" /><meta name="description" content="转载自 https://segmentfault.com/a/1190000003036452 概述 &amp;emsp;&amp;emsp;sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[杂谈 | golang database/sql使用]" />
+<meta property="og:description" content="转载自 https://segmentfault.com/a/1190000003036452 概述 &emsp;&emsp;sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/" />
+<meta property="article:published_time" content="2020-05-11T14:09:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-05-11T14:09:56&#43;08:00"/>
+
+<meta itemprop="name" content="[杂谈 | golang database/sql使用]">
+<meta itemprop="description" content="转载自 https://segmentfault.com/a/1190000003036452 概述 &emsp;&emsp;sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正">
+
+
+<meta itemprop="datePublished" content="2020-05-11T14:09:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-11T14:09:56&#43;08:00" />
+<meta itemprop="wordCount" content="3251">
+
+
+
+<meta itemprop="keywords" content="golang," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[杂谈 | golang database/sql使用]"/>
+<meta name="twitter:description" content="转载自 https://segmentfault.com/a/1190000003036452 概述 &emsp;&emsp;sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[杂谈 | golang database/sql使用]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-11 </span>
+        <div class="post-category">
+            <a href="/categories/golang/%E6%9D%82%E8%B0%88/"> golang/杂谈 </a>
+            </div>
+          <span class="more-meta"> 约 3251 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#概述">概述</a>
+<ul>
+<li><a href="#使用db">使用DB</a>
+<ul>
+<li><a href="#导入driver">导入driver</a></li>
+<li><a href="#连接db">连接DB</a></li>
+<li><a href="#读取db">读取DB</a></li>
+<li><a href="#单行query">单行Query</a></li>
+</ul></li>
+<li><a href="#处理error">处理Error</a>
+<ul>
+<li><a href="#循环rows的error">循环Rows的Error</a></li>
+<li><a href="#关闭resultsets时的error">关闭Resultsets时的error</a></li>
+<li><a href="#queryrow的error">QueryRow的error</a></li>
+<li><a href="#分析数据库error">分析数据库Error</a></li>
+</ul></li>
+<li><a href="#连接错误">连接错误</a>
+<ul>
+<li><a href="#null值处理">NULL值处理</a></li>
+<li><a href="#未知column">未知Column</a></li>
+</ul></li>
+<li><a href="#修改数据">修改数据</a></li>
+<li><a href="#事物">事物</a>
+<ul>
+<li><a href="#prepared-statements">Prepared Statements</a></li>
+<li><a href="#在tx中使用ps">在TX中使用PS</a></li>
+</ul></li>
+<li><a href="#gostyle-tx">GoStyle TX</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<blockquote>
+<p>转载自 <a href="https://segmentfault.com/a/1190000003036452">https://segmentfault.com/a/1190000003036452</a></p>
+</blockquote>
+
+<h1 id="概述">概述</h1>
+
+<p>&emsp;&emsp;<code>sql.DB</code>不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正在使用的连接被标记为繁忙，用完后回到连接吃等待下次使用。所以，如果你没有把连接释放回连接池，会导致过多连接使系统资源耗尽。</p>
+
+<h2 id="使用db">使用DB</h2>
+
+<h3 id="导入driver">导入driver</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    import (
+        &#34;database/sql&#34;
+        &#34;log&#34;
+        _ &#34;github.com/go-sql-driver/mysql&#34;
+    )</pre></td></tr></table>
+</div>
+</div>
+<h3 id="连接db">连接DB</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    var db *sql.DB
+
+    func main(
+        db, err := sql.Open(&#34;mysql&#34;, &#34;user:passwd@tcp(127.0.0.1:3306)/hello&#34;)
+        if err != nil {
+            log.Fatal(err)
+        }
+        defer db.Close()
+        err = db.Ping()
+        if err != nil {
+            // do something here
+        }
+    )</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;<code>sql.Open</code>的第一个参数树driver名称，第二个参数是driver连接数据库的信息，各个driver可能不同。DB不是连接，并且只有当需要使用时才会创建连接，如果像立即验证连接，需要使用<code>Ping</code>.</p>
+
+<p>&emsp;&emsp;sql.DB的设计就是用来作为长连接使用的。不要频繁的Open,Close.比较好的做法是，为每个不同的<strong>datastore</strong>创建对应的DB对象，保持这些对象Open。如果你需要短连接，可以将DB作为func的参数传入，而不要在func中Open，Close</p>
+
+<h3 id="读取db">读取DB</h3>
+
+<p>&emsp;&emsp;如果方法包含<code>Query</code>，那么这个方法是用于查询并返回rows的。其他情况应该用<code>Exec</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    var (
+        id      int
+        name    string
+    )
+
+    rows, err := db.Query(&#34;select id, name from users where id = ?&#34;, 1)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        err := rows.Scan(&amp;id, &amp;name)
+        if err != nil {
+            log.Fatal(err)
+        }
+        log.Println(id, name)
+    }
+    err = rows.Err()
+    if err != nil {
+        log.Fatal(err)
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上面代码的过程为:<code>db.Query</code>表示向数据库发送一个query，<code>defer rows.Close</code>非常重要，遍历rows使用<code>rows.Next</code>，把遍历到的数据存入变量使用<code>rows.Scan</code>，遍历完后检查err，有几点需要注意：
+1. 检查遍历是否有error
+2. 结果集rows未关闭前，底层的连接处于繁忙状态。当遍历读到最后一条记录时，会发生一个内部EOF错误，自动调用rows.Close,但是如果提前退出循环，rows不会关闭，连接不会回到连接池中，连接也不会关闭。所以手动关闭非常重要。rows.Close可以多次调用，是无害操作。</p>
+
+<h3 id="单行query">单行Query</h3>
+
+<p>&emsp;&emsp;如果err在<code>Scan</code>后才产生，所以可以：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    var name string
+    err = db.QueryRow(&#34;select name from users where id = ?&#34;, 1).Scan(&amp;name)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(name)</pre></td></tr></table>
+</div>
+</div>
+<h2 id="处理error">处理Error</h2>
+
+<h3 id="循环rows的error">循环Rows的Error</h3>
+
+<p>&emsp;&emsp;如果循环中发生错误会自动调用<code>rows.Close</code>，用<code>rows.Err</code>接收这个错误，循环之后判断error是非常有必要的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    for rows.Nexr() {
+        // ...
+    }
+    if err = rows.Err(); err != nil {
+        // handle the err here
+    }</pre></td></tr></table>
+</div>
+</div>
+<h3 id="关闭resultsets时的error">关闭Resultsets时的error</h3>
+
+<p>&emsp;&emsp;如果你在rows遍历结束之前退出循环，必须手动关闭Resultset,并接收error</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    for rows.Next() {
+        // ...
+        break;
+    }
+
+    // do the usual &#39;if err = rows.Err&#39;
+    // it`s always safe to close here
+    if err = rows.Close(); err != nil {
+        // but what should we do if there`s an error ?
+        log.Println(err)
+    }</pre></td></tr></table>
+</div>
+</div>
+<h3 id="queryrow的error">QueryRow的error</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    var name string
+    err = db.QueryRow(&#34;select name from users where id = ?&#34;, 1).Scan(&amp;name)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Println(name)</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如果id为1的记录不存在，err为<code>sql.ErrNoRows</code>,一般应用中不存在的情况都需要单独处理。此外，Query返回的错误都会延迟到Scan被调用，所以应该写成这样：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    var name string
+    err = db.QueryRow(&#34;select name from users where id = ?&#34;, 1).Scan(&amp;name)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            // there were no rows, but otherwise no error occurred
+        } else {
+            log.Fatal(err)
+        }
+    }
+    fmt.Println(name)</pre></td></tr></table>
+</div>
+</div>
+<h3 id="分析数据库error">分析数据库Error</h3>
+
+<p>&emsp;&emsp;各个数据库处理方式不太一样，mysql为例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    if driverErr, ok := err.(*mysql.MySQLError); ok {
+        if driverErr.Number == 1045 {
+            // handle the permission-denied error
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;<code>MySQLError, Number</code>都是DB特异的，别的数据库可能是别的类型或字段。这里的数字可以替换成常量。<a href="https://github.com/VividCortex/mysqlerr">MySQL error numbers maintained by VividCortex</a></p>
+
+<h2 id="连接错误">连接错误</h2>
+
+<h3 id="null值处理">NULL值处理</h3>
+
+<p>&emsp;&emsp;简单说就是设计数据库时不要出现null，处理起来非常费力。Null的type很有限，例如没有<code>sql.NullUnit64</code>;null值没有默认零值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    for rows.Next() {
+        var s sql.NullString
+        err := rows.Scan(&amp;s)
+        // check err
+        if s.Valid {
+            // use s.String
+        } else {
+            // NULL value
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<h3 id="未知column">未知Column</h3>
+
+<p>&emsp;&emsp;<code>rows.Columns</code>的使用，用于处理不能得知结果字段个数或类型的情况。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    cols, err := rows.Columns()
+    if err != nil {
+        // handle the error
+    } else {
+        dest := []interface{} {
+            // Standard MySQL columns
+            new(unit64),    // id
+            new(string),    // host
+            new(string),    // user
+            new(string),    // db
+            new(string),    // command
+            new(uint32),    // time
+            new(string),    // state
+            new(string),    // info
+        }
+        if len(cols) == 11 {
+            // 启动 Server
+        } else if len(cols) &gt; 8 {
+            // handle this case
+        }
+        err = rows.Scan(dest...)
+        // work with the values in dest
+    }
+    cols, err := rows.Columns()
+    vals := make([]interface{}, len(cols))
+    for i, _ := range cols {
+        vals[i] = new(sql.RawBytes)
+    }
+    for rows.Next() {
+        err = rows.Scan(vals...)
+        // 现在，你可以检查每一个vals元素为nil的情况
+        // 并且，你可以对每个column使用断言来映射到指定的字段类型上
+    }</pre></td></tr></table>
+</div>
+</div>
+<h2 id="修改数据">修改数据</h2>
+
+<p>&emsp;&emsp;一般用Prepared Statements和<code>Exec</code>完成<strong>INSERT, UPDATE, DELETE</strong> operation.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    stmt, err := db.Prepare(&#34;insert into users(name) values(?)&#34;)
+    if err != nil {
+        log.Fatal(err)
+    }
+    res, err := stmt.Exec(&#34;Dolly)
+    if err != nil {
+        log.Fatal(err)
+    }
+    lastId, err := res.LastInsertId()
+    if err != nil {
+        log.Fatal(err)
+    }
+    rowCnt, err := res.RowsAffected()
+    if err != nil {
+        log.Fatal(err)
+    }
+    log.Printf(&#34;ID = %d, affected = %d\n&#34;, lastId, rowCnt)</pre></td></tr></table>
+</div>
+</div>
+<h2 id="事物">事物</h2>
+
+<p>&emsp;&emsp;<code>db.Begin</code>开始事物，<code>commit, Rollback</code>关闭事物。<code>Tx</code>从连接池中取出一个连接，在关闭之前都是使用这个连接。<strong>Tx不能和DB层的Begin，Commit混合使用。</strong></p>
+
+<p>&emsp;&emsp;如果你需要通过多条语句修改连接状态，你必须使用Tx，例如：
+- 创建仅对单个连接可见的临时表
+- 设置变量，例如<code>SET @var := somevalue</code>
+- 改变连接选项，例如字符集，超时</p>
+
+<h3 id="prepared-statements">Prepared Statements</h3>
+
+<p>&emsp;&emsp;在数据库层面，PS是和单个数据库连接绑定的。客户端发送一个有占位符的statement到服务器，服务器返回一个statement Id，然后客户端发送ID和参数来执行statement。</p>
+
+<p>&emsp;&emsp;在Go中，连接不能直接暴露，你不能为连接绑定statement，只能为DB或TX绑定。database/sql包有自动重试功能。当你生产一个PS时：
+1. 自动在连接池中绑定到一个空闲连接
+2. stmt对象记住了绑定了哪个连接
+3. 执行stmt时，尝试使用该连接。如果不可用，例如连接被关闭或繁忙，会自动re-prepare,绑定到另一个连接</p>
+
+<p>&emsp;&emsp;这就导致在高并发的场景，过度使用statement可能导致statement泄漏，statement持续重复prepare和re-prepare的过程，甚至会达到服务器statement数量上限。</p>
+
+<h3 id="在tx中使用ps">在TX中使用PS</h3>
+
+<p>&emsp;&emsp;PS在TX中唯一绑定一个连接，<strong>不会re-prepare</strong></p>
+
+<p>&emsp;&emsp;TX和statement不能分离，在DB中创建的statement也不能在TX中使用，因为他们必定不是使用的同一个连接，必须十分小心：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    tx, err := db.Begin()
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer tx.Rollback()
+    stmt, err := tx.Prepare(&#34;insert into foo values (?)&#34;)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer stmt.Close()      // danger
+    for i := 0; i &lt; 10; i++ {
+        _, err = stmt.Exec(i)
+        if err != nil {
+            log.Fatal(err)
+        }
+    }
+    err = tx.Commit()
+    if err != nil {
+        log.Fatal(err)
+    }
+    // stmt.Close() runs here</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;<code>*sql.Tx</code>一旦释放，连接就回到连接池中，这里stmt在关闭时就无法找到连接。所以必须在tx commit或rollback之前就关闭stmt。</p>
+
+<h2 id="gostyle-tx">GoStyle TX</h2>
+
+<p>&emsp;&emsp;确保Begin, Commit, Rollback出现在同一个函数中，它使事物更容易跟踪，并允许你通过defer来确保事物正确关闭。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func (s service) dosomething() (err error) {
+        tx, err := s.db.Begin()
+        if err != nil {return}
+        defer func() {
+            if err != nil {
+                tx.Rollback()
+                return
+            }
+            err = tx.Commit()
+        }()
+        if _, err = tx.Exec(...); err != nil {
+            return
+        }
+        if _, err = tx.Exec(...); err != nil {
+            return
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;<strong>另一种方法是使用事物处理程序包装事物：</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func transact(db *sql.DB, txFunc func(*sql.Tx) error) (err error) {
+        tx, err := db.Begin()
+        if err != nil {return}
+        defer func() {
+            if p := recover(); p != nil {
+                tx.Rollback()
+                panic(p)
+            } else if err != nil {
+                tx.Rollback()
+            } else {
+                err = tx.Commit()
+            }
+        }()
+        err = txFunc(tx)
+        return err
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;使用上面的事物处理程序，你可以做到一下几点：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func (s service) dosomething() error {
+        return transact(s.db, func (tx *sql.Tx) error {
+            if _, err := tx.Exec(...); err != nil {
+                return err
+            }
+            if _, err := tx.Exec(...); err != nil {
+                return err
+            }
+            return nil
+        })
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;这样可以使你的事物更加简洁，并确保事物得到正确的处理。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">gopher_linuxer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-05-11
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[杂谈 | golang接口型函数]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/life/travel/2.%E5%B7%9D%E8%A5%BF%E5%B0%8F%E7%8E%AF%E7%BA%BF/">
+            <span class="next-text nav-default">[生活 | 旅游 | 川西小环线]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[golang base(八) | goroutine &amp; channel] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="goroutine 1 2 3 4 5 6 7 8 9 10 11 12 package main func main() { for i := 0; i &amp;lt; 10; i&#43;&#43; { go func(i int){ for { fmt.Printf(&amp;#34;Hello from goroutine %d\n&amp;#34;, i) } }(i) } time.Sleep(time.Millisecond) } &amp;emsp;&amp;emsp;如果不加go关键字的话，就是外循" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/golang/base/8.-goroutine/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[golang base(八) | goroutine &amp; channel]" />
+<meta property="og:description" content="goroutine 1 2 3 4 5 6 7 8 9 10 11 12 package main func main() { for i := 0; i &lt; 10; i&#43;&#43; { go func(i int){ for { fmt.Printf(&#34;Hello from goroutine %d\n&#34;, i) } }(i) } time.Sleep(time.Millisecond) } &emsp;&emsp;如果不加go关键字的话，就是外循" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/golang/base/8.-goroutine/" />
+<meta property="article:published_time" content="2020-03-04T20:00:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-03-04T20:00:56&#43;08:00"/>
+
+<meta itemprop="name" content="[golang base(八) | goroutine &amp; channel]">
+<meta itemprop="description" content="goroutine 1 2 3 4 5 6 7 8 9 10 11 12 package main func main() { for i := 0; i &lt; 10; i&#43;&#43; { go func(i int){ for { fmt.Printf(&#34;Hello from goroutine %d\n&#34;, i) } }(i) } time.Sleep(time.Millisecond) } &emsp;&emsp;如果不加go关键字的话，就是外循">
+
+
+<meta itemprop="datePublished" content="2020-03-04T20:00:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-04T20:00:56&#43;08:00" />
+<meta itemprop="wordCount" content="5885">
+
+
+
+<meta itemprop="keywords" content="golang," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[golang base(八) | goroutine &amp; channel]"/>
+<meta name="twitter:description" content="goroutine 1 2 3 4 5 6 7 8 9 10 11 12 package main func main() { for i := 0; i &lt; 10; i&#43;&#43; { go func(i int){ for { fmt.Printf(&#34;Hello from goroutine %d\n&#34;, i) } }(i) } time.Sleep(time.Millisecond) } &emsp;&emsp;如果不加go关键字的话，就是外循"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[golang base(八) | goroutine &amp; channel]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-04 </span>
+        <div class="post-category">
+            <a href="/categories/golang/base/"> golang/base </a>
+            </div>
+          <span class="more-meta"> 约 5885 字 </span>
+          <span class="more-meta"> 预计阅读 12 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#goroutine">goroutine</a></li>
+<li><a href="#协程coroutine">协程Coroutine</a></li>
+<li><a href="#其他语言中的协程">其他语言中的协程</a></li>
+<li><a href="#goroutine-1">goroutine</a></li>
+<li><a href="#goroutine可能的切换点">goroutine可能的切换点</a></li>
+<li><a href="#channel">channel</a></li>
+<li><a href="#bufferedchannel">bufferedchannel</a></li>
+<li><a href="#实践">实践</a>
+<ul>
+<li><a href="#使用channel来实现树的遍历">使用channel来实现树的遍历</a></li>
+</ul></li>
+<li><a href="#select调度">Select调度</a></li>
+<li><a href="#传统同步机制">传统同步机制</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="goroutine">goroutine</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">){</span>
+                <span class="k">for</span> <span class="p">{</span>
+                    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Hello from goroutine %d\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}(</span><span class="nx">i</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如果不加go关键字的话，就是外循环进来一次一直执行匿名函数，不会退出。加了go关键字之后就说明是并发的执行该匿名函数，外层循环还在往下跑，然后并发的开启了一个函数，结果就是，开启了10个goroutine，每个goroutine拼命的打印。为了保证main主线程在go协程完成前不退出，开启sleep。</p>
+
+<ul>
+<li>轻量级线程</li>
+<li>非抢占式多任务处理，由协程主动交出控制权(线程是抢占式，有可能是一个任务执行到一半，就被操作系统暂停切换)</li>
+<li>编译器／解释器／虚拟机层面的多任务</li>
+<li>多个协程可能在一个或多个线程上运行</li>
+</ul>
+
+<p>&emsp;&emsp;上面的案例中由于fmt.Printf操作是一个IO操作，因为IO操作总会由等待的过程，IO操作本身是会切换协程,我们想办法不让它切换(不交出控制权)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">a</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="kt">int</span>
+        <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">){</span>
+                <span class="k">for</span> <span class="p">{</span>
+                    <span class="nx">a</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">++</span>
+                    <span class="c1">// runtime.Gosched()
+</span><span class="c1"></span>                <span class="p">}</span>
+            <span class="p">}(</span><span class="nx">i</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;我们采用数组计算，就不会出现协程切换了，那么该程序一次进去，就会一直死循环。除非执行runtime.Gosched(),手动交出控制权。手动交出控制权后，打印结果如下：在一毫秒的时间内，10个协程获得的机会是不一样的
+        [1709 809 1563 1564 1627 1628 1549 1584 833 1231]</p>
+
+<p>&emsp;&emsp;可能有人会问，为什么匿名函数要定义一个i，将外部的i传进去来执行，而不是直接引用外部的i呢？那么我们不定义i，试一试：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">a</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="kt">int</span>
+        <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="k">go</span> <span class="kd">func</span><span class="p">(){</span>
+                <span class="k">for</span> <span class="p">{</span>
+                    <span class="nx">a</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">++</span>
+                    <span class="nx">runtime</span><span class="p">.</span><span class="nf">Gosched</span><span class="p">()</span>
+                <span class="p">}</span>
+            <span class="p">}()</span>
+        <span class="p">}</span>
+        <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Millisecond</span><span class="p">)</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">panic</span> <span class="nx">runtime</span> <span class="kt">error</span><span class="p">:</span> <span class="nx">index</span> <span class="nx">out</span> <span class="nx">of</span> <span class="k">range</span>
+    <span class="nx">goroutine</span> <span class="mi">9</span> <span class="nx">running</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;这里就是函数式编程的概念了，这个go func就是个闭包，引用了外部i，当外部的i结束循环的时候，i=10,那么其中一个协程闭包引用了该i，所以越界了。所以这个地方是不能使用闭包的，必须采用函数调用的形式拷贝一份i来固定i。</p>
+
+<p>&emsp;&emsp;其实上述案例还有一个bug，就是a[i]++和fmt.Println(a),有可能会出现一边写一边读的可能。这个问题需要使用chan来解决。</p>
+
+<h1 id="协程coroutine">协程Coroutine</h1>
+
+<p><code>Subroutines are special cases of more general program components, called coroutines. In contrast to the unsymmetric</code></p>
+
+<p><code>子程序是协程的一个特例</code></p>
+
+<p>&emsp;&emsp;所有的函数调用都可以看成是子程序，所有的函数调用都是协程的特例，协程是一个比子程序更宽泛的概念，这句话是谁说的呢？</p>
+
+<p><code>Donnald Knuth &quot;The Art of Computer Programming.Vol1&quot;</code></p>
+
+<p>&emsp;&emsp;我们来看看它怎样来算一个special cases呢！</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/coroutine.png" alt="avatar" /></p>
+
+<ul>
+<li><p>普通函数</p>
+
+<ul>
+<li>在一个线程内，这个线程有一个main函数，main调用dowork，等dowork做完了以后，才会把控制权交给main函数，然后main去执行下一个语句。</li>
+</ul></li>
+
+<li><p>协程</p>
+
+<ul>
+<li>也是main和dowork，但是main和dowork不是单向箭头，而是双向通道。main和dowork之间的数据可以双向流通，控制权也可以双向流通，就相当于并发执行的两个线程，main和dowork有可能运行在一个线程中，也可能是多个线程，这件事不需要开发者管理，调度器去管理。</li>
+</ul></li>
+</ul>
+
+<h1 id="其他语言中的协程">其他语言中的协程</h1>
+
+<ul>
+<li>C++： Boost.Coroutine</li>
+<li>Java: 不支持</li>
+<li>Python：3.5以前使用yield关键字，3.5后加入了async def对协程原声支持</li>
+</ul>
+
+<h1 id="goroutine-1">goroutine</h1>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/goroutine.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;go语言程序开始后，有一个调度器，有些协程可能放在一个线程里，有些可能两个放在一个线程里，或者很多个协程放在一个线程里，这件事由调度器来管理。</p>
+
+<ul>
+<li>任何函数只需加上go就能送给调度器运行</li>
+<li>不需要在定义时区分是否异步函数</li>
+<li>调度器在合适的点进行切换</li>
+<li>使用 -race来检测数据访问冲突(<code>go run -race xxx.go</code>)</li>
+</ul>
+
+<h1 id="goroutine可能的切换点">goroutine可能的切换点</h1>
+
+<ul>
+<li>I/O, select</li>
+<li>channel</li>
+<li>锁</li>
+<li>函数调用</li>
+<li>runtime.Gosched()</li>
+</ul>
+
+<h1 id="channel">channel</h1>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/channel.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;上面说，我们可以在程序中开很多个goroutine，那么多个goroutine之间的通道就是channel。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">chanDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//var c chan int  // c == nil
+</span><span class="c1"></span>        <span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+        <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">1</span>  <span class="c1">// 发送给chan
+</span><span class="c1"></span>        <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">2</span>
+        <span class="nx">n</span> <span class="o">:=</span> <span class="o">&lt;-</span> <span class="nx">c</span>   <span class="c1">// 拿出chan
+</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">chanDemo</span><span class="p">()</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;来看看程序能不能跑起来：
+        fatal error: all goroutines are asleep - deadlock!
+        goroutine 1 [chan send]:
+&emsp;&emsp;程序死锁了，在c &lt;-1处。我们仔细看上面的图片，channel是goroutine和goroutine之间的通道，这里发了一个1，但是没人收，肯定会报错。因此需要一个goroutine负责收。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">chanDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">//var c chan int  // c == nil
+</span><span class="c1"></span>        <span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+        <span class="k">go</span> <span class="kd">func</span><span class="p">(){</span>
+            <span class="nx">n</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">c</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span>
+        <span class="p">}()</span>
+        <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">1</span>  <span class="c1">// 发送给chan
+</span><span class="c1"></span>        <span class="nx">c</span> <span class="o">&lt;-</span> <span class="mi">2</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">chanDemo</span><span class="p">()</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;
+        1
+&emsp;&emsp;只打印了1.这是因为发送了2，还没来得及收，main就结束了，所以：
+        package main</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func chanDemo() {
+        //var c chan int  // c == nil
+        c := make(chan int)
+        go func(){
+            n := &lt;-c
+            fmt.Println(n)
+        }()
+        c &lt;- 1  // 发送给chan
+        c &lt;- 2
+        time.Sleep(time.Millisecond)
+    }
+
+    func main() {
+        chanDemo()
+    }
+    // output:
+    // 1
+    // 2</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;golang函数是一等公民，那么channel也可以作为参数来传递</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">worker</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">{</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Worker %d received %c\n&#34;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="o">&lt;-</span><span class="nx">c</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">chanDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">channels</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="kd">chan</span> <span class="kt">int</span>
+        <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="nx">channels</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
+            <span class="k">go</span> <span class="nf">worker</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">channels</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="nx">channels</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="sc">&#39;a&#39;</span> <span class="o">+</span> <span class="nx">i</span>
+        <span class="p">}</span>
+        <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Millsecnod</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">(){</span>
+        <span class="nf">chanDemo</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="c1">// Output
+</span><span class="c1"></span>    <span class="c1">//  Worker 0 received a
+</span><span class="c1"></span>    <span class="c1">//  Worker 4 received e
+</span><span class="c1"></span>    <span class="c1">//  Worker 1 received b
+</span><span class="c1"></span>    <span class="c1">//  Worker 3 received d
+</span><span class="c1"></span>    <span class="c1">//  Worker 7 received h
+</span><span class="c1"></span>    <span class="c1">//  Worker 5 received f
+</span><span class="c1"></span>    <span class="c1">//  Worker 2 received c
+</span><span class="c1"></span>    <span class="c1">//  Worker 9 received j
+</span><span class="c1"></span>    <span class="c1">//  Worker 8 received i
+</span><span class="c1"></span>    <span class="o">//</span>  <span class="nx">Worker</span> <span class="mi">6</span> <span class="nx">received</span> <span class="nx">g</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;channel当然也可以作为返回值，那么这个worker其实也就不叫worker了，而是createWorker。而且还能修饰chan的方向，告诉调用者chan是发还是收
+        package main</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func createWorker(id int) chan&lt;- int {
+        c := make(chan int)
+        // 这才是真正的worker
+        go func(){
+            for {
+                fmt.Println(&#34;Worker %d received %c\n&#34;, id, &lt;-c)
+            }
+        }()
+        return c
+    }
+
+    func chanDemo() {
+        var channels[10]chan&lt;- int
+        for i:= 0; i &lt; 10; i++ {
+            // 将返回的chan存储起来，此时的chan还是空的，真正的work还在等待
+            channels[i] = createWorker(i)
+        }
+
+        for i := 0; i &lt; 10; i++ {
+            channels[i] &lt;- &#39;a&#39; + i
+        }
+        time.Sleep(time.Millsecnod)
+    }</pre></td></tr></table>
+</div>
+</div>
+<h1 id="bufferedchannel">bufferedchannel</h1>
+
+<p>&emsp;&emsp;上述案例中，每发一个chan，就必须有一个goroutine来接收,否则会异常。但是如果一旦发送了数据之后，就一定要进行协程的切换，比较耗资源，那么就可以加入一个缓冲区</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func worker(id int, c chan int) {
+        for {
+            fmt.Printf(&#34;Worker %d received %c\n&#34;, id, &lt;-c)
+        }
+    }
+
+    func bufferedChannel() {
+        c := make(chan int， 3)
+        go worker(0, c)
+        c &lt;- &#39;a&#39;
+        c &lt;- &#39;b&#39;
+        c &lt;- &#39;c&#39;
+        c &lt;- &#39;d&#39;
+        time.Sleep(time.Millisecond)
+    }
+
+    func main() {
+        bufferedChannel()
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;我们发现这个worker，它不知道这个数据是不是发送完了，有一种方法可以告诉接收方数据发完了，那就是Close.当chan close之后worker还是会收到数据的(Millsecond)，int型就是0， 否则就是空串,那么来改进worker。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func worker(id int, c chan int) {
+        /*for {
+            fmt.Printf(&#34;Worker %d received %c\n&#34;, id, &lt;-c)
+        }
+        */
+        /*
+        for {
+            n, ok := &lt;-c
+            if !ok {
+                break;
+            }
+            fmt.Printf(&#34;Worker %d received %c\n&#34;, id, n)
+        }
+        */
+        // 还有一种更简洁高效的方法
+        for n := range c {
+           fmt.Printf(&#34;Worker %d received %c\n&#34;, id, n) 
+        }
+
+    }
+
+    func bufferedChannel() {
+        c := make(chan int， 3)
+        go worker(0, c)
+        c &lt;- &#39;a&#39;
+        c &lt;- &#39;b&#39;
+        c &lt;- &#39;c&#39;
+        c &lt;- &#39;d&#39;
+        time.Sleep(time.Millisecond)
+    }
+
+    func channelClose() {
+        c := make(chan int)
+        go worker(0, c)
+        c &lt;- &#39;a&#39;
+        c &lt;- &#39;b&#39;
+        c &lt;- &#39;c&#39;
+        c &lt;- &#39;d&#39;
+        close(c)
+        time.Sleep(time.Millisecond)
+    }
+
+    func main() {
+        //bufferedChannel()
+        channelClose()
+    }</pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>channel</li>
+<li>buffered channel</li>
+<li>range</li>
+<li>理论基础：Communication Sequential Process</li>
+</ul>
+
+<h1 id="实践">实践</h1>
+
+<p><code>Dont communication by sharing memory; share memory by communicating</code>: 不要通过共享内存来通信；通过通信来共享内存
+&emsp;&emsp;首先需要解决sleep问题，当时加上这句话是因为worker打印不知道外面什么时候结束，所以加上了一个实践界限。那么我们通过通知来解决这个问题</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">doWorker</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">done</span> <span class="kd">chan</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">c</span> <span class="p">{</span>
+           <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Worker %d received %c\n&#34;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> 
+            <span class="nx">done</span> <span class="o">&lt;-</span> <span class="kc">true</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">type</span> <span class="nx">worker</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">in</span> <span class="kd">chan</span> <span class="kt">int</span>
+        <span class="nx">done</span> <span class="kd">chan</span> <span class="kt">bool</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">createWorker</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">worker</span> <span class="p">{</span>
+        <span class="nx">w</span> <span class="o">:=</span> <span class="nx">worker</span><span class="p">{</span>
+            <span class="nx">in</span> <span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">),</span>
+            <span class="nx">done</span><span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">bool</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="c1">// 这才是真正的worker
+</span><span class="c1"></span>        <span class="k">go</span> <span class="nf">doWorker</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">w</span><span class="p">.</span><span class="nx">in</span><span class="p">,</span> <span class="nx">w</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">w</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">chanDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">workers</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="nx">worker</span> <span class="kt">int</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="nx">workers</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nf">createWorker</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">worker</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">workers</span> <span class="p">{</span>
+            <span class="nx">worker</span><span class="p">.</span><span class="nx">in</span> <span class="o">&lt;-</span> <span class="sc">&#39;a&#39;</span> <span class="o">+</span> <span class="nx">i</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">worker</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">workers</span> <span class="p">{</span>
+            <span class="nx">worker</span><span class="p">.</span><span class="nx">in</span> <span class="o">&lt;-</span> <span class="sc">&#39;A&#39;</span> <span class="o">+</span> <span class="nx">i</span>
+        <span class="p">}</span>
+        <span class="c1">// wait for all of them
+</span><span class="c1"></span>        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">worker</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">workers</span> <span class="p">{</span>
+            <span class="c1">// 每个worker发了两遍，收两遍
+</span><span class="c1"></span>            <span class="o">&lt;-</span><span class="nx">worker</span><span class="p">.</span><span class="nx">done</span>
+            <span class="o">&lt;-</span><span class="nx">worker</span><span class="p">.</span><span class="nx">done</span>
+        <span class="p">}</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;看看运行结果,报错了。第一组worker完整的打印完了，第二组worker循环等待了。
+        Worker 9 received j
+        Worker 1 received b
+        &hellip;
+        fatal error: all goroutines are asleep - deadlock!
+&emsp;&emsp;这是为什么呢。其实chan的发送都是阻塞式的。第一组的worker在发送完done后，还没有人来接收done，紧接着就开启第二组worker了，那么第二组worker就阻塞了。这个问题有一种解决方案，就是我们把done的发送放到另一个goroutine里，这样就是并行的发送done，就不会阻塞了。
+        func doWorker(id int, c chan int, done chan bool) {
+            for n := range c {
+                fmt.Printf(&ldquo;WOrker %d received %c\n&rdquo;, id, n)
+                go func(){ done &lt;- true}()
+            }
+        }
+&emsp;&emsp;那么按照两组worker的通信顺序来讲，我们是要等待两次，如果只等一次的话，就不会出现deadlock了，那么第二种解决方法就是，分次等待。
+        func chanDemo() {
+            var workers[10]worker int
+            for i:= 0; i &lt; 10; i++ {
+                workers[i] = createWorker(i)
+            }</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">        for i, worker := range workers {
+            worker.in &lt;- &#39;a&#39; + i
+        }
+        for _, worker := range workers {
+            &lt;-worker.done
+        }
+        for i, worker := range workers {
+            worker.in &lt;- &#39;A&#39; + i
+        }
+
+        for _, worker := range workers {
+            &lt;-worker.done
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;其实对于多任务的等待，golang自身提供了解决方法，WaitGroup。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">doWorker</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">c</span> <span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="o">*</span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">c</span> <span class="p">{</span>
+           <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Worker %d received %c\n&#34;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> 
+            <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">type</span> <span class="nx">worker</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">in</span> <span class="kd">chan</span> <span class="kt">int</span>
+        <span class="nx">wg</span> <span class="o">*</span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">createWorker</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">wg</span> <span class="o">*</span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="p">)</span> <span class="nx">worker</span> <span class="p">{</span>
+        <span class="nx">w</span> <span class="o">:=</span> <span class="nx">worker</span><span class="p">{</span>
+            <span class="nx">in</span> <span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">),</span>
+            <span class="nx">done</span><span class="p">:</span> <span class="nx">wg</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="c1">// 这才是真正的worker
+</span><span class="c1"></span>        <span class="k">go</span> <span class="nf">doWorker</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">w</span><span class="p">.</span><span class="nx">in</span><span class="p">,</span> <span class="nx">wg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">w</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">chanDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+        <span class="kd">var</span> <span class="nx">workers</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="nx">worker</span> <span class="kt">int</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="nx">workers</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nf">createWorker</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">wg</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">worker</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">workers</span> <span class="p">{</span>
+            <span class="nx">worker</span><span class="p">.</span><span class="nx">in</span> <span class="o">&lt;-</span> <span class="sc">&#39;a&#39;</span> <span class="o">+</span> <span class="nx">i</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">worker</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">workers</span> <span class="p">{</span>
+            <span class="nx">worker</span><span class="p">.</span><span class="nx">in</span> <span class="o">&lt;-</span> <span class="sc">&#39;A&#39;</span> <span class="o">+</span> <span class="nx">i</span>
+        <span class="p">}</span>
+        <span class="c1">// wait for all of them
+</span><span class="c1"></span>        <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;我们发现我哥doWork很奇怪，不是很纯粹，不应该接收wg。我们需要包装一下,采用函数式编程。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">func</span> <span class="nf">doWorker</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">w</span> <span class="nx">worker</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">w</span><span class="p">.</span><span class="nx">in</span> <span class="p">{</span>
+           <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Worker %d received %c\n&#34;</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span> 
+            <span class="nx">w</span><span class="p">.</span><span class="nf">done</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">type</span> <span class="nx">worker</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">in</span> <span class="kd">chan</span> <span class="kt">int</span>
+        <span class="nx">done</span> <span class="kd">func</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">createWorker</span><span class="p">(</span><span class="nx">id</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">wg</span> <span class="o">*</span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="p">)</span> <span class="nx">worker</span> <span class="p">{</span>
+        <span class="nx">w</span> <span class="o">:=</span> <span class="nx">worker</span><span class="p">{</span>
+            <span class="nx">in</span> <span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">),</span>
+            <span class="nx">done</span><span class="p">:</span> <span class="kd">func</span><span class="p">(){</span>
+                <span class="nx">wg</span><span class="p">.</span><span class="nf">done</span><span class="p">()</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="c1">// 这才是真正的worker
+</span><span class="c1"></span>        <span class="k">go</span> <span class="nf">doWorker</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">w</span><span class="p">.</span><span class="nx">in</span><span class="p">,</span> <span class="nx">w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nx">w</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">chanDemo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+        <span class="kd">var</span> <span class="nx">workers</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="nx">worker</span> <span class="kt">int</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+            <span class="nx">workers</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nf">createWorker</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">wg</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">worker</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">workers</span> <span class="p">{</span>
+            <span class="nx">worker</span><span class="p">.</span><span class="nx">in</span> <span class="o">&lt;-</span> <span class="sc">&#39;a&#39;</span> <span class="o">+</span> <span class="nx">i</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">worker</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">workers</span> <span class="p">{</span>
+            <span class="nx">worker</span><span class="p">.</span><span class="nx">in</span> <span class="o">&lt;-</span> <span class="sc">&#39;A&#39;</span> <span class="o">+</span> <span class="nx">i</span>
+        <span class="p">}</span>
+        <span class="c1">// wait for all of them
+</span><span class="c1"></span>        <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+    <span class="p">}</span></pre></td></tr></table>
+</div>
+</div>
+<h2 id="使用channel来实现树的遍历">使用channel来实现树的遍历</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    type treeNode struct {
+        value int
+        left, right *treeNode
+    }
+    func createNode(value int) *treeNode {
+        //返回了一个局部变量的地址给外面用
+        //这如果在C++中，是个典型的错误
+        return &amp;treeNode{value}
+    }
+    // 中序遍历
+    func (node *treeNode) traverse() {
+        if node == nil {
+            return
+        }
+
+        node.left.traverse()
+        node.print()
+        node.right.traverse()
+    }
+
+    func (node *treeNode) traverseFunc(f func(*treeNode)) {
+        if node == nil {
+            return
+        }
+        node.left.traverseFunc(f)
+        f(node)
+        node.right.traverseFunc(f)
+    }
+
+    func (node *treeNode) traverseWithChannel() chan *treeNode {
+        out := make(chan, int)
+        go func(){
+            node.traverseFunc(func(node *treeNode){
+                out &lt;- node
+            })
+            close(out)
+        }()
+        return out
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上述traverseWithChannel的好处是，外部调用可以很直观的序列，比如这样：
+        maxNode := 0
+        for c := range traverseWithChannel() {
+            if c.value &gt;= maxNode {
+                maxNode = v.value
+            }
+            fmt.Println(&ldquo;maxNode is &ldquo;, maxNode)
+        }</p>
+
+<h1 id="select调度">Select调度</h1>
+
+<p>&emsp;&emsp;比如有两个chan，想从c1,c2收数据，如果同时收，谁来的快就收谁。select是非阻塞式的。
+        func generator() chan int {
+            out := make(chan int)
+            go func(){
+                i := 0
+                for {
+                    time.Sleep(time.Duration(rand.Intn(1500)) * time.Millisecond)
+                    out &lt;- i
+                    i++
+                }
+            }()
+            return out
+        }
+        func main() {
+            var c1, c2 = generator(), generator()
+            for {
+                select {
+                    case n := &lt;- c1:
+                    fmt.Println(&ldquo;Received from c1:&ldquo;, n)
+                    case n := &lt;- c2:
+                    fmt.Println(&ldquo;Received from c2:&ldquo;, n)
+                }
+            }
+        }
+&emsp;&emsp;上面的c1,c2打印是无序的，谁先发送了，就打印谁。我们再来加入消费者worker，让它更复杂。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func worker(id, int c chan int) {
+        for n := range c {
+            fmt.Printf(&#34;WOrker %d received %d\n&#34;, id, n)
+        }
+    }
+
+    func createWorker(id int) chan&lt;- int {
+        c := make(chan int)
+        go worker(id, c)
+        return c
+    }
+
+    func main() {
+        var c1, c2 = generator(), generator()
+        w := createWorker(0)
+        for {
+
+            select {
+                case n := &lt;- c1:
+                    //w &lt;- n 这不行，这是一个阻塞操作
+                case n := &lt;- c2:
+                    //w &lt;- n 这不行，这是一个阻塞操作
+            }
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上面的程序把生成的chan发送给worker是一个阻塞过程，这不行，必须非阻塞的发送</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func main() {
+        var c1, c2 = generator(), generator()
+        w := createWorker(0)
+        for {
+            n := 0
+            select {
+                case n := &lt;- c1:
+                case n := &lt;- c2:
+                case w &lt;- n:
+            }
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上面的话就不会阻塞了，但是有个问题，有可能c1,c2接收太慢，每次都是直接w &lt;- n,那我们使用标志符号来区别一下。
+        func main() {
+            var c1, c2 = generator(), generator()
+            w := createWorker(0)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">        n := 0
+        hasValue := false
+        for {
+            select {
+                case n := &lt;- c1:
+                    hasValue = true
+                case n := &lt;- c2:
+                    hasValue = true
+                case w &lt;- n:
+                    if hasValue {
+                        // send to w
+                    }
+            }
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上述程序意思是c1,c2拿到值了才发送给worker，但是这样的逻辑是不对的。上面已经case了。那么怎么解决呢，我们可以利用nil 在select中的性质。nil在select中不会被阻塞，但是永远不会被匹配到，除非某一次遍历获取了值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func main() {
+        var c1, c2 = generator(), generator()
+        worker := createWorker(0)
+
+        n := 0
+        hasValue := false
+        for {
+            var activeWorker chan&lt;- int
+            if hasValue {
+                activeWorker = worker
+            }
+
+            select {
+                case n := &lt;- c1:
+                    hasValue = true
+                case n := &lt;- c2:
+                    hasValue = true
+                case activeWorker &lt;- n:
+                    hasValue = false
+            }
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上看程序看起来完美，其实还是有问题。生产chan和消耗chan的速度是不一样的，如果c1生成chan的速度太快，那么n就会被覆盖，而且c2无法获取chan了。怎么办呢？我们把收到的n给存下来，排队。
+        func main() {
+            var c1, c2 = generator(), generator()
+            worker := createWorker(0)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">        var values []int
+        for {
+            var activeWorker chan&lt;- int
+            var activeValue int
+            if len(values) {
+                activeWorker = worker
+                activeValue = values[0]
+            }
+
+            select {
+                case n := &lt;- c1:
+                    values = append(values, n)
+                case n := &lt;- c2:
+                    values = append(values, n)
+                case activeWorker &lt;- activeValue:
+                    values = values[1:]
+            }
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上面的程序把chan保存下来了，但是可能因为速度差，导致values形成堆积。我们想看values到底挤压了多少chan，可以这样做。
+        func main() {
+            var c1, c2 = generator(), generator()
+            worker := createWorker(0)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">        var values []int
+        tm := time.After(10 * time.Second)
+        tick := time.Tick(time.Second)  //定时
+        for {
+            var activeWorker chan&lt;- int
+            var activeValue int
+            if len(values) {
+                activeWorker = worker
+                activeValue = values[0]
+            }
+
+            select {
+                case n := &lt;- c1:
+                    values = append(values, n)
+                case n := &lt;- c2:
+                    values = append(values, n)
+                case activeWorker &lt;- activeValue:
+                    values = values[1:]
+                case &lt;- time.After(800 * time.Millisecond):
+                    fmt.Println(&#34;TimeOut&#34;)
+                case &lt;- tick:
+                    fmt.Println(&#34;queue len =&#34;, len(values))
+                case &lt;- tm:
+                    fmt.Println(&#34;Bye&#34;)
+                    return
+            }
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;可以看到queue len一直在增加.</p>
+
+<h1 id="传统同步机制">传统同步机制</h1>
+
+<p>&emsp;&emsp;上面的生产消费案例，我们没有使用共享内存，锁等手段来实现通信。这就是CSP模型，但是golang也有传统同步机制，尽量少用
+- WaitGroup
+- Mutex
+- Cond</p>
+
+<p>&emsp;&emsp;接下来看一下Mutex互斥量的使用
+        package main</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    type atomicInt int
+
+    func (a *atomicInt) increment() {
+        *a++
+    }
+
+    func (a *atomicInt) get() int {
+        return int(*a)
+    }
+
+    func main() {
+        var a atomicInt
+        a.increment()
+        go func() {
+            a.increment()
+        }()
+        time.Sleep(time.Millsecond)
+        fmt.Println(a)
+    }
+    $ go run -race atomic.go
+    WARNING: DATA RACE
+    Read at 0x00c420016060 by main goroutine
+    Previous write at 0x00c420016060 by goroutine 6</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上面就出现了数据冲突，一边读一边写。我们加上锁看看</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+
+    <span class="kd">type</span> <span class="nx">atomicInt</span> <span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">value</span> <span class="kt">int</span>
+        <span class="nx">lock</span>  <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">atomicInt</span><span class="p">)</span> <span class="nf">increment</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">a</span><span class="p">.</span><span class="nx">lock</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+        <span class="k">defer</span> <span class="nx">a</span><span class="p">.</span><span class="nx">lock</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+        <span class="nx">a</span><span class="p">.</span><span class="nx">value</span><span class="o">++</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">atomicInt</span><span class="p">)</span> <span class="nf">get</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+        <span class="nx">a</span><span class="p">.</span><span class="nx">lock</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
+        <span class="k">defer</span> <span class="nx">a</span><span class="p">.</span><span class="nx">lock</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">value</span>
+    <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">a</span> <span class="nx">atomicInt</span>
+        <span class="nx">a</span><span class="p">.</span><span class="nf">increment</span><span class="p">()</span>
+        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">a</span><span class="p">.</span><span class="nf">increment</span><span class="p">()</span>
+        <span class="p">}()</span>
+        <span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Millsecond</span><span class="p">)</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nf">get</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="err">$</span> <span class="k">go</span> <span class="nx">run</span> <span class="o">-</span><span class="nx">race</span> <span class="nx">atomic</span><span class="p">.</span><span class="k">go</span>
+    <span class="mi">2</span></pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;加上锁之后，没有数据冲突了。</p>
+
+<blockquote>
+<p>对于原子化的操作，golang本身提供了atomic包供我们使用，自己就不必再实现一边了。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-03-04
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/golang/base/8.-goroutine/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/golang/base/8.channel/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[golang base(八) | 再谈channel]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/golang/base/7.%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/">
+            <span class="next-text nav-default">[golang base(七) | 测试与性能调优]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[实战笔记(五) | Go Map] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="flysnow" /><meta name="description" content="转载自 https://www.flysnow.org 1. 内部实现(关于Hash散列细枝末节详见Java下的散列表) Map是给予散列表来实现的，就是我们常说的Hash表，所以我们每次迭代m" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%BA%94-go-map/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[实战笔记(五) | Go Map]" />
+<meta property="og:description" content="转载自 https://www.flysnow.org 1. 内部实现(关于Hash散列细枝末节详见Java下的散列表) Map是给予散列表来实现的，就是我们常说的Hash表，所以我们每次迭代m" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%BA%94-go-map/" />
+<meta property="article:published_time" content="2019-10-14T01:44:56&#43;08:00"/>
+<meta property="article:modified_time" content="2019-10-14T01:44:56&#43;08:00"/>
+
+<meta itemprop="name" content="[实战笔记(五) | Go Map]">
+<meta itemprop="description" content="转载自 https://www.flysnow.org 1. 内部实现(关于Hash散列细枝末节详见Java下的散列表) Map是给予散列表来实现的，就是我们常说的Hash表，所以我们每次迭代m">
+
+
+<meta itemprop="datePublished" content="2019-10-14T01:44:56&#43;08:00" />
+<meta itemprop="dateModified" content="2019-10-14T01:44:56&#43;08:00" />
+<meta itemprop="wordCount" content="2181">
+
+
+
+<meta itemprop="keywords" content="golang," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[实战笔记(五) | Go Map]"/>
+<meta name="twitter:description" content="转载自 https://www.flysnow.org 1. 内部实现(关于Hash散列细枝末节详见Java下的散列表) Map是给予散列表来实现的，就是我们常说的Hash表，所以我们每次迭代m"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[实战笔记(五) | Go Map]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-10-14 </span>
+        <div class="post-category">
+            <a href="/categories/golang/%E5%AE%9E%E6%88%98%E7%B3%BB%E5%88%97/"> golang/实战系列 </a>
+            </div>
+          <span class="more-meta"> 约 2181 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-内部实现-a-href-post-golang-interview-golang-1-关于hash散列细枝末节详见java下的散列表-a">1. 内部实现(<a href="/post/golang/interview/golang-1/">关于Hash散列细枝末节详见Java下的散列表)</a></a></li>
+<li><a href="#2-声明和初始化">2. 声明和初始化</a></li>
+<li><a href="#3-使用map">3. 使用map</a></li>
+<li><a href="#4-遍历map">4. 遍历map</a></li>
+<li><a href="#5-在函数间传递map">5. 在函数间传递Map</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<blockquote>
+<p>转载自 <a href="https://www.flysnow.org">https://www.flysnow.org</a></p>
+</blockquote>
+
+<h2 id="1-内部实现-a-href-post-golang-interview-golang-1-关于hash散列细枝末节详见java下的散列表-a">1. 内部实现(<a href="/post/golang/interview/golang-1/">关于Hash散列细枝末节详见Java下的散列表)</a></h2>
+
+<p>Map是给予散列表来实现的，就是我们常说的Hash表，所以我们每次迭代map的时候，打印的key和value是无序的，每次迭代的都不一样，即使我们按照一定的顺序存在也不行。
+map的散列表包含一组桶，每次存储和查找键值对的时候，都要先选择一个桶。如何选择桶呢？就是把指定的键传给散列函数，就可以索引到相应的桶了，进而找到对应的键值。
+这种方式的好处在于，存储的数据越多，索引分布越均匀，所以我们访问键值对的速度也就越快，当然存储的细节还有很多，大家可以参考hash相关的知识，这里我们只要记住map存储的是无序的键值对集合。</p>
+
+<h2 id="2-声明和初始化">2. 声明和初始化</h2>
+
+<p>map的创建有make函数，map字面量。make函数我们用它创建过切片，除此之外，它还可以用来创建map。
+        dict := make(map[string]int)
+示例中创建了一个键类型为string的，值类型为int的map。现在创建好之后，这个map是空的，里面什么都没有，我们给存储一个键值对。
+        dict := make([string]int)
+        dict[&ldquo;张三&rdquo;] = 43
+存储了一个key为张三的，value为43的键值对数据
+此外还有一种使用map字面量的方式创建和初始化map，对于上面的例子，我们可以等同实现。
+        dict := map[string]int{&ldquo;张三&rdquo;:43}
+使用一个大括号进行初始化，键值对通过:分开，如果要同时初始化多个键值对，使用逗号分割。
+        dict := map[string]int{&ldquo;张三&rdquo;:43,&ldquo;莉丝&rdquo;:50}
+当然我们可以不指定任何键值对，也即是一个空map
+        dict := map[string]int{}
+不管怎么样，<strong>使用map字面量创建一定要带上大括号。</strong>如果我们要创建一个nil的map怎么做呢？nil的map是未初始化的，所以我们可以只声明一个变量，既不能使用map字面量，也不能使用make函数分配内存。
+        var dict map[string]int
+这样就好了，但是这样我们是不能操作存储键值对的，必须要初始化后才可以，比如使用make函数为其开启一块可以存储数据的内存，也就是初始化。
+        var dict map[string]int
+        dict = make(map[string]int)
+        dict[&ldquo;张三&rdquo;] = 43
+        fmt.Println(dict)
+<strong>map的键可以是任何值，键的类型可以是内置的类型，也可以是结构类型，但是不管怎么样，这个键可以使用==运算符进行比较，所以像切片、函数以及含有切片的结构类型就不能用于map的键了，因为它们具有引用的语义，不可比较。</strong>
+对于map的值来说，就没有什么限制了，切片这种在键里不能用的，完全可以用在值里。</p>
+
+<h2 id="3-使用map">3. 使用map</h2>
+
+<p>map的使用很简单，和数组切片差不多，数组切片是使用索引，map是通过键
+        dict := make(map[string]int)
+        dict[&ldquo;张三&rdquo;] = 43
+以上示例，如果张三存在，则对其值修改，不过不存在，则新增这个键值对。
+获取一个map键的值也很简单，和存储差不多，还是给予上面的例子。
+        age := dict[&ldquo;张三&rdquo;]
+在Go Map中，如果我们获取了一个不存在的键的值，也是可以的，返回的是值类型的零值，这样就会导致我们不知道是真的存在一个为零值的键值对呢，还是说这个键值对本身就不存在。对此，map为我们提供了检测一个键值对是否存在的方法。
+        age, exists := dict[&ldquo;莉丝&rdquo;]
+看这个例子，和获取键的值没有太大区别，只是多了一个返回值。第一个返回值是键的值；第二个返回值标记这个键是否存在，这是一个boolean类型的变量，我们判断它就知道该键是否存在了。这也是go多值返回的好处。
+如果我们像删除一个map中的键值对，可以使用go内置的<code>delete</code>函数
+        delete(dict,&ldquo;张三&rdquo;)
+delete函数接受两个参数，第一个是要操作的map，第二个是要删除的map的键
+<strong>delete函数删除不存在的键也是可以的，只是没有任何作用</strong></p>
+
+<h2 id="4-遍历map">4. 遍历map</h2>
+
+<p>使用for range风格的循环，和遍历切片一样。
+        dict := map[string]int{&ldquo;张三&rdquo;：43}
+        for key, value := range dict {
+            fmt.Println(key, value)
+        }
+这里的range返回两个值，第一个是map的键，第二个是map的键对应的值。这里再次强调，这种遍历是无序的，也就是键值对不会按既定的数据出现，如果想按顺序遍历，可以先对map中的键排序，然后遍历排序好的键，把对应的值取出来。
+        func main(){
+            dict := map[string]int{&ldquo;王五&rdquo;：60，&rdquo;张三&rdquo;： 43}
+            var names []string
+            for name := range dict {
+                names = append(names, name)
+            }
+            sort.Strins(names)
+            for _, key := range names {
+                fmt.Println(key, dict[key])
+            }
+        }
+这个例子里有何技巧，range一个map的时候，也可以使用一个返回值，这个默认的返回值就是map的键。</p>
+
+<h2 id="5-在函数间传递map">5. 在函数间传递Map</h2>
+
+<p><code>函数间传递map是不会拷贝一个该map的副本的</code>，也就是说如果一个map传递给一个函数，该函数对这个map做了修改，那么这个map的所有引用，都会感知到这个修改。
+        func main(){
+            dict := map[string]int{&ldquo;王五&rdquo;：60，&rdquo;张三&rdquo;：43}
+            modify(dict)
+            fmt.Println(dict[&ldquo;张三&rdquo;])
+        }
+        func modify(dict map[string]int) {
+            dict[&ldquo;张三&rdquo;] = 10
+        }
+上面这个例子输出的结果是10，也就是说已经被函数给修改了，可以证明传递的并不是一个map的副本。这个特性和切片类似，如果复制整个map的代价太大了。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">flysnow</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2019-10-14
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%BA%94-go-map/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E5%85%AD-go%E5%87%BD%E6%95%B0%E6%96%B9%E6%B3%95/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[实战笔记(六) | Go 函数方法]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E5%9B%9B-go%E5%88%87%E7%89%87/">
+            <span class="next-text nav-default">[实战笔记(四) | Go切片]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

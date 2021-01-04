@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[微服务设计(一) | 微服务] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/1.-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[微服务设计(一) | 微服务]" />
+<meta property="og:description" content="摘要 &emsp;&emsp;随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/1.-%E5%BE%AE%E6%9C%8D%E5%8A%A1/" />
+<meta property="article:published_time" content="2020-04-12T13:14:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-04-12T13:14:56&#43;08:00"/>
+
+<meta itemprop="name" content="[微服务设计(一) | 微服务]">
+<meta itemprop="description" content="摘要 &emsp;&emsp;随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而">
+
+
+<meta itemprop="datePublished" content="2020-04-12T13:14:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-12T13:14:56&#43;08:00" />
+<meta itemprop="wordCount" content="2836">
+
+
+
+<meta itemprop="keywords" content="微服务设计," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[微服务设计(一) | 微服务]"/>
+<meta name="twitter:description" content="摘要 &emsp;&emsp;随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[微服务设计(一) | 微服务]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-12 </span>
+        <div class="post-category">
+            <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/"> 微服务设计 </a>
+            </div>
+          <span class="more-meta"> 约 2836 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#什么是微服务">什么是微服务</a>
+<ul>
+<li><a href="#很小-专注于做好一件事">很小，专注于做好一件事</a></li>
+<li><a href="#自治性">自治性</a></li>
+</ul></li>
+<li><a href="#主要好处">主要好处</a>
+<ul>
+<li><a href="#技术异构性">技术异构性</a></li>
+<li><a href="#弹性">弹性</a></li>
+<li><a href="#扩展">扩展</a></li>
+<li><a href="#简化部署">简化部署</a></li>
+<li><a href="#与组织结构相匹配-生产力">与组织结构相匹配(生产力)</a></li>
+<li><a href="#对可替代性的优化">对可替代性的优化</a></li>
+</ul></li>
+<li><a href="#面向服务的架构">面向服务的架构</a></li>
+<li><a href="#分解-解耦-技术">分解(解耦)技术</a>
+<ul>
+<li><a href="#共享库">共享库</a></li>
+<li><a href="#模块">模块</a></li>
+</ul></li>
+<li><a href="#没有银弹">没有银弹</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<blockquote>
+<p>摘要</p>
+</blockquote>
+
+<p>&emsp;&emsp;随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而生。<code>它并不是被发明出来的，而是从现实世界中总结出来的一种趋势或模式。</code>没有前面提到的概念，微服务很难出现。</p>
+
+<p>&emsp;&emsp;很多组织发现细粒度的微服务架构可以帮助他们更快地交付软件，并且有更多机会尝试新技术。微服务在技术决策上给了我们极大的自由度，使我们能够更快地响应不可避免的变化。</p>
+
+<h2 id="什么是微服务">什么是微服务</h2>
+
+<p>&emsp;&emsp;<code>微服务就是一些协同工作的小而自治的服务。</code></p>
+
+<h3 id="很小-专注于做好一件事">很小，专注于做好一件事</h3>
+
+<p>&emsp;&emsp;专注做好一件事：单一指责原则，Robert C.Martin论述：“把因相同原因而变化的东西聚合到一起，而把因不同原因而变化的东西分离开来”</p>
+
+<p>&emsp;&emsp;微服务将这个理念应用在独立的服务上。<code>根据业务的边界来确定服务的边界，这样就很容易确定某个功能代码应该放在哪里。</code>而且由于该服务专注于某个边界之内，因此可以很好地避免由于代码库过大衍生出的很多相关问题。</p>
+
+<p>&emsp;&emsp;怎样的代码库是足够小的？ Jon Eaves认为，<code>一个微服务应该可以在两周内完全重写，另一个因素是，该服务是否能够很好地与团队结构相匹配。</code></p>
+
+<h3 id="自治性">自治性</h3>
+
+<p>&emsp;&emsp;尽量避免将多个服务部署到同一台机器上，尽管这中隔离性会引发一些代价，但它能够大大简化分布式系统的构建。</p>
+
+<p>&emsp;&emsp;采用远程服务调用协议进行通信，加强隔离性。<code>对于一个服务来说，我们应该考虑的是什么应该暴露，什么应该隐藏。</code>如果暴露过多，那么服务消费方会与该服务的内部实现产生耦合。</p>
+
+<p>&emsp;&emsp;API的实现技术应该避免与消费方耦合，<code>应该选择与具体不相关的API实现方式，</code>以保证技术的选择不被限制。后面章节会讨论该如何选择技术。</p>
+
+<p>&emsp;&emsp;<strong><code>你是否能够修改一个服务并对其进行部署，而不影响其它任何服务？</code></strong></p>
+
+<h2 id="主要好处">主要好处</h2>
+
+<h3 id="技术异构性">技术异构性</h3>
+
+<p>&emsp;&emsp;异构：指一种包含不同成分的性质，在不同领域有不同含义。</p>
+
+<p>&emsp;&emsp;<code>在一个由多个服务相互写作的系统中，可以在不同的服务中使用最合适该服务的技术。</code>系统中不同部分也可使用不同的数据存储技术，比如对于社交网络来说，图数据库能够更好地处理用户之间的交互操作，但是对于用户发布帖子而言，文档数据库可能是一个更好的选择。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/micro-design/1-1微服务采用不同的技术.jpeg" alt="avatar" /></p>
+
+<h3 id="弹性">弹性</h3>
+
+<p>&emsp;&emsp;弹性工程学的一个关键概念是舱壁。<code>如果系统中的一个组建不可用了，但并没有导致级联故障，那么系统的其它部分还可以正常运行。</code>服务边界就是一个很鲜艳的舱壁。在单块系统中，如果服务不可用，那么所有的功能都会不可用。对于单块服务的系统而言，可以通过将同样的实例运行在不同的机器上(Nginx分发)来降低功能完全不可用的概率，然而微服务系统本身就能够很好的处理服务不可用和功能降级问题。后期会讨论弹性处理和故障处理。</p>
+
+<h3 id="扩展">扩展</h3>
+
+<p>&emsp;&emsp;庞大的单块服务只能作为一个整体进行扩展，即使系统中只有一部分存在性能问题，也需要对整个服务进行扩展。<code>如果使用较小的多个服务，则可以只对需要扩展的服务进行扩展，这样就可以把那些不需要扩展的服务运行在更小、性能稍差的硬件上。</code></p>
+
+<h3 id="简化部署">简化部署</h3>
+
+<p>&emsp;&emsp;在单块应用程序中，即使只修改了一行代码，也需要重新部署整个应用程序才能发布变更。这种部署的影响很大、风险很高，因此相关人员不敢轻易做部署。于是在实际操作中，部署的频率就会变得很低。这意味着两次发布之间对软件做了很多功能增强，但直到最后一刻才把这些大量的变更一次性发布到生产环境中。这时，另外一个问题就显示出来了：两次发布之间的差异越大，出错的可能性就更大。</p>
+
+<h3 id="与组织结构相匹配-生产力">与组织结构相匹配(生产力)</h3>
+
+<p>&emsp;&emsp;微服务可以很好地将架构与组织结构相匹配，避免出现过大的代码库，从而获得理想的团队大小及生产力。服务的所有权也可以在团队之间迁移，从而避免异地团队的出现。</p>
+
+<h3 id="对可替代性的优化">对可替代性的优化</h3>
+
+<p>&emsp;&emsp;我们应该都接触过一些庞大而丑陋的遗留系统。这些系统无人敢碰，却对公司业务的运营至关重要，并且只能运行在几十年前就应该被淘汰的硬件上。为什么这些系统直到现在还没有被取代？其实你很清楚：工作量大，而且风险很高。</p>
+
+<p>&emsp;&emsp;使用微服务的团队可以在需要时轻易地重写服务，或者删除不再使用的服务。</p>
+
+<h2 id="面向服务的架构">面向服务的架构</h2>
+
+<p>&emsp;&emsp;<strong><code>我认为微服务是SOA的一种特定方法。</code></strong></p>
+
+<p>&emsp;&emsp;SOA(Service-Oriented Architecture, 面向服务的结构) 是一种设计方法，其中包含多个服务，而服务之间通过网络调用，而非进程调用，最终会提供一系列功能。</p>
+
+<p>&emsp;&emsp;SOA本身是一个很好的想法，但人们还是无法在如何做好SOA这件事情上达成共识。实施SOA时会遇到这些问题：通信协议如何选择、第三方中间件如何选择、服务粒度如何确定等。现有的SOA知识并不能帮助你把很大的应用程序划小，它没有说多大算大，多小算小，也没有讨论如何在现实世界中有效地防止服务之间的过度耦合。</p>
+
+<p>&emsp;&emsp;在现实世界中，由于我们对项目的系统和架构有着更好的理解，所以能够更好地实施SOA，而这事实上就是微服务架构。</p>
+
+<h2 id="分解-解耦-技术">分解(解耦)技术</h2>
+
+<p>&emsp;&emsp;当你开始使用微服务时会发现，很多基于微服务的架构主要有两个优化：
+1. 较小的粒度
+2. 更多解决方法选项供你选择</p>
+
+<p>&emsp;&emsp;那么对于解耦技术，是否也有相应的好处？</p>
+
+<h3 id="共享库">共享库</h3>
+
+<p>&emsp;&emsp;有时候你会编写代码来执行一些公共任务，这些代码并不属于任何一个业务领域，并且可以在整个组织中进行重用，很显然这些代码就应该成为可重用的库。但是你还是需要很小心，如果使用共享库来做服务之间的通信的话，它将成为一个耦合点。<code>服务之间可以并且应该大量使用第三方库来重用公共代码，但有时候效果不太好。</code></p>
+
+<h3 id="模块">模块</h3>
+
+<p>&emsp;&emsp;模块化用来分割，组织和打包软件。每个模块完成一个特定的子功能，所有的模块按某种方法组装起来，成为一个整体。模块具有：接口、功能、逻辑、状态。状态与接口反应模块的外部特性，逻辑反映它的内部特性。模块是可组合、分解、更换的单元，它可以通过在不同组件设定不同的功能，把一个问题分解成多个小的独立、互相作用的组件，来处理复杂、大型的软件。</p>
+
+<p>&emsp;&emsp;除了简单的库之外，有些语言提供了自己的模块分解技术。它允许你对模块进行生命周期管理，这样就可以把模块部署到运行中的进程中，并且可以在不停止整个进程的前提下对某个模块进行修改。</p>
+
+<p>&emsp;&emsp;你可能想要在一个进程内部使用模块进行划分，但是对于大部分人来说，模块能够提供的好处与共享库比较类似。</p>
+
+<h2 id="没有银弹">没有银弹</h2>
+
+<p>&emsp;&emsp;没有银弹一般指的是：没有任何一种技术或方法可使软件工程的生产力在十年内提高十倍。</p>
+
+<p>&emsp;&emsp;每个公司、组织及系统都不一样。微服务是否适合你，或者说你能够在多大程度上采用微服务，取决于很多因素。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-04-12
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/1.-%E5%BE%AE%E6%9C%8D%E5%8A%A1/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/">微服务设计</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/2.-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E6%9C%8D%E5%8A%A1/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[微服务设计(二) | 如何建模服务]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/golang/base/11.%E5%88%86%E5%B8%83%E5%BC%8F%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB/">
+            <span class="next-text nav-default">[golang base(十一) | 分布式网络爬虫]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

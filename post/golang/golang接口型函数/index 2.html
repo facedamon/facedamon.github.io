@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[杂谈 | golang接口型函数] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="飞雪无情" /><meta name="description" content="转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 &amp;emsp;&amp;emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[杂谈 | golang接口型函数]" />
+<meta property="og:description" content="转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 &emsp;&emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/" />
+<meta property="article:published_time" content="2020-05-22T09:19:56&#43;08:00"/>
+<meta property="article:modified_time" content="2020-05-22T09:19:56&#43;08:00"/>
+
+<meta itemprop="name" content="[杂谈 | golang接口型函数]">
+<meta itemprop="description" content="转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 &emsp;&emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接">
+
+
+<meta itemprop="datePublished" content="2020-05-22T09:19:56&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-22T09:19:56&#43;08:00" />
+<meta itemprop="wordCount" content="1589">
+
+
+
+<meta itemprop="keywords" content="golang," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[杂谈 | golang接口型函数]"/>
+<meta name="twitter:description" content="转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 &emsp;&emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[杂谈 | golang接口型函数]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-22 </span>
+        <div class="post-category">
+            <a href="/categories/golang/%E6%9D%82%E8%B0%88/"> golang/杂谈 </a>
+            </div>
+          <span class="more-meta"> 约 1589 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#简介">简介</a>
+<ul>
+<li><a href="#原始接口">原始接口</a></li>
+<li><a href="#接口型函数">接口型函数</a></li>
+<li><a href="#进一步">进一步</a></li>
+</ul></li>
+<li><a href="#延伸">延伸</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<blockquote>
+<p>转载自 <a href="https://www.flysnow.org/2016/12/30/golang-function-interface.html">https://www.flysnow.org/2016/12/30/golang-function-interface.html</a></p>
+</blockquote>
+
+<h1 id="简介">简介</h1>
+
+<p>&emsp;&emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。</p>
+
+<h2 id="原始接口">原始接口</h2>
+
+<p>&emsp;&emsp;我们以迭代一个map为例，演示这一技巧.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    type Handler interface {
+        Do(k, v interface{})
+    }
+
+    func Each(m map[interface{}]interface{}, h Handler) {
+        if m != nil &amp;&amp; len(m) &gt; 0 {
+            for k, v := range m {
+                h.Do(k, v)
+            }
+        }
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上述实现方式，和Java的多态如出一辙。不同的接口实现对象，实现不同的Do逻辑，上层Each代码不需要改变。</p>
+
+<p>&emsp;&emsp;首先定义一个Handler接口，只有一个Do方法，接收k, v 两个参数。然后定义一个Each函数，该函数的功能就是迭代传递过来的map参数，然后把map的每个k,v值传递给Handler，去做具体的事情，可以是计算，具体由这个Handler的实现来决定，这也是面向接口编程。</p>
+
+<p>&emsp;&emsp;现在我们就以新学期开学，大家自我介绍为例，演示使用Each方法和Handler接口。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    type welcome string
+    func (w welcome) Do(k, v interface{}) {
+        fmt.Printf(&#34;%s, 我叫%s, 今年%d岁\n&#34;, w, k, v)
+    }
+
+    func main() {
+        persons := make(map[interface{}]interface{})
+        persons[&#34;张三&#34;] = 20
+        persons[&#34;李四&#34;] = 23
+        persons[&#34;王五&#34;] = 26
+
+        var w welcome = &#34;大家好&#34;
+
+        Each(persons, w)
+    }</pre></td></tr></table>
+</div>
+</div>
+<h2 id="接口型函数">接口型函数</h2>
+
+<p>&emsp;&emsp;以上实现，有两点不好：</p>
+
+<ol>
+<li>因为必须要实现Handler接口，Do这个方法名不能修改，不能定义一个更有意义的名字</li>
+<li>必须要新定义一个类型，才可以实现Handler接口，才能使用Each函数</li>
+</ol>
+
+<p>&emsp;&emsp;首先我们解决第一个问题，根据我们具体做的事情定义一个更有意义的方法名。如果调用者改了方法名，那么就不能实现Handler接口了，但是还要继续使用Each方法，那么就提供一个Adapter包装器，将其转化为Handler接口的样子.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    type HandlerFunc func(k, v interface{})
+
+    func (f HandlerFunc) Do(k, v interface{}){
+        f(k, v)
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;以上代码，我们定义了一个新的类型HandlerFunc,它是一个func(k, v interface{})类型，并实现了Handler接口，那么Do方法就是调用HandlerFunc自身，因为HandlerFunc本身就是一个方法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func (w welcome) selfInfo(k, v interface{}) {
+              fmt.Printf(&#34;%s, my name is %s, and age is %d\n&#34;, w, k, v)
+    }
+
+    Each(persons, HandlerFunc(w.selfInfo))</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;还是差不多原来的实现，只是把方法名Do改为selfInfo。<code>HandlerFunc(w.selfInfo)</code>不是方法的调用，而是转型，因为selfInfo和HandlerFunc是同一种类型，所以可以强制转型。转型后，因为HandlerFunc实现了Handler接口，所以我们可以继续使用原来的Each方法。</p>
+
+<h2 id="进一步">进一步</h2>
+
+<p>&emsp;&emsp;现在解决了命名问题，但是每次强制转型不太好，我们继续重构，采用新定义函数帮助调用者强制转型。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func EachFunc(m map[interface{}]interface{}, f func(k, v interface{})) {
+        Each(m, HandlerFunc(f))
+    }
+
+    func main() {
+        persons := make(map[interface{}]interface{})
+            persons[&#34;one&#34;] = 20
+            persons[&#34;two&#34;] = 23
+            persons[&#34;three&#34;] = 26
+
+            var w welcome = &#34;hello everyone!&#34;
+
+            //      Each(persons, w)
+            //Each(persons, HandlerFunc(w.selfInfo))
+            EachFunc(persons, w.selfInfo)
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;新增EachFunc函数，帮助调用者强制转型。现在我们发现EachFunc函数接收的是一个<code>func(k, v interface{})</code>类型的函数，没有必要实现Handler接口，所以新的自定义类型可以去掉不用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    func selfInfo(k, v interface{}) {
+        fmt.Printf(&#34;hi, everyone, my name is %s, and age is %d\n&#34;, k, v)
+    }
+
+    func main() {
+        ...
+        EachFunc(persons, selfInfo)
+    }</pre></td></tr></table>
+</div>
+</div>
+<h1 id="延伸">延伸</h1>
+
+<p>&emsp;&emsp;以上就是关于接口型函数，我们发现这和<code>http.Handle</code>方法很像，其实接口<code>http.Handler</code>就是这么实现的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    type Handler interface {
+        ServeHTTP(ResponseWriter, *Request)
+    }
+
+    func Handle(pattern string, handler Handler) {
+        DefaultServeMux.Handle(pattern, handler)
+    }
+
+    func HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
+        DefaultServeMux.HandleFunc(pattern, handler)
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;这是一种非常好的技巧，提供两种函数,既可以以接口的方式使用，也可以以方法的方式，对应上述代码的Each和EachFUnc这两个函数，灵活方便。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">飞雪无情</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-05-22
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[工程师学习方法]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/">
+            <span class="next-text nav-default">[杂谈 | golang database/sql使用]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

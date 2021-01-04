@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>多线程/锁 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E9%94%81/</link>
+    <description>Recent content in 多线程/锁 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 02 Jan 2021 17:28:56 +0800</lastBuildDate>
+    
+	<atom:link href="http://facedamon.github.io/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E9%94%81/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[多线程 | 乐观锁与悲观锁]</title>
+      <link>http://facedamon.github.io/post/thread/sync/</link>
+      <pubDate>Sat, 02 Jan 2021 17:28:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/thread/sync/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;乐观锁和悲观锁是两种思想，用于解决并发场景下的数据竞争问题。 乐观锁：乐观锁在操作数据时非常乐观，认为别人不会同时</description>
+    </item>
+    
+  </channel>
+</rss>
