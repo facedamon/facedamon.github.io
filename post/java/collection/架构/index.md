@@ -35,13 +35,13 @@
 
 &emsp;&emsp;ArrayList是一个`动态数组`，也是我们最常用的集合。它允许任何符合规则的元素插入甚至包括null。每一个ArrayList都有一个初始容量(10)，该容量代表了数组的大小。随着容器中的元素不断增加，容器的大小也会随着增加。在每次向容器中增加元素的同时都会进行容器检查，当快溢出时，就会进行扩容操作((oldCapacity * 3)/2 + 1)。所以如果我们明确所插入元素的多少，最好指定一个初始容量值，避免过多的进行扩容操作而浪费时间、空间效率。
 
-&emsp;&emsp;关于ArrayList的详细介绍，请参见[[Java | ArrayList]](http://facedamon.github.io/post/java/collection/ArrayList)
+&emsp;&emsp;关于ArrayList的详细介绍，请参见[[Java | ArrayList]](http://facedamon.github.io/post/java/collection/arraylist/)
 
 - LinkedList
 
 &emsp;&emsp;LinkedList是一个`双向链表`。它除了有ArrayList的基本操作方法之外还额外提供了get, remove, insert方法在LinkedList的首部和尾部。由于实现方式不同，`LinkedList不能随机访问`，它所有的操作都是要按照双向链表的需要执行。在列表中索引将从开头或结尾遍历列表。这样做的好处就是可以通过较低的代价在List中进行插入和删除。
 
-&emsp;&emsp;关于LinkedList的详细介绍，请参见[[Java | LinkedList]](http://facedamon.github.io/post/java/collection/LinkedList)
+&emsp;&emsp;关于LinkedList的详细介绍，请参见[[Java | LinkedList]](http://facedamon.github.io/post/java/collection/linkedlist/)
 
 - Vector/Stack 已经被历史淘汰。堆栈和队列，如果不考虑线程安全问题，请使用LinkedList。
 
@@ -70,19 +70,19 @@
 
 &emsp;&emsp;HashSet是一个`没有重复元素`的集合，它由HashMap实现，不保证元素的顺序(元素插入的顺序与输出顺序不一致)，HashSet允许使用null元素，HashSet按照hash算法来存储集合元素。HashSet通过一个HashMap存储元素，元素存放在HashMap的key中，而value统一使用一个object对象。
 
-&emsp;&emsp;关于HashSet的详细介绍，请参见[[Java | HashSet]](http://facedamon.github.io/post/java/collection/HashSet)
+&emsp;&emsp;关于HashSet的详细介绍，请参见[[Java | HashSet]](http://facedamon.github.io/post/java/collection/hashset/)
 
 - LinkedHashSet
 
 &emsp;&emsp;LinkedHashSet，其底层是`基于LinkedHashMap`来实现的，`有序、非同步`。LinkedHashSet集合同样是根据元素的hashCode值来决定元素的存储位置，但是它同时`使用链表维护了元素的次序`。这样使得元素看起来像是以插入顺序保存的。
 
-&emsp;&emsp;关于LinkedHashSet的详细介绍，请参见[[Java | HashSet]](http://facedamon.github.io/post/java/collection/LinkedHashSet)
+&emsp;&emsp;关于LinkedHashSet的详细介绍，请参见[[Java | LinkedHashSet]](http://facedamon.github.io/post/java/collection/linkedhashset/)
 
 - TreeSet
 
 &emsp;&emsp;TreeSet是一个`有序集合`。其底层是`基于TreeMap`来实现的，`非同步`。TreeSet支持两种排序方式，`自然排序和Compare`，其中自然排序为默认排序方式。当我们构造TreeSet时，若使用不带参数的构造函数，则TreeSet使用自然比较器；若用户需要只用自定义的比较器，则需要使用带比较器的构造函数。
 
-&emsp;&emsp;关于TreeSet的详细介绍，请参见[[Java | HashSet]](http://facedamon.github.io/post/java/collection/TreeSet)
+&emsp;&emsp;关于TreeSet的详细介绍，请参见[[Java | TreeSet]](http://facedamon.github.io/post/java/collection/treeset/)
 
 ### Map接口
 
@@ -94,7 +94,7 @@
 
 &emsp;&emsp;以[哈希表数据结构](http://facedamon.github.io/post/data-struct/hash)实现，查找对象时通过哈希函数计算其位置，它是为快速查询而设计的，其内部定义了一个hash表数组(Entry[] table),元素会通过哈希转换函数将元素的哈希地址转换成数组中存放的索引，如果有冲突，则使用散列表的形式将所有相同哈希地址的元素串起来，可通过查看HashMap.Enntry源码它是一个单链表结构。
 
-&emsp;&emsp;关于HashMap的详细介绍，请参见[[Java | HashSet]](http://facedamon.github.io/post/java/collection/HashMap)
+&emsp;&emsp;关于HashMap的详细介绍，请参见[[Java | HashMap]](http://facedamon.github.io/post/java/collection/hashmap/)
 
 - LinkedHashMap
 
@@ -106,7 +106,7 @@
 
 &emsp;&emsp;由于LinkedHashMap需要维护元素的插入顺序，因此性能略低于HashMap的性能，但在迭代访问Map里的全部元素时将有很好的性能，因为它以链表来维护内部顺序。
 
-&emsp;&emsp;关于LinkedHashMap的详细介绍，请参见[[Java | HashSet]](http://facedamon.github.io/post/java/collection/LinkedHashMap)
+&emsp;&emsp;关于LinkedHashMap的详细介绍，请参见[[Java | LinkedHashMap]](http://facedamon.github.io/post/java/collection/linkedhashmap/)
 
 - TreeMap
 
@@ -118,7 +118,7 @@
 
 &emsp;&emsp;TreeMap判断两个元素相等的标准：两个key通过compareTo()方法返回0，则认为这两个key相等。
 
-&emsp;&emsp;关于TreeMap的详细介绍，请参见[[Java | HashSet]](http://facedamon.github.io/post/java/collection/TreeMap)
+&emsp;&emsp;关于TreeMap的详细介绍，请参见[[Java | TreeMap]](http://facedamon.github.io/post/java/collection/treemap/)
 
 ## Iterator与ListIterator
 
