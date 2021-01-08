@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[Java | HashMap] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 Hash" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/java/collection/hashmap/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[Java | HashMap]" />
+<meta property="og:description" content="摘要 &emsp;&emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 Hash" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/java/collection/hashmap/" />
+<meta property="article:published_time" content="2021-01-08T16:14:56&#43;08:00"/>
+<meta property="article:modified_time" content="2021-01-08T16:14:56&#43;08:00"/>
+
+<meta itemprop="name" content="[Java | HashMap]">
+<meta itemprop="description" content="摘要 &emsp;&emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 Hash">
+
+
+<meta itemprop="datePublished" content="2021-01-08T16:14:56&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-08T16:14:56&#43;08:00" />
+<meta itemprop="wordCount" content="6090">
+
+
+
+<meta itemprop="keywords" content="Java," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Java | HashMap]"/>
+<meta name="twitter:description" content="摘要 &emsp;&emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 Hash"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Java | HashMap]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-08 </span>
+        <div class="post-category">
+            <a href="/categories/java/%E9%9B%86%E5%90%88/"> Java/集合 </a>
+            </div>
+          <span class="more-meta"> 约 6090 字 </span>
+          <span class="more-meta"> 预计阅读 13 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#摘要">摘要</a>
+<ul>
+<li><a href="#添加元素">添加元素</a></li>
+<li><a href="#删除数据">删除数据</a></li>
+<li><a href="#修改数据">修改数据</a></li>
+<li><a href="#插入数据">插入数据</a></li>
+</ul></li>
+<li><a href="#再谈hashcode的重要性">再谈HashCode的重要性</a></li>
+<li><a href="#hashmap的table为什么是transient的">HashMap的table为什么是transient的</a></li>
+<li><a href="#多线程">多线程</a></li>
+<li><a href="#常见问题">常见问题</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="摘要">摘要</h1>
+
+<p>&emsp;&emsp;对于集合，我认为关注的点主要有四点：</p>
+
+<table>
+<thead>
+<tr>
+<th>关注点</th>
+<th>结论</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>HashMap是否允许null</td>
+<td>Key和Value都允许为空</td>
+</tr>
+
+<tr>
+<td>HashMap是否允许重复数据</td>
+<td>Key重复会覆盖、Value允许重复</td>
+</tr>
+
+<tr>
+<td>HashMap是否有序</td>
+<td>无序，遍历HashMap的时候，得到的元素的顺序基本不可能是put的顺序</td>
+</tr>
+
+<tr>
+<td>HashMap是否线程安全</td>
+<td>非同步</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="添加元素">添加元素</h2>
+
+<p>&emsp;&emsp;首先看一下HashMap的一个存储单元Entry:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">static class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; {
+    final K key;
+    V value;
+    Entry&lt;K,V&gt; next;
+    int hash;
+    ...
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;之前一篇写LinkedList的文章，里面写到LinkedList是一个双向链表，从HashMap的Entry看得出，Entry组成的是一个<code>单向链表</code>，因为里面只有Entry的后继Entry，而没有Entry的前驱Entry。用图表示应该是这么一个数据结构：</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20151208204904136-1453407209.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;接下来，假设我有这么一段代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public static void main(String[] args) {
+    Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();
+    map.put(&#34;111&#34;,&#34;111&#34;);
+    map.put(&#34;222&#34;,&#34;222&#34;);
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;看一下做了什么。首先从第3行开始，new了一个HashMap出来：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public HashMap() {
+    this.loadFactor = DEFAULT_LOAD_FACTOR;
+    threshold = (int)(DEFAULT_INITIAL_CAPACITY * DEFAULT_LOAD_FACTOR);
+    table = new Entry(DEFAULT_INITIAL_CAPACITY);
+    init();
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;注意一下第5行的init()是个空方法，它是HashMap的子类比如LinkedHashMap构造的时候使用的。DEFAULT_INITIAL_CAPACITY为16，也就是说，HashMap在new的时候构造出了一个大小为16的Entry数组，Entry内所有数据都取默认值，如图示为：</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20151212145239919-1445500983.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;看到new出了一个大小为16的Entry数组来。接着第4行，put了一个Key和Value同为111的字符串，看一下put的时候底层做了什么：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public V put(K key, V value) {
+    if (key == null) {
+        return putForNullKey(value);
+    }
+    int hash = hash(key.hashCode());
+    int i = indexFor(hash, table.length);
+    for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) {
+        Object k;
+        if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) {
+            V oldValue = e.value;
+            e.value = value;
+            e.recordAccess(this);
+            return oldValue;
+        }
+    }
+    modCount++;
+    addEntry(hash, key, value, i);
+    return null;
+}
+
+static int hash(int h) {
+    h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);
+    return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);
+}
+
+static int indexFor(int h, int length) {
+    // if length 是2的N次幂，那么下面等式成立
+    // h % length =&gt; h &amp; (length - 1)
+    return h &amp; (length - 1);
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;看一下put方法的几个步骤：</p>
+
+<ol>
+<li>第2行~第3行就是HashMap允许Key值为空的原因，<strong>空的Key会默认放在第0位的数组位置上</strong></li>
+<li>第4行拿到Key值的HashCode，由于HashCode是Object的方法，因此每个对象都有一个HashCode，对这个HashCode做一次hash计算。按照JDK源码注释的说法，这次hash的作用是根据给定的HashCode对它做一次打乱的操作，防止一些糟糕的Hash算法产生的糟糕的Hash值，至于为什么要防止糟糕的Hash值，HashMap添加元素的最后会讲到</li>
+<li>第5行根据重新计算的HashCode，对Entry数组的大小取模得到一个Entry数组的位置。看到这里使用了&amp;，移位加快一点代码运行效率。另外，这个取模操作的正确性依赖于length必须是2的N次幂，这个熟悉二进制的朋友一定理解，<strong>因此注意HashMap构造函数中，如果你指定HashMap初始数组的大小initialCapacity，如果initialCapacity不是2的N次幂，HashMap会算出大于initialCapacity的最小2的N次幂的值，作为Entry数组的初始化大小。</strong>这里为了讲解方便，我们假定字符串111和字符串222算出来的i都是1</li>
+<li>第6行~第14行会先判断一下原数据结构中是否存在相同的Key值，存在则覆盖并返回，不执行后面的代码。注意一下recordAccess这个方法，它也是HashMap的子类比如LinkedHashMap用的，HashMap中这个方法为空。另外，注意一点，对比Key是否相同，是先比HashCode是否相同，HashCode相同再判断equals是否为true，这样大大增加了HashMap的效率，对HashCode不熟悉的朋友可以看一下<a href="http://facedamon.github.io/post/data-struct/hash">散列表</a></li>
+<li>第16行的modeCount++是用于fail-fast机制的，每次修改HashMap数据结构的时候都会自增一次这个值</li>
+</ol>
+
+<p>&emsp;&emsp;然后就到了关键的addEntry方法了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">void addEntry(int hash, K key, V value, int bucketIndex) {
+    Entry&lt;K,V&gt; e = table[bucketIndex];
+    table[bucketIndex] = new Entry&lt;K, V&gt;(hash, key, value, e);
+    if (size++ &gt;= threshold) {
+        resize(2 * table.length);
+    }
+}
+
+Entry(int h, K k, V v, Entry&lt;K,V&gt; n) {
+    this.value = v;
+    this.key = k;
+    this.hash = h;
+    this.next = n;
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;假设new出来的Entry地址为0x00000001，那么，put(&ldquo;111&rdquo;, &ldquo;111&rdquo;)用图表示应该是这样的：</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20151212160210497-23750228.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;每一个新增的Entry都位于table[1]上，另外，里面的hash是rehash之后的hash而不是Key最原始的hash。看到table[1]上存放了111&mdash;-&gt;111这个键值对，它持有原table[1]的引用地址，因此可以寻址到原table[1]，这就是单向链表。 再看一下put(&ldquo;222&rdquo;, &ldquo;222&rdquo;)做了什么，一张图就可以理解了：</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20151212160243294-1319536937.png" alt="avatar" /></p>
+
+<p>&emsp;&emsp;新的Entry再次占据table[1]的位置，并且持有原table[1]，也就是111&mdash;-&gt;111这个键值对。至此，HashMap进行put数据的过程就呈现清楚了。不过还有一个问题，就是HashMap如何进行扩容，再看一下addEntry方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    void addEntry(int hash, K key, V value, int bucketIndex) {
+        Entry&lt;K,V&gt; e = table[bucketIndex];
+        table[bucketIndex] = new Entry&lt;K,V&gt;(hash, key, value, e);
+        if (size++ &gt;= threshold)
+            resize(2 * table.length);
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>看到第4行~第5行，也就是说在每次放置完Entry之后都会判断是否需要扩容。这里不讲扩容是因为<strong>HashMap扩容在不正确的使用场景下将会导致死循环</strong>，这是一个值得探讨的话题，也是我工作中实际遇到过的一个问题，因此下一篇文章将会详细说明为什么不正确地使用HashMap会导致死循环。</p>
+
+<h2 id="删除数据">删除数据</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    public static void main(String[] args){
+        Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+        map.put(&#34;111&#34;, &#34;111&#34;);
+        map.put(&#34;222&#34;, &#34;222&#34;);
+        map.remove(&#34;111&#34;);
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;第5行删除元素，看一下删除元素的时候做了什么，第3行~第4行添加了两个键值对就沿用上面的图，HashMap删除指定键值对的源代码是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    public V remove(Object key) {
+        Entry&lt;K,V&gt; e = removeEntryForKey(key);
+        return (e == null ? null : e.value);
+    }
+
+    final Entry&lt;K,V&gt; removeEntryForKey(Object key) {
+        int hash = (key == null) ? 0 : hash(key.hashCode());
+        int i = indexFor(hash, table.length);
+        Entry&lt;K,V&gt; prev = table[i];
+        Enrey&lt;K,V&gt; e = prev;
+        while (e != null) {
+            Entry&lt;K,V&gt; next = e.next;
+            Object k;
+            if (e.hash == hash &amp;&amp; ((k = e.key) == key || key != null &amp;&amp; key.equals(k))) {
+                modCount++;
+                size--;
+                if (prev == e) {
+                    table[i] = next;
+                } else {
+                    prev.next = next;
+                }
+                e.recordRemoval(this);
+                return e;
+            }
+            prev = e;
+            e = next;
+        }
+        return e;
+    }</pre></td></tr></table>
+</div>
+</div>
+<p>c分析一下remove元素的时候做了几步：</p>
+
+<ol>
+<li>根据key的hash找到待删除的键值对位于table的哪个位置上</li>
+<li>记录一个prev表示待删除的Entry的前一个位置Entry，e可以认为是当前位置</li>
+<li>从table[i]开始遍历链表，假如找到了匹配的Entry，要做一个判断，这个Entry是不是首节点：
+
+<ol>
+<li>是的话，也就是第17行~第18行，table[i]就直接是table[i]的下一个节点，后面的都不需要动</li>
+<li>不是的话，也就是第19行~第20行，e的前一个Entry也就是prev，prev的next指向e的后一个节点，也就是next，这样，e所代表的Entry就被踢出了，e的前后Entry就连起来了</li>
+</ol></li>
+</ol>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20151212160519559-1676241073.png" alt="avatar" /></p>
+
+<h2 id="修改数据">修改数据</h2>
+
+<p>&emsp;&emsp;修改元素也是put，看一下源代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public V put(K key, V value) {
+    if (key == null) {
+        return putForNullKey(value);
+    }
+    int hash = hash(key.hashCode());
+    int i = indexFor(hash, table.length);
+    for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) {
+        Object k;
+        if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) {
+            V oldValue = e.value;
+            e.value = value;
+            e.recordAccess(this);
+            return oldValue;
+        }
+    }
+    modCount++;
+    addEntry(hash, key, value, i);
+    return null;
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;这个其实前面已经提到过了，第7行~第15行就是修改元素的逻辑，如果某个Key已经在数据结构中存在的话，那么就会覆盖原value，也就是第10行的代码。</p>
+
+<h2 id="插入数据">插入数据</h2>
+
+<p>&emsp;&emsp;所谓&rdquo;插入元素&rdquo;，在我的理解里，一定是基于数据结构是<strong>有序</strong>的前提下的。像ArrayList、LinkedList，再远点说就是数据库，一条一条都是有序的。</p>
+
+<p>&emsp;&emsp;而HashMap，它的顺序是基于HashCode，HashCode是一个随机性很强的数字，所以HashMap中的Entry完全是随机存放的。HashMap又不像LinkedHashMap这样维护了插入元素的顺序，所以对HashMap这个数据结构谈插入元素是没有意义的。</p>
+
+<blockquote>
+<p>HashMap并没有插入的概念。</p>
+</blockquote>
+
+<h1 id="再谈hashcode的重要性">再谈HashCode的重要性</h1>
+
+<p>&emsp;&emsp;前面讲到了，HashMap中对Key的HashCode要做一次rehash，防止一些糟糕的Hash算法生成的糟糕的HashCode，那么为什么要防止糟糕的HashCode？</p>
+
+<p>&emsp;&emsp;<strong>糟糕的HashCode意味着的是Hash冲突，即多个不同的Key可能得到的是同一个HashCode，</strong>糟糕的Hash算法意味着的就是Hash冲突的概率增大，这意味着HashMap的性能将下降，表现在两方面：</p>
+
+<ol>
+<li>有10个Key，可能6个Key的HashCode都相同，另外四个Key所在的Entry均匀分布在table的位置上，而某一个位置上却连接了6个Entry。这就失去了HashMap的意义，HashMap这种数据结构性高性能的前提是，<strong>Entry均匀地分布在table位置上</strong>，但现在确是1 1 1 1 6的分布。所以，<strong>我们要求HashCode有很强的随机性</strong>，这样就尽可能地可以保证了Entry分布的随机性，提升了HashMap的效率。</li>
+
+<li><p>HashMap在一个某个table位置上遍历链表的时候的代码：</p>
+
+<p>if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k)))</p></li>
+</ol>
+
+<p>&emsp;&emsp;看到，由于采用了&rdquo;&amp;&amp;&ldquo;运算符，因此先比较HashCode，HashCode都不相同就直接pass了，不会再进行equals比较了。HashCode因为是int值，比较速度非常快，而equals方法往往会对比一系列的内容，速度会慢一些。<strong>Hash冲突的概率大，意味着equals比较的次数势必增多</strong>，必然降低了HashMap的效率了。</p>
+
+<h1 id="hashmap的table为什么是transient的">HashMap的table为什么是transient的</h1>
+
+<p>&emsp;&emsp;一个非常细节的地方：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">transient Entry[] table;</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;看到table用了transient修饰，也就是说table里面的内容全都不会被序列化，不知道大家有没有想过这么写的原因？在我看来，这么写是非常必要的。因为HashMap是基于HashCode的，HashCode作为Object的方法，是native的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public native int hashCode();</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;这意味着的是：<strong>HashCode和底层实现相关，不同的虚拟机可能有不同的HashCode算法</strong>。再进一步说得明白些就是，可能同一个Key在虚拟机A上的HashCode=1，在虚拟机B上的HashCode=2，在虚拟机C上的HashCode=3。</p>
+
+<p>&emsp;&emsp;这就有问题了，Java自诞生以来，就以跨平台性作为最大卖点，好了，如果table不被transient修饰，在虚拟机A上可以用的程序到虚拟机B上可以用的程序就不能用了，失去了跨平台性，因为：</p>
+
+<ol>
+<li>Key在虚拟机A上的HashCode=100，连在table[4]上</li>
+<li>Key在虚拟机B上的HashCode=101，这样，就去table[5]上找Key，明显找不到</li>
+</ol>
+
+<p>&emsp;&emsp;整个代码就出问题了。因此，为了避免这一点，Java采取了重写自己序列化table的方法，在writeObject选择将key和value追加到序列化的文件最后面：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">private void writeObject(java.io.ObjectOutputStream s)
+        throws IOException{
+Iterator&lt;Map.Entry&lt;K,V&gt;&gt; i =
+    (size &gt; 0) ? entrySet0().iterator() : null;
+
+    // Write out the threshold, loadfactor, and any hidden stuff
+    s.defaultWriteObject();
+
+    // Write out number of buckets
+    s.writeInt(table.length);
+
+    // Write out size (number of Mappings)
+    s.writeInt(size);
+
+        // Write out keys and values (alternating)
+    if (i != null) {
+        while (i.hasNext()) {
+            Map.Entry&lt;K,V&gt; e = i.next();
+            s.writeObject(e.getKey());
+            s.writeObject(e.getValue());
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<h1 id="多线程">多线程</h1>
+
+<ol>
+<li>使用Collections.synchronizedMap(Mao<K,V> m)方法把HashMap变成一个线程安全的Map</li>
+<li>使用Hashtable、ConcurrentHashMap这两个线程安全的Map</li>
+</ol>
+
+<p>&emsp;&emsp;关于多线程下的Map，请参见<a href="http://facedamon.github.io/post/java/collection/ConcurrentHashMap">Java | ConcurrentHashMap</a></p>
+
+<h1 id="常见问题">常见问题</h1>
+
+<ul>
+<li>HashMap和Hashtable的区别</li>
+</ul>
+
+<ol>
+<li>Hashtable是线程安全的，Hashtable所有对外提供的方法都使用了synchronized，也就是同步，而HashMap则是线程非安全的</li>
+<li>Hashtable不允许空的key， value，空的将导致空指针异常，而HashMap则无所谓，没有这方面的限制</li>
+<li>就是两个的rehash算法不同</li>
+</ol>
+
+<ul>
+<li>当两个不同的键对象的hashcode相同时会发生什么？</li>
+</ul>
+
+<ol>
+<li>它们会存储在同一个bucket位置的HashMap.Entry组成的链表中</li>
+</ol>
+
+<ul>
+<li>如果两个键的hashcode相同，如何获取值对象</li>
+</ul>
+
+<ol>
+<li>当我们调用get()方法，HashMap会使用键对象的hashcode找到bucket位置，找到buccket位置之后会调用keys.equals()方法找到链表中正确的节点</li>
+</ol>
+
+<ul>
+<li>如何减少碰撞</li>
+</ul>
+
+<ol>
+<li>使用不可变的、声明作final的对象，并且采用合适的equals()和hashcode方法的话，将会减少碰撞的发生，提高效率。不可变性使得能够缓存不同的键hashcode，这将提高整个获取对象的速度，使用String、Integer这样的wrapper类作为键是非常好的选择</li>
+</ol>
+
+<ul>
+<li>如果HashMap的大小超过了负载因子定义的容量，怎么办</li>
+</ul>
+
+<ol>
+<li>默认的附在是0.75f，也就是说，当一个map填满了75%的bucket的时候，将会创建原来HashMap大小两倍的bucket数组，来重新调整map的大小，并将原来的对象放入新的bucket数组中。这个过程叫做rehash，因为它调用hash方法找到新的bucket位置。</li>
+</ol>
+
+<ul>
+<li>为什么String、Integer这样的wrapper类适合做为键</li>
+</ul>
+
+<ol>
+<li>因为String是不可变的，也是final的，而且已经重写了equals和hashcode方法了。其它的wrapper类也有这个特点。不可变性是必要的，因为为了要计算hashcode，就要防止键值改变，如果键值在放入时和获取时返回不同的hashcode，那么就不能从hashmap中找到你想要的对象。不可变性还有线程安全的优点。如果你可以仅仅通过将某个field声明成final就能保证hashcode是不可变的，那就这么做。因为获取对象的时候要用到equals()和hashCode()方法，那么键对象正确的重写这两个方法是非常重要的。如果两个不相等的对象返回不同的hashcode的话，那么碰撞的几率就会小些，这样就能提高HashMap的性能。</li>
+</ol>
+
+<ul>
+<li>可以使用自定义的对象作为键吗？</li>
+</ul>
+
+<ol>
+<li>当然你可能使用任何对象作为键，只要它遵守了equals()和hashCode()方法的定义规则，并且当对象插入到Map中之后将不会再改变了。如果这个自定义对象时不可变的，那么它已经满足了作为键的条件，因为当它创建之后就已经不能改变了。</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-08
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/java/collection/hashmap/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">Java</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/java/collection/linkedlist/">
+            <span class="next-text nav-default">[Java | LinkedList]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -6,17 +6,26 @@
     <description>Recent content in Categories on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 02 Jan 2021 17:28:56 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 08 Jan 2021 16:14:56 +0800</lastBuildDate>
     
 	<atom:link href="http://facedamon.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>多线程/锁</title>
-      <link>http://facedamon.github.io/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E9%94%81/</link>
+      <title>Java/集合</title>
+      <link>http://facedamon.github.io/categories/java/%E9%9B%86%E5%90%88/</link>
+      <pubDate>Fri, 08 Jan 2021 16:14:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/categories/java/%E9%9B%86%E5%90%88/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Java/锁</title>
+      <link>http://facedamon.github.io/categories/java/%E9%94%81/</link>
       <pubDate>Sat, 02 Jan 2021 17:28:56 +0800</pubDate>
       
-      <guid>http://facedamon.github.io/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E9%94%81/</guid>
+      <guid>http://facedamon.github.io/categories/java/%E9%94%81/</guid>
       <description></description>
     </item>
     
@@ -39,11 +48,11 @@
     </item>
     
     <item>
-      <title>多线程/基本概念</title>
-      <link>http://facedamon.github.io/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</link>
+      <title>Java/什么是线程安全</title>
+      <link>http://facedamon.github.io/categories/java/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</link>
       <pubDate>Thu, 24 Dec 2020 16:25:56 +0800</pubDate>
       
-      <guid>http://facedamon.github.io/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</guid>
+      <guid>http://facedamon.github.io/categories/java/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</guid>
       <description></description>
     </item>
     

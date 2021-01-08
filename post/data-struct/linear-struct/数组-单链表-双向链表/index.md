@@ -78,259 +78,268 @@
 # Java实现双链表
 
 
-        /**
-        * Java实现的双向链表
-        * 注： Java自带的集合包中有实现双向链表，路径是: java.util.LinkedList
-        */
-        public class DoubleLink<T> {
+        package org.example;
 
-            //双向链表"节点"对应的结构体
-            private class DNode<T> {
-                public DNode prev;
-                public DNode next;
-                public T value;
+        import org.junit.Test;
 
-                public DNode(T value, DNode prev, DNode next) {
-                    this.value = value;
-                    this.prev = prev;
+        import java.util.ListIterator;
+        import java.util.NoSuchElementException;
+
+        public class LinkedList<Item>{
+
+            private Node first;
+            private Node last;
+            private int N;
+
+            public LinkedList(){}
+
+            private class Node<Item> {
+                Item item;
+                Node<Item> next;
+                Node<Item> prev;
+
+                Node(Node<Item> prev, Item ele, Node<Item> next) {
+                    this.item = ele;
                     this.next = next;
+                    this.prev = prev;
                 }
             }
 
-            //表头
-            private DNode<T> mHead;
-            //节点个数
-            private int mCount;
-
-            /**
-            * 创建表头，表头没有存储数据
-            * 初始化节点个数为0
-            */
-            public DoubleLink() {
-                mHead = new DNode<T>(null, null, null);
-                mHead.prev = mHead.next = mHead;
-                mCount = 0;
-            }
-
-            /**
-            * 
-            * @return 节点数目
-            */
-            public int size() {
-                return mCount;
-            }
-
-            /**
-            * 
-            * @return 链表是否为空
-            */
             public boolean isEmpty() {
-                return mCount == 0;
+                return N == 0;
             }
 
-            /**
-            * 
-            * @param index
-            * @return index位置的节点
-            */
-            public DNode<T> getNode(int index) {
-                if (index < 0 || index >= mCount) {
-                    throw new IndexOutOfBoundsException();
+            public int size() {
+                return N;
+            }
+
+            // 向栈顶压入元素
+            public void push(Item item) {
+                Node<Item> oldFirst = first;
+                Node<Item> newNode = new Node(null, item, oldFirst);
+                first = newNode;
+                if (oldFirst == null) {
+                    last = newNode;
+                } else {
+                    oldFirst.prev = newNode;
                 }
-                //正向查找
-                if (index <= mCount / 2) {
-                    DNode<T> node = mHead.next;
-                    for (int i = 0; i < index; i++) {
-                        node = node.next;
+                N++;
+            }
+
+            // 从栈顶弹出元素
+            public Item pop() {
+                Node<Item> f = first;
+                if (f == null) {
+                    throw new NoSuchElementException();
+                } else {
+                    Item item = f.item;
+                    Node<Item> next = f.next;
+                    f.item = null;
+                    f.next = null;
+                    first = next;
+                    if (next == null) {
+                        last = null;
+                    } else {
+                        next.prev = null;
                     }
-                    return node;
+                    --N;
+                    return item;
                 }
+            }
 
-                //反向查找
-                DNode<T> rnode = mHead.prev;
-                int rindex = mCount - index - 1;
-                for (int j = 0; j < rindex; j++) {
-                    rnode = rnode.prev;
+            // 向队尾添加元素
+            public void enqueue(Item item) {
+                Node<Item> f = last;
+                Node<Item> newNode = new Node<Item>(last, item, null);
+                last = newNode;
+                if (f == null) {
+                    first = newNode;
+                } else {
+                    f.next = newNode;
                 }
-                return rnode;
+                ++N;
             }
 
-            /**
-            * 
-            * @param index
-            * @return index位置的节点的值
-            */
-            public T get(int index) {
-                return getNode(index).value;
-            }
-
-            /**
-            * 
-            * @return 获取第一个节点
-            */
-            public T getFirst() {
-                return getNode(0);
-            }
-
-            /**
-            * 
-            * @return 获取最后一个节点的值
-            */
-            public T getLast() {
-                return getNode(mCount - 1).value;
-            }
-
-            /**
-            * 将节点插入到第index位置之前
-            * @param index
-            * @param t
-            */
-            public void insert(int index, T t) {
-                //表头
-                if (index == 0) {
-                    DNode<T> node = new DNode<T>(t, mHead, mHead.next);
-                    mHead.next.prev = node;
-                    mHead.next = node;
-                    mCount++;
-                    return;
+            // 从队尾删除元素
+            public Item dequeue() {
+                Node<Item> f = last;
+                if (f == null) {
+                    return null;
+                } else {
+                    Node<Item> prev = f.prev;
+                    Item ele = f.item;
+                    f.item = null;
+                    f.prev = null;
+                    last = prev;
+                    if (prev == null) {
+                        first = null;
+                    } else {
+                        prev.next = null;
+                    }
+                    --N;
+                    return ele;
                 }
-
-                DNode<T> inode = getNode(index);
-                DNode<T> tnode = new DNode<T>(t, inode.prev, inode);
-                inode.prev.next = tnode;
-                inode.prev = tnode;
             }
 
-            /**
-            * 将节点插入第一个节点处
-            * @param t
-            */
-            public void insertFirst(T t) {
-                insert(0, t);
-            }
-
-            /**
-            * 将节点追加到链表的末尾
-            * @param t
-            */
-            public void appendLast(T t) {
-                DNode<T> node = new DNode<T>(t, mHead.prev, mHead);
-                mHead.prev.next = node;
-                mHead.prev = node;
-                mCount++;
-            }
-
-            /**
-            * 删除index位置的节点
-            * @param index
-            */
-            public void del(int index) {
-                DNode<T> inode = getNode(index);
-                inode.prev.next = inode.next;
-                inode.next.prev = inode.prev;
-                inode = null;
-                mCount--;
-            }
-
-            /**
-            * 删除第一个节点
-            */
-            public void delFirst() {
-                del(0);
-            }
-
-            /**
-            * 删除最后一个节点
-            */
-            public void delLast() {
-                del(mCount - 1);
-            }
-
-            /**
-            * 打印链表
-            */
-            @Override
-            public String toString() {
-                StringBuffer str = new StringBuffer("[");
-                for (int i = 0; i < mCount; i++) {
-                    str.append(get(i)).append(",");
+            Node<Item> node(int index) {
+                Node x;
+                int i;
+                if (index < N >> 1) {
+                    x = first;
+                    for (i = 0; i < index; ++i) {
+                        x = x.next;
+                    }
+                    return x;
+                } else {
+                    x = last;
+                    for (i = N - 1; i > index; --i) {
+                        x = x.prev;
+                    }
+                    return x;
                 }
-                str.deleteCharAt(str.length()-1).append("]");
-                return str.toString();
-            }
-        }
-
-
-
-        /**
-        * 
-        */
-        public class DlinkTests {
-
-            public static void test_int() {
-                System.out.println("\n----test_int----");
-                DoubleLink<Integer> dlnk = new DoubleLink<>();
-                dlnk.insert(0, 20);
-                dlnk.appendLast(10);
-                dlnk.insertFirst(30);
-
-                System.out.printf("isEmpty()=%b\n", dlnk.isEmpty());
-                System.out.printf("size()=%d\n", dlnk.size());
-                System.out.println(dlnk.toString());
             }
 
-            public static void test_string() {
-                System.out.println("\n----test_string----");
-                DoubleLink<String> dlnk = new DoubleLink<>();
-                dlnk.insert(0, "ten");
-                dlnk.appendLast("twenty");
-                dlnk.insertFirst("thirty");
-
-                System.out.printf("isEmpty()=%b\n", dlnk.isEmpty());
-                System.out.printf("size()=%d\n", dlnk.size());
-                System.out.println(dlnk.toString());
+            public boolean remove(Object o) {
+                Node x;
+                if (o == null) {
+                    for (x = first; x != null; x = x.next) {
+                        if (x.item == null) {
+                            unlink(x);
+                            return true;
+                        }
+                    }
+                } else {
+                    for (x = first; x != null; x = x.next) {
+                        if (o.equals(x.item)) {
+                            unlink(x);
+                            return true;
+                        }
+                    }
+                }
+                return false;
             }
 
-            private static class Student {
-                private int id;
-                private String name;
+            Item unlink(Node<Item> x) {
+                Item ele = x.item;
+                Node<Item> next = x.next;
+                Node<Item> prev = x.prev;
+                if (prev == null) {
+                    first = next;
+                } else {
+                    prev.next = next;
+                    x.prev = null;
+                }
+                if (next == null) {
+                    last = prev;
+                } else {
+                    next.prev = prev;
+                    x.next = null;
+                }
+                x.item = null;
+                --N;
+                return ele;
+            }
 
-                public Student(int id, String name) {
-                    this.id = id;
-                    this.name = name;
+            private class LinkedListIterator implements ListIterator<Item> {
+
+                private Node<Item>  lastReturned;
+                private Node<Item> next;
+                private int nextIndex;
+
+                public LinkedListIterator(int index) {
+                    this.next = (index == N) ? null : node(index);
+                    this.nextIndex = index;
                 }
 
                 @Override
-                public String toString() {
-                    return "["+id+", "+name+"]";
+                public boolean hasNext() {
+                    return nextIndex < N;
+                }
+
+                @Override
+                public Item next() {
+                    if (!hasNext()) {
+                        throw new NoSuchElementException();
+                    }
+                    lastReturned = next;
+                    next = next.next;
+                    nextIndex++;
+                    return lastReturned.item;
+                }
+
+                @Override
+                public boolean hasPrevious() {
+                    return nextIndex > 0;
+                }
+
+                @Override
+                public Item previous() {
+                    if (!hasPrevious()) {
+                        throw new NoSuchElementException();
+                    }
+                    lastReturned = next = (next == null) ? last : next.prev;
+                    nextIndex--;
+                    return lastReturned.item;
+                }
+
+                @Override
+                public int nextIndex() {
+                    return nextIndex;
+                }
+
+                @Override
+                public int previousIndex() {
+                    return nextIndex - 1;
+                }
+
+                @Override
+                public void remove() {
+                }
+
+                @Override
+                public void set(Item item) {
+                    if (lastReturned == null) {
+                        throw new IllegalStateException();
+                    }
+                    lastReturned.item = item;
+                }
+
+                @Override
+                public void add(Item item) {
                 }
             }
 
-            private static Student[] students = new Student[]{
-                new Student(10, "sky"),
-                new Student(20, "joy"),
-                new Student(30, "vic"),
-                new Student(40, "dan"),
-            };
-
-            private static void test_object() {
-                System.out.println("\n----test_object----");
-                DoubleLink<Student> dlnk = new DoubleLink<>();
-                dlnk.insert(0, students[1]);
-                dlnk.appendLast(students[0]);
-                dlnk.insertFirst(students[2]);
-
-                System.out.printf("isEmpty()=%b\n", dlnk.isEmpty());
-                System.out.printf("size()=%d\n", dlnk.size());
-                System.out.println(dlnk.toString());
+            public ListIterator<Item> listIterator(int index) {
+                return new LinkedListIterator(index);
             }
 
-            public static void main(String[] args) {
-                //test_int();// isEmpty = false; size() = 3; [30, 20, 10]
-                //test_string(); // isEmpty = false; size() = 3; [thirty, ten, twenty]
-                test_object(); // isEmpty = false; size() = 3; [[30, vic], [20, joy], [10, sky]]
+            @Test
+            public void test() {
+                LinkedList<Integer> linkedList = new LinkedList<Integer>();
+                linkedList.push(1);
+                linkedList.push(4);
+                linkedList.push(0);
+
+                ListIterator<Integer> iterable = linkedList.listIterator(0);
+                while (iterable.hasNext()){
+                    System.out.println(iterable.next());
+                }
+                System.out.println(String.format("%s: %b\n", "isEmpty", linkedList.isEmpty()));
+                System.out.println(String.format("%s: %d\n", "previous", iterable.previous()));
+
+                linkedList.enqueue(6);
+                linkedList.enqueue(19);
+                linkedList.enqueue(13);
+                linkedList.dequeue();
+                linkedList.remove(6);
+
+                iterable = linkedList.listIterator(linkedList.size());
+                while (iterable.hasPrevious()){
+                    System.out.println(iterable.previous());
+                }
+                System.out.println(String.format("%s: %b\n", "isEmpty", linkedList.isEmpty()));
+                System.out.println(String.format("%s: %d\n", "next", iterable.next()));
             }
-            
         }
 
 

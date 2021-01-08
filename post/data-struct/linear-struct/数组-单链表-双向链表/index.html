@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2019-10-24T15:31:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-24T15:31:56&#43;08:00" />
-<meta itemprop="wordCount" content="4406">
+<meta itemprop="wordCount" content="4300">
 
 
 
@@ -132,7 +132,7 @@
         <div class="post-category">
             <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84/"> 数据结构与算法/线性结构 </a>
             </div>
-          <span class="more-meta"> 约 4406 字 </span>
+          <span class="more-meta"> 约 4300 字 </span>
           <span class="more-meta"> 预计阅读 9 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -509,262 +509,280 @@
 </span><span class="lnt">252
 </span><span class="lnt">253
 </span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
 </span></pre></td>
 <td class="lntd">
-<pre class="chroma">    /**
-    * Java实现的双向链表
-    * 注： Java自带的集合包中有实现双向链表，路径是: java.util.LinkedList
-    */
-    public class DoubleLink&lt;T&gt; {
+<pre class="chroma">    <span class="kn">package</span> <span class="nx">org</span><span class="p">.</span><span class="nx">example</span><span class="p">;</span>
 
-        //双向链表&#34;节点&#34;对应的结构体
-        private class DNode&lt;T&gt; {
-            public DNode prev;
-            public DNode next;
-            public T value;
+    <span class="kn">import</span> <span class="nx">org</span><span class="p">.</span><span class="nx">junit</span><span class="p">.</span><span class="nx">Test</span><span class="p">;</span>
 
-            public DNode(T value, DNode prev, DNode next) {
-                this.value = value;
-                this.prev = prev;
-                this.next = next;
-            }
-        }
+    <span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">ListIterator</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">NoSuchElementException</span><span class="p">;</span>
 
-        //表头
-        private DNode&lt;T&gt; mHead;
-        //节点个数
-        private int mCount;
+    <span class="nx">public</span> <span class="nx">class</span> <span class="nx">LinkedList</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;{</span>
 
-        /**
-        * 创建表头，表头没有存储数据
-        * 初始化节点个数为0
-        */
-        public DoubleLink() {
-            mHead = new DNode&lt;T&gt;(null, null, null);
-            mHead.prev = mHead.next = mHead;
-            mCount = 0;
-        }
+        <span class="nx">private</span> <span class="nx">Node</span> <span class="nx">first</span><span class="p">;</span>
+        <span class="nx">private</span> <span class="nx">Node</span> <span class="nx">last</span><span class="p">;</span>
+        <span class="nx">private</span> <span class="kt">int</span> <span class="nx">N</span><span class="p">;</span>
 
-        /**
-        * 
-        * @return 节点数目
-        */
-        public int size() {
-            return mCount;
-        }
+        <span class="nx">public</span> <span class="nf">LinkedList</span><span class="p">(){}</span>
 
-        /**
-        * 
-        * @return 链表是否为空
-        */
-        public boolean isEmpty() {
-            return mCount == 0;
-        }
+        <span class="nx">private</span> <span class="nx">class</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="nx">Item</span> <span class="nx">item</span><span class="p">;</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span><span class="p">;</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span><span class="p">;</span>
 
-        /**
-        * 
-        * @param index
-        * @return index位置的节点
-        */
-        public DNode&lt;T&gt; getNode(int index) {
-            if (index &lt; 0 || index &gt;= mCount) {
-                throw new IndexOutOfBoundsException();
-            }
-            //正向查找
-            if (index &lt;= mCount / 2) {
-                DNode&lt;T&gt; node = mHead.next;
-                for (int i = 0; i &lt; index; i++) {
-                    node = node.next;
-                }
-                return node;
-            }
+            <span class="nf">Node</span><span class="p">(</span><span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span><span class="p">,</span> <span class="nx">Item</span> <span class="nx">ele</span><span class="p">,</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">this</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">ele</span><span class="p">;</span>
+                <span class="nx">this</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
+                <span class="nx">this</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-            //反向查找
-            DNode&lt;T&gt; rnode = mHead.prev;
-            int rindex = mCount - index - 1;
-            for (int j = 0; j &lt; rindex; j++) {
-                rnode = rnode.prev;
-            }
-            return rnode;
-        }
+        <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">isEmpty</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        /**
-        * 
-        * @param index
-        * @return index位置的节点的值
-        */
-        public T get(int index) {
-            return getNode(index).value;
-        }
+        <span class="nx">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">N</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        /**
-        * 
-        * @return 获取第一个节点
-        */
-        public T getFirst() {
-            return getNode(0);
-        }
+        <span class="c1">// 向栈顶压入元素
+</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">void</span> <span class="nf">push</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">oldFirst</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">newNode</span> <span class="p">=</span> <span class="nx">new</span> <span class="nf">Node</span><span class="p">(</span><span class="nx">null</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">oldFirst</span><span class="p">);</span>
+            <span class="nx">first</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">oldFirst</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">last</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">oldFirst</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">N</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        /**
-        * 
-        * @return 获取最后一个节点的值
-        */
-        public T getLast() {
-            return getNode(mCount - 1).value;
-        }
+        <span class="c1">// 从栈顶弹出元素
+</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">pop</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">f</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">f</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">NoSuchElementException</span><span class="p">();</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">Item</span> <span class="nx">item</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
+                <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
+                <span class="nx">f</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="nx">f</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="nx">first</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">next</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">last</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">next</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="o">--</span><span class="nx">N</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">item</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-        /**
-        * 将节点插入到第index位置之前
-        * @param index
-        * @param t
-        */
-        public void insert(int index, T t) {
-            //表头
-            if (index == 0) {
-                DNode&lt;T&gt; node = new DNode&lt;T&gt;(t, mHead, mHead.next);
-                mHead.next.prev = node;
-                mHead.next = node;
-                mCount++;
-                return;
-            }
+        <span class="c1">// 向队尾添加元素
+</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">void</span> <span class="nf">enqueue</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">f</span> <span class="p">=</span> <span class="nx">last</span><span class="p">;</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">newNode</span> <span class="p">=</span> <span class="nx">new</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;(</span><span class="nx">last</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">null</span><span class="p">);</span>
+            <span class="nx">last</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">f</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">first</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">f</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="o">++</span><span class="nx">N</span><span class="p">;</span>
+        <span class="p">}</span>
 
-            DNode&lt;T&gt; inode = getNode(index);
-            DNode&lt;T&gt; tnode = new DNode&lt;T&gt;(t, inode.prev, inode);
-            inode.prev.next = tnode;
-            inode.prev = tnode;
-        }
+        <span class="c1">// 从队尾删除元素
+</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">dequeue</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">f</span> <span class="p">=</span> <span class="nx">last</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">f</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">null</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
+                <span class="nx">Item</span> <span class="nx">ele</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
+                <span class="nx">f</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="nx">f</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="nx">last</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">prev</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">first</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">prev</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="o">--</span><span class="nx">N</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">ele</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-        /**
-        * 将节点插入第一个节点处
-        * @param t
-        */
-        public void insertFirst(T t) {
-            insert(0, t);
-        }
+        <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nf">node</span><span class="p">(</span><span class="kt">int</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Node</span> <span class="nx">x</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="nx">i</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">N</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">x</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">index</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">x</span> <span class="p">=</span> <span class="nx">last</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="p">=</span> <span class="nx">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&gt;</span> <span class="nx">index</span><span class="p">;</span> <span class="o">--</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-        /**
-        * 将节点追加到链表的末尾
-        * @param t
-        */
-        public void appendLast(T t) {
-            DNode&lt;T&gt; node = new DNode&lt;T&gt;(t, mHead.prev, mHead);
-            mHead.prev.next = node;
-            mHead.prev = node;
-            mCount++;
-        }
+        <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">remove</span><span class="p">(</span><span class="nx">Object</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Node</span> <span class="nx">x</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">o</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span><span class="nx">x</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span> <span class="nx">x</span> <span class="o">!=</span> <span class="nx">null</span><span class="p">;</span> <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">item</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nf">unlink</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+                        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span><span class="nx">x</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span> <span class="nx">x</span> <span class="o">!=</span> <span class="nx">null</span><span class="p">;</span> <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nf">equals</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">item</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="nf">unlink</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+                        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        /**
-        * 删除index位置的节点
-        * @param index
-        */
-        public void del(int index) {
-            DNode&lt;T&gt; inode = getNode(index);
-            inode.prev.next = inode.next;
-            inode.next.prev = inode.prev;
-            inode = null;
-            mCount--;
-        }
+        <span class="nx">Item</span> <span class="nf">unlink</span><span class="p">(</span><span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Item</span> <span class="nx">ele</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
+            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">prev</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">first</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">prev</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
+                <span class="nx">x</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">next</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">last</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">next</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
+                <span class="nx">x</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">x</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
+            <span class="o">--</span><span class="nx">N</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nx">ele</span><span class="p">;</span>
+        <span class="p">}</span>
 
-        /**
-        * 删除第一个节点
-        */
-        public void delFirst() {
-            del(0);
-        }
+        <span class="nx">private</span> <span class="nx">class</span> <span class="nx">LinkedListIterator</span> <span class="nx">implements</span> <span class="nx">ListIterator</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="p">{</span>
 
-        /**
-        * 删除最后一个节点
-        */
-        public void delLast() {
-            del(mCount - 1);
-        }
+            <span class="nx">private</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span>  <span class="nx">lastReturned</span><span class="p">;</span>
+            <span class="nx">private</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span><span class="p">;</span>
+            <span class="nx">private</span> <span class="kt">int</span> <span class="nx">nextIndex</span><span class="p">;</span>
 
-        /**
-        * 打印链表
-        */
-        @Override
-        public String toString() {
-            StringBuffer str = new StringBuffer(&#34;[&#34;);
-            for (int i = 0; i &lt; mCount; i++) {
-                str.append(get(i)).append(&#34;,&#34;);
-            }
-            str.deleteCharAt(str.length()-1).append(&#34;]&#34;);
-            return str.toString();
-        }
-    }
+            <span class="nx">public</span> <span class="nf">LinkedListIterator</span><span class="p">(</span><span class="kt">int</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">this</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="p">(</span><span class="nx">index</span> <span class="o">==</span> <span class="nx">N</span><span class="p">)</span> <span class="err">?</span> <span class="nx">null</span> <span class="p">:</span> <span class="nf">node</span><span class="p">(</span><span class="nx">index</span><span class="p">);</span>
+                <span class="nx">this</span><span class="p">.</span><span class="nx">nextIndex</span> <span class="p">=</span> <span class="nx">index</span><span class="p">;</span>
+            <span class="p">}</span>
 
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">hasNext</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">nextIndex</span> <span class="p">&lt;</span> <span class="nx">N</span><span class="p">;</span>
+            <span class="p">}</span>
 
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">next</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(!</span><span class="nf">hasNext</span><span class="p">())</span> <span class="p">{</span>
+                    <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">NoSuchElementException</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="nx">lastReturned</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
+                <span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
+                <span class="nx">nextIndex</span><span class="o">++</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">lastReturned</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
+            <span class="p">}</span>
 
-    /**
-    * 
-    */
-    public class DlinkTests {
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">hasPrevious</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">nextIndex</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
 
-        public static void test_int() {
-            System.out.println(&#34;\n----test_int----&#34;);
-            DoubleLink&lt;Integer&gt; dlnk = new DoubleLink&lt;&gt;();
-            dlnk.insert(0, 20);
-            dlnk.appendLast(10);
-            dlnk.insertFirst(30);
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">previous</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(!</span><span class="nf">hasPrevious</span><span class="p">())</span> <span class="p">{</span>
+                    <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">NoSuchElementException</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="nx">lastReturned</span> <span class="p">=</span> <span class="nx">next</span> <span class="p">=</span> <span class="p">(</span><span class="nx">next</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="err">?</span> <span class="nx">last</span> <span class="p">:</span> <span class="nx">next</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
+                <span class="nx">nextIndex</span><span class="o">--</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nx">lastReturned</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
+            <span class="p">}</span>
 
-            System.out.printf(&#34;isEmpty()=%b\n&#34;, dlnk.isEmpty());
-            System.out.printf(&#34;size()=%d\n&#34;, dlnk.size());
-            System.out.println(dlnk.toString());
-        }
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="kt">int</span> <span class="nf">nextIndex</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">nextIndex</span><span class="p">;</span>
+            <span class="p">}</span>
 
-        public static void test_string() {
-            System.out.println(&#34;\n----test_string----&#34;);
-            DoubleLink&lt;String&gt; dlnk = new DoubleLink&lt;&gt;();
-            dlnk.insert(0, &#34;ten&#34;);
-            dlnk.appendLast(&#34;twenty&#34;);
-            dlnk.insertFirst(&#34;thirty&#34;);
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="kt">int</span> <span class="nf">previousIndex</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">nextIndex</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
 
-            System.out.printf(&#34;isEmpty()=%b\n&#34;, dlnk.isEmpty());
-            System.out.printf(&#34;size()=%d\n&#34;, dlnk.size());
-            System.out.println(dlnk.toString());
-        }
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="nx">void</span> <span class="nf">remove</span><span class="p">()</span> <span class="p">{</span>
+            <span class="p">}</span>
 
-        private static class Student {
-            private int id;
-            private String name;
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="nx">void</span> <span class="nf">set</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">lastReturned</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">IllegalStateException</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="nx">lastReturned</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">item</span><span class="p">;</span>
+            <span class="p">}</span>
 
-            public Student(int id, String name) {
-                this.id = id;
-                this.name = name;
-            }
+            <span class="err">@</span><span class="nx">Override</span>
+            <span class="nx">public</span> <span class="nx">void</span> <span class="nf">add</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-            @Override
-            public String toString() {
-                return &#34;[&#34;+id+&#34;, &#34;+name+&#34;]&#34;;
-            }
-        }
+        <span class="nx">public</span> <span class="nx">ListIterator</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nf">listIterator</span><span class="p">(</span><span class="kt">int</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">new</span> <span class="nf">LinkedListIterator</span><span class="p">(</span><span class="nx">index</span><span class="p">);</span>
+        <span class="p">}</span>
 
-        private static Student[] students = new Student[]{
-            new Student(10, &#34;sky&#34;),
-            new Student(20, &#34;joy&#34;),
-            new Student(30, &#34;vic&#34;),
-            new Student(40, &#34;dan&#34;),
-        };
+        <span class="err">@</span><span class="nx">Test</span>
+        <span class="nx">public</span> <span class="nx">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">LinkedList</span><span class="p">&lt;</span><span class="nx">Integer</span><span class="p">&gt;</span> <span class="nx">linkedList</span> <span class="p">=</span> <span class="nx">new</span> <span class="nx">LinkedList</span><span class="p">&lt;</span><span class="nx">Integer</span><span class="p">&gt;();</span>
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
-        private static void test_object() {
-            System.out.println(&#34;\n----test_object----&#34;);
-            DoubleLink&lt;Student&gt; dlnk = new DoubleLink&lt;&gt;();
-            dlnk.insert(0, students[1]);
-            dlnk.appendLast(students[0]);
-            dlnk.insertFirst(students[2]);
+            <span class="nx">ListIterator</span><span class="p">&lt;</span><span class="nx">Integer</span><span class="p">&gt;</span> <span class="nx">iterable</span> <span class="p">=</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">listIterator</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+            <span class="nf">while</span> <span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">hasNext</span><span class="p">()){</span>
+                <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">next</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %b\n&#34;</span><span class="p">,</span> <span class="s">&#34;isEmpty&#34;</span><span class="p">,</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">()));</span>
+            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %d\n&#34;</span><span class="p">,</span> <span class="s">&#34;previous&#34;</span><span class="p">,</span> <span class="nx">iterable</span><span class="p">.</span><span class="nf">previous</span><span class="p">()));</span>
 
-            System.out.printf(&#34;isEmpty()=%b\n&#34;, dlnk.isEmpty());
-            System.out.printf(&#34;size()=%d\n&#34;, dlnk.size());
-            System.out.println(dlnk.toString());
-        }
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">enqueue</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">enqueue</span><span class="p">(</span><span class="mi">19</span><span class="p">);</span>
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">enqueue</span><span class="p">(</span><span class="mi">13</span><span class="p">);</span>
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">dequeue</span><span class="p">();</span>
+            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
 
-        public static void main(String[] args) {
-            //test_int();// isEmpty = false; size() = 3; [30, 20, 10]
-            //test_string(); // isEmpty = false; size() = 3; [thirty, ten, twenty]
-            test_object(); // isEmpty = false; size() = 3; [[30, vic], [20, joy], [10, sky]]
-        }
-
-    }</pre></td></tr></table>
+            <span class="nx">iterable</span> <span class="p">=</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">listIterator</span><span class="p">(</span><span class="nx">linkedList</span><span class="p">.</span><span class="nf">size</span><span class="p">());</span>
+            <span class="nf">while</span> <span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">hasPrevious</span><span class="p">()){</span>
+                <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">previous</span><span class="p">());</span>
+            <span class="p">}</span>
+            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %b\n&#34;</span><span class="p">,</span> <span class="s">&#34;isEmpty&#34;</span><span class="p">,</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">()));</span>
+            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %d\n&#34;</span><span class="p">,</span> <span class="s">&#34;next&#34;</span><span class="p">,</span> <span class="nx">iterable</span><span class="p">.</span><span class="nf">next</span><span class="p">()));</span>
+        <span class="p">}</span>
+    <span class="p">}</span></pre></td></tr></table>
 </div>
 </div>
 <h1 id="golang实现双链表">Golang实现双链表</h1>

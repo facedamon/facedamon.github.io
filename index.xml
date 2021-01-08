@@ -6,7 +6,7 @@
     <description>Recent content on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 02 Jan 2021 17:28:56 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 08 Jan 2021 16:14:56 +0800</lastBuildDate>
     
 	<atom:link href="http://facedamon.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -21,11 +21,56 @@
     </item>
     
     <item>
-      <title>[多线程 | 乐观锁与悲观锁]</title>
-      <link>http://facedamon.github.io/post/thread/sync/</link>
+      <title>[Java | HashMap]</title>
+      <link>http://facedamon.github.io/post/java/collection/hashmap/</link>
+      <pubDate>Fri, 08 Jan 2021 16:14:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/hashmap/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 Hash</description>
+    </item>
+    
+    <item>
+      <title>[Java | LinkedList]</title>
+      <link>http://facedamon.github.io/post/java/collection/linkedlist/</link>
+      <pubDate>Thu, 07 Jan 2021 19:10:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/linkedlist/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;LinkedList是基于链表实现的，所以先讲解一下什么是链表。链表原先是C/C++的概念，是一种线性的存储结构</description>
+    </item>
+    
+    <item>
+      <title>[Java | CopyOnWriteArrayList]</title>
+      <link>http://facedamon.github.io/post/java/collection/copyonwritearraylist/</link>
+      <pubDate>Thu, 07 Jan 2021 18:34:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/copyonwritearraylist/</guid>
+      <description>摘要 CopyOnWriteArrayList位于java.util.concurrent包下，可想而知，这个类是为并发而设计的。 CopyOn</description>
+    </item>
+    
+    <item>
+      <title>[Java | ArrayList]</title>
+      <link>http://facedamon.github.io/post/java/collection/arraylist/</link>
+      <pubDate>Thu, 07 Jan 2021 18:04:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/arraylist/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 ArrayList是否允许null 允许 ArrayList是否允许重</description>
+    </item>
+    
+    <item>
+      <title>[Java | 集合框架概述]</title>
+      <link>http://facedamon.github.io/post/java/collection/%E6%9E%B6%E6%9E%84/</link>
+      <pubDate>Wed, 06 Jan 2021 18:04:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/%E6%9E%B6%E6%9E%84/</guid>
+      <description>集合框架图 所有集合类都位于java.util包下。Java集合类主要由两个接口派生：Collection和Map，Collection和Ma</description>
+    </item>
+    
+    <item>
+      <title>[Java | 乐观锁与悲观锁]</title>
+      <link>http://facedamon.github.io/post/java/thread/sync/</link>
       <pubDate>Sat, 02 Jan 2021 17:28:56 +0800</pubDate>
       
-      <guid>http://facedamon.github.io/post/thread/sync/</guid>
+      <guid>http://facedamon.github.io/post/java/thread/sync/</guid>
       <description>摘要 &amp;emsp;&amp;emsp;乐观锁和悲观锁是两种思想，用于解决并发场景下的数据竞争问题。 乐观锁：乐观锁在操作数据时非常乐观，认为别人不会同时</description>
     </item>
     
@@ -48,11 +93,11 @@
     </item>
     
     <item>
-      <title>[什么是线程安全]</title>
-      <link>http://facedamon.github.io/post/thread/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</link>
+      <title>[Java | 什么是线程安全]</title>
+      <link>http://facedamon.github.io/post/java/thread/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</link>
       <pubDate>Thu, 24 Dec 2020 16:25:56 +0800</pubDate>
       
-      <guid>http://facedamon.github.io/post/thread/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</guid>
+      <guid>http://facedamon.github.io/post/java/thread/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</guid>
       <description>转载自 https://www.cnblogs.com/lixinjie/p/a-answer-about-thread-safety-in-a-interview.html 不是线程的安全 &amp;emsp;&amp;emsp;面试官问：“什么是线程安全”，如果你不能很好的回答，那就请往下看吧。 &amp;emsp;&amp;emsp;论</description>
     </item>
     
