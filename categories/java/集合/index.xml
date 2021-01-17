@@ -6,10 +6,46 @@
     <description>Recent content in Java/集合 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 08 Jan 2021 16:14:56 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 11 Jan 2021 16:26:56 +0800</lastBuildDate>
     
 	<atom:link href="http://facedamon.github.io/categories/java/%E9%9B%86%E5%90%88/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Java | TreeMap]</title>
+      <link>http://facedamon.github.io/post/java/collection/treemap/</link>
+      <pubDate>Mon, 11 Jan 2021 16:26:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/treemap/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;之前的文章讲解了两种Map，分别是HashMap与LinkedHashMap，它们保证了以O(1)的时间复杂度进</description>
+    </item>
+    
+    <item>
+      <title>[Java | LinkedHashMap]</title>
+      <link>http://facedamon.github.io/post/java/collection/linkedhashmap/</link>
+      <pubDate>Mon, 11 Jan 2021 14:34:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/linkedhashmap/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;大多数情况下，只要不涉及线程安全问题，Map基本都可以使用HashMap，不过HashMap有一个问题，就是迭代</description>
+    </item>
+    
+    <item>
+      <title>[Java | ConcurrentHashMap]</title>
+      <link>http://facedamon.github.io/post/java/collection/concurrenthashmap/</link>
+      <pubDate>Sat, 09 Jan 2021 18:11:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/concurrenthashmap/</guid>
+      <description>背景 线程不安全的HashMap &amp;emsp;&amp;emsp;因为多线程环境下，使用HashMap扩容操作会引起死循环，导致CPU利用率接近100%</description>
+    </item>
+    
+    <item>
+      <title>[Java | HashMap引发死循环]</title>
+      <link>http://facedamon.github.io/post/java/collection/hashmaprehash/</link>
+      <pubDate>Sat, 09 Jan 2021 15:14:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/collection/hashmaprehash/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;上一篇文章了解了HashMap的实现原理，讲到了HashMap不是线程安全的。那么HashMap在多线程环境下又</description>
+    </item>
     
     <item>
       <title>[Java | HashMap]</title>

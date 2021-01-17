@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2021-01-06T18:04:56&#43;08:00" />
 <meta itemprop="dateModified" content="2021-01-06T18:04:56&#43;08:00" />
-<meta itemprop="wordCount" content="5462">
+<meta itemprop="wordCount" content="6126">
 
 
 
@@ -132,8 +132,8 @@
         <div class="post-category">
             <a href="/categories/java/%E9%9B%86%E5%90%88/"> Java/集合 </a>
             </div>
-          <span class="more-meta"> 约 5462 字 </span>
-          <span class="more-meta"> 预计阅读 11 分钟 </span>
+          <span class="more-meta"> 约 6126 字 </span>
+          <span class="more-meta"> 预计阅读 13 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -316,6 +316,17 @@
 <p>&emsp;&emsp;TreeMap判断两个元素相等的标准：两个key通过compareTo()方法返回0，则认为这两个key相等。</p>
 
 <p>&emsp;&emsp;关于TreeMap的详细介绍，请参见<a href="http://facedamon.github.io/post/java/collection/treemap/">[Java | TreeMap]</a></p>
+
+<blockquote>
+<p>HashMap、Hashtable、LinkedHashMap和TreeMap比较</p>
+</blockquote>
+
+<ol>
+<li>HashMap是一个最常用的Map，<strong>它根据键的HashCode值存储数据</strong>，根据键可以直接获取它的值，具有很快的访问速度O(1)。遍历时，<strong>取得数据的顺序是完全随机的。</strong>HashMap最多只允许<strong>一条记录的键为NULL</strong>，允许多条记录的值为NULL，HashMap<strong>不支持线程同步</strong>。</li>
+<li>Hashtable与HashMap类似，不同的是：<strong>它不允许记录的键或者值为空；支持线程同步</strong>，采用全表锁定的方式保证线程安全，因此也导致了Hashtable在写入时会比较慢</li>
+<li>LinkedHashMap<strong>保存了记录的插入顺序</strong>，在使用Iterator遍历LinkedHashMap时，<strong>先得到的记录肯定是先插入的，</strong>也可以在构造时带LRU参数，按照读取顺序排序。<strong>如果需要输出的顺序和输入时相同，那么用LinkedHashMap可以实现</strong>。LinkedHashMap实现与HashMap的不同在于，后者维护者一个运行于所有条目双向链表，此链表定义了迭代顺序，该迭代顺序可以是插入顺序或者访问顺序。它继承于HashMap、底层使用哈希表于双向链表来保存所有元素，其基本操作与父类HashMap相似，它通过重写父类相关的方法，来实现自己的链接特性。</li>
+<li>TreeMap实现了SortMap接口，内部实现是<strong>红黑树</strong>。能够把它保存的记录<strong>根据键排序，默认是按键值的升序排序</strong>，也可以<strong>指定排序的比较器</strong>，当用Iterator遍历TreeMap时，得到的记录是排序过的。<strong>TreeMap不允许key的值为NULL，非同步</strong>。</li>
+</ol>
 
 <h2 id="iterator与listiterator">Iterator与ListIterator</h2>
 

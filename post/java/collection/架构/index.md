@@ -120,6 +120,13 @@
 
 &emsp;&emsp;关于TreeMap的详细介绍，请参见[[Java | TreeMap]](http://facedamon.github.io/post/java/collection/treemap/)
 
+> HashMap、Hashtable、LinkedHashMap和TreeMap比较
+
+1. HashMap是一个最常用的Map，**它根据键的HashCode值存储数据**，根据键可以直接获取它的值，具有很快的访问速度O(1)。遍历时，**取得数据的顺序是完全随机的。**HashMap最多只允许**一条记录的键为NULL**，允许多条记录的值为NULL，HashMap**不支持线程同步**。
+2. Hashtable与HashMap类似，不同的是：**它不允许记录的键或者值为空；支持线程同步**，采用全表锁定的方式保证线程安全，因此也导致了Hashtable在写入时会比较慢
+3. LinkedHashMap**保存了记录的插入顺序**，在使用Iterator遍历LinkedHashMap时，**先得到的记录肯定是先插入的，**也可以在构造时带LRU参数，按照读取顺序排序。**如果需要输出的顺序和输入时相同，那么用LinkedHashMap可以实现**。LinkedHashMap实现与HashMap的不同在于，后者维护者一个运行于所有条目双向链表，此链表定义了迭代顺序，该迭代顺序可以是插入顺序或者访问顺序。它继承于HashMap、底层使用哈希表于双向链表来保存所有元素，其基本操作与父类HashMap相似，它通过重写父类相关的方法，来实现自己的链接特性。
+4. TreeMap实现了SortMap接口，内部实现是**红黑树**。能够把它保存的记录**根据键排序，默认是按键值的升序排序**，也可以**指定排序的比较器**，当用Iterator遍历TreeMap时，得到的记录是排序过的。**TreeMap不允许key的值为NULL，非同步**。
+
 ## Iterator与ListIterator
 
 ### Iterator
