@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[Java | 线程等待于唤醒] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/java/thread/3.wait/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[Java | 线程等待于唤醒]" />
+<meta property="og:description" content="摘要 &emsp;&emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/java/thread/3.wait/" />
+<meta property="article:published_time" content="2021-01-21T15:50:56&#43;08:00"/>
+<meta property="article:modified_time" content="2021-01-21T15:50:56&#43;08:00"/>
+
+<meta itemprop="name" content="[Java | 线程等待于唤醒]">
+<meta itemprop="description" content="摘要 &emsp;&emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作">
+
+
+<meta itemprop="datePublished" content="2021-01-21T15:50:56&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-21T15:50:56&#43;08:00" />
+<meta itemprop="wordCount" content="8233">
+
+
+
+<meta itemprop="keywords" content="Java," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Java | 线程等待于唤醒]"/>
+<meta name="twitter:description" content="摘要 &emsp;&emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Java | 线程等待于唤醒]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-21 </span>
+        <div class="post-category">
+            <a href="/categories/java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"> Java/多线程 </a>
+            </div>
+          <span class="more-meta"> 约 8233 字 </span>
+          <span class="more-meta"> 预计阅读 17 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#摘要">摘要</a>
+<ul>
+<li><a href="#wait和notify示例">wait和notify示例</a></li>
+<li><a href="#wait-long-timeout-和-notify">wait(long timeout) 和 notify</a></li>
+<li><a href="#wait-和-notifyall">wait() 和 notifyAll()</a></li>
+</ul></li>
+<li><a href="#为什么notify-wait等函数定义在object-而不是thread中">为什么notify, wait等函数定义在Object，而不是Thread中</a></li>
+<li><a href="#yield和wait的比较">yield和wait的比较</a></li>
+<li><a href="#wait与sleep的比较">wait与sleep的比较</a></li>
+<li><a href="#join">join</a>
+<ul>
+<li><a href="#join源码">join源码</a></li>
+<li><a href="#join示例">join示例</a></li>
+</ul></li>
+<li><a href="#interrupt">interrupt</a>
+<ul>
+<li><a href="#终止线程的方式">终止线程的方式</a>
+<ul>
+<li><a href="#终止处于阻塞状态的线程">终止处于阻塞状态的线程</a></li>
+<li><a href="#终止处于运行状态的线程">终止处于运行状态的线程</a></li>
+<li><a href="#终止线程的示例">终止线程的示例</a></li>
+</ul></li>
+<li><a href="#interrupted-和isinterrupted">interrupted()和isInterrupted()</a></li>
+</ul></li>
+<li><a href="#线程优先级">线程优先级</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="摘要">摘要</h1>
+
+<p>&emsp;&emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。<strong>wait()的作用是让当前线程进入等待状态，同时，wait()也会让当前线程释放它所持有的锁</strong>。而notify()和notifyAll()的作用，则是<strong>唤醒当前对象上的等待线程</strong>；notify()是唤醒单个线程，而notifyAll()是唤醒所有的线程。</p>
+
+<ul>
+<li>notify 唤醒在此对象监视器上等待的单个线程</li>
+<li>notifyAll 唤醒在此对象监视器上等待的所有线程</li>
+<li>wait 让‘当前线程’处于“等待(阻塞)状态”，直到其它线程调用此对象的notify或notifyAll方法，当前线程被唤醒进入就绪状态</li>
+<li>wait(long timeout) 让当前线程处于“等待(阻塞状态)”，直到其它线程调用此对象的notify或notifyAll方法，或者超过指定的时间量，当前线程被唤醒进入就绪状态</li>
+<li>wait(long timeout, int nanos) 让当前线程处于“等待(阻塞)状态”，直到其它线程调用此对象的notify或notifyAll方法，或者其它某个线程中断当前线程，或者已经超过某个实际时间量，当前线程被唤醒进入就绪状态</li>
+</ul>
+
+<h2 id="wait和notify示例">wait和notify示例</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// WaitTest.java的源码
+class ThreadA extends Thread{
+
+    public ThreadA(String name) {
+        super(name);
+    }
+
+    public void run() {
+        synchronized (this) {
+            System.out.println(Thread.currentThread().getName()+&#34; call notify()&#34;);
+            // 唤醒当前的wait线程
+            notify();
+        }
+    }
+}
+
+public class WaitTest {
+
+    public static void main(String[] args) {
+
+        ThreadA t1 = new ThreadA(&#34;t1&#34;);
+
+        synchronized(t1) {
+            try {
+                // 启动“线程t1”
+                System.out.println(Thread.currentThread().getName()+&#34; start t1&#34;);
+                t1.start();
+
+                // 主线程等待t1通过notify()唤醒。
+                System.out.println(Thread.currentThread().getName()+&#34; wait()&#34;);
+                t1.wait();
+
+                System.out.println(Thread.currentThread().getName()+&#34; continue&#34;);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">main start t1
+main wait()
+t1 call notify()
+main continue</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如下图，说明了主线程和线程1的流程</p>
+
+<ol>
+<li>图中&rdquo;主线程&rdquo;代表&rdquo;主线程main&rdquo;，&rdquo;线程t1&rdquo;代表WaitTest中启动的&rdquo;线程t1&rdquo;，而&rdquo;锁&rdquo;代表&rdquo;t1这个对象的同步锁&rdquo;</li>
+<li>&ldquo;主线程&rdquo;通过new ThreadA(&ldquo;t1&rdquo;)新建&rdquo;线程t1&rdquo;，随后通过synchronized(t1)获取&rdquo;t1对象的同步锁&rdquo;，然后调用t1.start启动&rdquo;线程t1&rdquo;</li>
+<li>&ldquo;主线程&rdquo;执行t1.wait释放&rdquo;t1对象的锁&rdquo;并进入&rdquo;等待阻塞状态&rdquo;。等待t1对象的线程通过notify将其唤醒</li>
+<li>&ldquo;线程t1&rdquo;运行后，通过synchronized(this)获取&rdquo;当前对象的锁&rdquo;，接着调用notify唤醒&rdquo;当前对象上的等待线程&rdquo;，也就是唤醒&rdquo;主线程&rdquo;</li>
+<li>&ldquo;线程t1&rdquo;运行完毕之后，释放&rdquo;当前对象的锁&rdquo;。紧接着，&rdquo;主线程&rdquo;获取&rdquo;t1对象的锁&rdquo;，然后接着运行。</li>
+</ol>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/juc/18183712-f04899f92aaa43b6a33a85fecfa60a9d.png" alt="avatar" /></p>
+
+<blockquote>
+<p>t1.wait()应该是让“线程t1”等待；但是，为什么却是让“主线程main”等待了呢？</p>
+</blockquote>
+
+<p>&emsp;&emsp;“当前线程”在调用wait时，必须拥有该对象的同步锁。该线程调用wait之后，会释放该锁；然后一直等待直到“其它线程”调用对象的同步锁notify或notifyAll方法。然后，该线程继续等待直到它重新获取&rdquo;该对象的同步锁&rdquo;，就可以接着运行</p>
+
+<p>&emsp;&emsp;<strong>jdk的解释中，说wait()的作用是让“当前线程”等待，而“当前线程”是指正在cpu上运行的线程！</strong></p>
+
+<p>&emsp;&emsp;这也意味着，虽然t1.wait()是通过“线程t1”调用的wait()方法，但是调用t1.wait()的地方是在“主线程main”中。而主线程必须是“当前线程”，也就是运行状态，才可以执行t1.wait()。所以，此时的“当前线程”是“主线程main”！因此，t1.wait()是让“主线程”等待，而不是“线程t1”！</p>
+
+<h2 id="wait-long-timeout-和-notify">wait(long timeout) 和 notify</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// WaitTimeoutTest.java的源码
+class ThreadA extends Thread{
+
+    public ThreadA(String name) {
+        super(name);
+    }
+
+    public void run() {
+        System.out.println(Thread.currentThread().getName() + &#34; run &#34;);
+        // 死循环，不断运行。
+        while(true)
+            ;
+    }
+}
+
+public class WaitTimeoutTest {
+
+    public static void main(String[] args) {
+
+        ThreadA t1 = new ThreadA(&#34;t1&#34;);
+
+        synchronized(t1) {
+            try {
+                // 启动“线程t1”
+                System.out.println(Thread.currentThread().getName() + &#34; start t1&#34;);
+                t1.start();
+
+                // 主线程等待t1通过notify()唤醒 或 notifyAll()唤醒，或超过3000ms延时；然后才被唤醒。
+                System.out.println(Thread.currentThread().getName() + &#34; call wait &#34;);
+                t1.wait(3000);
+
+                System.out.println(Thread.currentThread().getName() + &#34; continue&#34;);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">main start t1
+main call wait 
+t1 run                  // 大约3秒之后...输出“main continue”
+main continue</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;如下图，说明了主线程和线程1的流程</p>
+
+<ol>
+<li>图中&rdquo;主线程&rdquo;代表&rdquo;主线程main&rdquo;，&rdquo;线程t1&rdquo;代表WaitTest中启动的&rdquo;线程t1&rdquo;，而&rdquo;锁&rdquo;代表&rdquo;t1这个对象的同步锁&rdquo;</li>
+<li>主线程main执行t1.start()启动“线程t1”。</li>
+<li>主线程main执行t1.wait(3000)，此时，主线程进入“阻塞状态”。需要“用于t1对象锁的线程通过notify() 或者 notifyAll()将其唤醒” 或者 “超时3000ms之后”，主线程main才进入到“就绪状态”，然后才可以运行。</li>
+<li>“线程t1”运行之后，进入了死循环，一直不断的运行。</li>
+<li>超时3000ms之后，主线程main会进入到“就绪状态”，然后接着进入“运行状态”。</li>
+</ol>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/juc/18183848-d4c16bf2760847afa4fede6a9d959083.png" alt="avatar" /></p>
+
+<h2 id="wait-和-notifyall">wait() 和 notifyAll()</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public class NotifyAllTest {
+
+    private static Object obj = new Object();
+    public static void main(String[] args) {
+
+        ThreadA t1 = new ThreadA(&#34;t1&#34;);
+        ThreadA t2 = new ThreadA(&#34;t2&#34;);
+        ThreadA t3 = new ThreadA(&#34;t3&#34;);
+        t1.start();
+        t2.start();
+        t3.start();
+
+        try {
+            System.out.println(Thread.currentThread().getName()+&#34; sleep(3000)&#34;);
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        synchronized(obj) {
+            // 主线程等待唤醒。
+            System.out.println(Thread.currentThread().getName()+&#34; notifyAll()&#34;);
+            obj.notifyAll();
+        }
+    }
+
+    static class ThreadA extends Thread{
+
+        public ThreadA(String name){
+            super(name);
+        }
+
+        public void run() {
+            synchronized (obj) {
+                try {
+                    // 打印输出结果
+                    System.out.println(Thread.currentThread().getName() + &#34; wait&#34;);
+
+                    // 唤醒当前的wait线程
+                    obj.wait();
+
+                    // 打印输出结果
+                    System.out.println(Thread.currentThread().getName() + &#34; continue&#34;);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 wait
+main sleep(3000)
+t3 wait
+t2 wait
+main notifyAll()
+t2 continue
+t3 continue
+t1 continue</pre></td></tr></table>
+</div>
+</div>
+<ol>
+<li>主线程中新建并且启动了3个线程&rdquo;t1&rdquo;, &ldquo;t2&rdquo;和&rdquo;t3&rdquo;。</li>
+<li>主线程通过sleep(3000)休眠3秒。在主线程休眠3秒的过程中，我们假设&rdquo;t1&rdquo;, &ldquo;t2&rdquo;和&rdquo;t3&rdquo;这3个线程都运行了。以&rdquo;t1&rdquo;为例，当它运行的时候，它会执行obj.wait()等待其它线程通过notify()或额nofityAll()来唤醒它；相同的道理，&rdquo;t2&rdquo;和&rdquo;t3&rdquo;也会等待其它线程通过nofity()或nofityAll()来唤醒它们。</li>
+<li>主线程休眠3秒之后，接着运行。执行 obj.notifyAll() 唤醒obj上的等待线程，即唤醒&rdquo;t1&rdquo;, &ldquo;t2&rdquo;和&rdquo;t3&rdquo;这3个线程。 紧接着，主线程的synchronized(obj)运行完毕之后，主线程释放“obj锁”。这样，&rdquo;t1&rdquo;, &ldquo;t2&rdquo;和&rdquo;t3&rdquo;就可以获取“obj锁”而继续运行了！</li>
+</ol>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/juc/18183923-95275c066212410f96181704a681f453.png" alt="avatar" /></p>
+
+<h1 id="为什么notify-wait等函数定义在object-而不是thread中">为什么notify, wait等函数定义在Object，而不是Thread中</h1>
+
+<p>&emsp;&emsp;Object中的wait(), notify()等函数，和synchronized一样，会对“对象的同步锁”进行操作。</p>
+
+<p>&emsp;&emsp;wait会使“当前线程”等待，因为线程进入等待状态，所以线程应该释放它持有的“同步锁”，否则其它线程获取不到该“同步锁”而无法运行。那么，线程调用wait之后，会释放它所持有的“同步锁”；而且，根据前面的介绍，我们知道：等待线程可以被notify或notifyAll唤醒。现在，思考一个问题：<strong>notify是根据什么唤醒等待线程的？或者说，wait等待线程和notify之间是通过什么关联起来的？</strong>。答案是：“对象同步锁”。</p>
+
+<p>&emsp;&emsp;负责唤醒等待线程的那个线程(我们称之为唤醒线程)，它只有在获取“该对象的同步锁”(这里的同步锁必须和等待线程的同步锁是同一个)，并且调用notify或notifyAll方法之后，才能唤醒等待线程。虽然，等待线程被唤醒；但是，它不能立即执行，因为唤醒线程还持有“该对象的同步锁”。必须等待唤醒线程释放“对象的同步锁”之后，等待线程才能获取到“对象的同步锁”而继续执行</p>
+
+<p>&emsp;&emsp;总之，notify, wait依赖于&rdquo;同步锁&rdquo;，而&rdquo;同步锁&rdquo;是对象锁持有，并且每个对象有且仅有一个，所以，它们被定义在Object中。</p>
+
+<h1 id="yield和wait的比较">yield和wait的比较</h1>
+
+<ul>
+<li>wait是让当先线程由&rdquo;运行状态&rdquo;进入到“等待阻塞状态”，而yield是让线程由&rdquo;运行状态&rdquo;进入到&rdquo;就绪状态&rdquo;</li>
+<li>wait会让当前线程释放它所持有对象的同步锁，而yield方法不会释放锁</li>
+</ul>
+
+<h1 id="wait与sleep的比较">wait与sleep的比较</h1>
+
+<ul>
+<li>wait是让当前线程由“运行状态”进入到“等待(阻塞)状态”，而sleep是让线程由“运行状态”进入到“休眠(阻塞)状态”</li>
+<li>wait会释放对象的同步锁，而sleep则不会</li>
+</ul>
+
+<h1 id="join">join</h1>
+
+<p>&emsp;&emsp;join的作用：让&rdquo;主线程&rdquo;等待&rdquo;自线程&rdquo;结束后才能继续运行。我们通过简单例子理解一下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// 主线程
+public class Father extends Thread {
+    public void run() {
+        Son s = new Son();
+        s.start();
+        s.join();
+        ...
+    }
+}
+// 子线程
+public class Son extends Thread {
+    public void run() {
+        ...
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;上面的有两个类Father(主线程类)和Son(子线程类)。因为Son是在Father中创建并启动的，所以，Father是主线程类，Son是子线程类。在Father主线程中，通过new Son()新建“子线程s”。接着通过s.start()启动“子线程s”，并且调用s.join()。在调用s.join()之后，Father主线程会一直等待，直到“子线程s”运行完毕；在“子线程s”运行完毕之后，Father主线程才能接着运行。 这也就是我们所说的“join()的作用，是让主线程会等待子线程结束之后才能继续运行”！</p>
+
+<h2 id="join源码">join源码</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public final void join() throws InterruptedException {
+    join(0);
+}
+
+public final synchronized void join(long millis)
+throws InterruptedException {
+    long base = System.currentTimeMillis();
+    long now = 0;
+
+    if (millis &lt; 0) {
+        throw new IllegalArgumentException(&#34;timeout value is negative&#34;);
+    }
+
+    if (millis == 0) {
+        while (isAlive()) {
+            wait(0);
+        }
+    } else {
+        while (isAlive()) {
+            long delay = millis - now;
+            if (delay &lt;= 0) {
+                break;
+            }
+            wait(delay);
+            now = System.currentTimeMillis() - base;
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;从代码中，我们可以发现。当millis==0时，会进入while(isAlive())循环；<strong>即只要子线程是活的，主线程就不停的等待</strong>。我们根据上面解释join()作用时的代码来理解join()的用法！</p>
+
+<p>&emsp;&emsp;问题：虽然s.join()被调用的地方是发生在“Father主线程”中，但是s.join()是通过“子线程s”去调用的join()。那么，join()方法中的isAlive()应该是判断“子线程s”是不是Alive状态；对应的wait(0)也应该是“让子线程s”等待才对。但如果是这样的话，s.join()的作用怎么可能是“让主线程等待，直到子线程s完成为止”呢，应该是让&rdquo;子线程等待才对(因为调用子线程对象s的wait方法嘛)&ldquo;？</p>
+
+<p>&emsp;&emsp;答案：wait()的作用是让“当前线程”等待，而这里的“当前线程”是指当前在CPU上运行的线程。所以，虽然是调用子线程的wait()方法，但是它是通过“主线程”去调用的；所以，休眠的是主线程，而不是“子线程”！</p>
+
+<h2 id="join示例">join示例</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// JoinTest.java的源码
+public class JoinTest{ 
+
+    public static void main(String[] args){ 
+        try {
+            ThreadA t1 = new ThreadA(&#34;t1&#34;); // 新建“线程t1”
+
+            t1.start();                     // 启动“线程t1”
+            t1.join();                        // 将“线程t1”加入到“主线程main”中，并且“主线程main()会等待它的完成”
+            System.out.printf(&#34;%s finish\n&#34;, Thread.currentThread().getName()); 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    } 
+
+    static class ThreadA extends Thread{
+
+        public ThreadA(String name){ 
+            super(name); 
+        } 
+        public void run(){ 
+            System.out.printf(&#34;%s start\n&#34;, this.getName()); 
+
+            // 延时操作
+            for(int i=0; i &lt;1000000; i++)
+            ;
+
+            System.out.printf(&#34;%s finish\n&#34;, this.getName()); 
+        } 
+    } 
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 start
+t1 finish
+main finish</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;说明：</p>
+
+<ol>
+<li>在“主线程main”中通过 new ThreadA(&ldquo;t1&rdquo;) 新建“线程t1”。 接着，通过 t1.start() 启动“线程t1”，并执行t1.join()。</li>
+<li>执行t1.join()之后，“主线程main”会进入“阻塞状态”等待t1运行结束。“子线程t1”结束之后，会唤醒“主线程main”，“主线程”重新获取cpu执行权，继续运行。</li>
+</ol>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/juc/18184312-a72a58e2bda54b17bf669f325ecda377.png" alt="avatar" /></p>
+
+<h1 id="interrupt">interrupt</h1>
+
+<p>&emsp;&emsp;interrupt()的作用是中断本线程。</p>
+
+<p>&emsp;&emsp;本线程中断自己是被允许的；其它线程调用本线程的interrupt()方法时，会通过checkAccess()检查权限。这有可能抛出SecurityException异常。</p>
+
+<p>&emsp;&emsp;如果本线程是处于阻塞状态：调用线程的wait(), wait(long)或wait(long, int)会让它进入等待(阻塞)状态，或者调用线程的join(), join(long), join(long, int), sleep(long), sleep(long, int)也会让它进入阻塞状态。若线程在阻塞状态时，调用了它的interrupt()方法，那么它的“中断状态”会被清除并且会收到一个InterruptedException异常。例如，线程通过wait()进入阻塞状态，此时通过interrupt()中断该线程；调用interrupt()会立即将线程的中断标记设为“true”，但是由于线程处于阻塞状态，所以该“中断标记”会立即被清除为“false”，同时，会产生一个InterruptedException的异常。</p>
+
+<p>&emsp;&emsp;如果线程被阻塞在一个Selector选择器中，那么通过interrupt()中断它时；线程的中断标记会被设置为true，并且它会立即从选择操作中返回。</p>
+
+<p>&emsp;&emsp;如果不属于前面所说的情况，那么通过interrupt()中断线程时，它的中断标记会被设置为“true”。</p>
+
+<p>&emsp;&emsp;中断一个“已终止的线程”不会产生任何操作。</p>
+
+<h2 id="终止线程的方式">终止线程的方式</h2>
+
+<p>&emsp;&emsp;下面，我先分别讨论线程在“阻塞状态”和“运行状态”的终止方式，然后再总结出一个通用的方式。</p>
+
+<h3 id="终止处于阻塞状态的线程">终止处于阻塞状态的线程</h3>
+
+<p>&emsp;&emsp;当线程由于被调用了sleep(), wait(), join()等方法而进入阻塞状态；若此时调用线程的interrupt()将线程的中断标记设为true。由于处于阻塞状态，中断标记会被清除，同时产生一个InterruptedException异常。将InterruptedException放在适当的位置就能终止线程，形式如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">@Override
+public void run() {
+    try {
+        while (true) {
+            // 执行任务...
+        }
+    } catch (InterruptedException ie) {  
+        // 由于产生InterruptedException异常，退出while(true)循环，线程终止！
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<h3 id="终止处于运行状态的线程">终止处于运行状态的线程</h3>
+
+<p>&emsp;&emsp;通常，我们通过“标记”方式终止处于“运行状态”的线程。其中，包括“中断标记”和“额外添加标记”。</p>
+
+<ul>
+<li><p>通过“中断标记”终止线程</p>
+
+<p>@Override
+public void run() {
+    while (!isInterrupted()) {
+        // 执行任务&hellip;
+    }
+}</p></li>
+</ul>
+
+<p>&emsp;&emsp;说明：isInterrupted()是判断线程的中断标记是不是为true。当线程处于运行状态，并且我们需要终止它时；可以调用线程的interrupt()方法，使用线程的中断标记为true，即isInterrupted()会返回true。此时，就会退出while循环。</p>
+
+<p>&emsp;&emsp;注意：<strong>interrupt()并不会终止处于“运行状态”的线程！它会将线程的中断标记设为true</strong>。</p>
+
+<ul>
+<li>通过“额外添加标记”。</li>
+</ul>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">private volatile boolean flag= true;
+protected void stopTask() {
+    flag = false;
+}
+
+@Override
+public void run() {
+    while (flag) {
+        // 执行任务...
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;说明：线程中有一个flag标记，它的默认值是true；并且我们提供stopTask()来设置flag标记。当我们需要终止该线程时，调用该线程的stopTask()方法就可以让线程退出while循环。</p>
+
+<p>&emsp;&emsp;注意：将flag定义为volatile类型，是为了保证flag的可见性。即其它线程通过stopTask()修改了flag之后，本线程能看到修改后的flag的值。</p>
+
+<blockquote>
+<p>综合线程处于“阻塞状态”和“运行状态”的终止方式，比较通用的终止线程的形式如下：</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">@Override
+public void run() {
+    try {
+        // 1. isInterrupted()保证，只要中断标记为true就终止线程。
+        while (!isInterrupted()) {
+            // 执行任务...
+        }
+    } catch (InterruptedException ie) {  
+        // 2. InterruptedException异常保证，当InterruptedException异常产生时，线程被终止。
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<h3 id="终止线程的示例">终止线程的示例</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// Demo1.java的源码
+class MyThread extends Thread {
+
+    public MyThread(String name) {
+        super(name);
+    }
+
+    @Override
+    public void run() {
+        try {
+            int i=0;
+            while (!isInterrupted()) {
+                Thread.sleep(100); // 休眠100ms
+                i++;
+                System.out.println(Thread.currentThread().getName()+&#34; (&#34;+this.getState()+&#34;) loop &#34; + i);
+            }
+        } catch (InterruptedException e) {
+            System.out.println(Thread.currentThread().getName() +&#34; (&#34;+this.getState()+&#34;) catch InterruptedException.&#34;);
+        }
+    }
+}
+
+public class Demo1 {
+
+    public static void main(String[] args) {
+        try {
+            Thread t1 = new MyThread(&#34;t1&#34;);  // 新建“线程t1”
+            System.out.println(t1.getName() +&#34; (&#34;+t1.getState()+&#34;) is new.&#34;);
+
+            t1.start();                      // 启动“线程t1”
+            System.out.println(t1.getName() +&#34; (&#34;+t1.getState()+&#34;) is started.&#34;);
+
+            // 主线程休眠300ms，然后主线程给t1发“中断”指令。
+            Thread.sleep(300);
+            t1.interrupt();
+            System.out.println(t1.getName() +&#34; (&#34;+t1.getState()+&#34;) is interrupted.&#34;);
+
+            // 主线程休眠300ms，然后查看t1的状态。
+            Thread.sleep(300);
+            System.out.println(t1.getName() +&#34; (&#34;+t1.getState()+&#34;) is interrupted now.&#34;);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 (NEW) is new.
+t1 (RUNNABLE) is started.
+t1 (RUNNABLE) loop 1
+t1 (RUNNABLE) loop 2
+t1 (TIMED_WAITING) is interrupted.
+t1 (RUNNABLE) catch InterruptedException.
+t1 (TERMINATED) is interrupted now.</pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>主线程main中通过new MyThread(&ldquo;t1&rdquo;)创建线程t1，之后通过t1.start()启动线程t1。</li>
+<li>t1启动之后，会不断的检查它的中断标记，如果中断标记为“false”；则休眠100ms。</li>
+<li>t1休眠之后，会切换到主线程main；主线程再次运行时，会执行t1.interrupt()中断线程t1。t1收到中断指令之后，会将t1的中断标记设置“false”，而且会抛出InterruptedException异常。在t1的run()方法中，是在循环体while之外捕获的异常；因此循环被终止。</li>
+</ul>
+
+<p>&emsp;&emsp;额外添加标记：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public class MyThread extends Thread {
+
+    private volatile boolean flag = true;
+
+    private void stopTask() {
+        flag = false;
+    }
+
+    public MyThread(String name) {
+        super(name);
+    }
+
+    @Override
+    public void run() {
+        synchronized (this) {
+            try {
+                int i = 0;
+                while (flag) {
+                    // 不释放锁
+                    Thread.sleep(100);
+                    i++;
+                    System.out.println(Thread.currentThread().getName() + &#34; (&#34; + this.getState() + &#34;) loop &#34; + i);
+                }
+                System.out.println(Thread.currentThread().getName() + &#34;(&#34; + this.getState() + &#34;) down.&#34;);
+            } catch (InterruptedException e) {
+                System.out.println(Thread.currentThread().getName() + &#34; (&#34; + this.getState() + &#34;) catch InterruptedException.&#34;);
+            }
+        }
+    }
+
+    static class Test {
+        public static void main(String[] args) {
+            try {
+                MyThread t1 = new MyThread(&#34;t1&#34;);
+                System.out.println(t1.getName() + &#34; (&#34; + t1.getState() + &#34;) is new.&#34;);
+
+                t1.start();
+                System.out.println(t1.getName() + &#34; (&#34; + t1.getState() + &#34;) is started.&#34;);
+
+                Thread.sleep(300);
+                t1.stopTask();
+
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 (NEW) is new.
+t1 (TIMED_WAITING) is started.
+t1 (RUNNABLE) loop 1
+t1 (RUNNABLE) loop 2
+t1 (RUNNABLE) loop 3
+t1(RUNNABLE) down.</pre></td></tr></table>
+</div>
+</div>
+<h2 id="interrupted-和isinterrupted">interrupted()和isInterrupted()</h2>
+
+<p>&emsp;&emsp;interrupted() 和 isInterrupted()都能够用于检测对象的“中断标记”。</p>
+
+<p>&emsp;&emsp;区别是，interrupted()除了返回中断标记之外，它还会清除中断标记(即将中断标记设为false)；而isInterrupted()仅仅返回中断标记。</p>
+
+<h1 id="线程优先级">线程优先级</h1>
+
+<p>&emsp;&emsp;Java中的线程优先级番位是1～10，默认的优先级是5.高优先级线程会优于低优先级线程执行。</p>
+
+<p>&emsp;&emsp;java 中有两种线程：用户线程和守护线程。可以通过isDaemon()方法来区别它们：如果返回false，则说明该线程是“用户线程”；否则就是“守护线程”。</p>
+
+<p>&emsp;&emsp;用户线程一般用户执行用户级任务，而守护线程也就是“后台线程”，一般用来执行后台任务。需要注意的是：Java虚拟机在“用户线程”都结束后会后退出。</p>
+
+<p>&emsp;&emsp;当Java虚拟机启动时，通常有一个单一的非守护线程（该线程通过是通过main()方法启动）。JVM会一直运行直到下面的任意一个条件发生，JVM就会终止运行：</p>
+
+<ol>
+<li>调用了exit()方法，并且exit()有权限被正常执行。</li>
+<li>所有的“非守护线程”都死了(即JVM中仅仅只有“守护线程”)。</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-21
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/java/thread/3.wait/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">Java</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java/thread/4.producer/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[Java | 生产消费问题]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java/thread/2.synchronized/">
+            <span class="next-text nav-default">[Java | synchronized]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

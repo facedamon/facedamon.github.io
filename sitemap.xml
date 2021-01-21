@@ -10,26 +10,100 @@
   
   <url>
     <loc>http://facedamon.github.io/categories/</loc>
-    <lastmod>2021-01-13T20:00:56+08:00</lastmod>
+    <lastmod>2021-01-21T18:42:56+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://facedamon.github.io/</loc>
-    <lastmod>2021-01-13T20:00:56+08:00</lastmod>
+    <lastmod>2021-01-21T18:42:56+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/tags/java/</loc>
+    <lastmod>2021-01-21T18:42:56+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/categories/java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
+    <lastmod>2021-01-21T18:42:56+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://facedamon.github.io/post/</loc>
-    <lastmod>2021-01-13T20:00:56+08:00</lastmod>
+    <lastmod>2021-01-21T18:42:56+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://facedamon.github.io/tags/</loc>
-    <lastmod>2021-01-13T20:00:56+08:00</lastmod>
+    <lastmod>2021-01-21T18:42:56+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/thread/4.producer/</loc>
+    <lastmod>2021-01-21T18:42:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/thread/3.wait/</loc>
+    <lastmod>2021-01-21T15:50:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/thread/2.synchronized/</loc>
+    <lastmod>2021-01-20T21:40:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/thread/1.gainian/</loc>
+    <lastmod>2021-01-20T20:08:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/categories/java/%E5%9F%BA%E7%A1%80/</loc>
+    <lastmod>2021-01-19T17:40:56+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/base/4.abstract-interface/</loc>
+    <lastmod>2021-01-19T17:40:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/base/3.duotai/</loc>
+    <lastmod>2021-01-19T15:50:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/base/2.extends/</loc>
+    <lastmod>2021-01-17T17:54:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://facedamon.github.io/post/java/base/1.fengzhuang/</loc>
+    <lastmod>2021-01-17T17:04:56+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -62,12 +136,6 @@
     <lastmod>2021-01-13T15:54:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://facedamon.github.io/tags/java/</loc>
-    <lastmod>2021-01-11T16:26:56+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -137,12 +205,6 @@
     <lastmod>2021-01-06T18:04:56+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://facedamon.github.io/categories/java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
-    <lastmod>2021-01-02T17:28:56+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

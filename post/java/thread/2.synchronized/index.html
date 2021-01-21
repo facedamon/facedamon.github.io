@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[Java | synchronized] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 &amp;emsp;&amp;emsp;当我们调用某个对象的synch" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.6 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/java/thread/2.synchronized/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[Java | synchronized]" />
+<meta property="og:description" content="原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 &emsp;&emsp;当我们调用某个对象的synch" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/java/thread/2.synchronized/" />
+<meta property="article:published_time" content="2021-01-20T21:40:56&#43;08:00"/>
+<meta property="article:modified_time" content="2021-01-20T21:40:56&#43;08:00"/>
+
+<meta itemprop="name" content="[Java | synchronized]">
+<meta itemprop="description" content="原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 &emsp;&emsp;当我们调用某个对象的synch">
+
+
+<meta itemprop="datePublished" content="2021-01-20T21:40:56&#43;08:00" />
+<meta itemprop="dateModified" content="2021-01-20T21:40:56&#43;08:00" />
+<meta itemprop="wordCount" content="5449">
+
+
+
+<meta itemprop="keywords" content="Java," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[Java | synchronized]"/>
+<meta name="twitter:description" content="原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 &emsp;&emsp;当我们调用某个对象的synch"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[Java | synchronized]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-01-20 </span>
+        <div class="post-category">
+            <a href="/categories/java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"> Java/多线程 </a>
+            </div>
+          <span class="more-meta"> 约 5449 字 </span>
+          <span class="more-meta"> 预计阅读 11 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#原理">原理</a></li>
+<li><a href="#基本规则">基本规则</a>
+<ul>
+<li><a href="#第一条规则">第一条规则</a></li>
+<li><a href="#第二条规则">第二条规则</a></li>
+<li><a href="#第三条规则">第三条规则</a></li>
+</ul></li>
+<li><a href="#synchronized方法和代码块">synchronized方法和代码块</a></li>
+<li><a href="#实例锁和全局锁">实例锁和全局锁</a>
+<ul>
+<li><a href="#情况1">情况1</a></li>
+<li><a href="#情况2">情况2</a></li>
+<li><a href="#情况3">情况3</a></li>
+<li><a href="#情况4">情况4</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="原理">原理</h1>
+
+<blockquote>
+<p>在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的</p>
+</blockquote>
+
+<p>&emsp;&emsp;<strong>当我们调用某个对象的synchronized方法时，就获取了该对象的同步锁</strong>。例如，synchronized(obj)就获取了“obj这个对象”的同步锁。</p>
+
+<p>&emsp;&emsp;<strong>不同线程对同步锁的访问是互斥的</strong>。也就是说，某时间点，对象的同步锁只能被一个线程获取到！通过同步锁，我们就能在多线程中，实现对“对象/方法”的互斥访问。 例如，现在有两个线程A和线程B，它们都会访问“对象obj的同步锁”。假设，在某一时刻，线程A获取到“obj的同步锁”并在执行一些操作；而此时，线程B也企图获取“obj的同步锁” —— 线程B会获取失败，它必须等待，直到线程A释放了“该对象的同步锁”之后线程B才能获取到“obj的同步锁”从而才可以运行。</p>
+
+<h1 id="基本规则">基本规则</h1>
+
+<ul>
+<li>当一个线程访问“某对象”的&rdquo;synchronized方法&rdquo;或者&rdquo;synchronized代码块&rdquo;时，其它线程对&rdquo;该对象&rdquo;的该&rdquo;synchronized方法&rdquo;或者&rdquo;synchronized代码块&rdquo;的访问将被阻塞</li>
+<li>当一个线程访问“某对象”的“synchronized方法”或者“synchronized代码块”时，其他线程仍然可以访问“该对象”的非同步代码块。</li>
+<li>当一个线程访问“某对象”的“synchronized方法”或者“synchronized代码块”时，其他线程对“该对象”的其他的“synchronized方法”或者“synchronized代码块”的访问将被阻塞。</li>
+</ul>
+
+<h2 id="第一条规则">第一条规则</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public class MyThread implements Runnable {
+
+    @Override
+    public void run() {
+        synchronized (this) {
+            try {
+                for (int i = 0; i &lt; 5; i++) {
+                    Thread.sleep(100);
+                    System.out.println(Thread.currentThread().getName() + &#34; loop &#34; + i);
+                }
+            }catch (InterruptedException e){
+
+            }
+        }
+    }
+
+    static class Test {
+        public static void main(String[] args) {
+            MyThread mt = new MyThread();
+
+            Thread t1 = new Thread(mt, &#34;t1&#34;);
+            Thread t2 = new Thread(mt, &#34;t2&#34;);
+            t1.start();
+            t2.start();
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 loop 0
+t1 loop 1
+t1 loop 2
+t1 loop 3
+t1 loop 4
+t2 loop 0
+t2 loop 1
+t2 loop 2
+t2 loop 3
+t2 loop 4</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;run()方法中存在“synchronized(this)代码块”，而且t1和t2都是基于&rdquo;mt这个Runnable对象&rdquo;创建的线程。这就意味着，我们可以将synchronized(this)中的this看作是“mt这个Runnable对象”；因此，线程t1和t2共享“mt对象的同步锁”。所以，当一个线程运行的时候，另外一个线程必须等待“运行线程”释放“mt的同步锁”之后才能运行。</p>
+
+<p>&emsp;&emsp;如果你确认，你搞清楚这个问题了。那我们将上面的代码进行修改，然后再运行看看结果怎么样，看看你是否会迷糊。修改后的源码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public class MyThread extends Thread {
+
+    public MyThread(String name) {
+        super(name);
+    }
+
+    @Override
+    public void run() {
+        synchronized (this) {
+            try {
+                for (int i = 0; i &lt; 5; i++) {
+                    Thread.sleep(100);
+                    System.out.println(Thread.currentThread().getName() + &#34; loop &#34; + i);
+                }
+            }catch (InterruptedException e){
+
+            }
+        }
+    }
+
+    static class Test {
+        public static void main(String[] args) {
+            Thread t1 = new MyThread(&#34;t1&#34;);
+            Thread t2 = new MyThread(&#34;t2&#34;);
+            t1.start();
+            t2.start();
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;我们发现，2中的MyThread类是直接继承于Thread，而且t1和t2都是MyThread子线程。
+幸运的是，在“2的run()方法”也调用了synchronized(this)，正如“1的run()方法”也调用了synchronized(this)一样！
+那么，2的执行流程是不是和1一样呢？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 loop 0
+t2 loop 0
+t1 loop 1
+t2 loop 1
+t1 loop 2
+t2 loop 2
+t1 loop 3
+t2 loop 3
+t1 loop 4
+t2 loop 4</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;synchronized(this)中的this是指“当前的类对象”，即synchronized(this)所在的类对应的当前对象。它的作用是获取“当前对象的同步锁”。对于2中，synchronized(this)中的this代表的是MyThread对象，而t1和t2是两个不同的MyThread对象，因此t1和t2在执行synchronized(this)时，获取的是不同对象的同步锁。对于1对而言，synchronized(this)中的this代表的是MyRunable对象；t1和t2共同一个MyRunable对象，因此，一个线程获取了对象的同步锁，会造成另外一个线程等待。</p>
+
+<h2 id="第二条规则">第二条规则</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">class Count {
+
+    // 含有synchronized同步块的方法
+    public void synMethod() {
+        synchronized(this) {
+            try {
+                for (int i = 0; i &lt; 5; i++) {
+                    Thread.sleep(100); // 休眠100ms
+                    System.out.println(Thread.currentThread().getName() + &#34; synMethod loop &#34; + i);
+                }
+            } catch (InterruptedException ie) {
+            }
+        }
+    }
+
+    // 非同步的方法
+    public void nonSynMethod() {
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100);
+                System.out.println(Thread.currentThread().getName() + &#34; nonSynMethod loop &#34; + i);
+            }
+        } catch (InterruptedException ie) {
+        }
+    }
+}
+
+public class Demo2 {
+
+    public static void main(String[] args) {
+        final Count count = new Count();
+        // 新建t1, t1会调用“count对象”的synMethod()方法
+        Thread t1 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        count.synMethod();
+                    }
+                }, &#34;t1&#34;);
+
+        // 新建t2, t2会调用“count对象”的nonSynMethod()方法
+        Thread t2 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        count.nonSynMethod();
+                    }
+                }, &#34;t2&#34;);
+
+
+        t1.start();  // 启动t1
+        t2.start();  // 启动t2
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 synMethod loop 0
+t2 nonSynMethod loop 0
+t1 synMethod loop 1
+t2 nonSynMethod loop 1
+t1 synMethod loop 2
+t2 nonSynMethod loop 2
+t1 synMethod loop 3
+t2 nonSynMethod loop 3
+t1 synMethod loop 4
+t2 nonSynMethod loop 4</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;主线程中新建了两个子线程t1和t2。t1会调用count对象的synMethod()方法，该方法内含有同步块；而t2则会调用count对象的nonSynMethod()方法，该方法不是同步方法。t1运行时，虽然调用synchronized(this)获取“count的同步锁”；但是并没有造成t2的阻塞，因为t2没有用到“count”同步锁。</p>
+
+<h2 id="第三条规则">第三条规则</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">class Count {
+
+    // 含有synchronized同步块的方法
+    public void synMethod() {
+        synchronized(this) {
+            try {
+                for (int i = 0; i &lt; 5; i++) {
+                    Thread.sleep(100); // 休眠100ms
+                    System.out.println(Thread.currentThread().getName() + &#34; synMethod loop &#34; + i);
+                }
+            } catch (InterruptedException ie) {
+            }
+        }
+    }
+
+    // 也包含synchronized同步块的方法
+    public void nonSynMethod() {
+        synchronized(this) {
+            try {
+                for (int i = 0; i &lt; 5; i++) {
+                    Thread.sleep(100);
+                    System.out.println(Thread.currentThread().getName() + &#34; nonSynMethod loop &#34; + i);
+                }
+            } catch (InterruptedException ie) {
+            }
+        }
+    }
+}
+
+public class Demo3 {
+
+    public static void main(String[] args) {
+        final Count count = new Count();
+        // 新建t1, t1会调用“count对象”的synMethod()方法
+        Thread t1 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        count.synMethod();
+                    }
+                }, &#34;t1&#34;);
+
+        // 新建t2, t2会调用“count对象”的nonSynMethod()方法
+        Thread t2 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        count.nonSynMethod();
+                    }
+                }, &#34;t2&#34;);
+
+
+        t1.start();  // 启动t1
+        t2.start();  // 启动t2
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t1 synMethod loop 0
+t1 synMethod loop 1
+t1 synMethod loop 2
+t1 synMethod loop 3
+t1 synMethod loop 4
+t2 nonSynMethod loop 0
+t2 nonSynMethod loop 1
+t2 nonSynMethod loop 2
+t2 nonSynMethod loop 3
+t2 nonSynMethod loop 4</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;主线程中新建了两个子线程t1和t2。t1和t2运行时都调用synchronized(this)，这个this是Count对象(count)，而t1和t2共用count。因此，在t1运行时，t2会被阻塞，等待t1运行释放“count对象的同步锁”，t2才能运行。</p>
+
+<h1 id="synchronized方法和代码块">synchronized方法和代码块</h1>
+
+<ul>
+<li>synchronized方法示例</li>
+</ul>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public synchronnized void foo1() {
+    sout(&#34;synchronnized method&#34;);
+}</pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>synchronized代码块</li>
+</ul>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public void foo2() {
+    synchronized (this) {
+        sout(&#34;synchronnized method&#34;);
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;synchronized代码块中的this是指当前对象。也可以将this替换成其他对象，例如将this替换成obj，则foo2()在执行synchronized(obj)时就获取的是obj的同步锁。</p>
+
+<p>&emsp;&emsp;<strong>synchronized代码块可以更精确的控制冲突限制访问区域，有时候表现更高效率</strong>。下面通过一个示例来演示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// Demo4.java的源码
+public class Demo4 {
+
+    public synchronized void synMethod() {
+        for(int i=0; i&lt;1000000; i++)
+            ;
+    }
+
+    public void synBlock() {
+        synchronized( this ) {
+            for(int i=0; i&lt;1000000; i++)
+                ;
+        }
+    }
+
+    public static void main(String[] args) {
+        Demo4 demo = new Demo4();
+
+        long start, diff;
+        start = System.currentTimeMillis();                // 获取当前时间(millis)
+        demo.synMethod();                                // 调用“synchronized方法”
+        diff = System.currentTimeMillis() - start;        // 获取“时间差值”
+        System.out.println(&#34;synMethod() : &#34;+ diff);
+
+        start = System.currentTimeMillis();                // 获取当前时间(millis)
+        demo.synBlock();                                // 调用“synchronized方法块”
+        diff = System.currentTimeMillis() - start;        // 获取“时间差值”
+        System.out.println(&#34;synBlock()  : &#34;+ diff);
+    }
+}
+
+// Output:
+synMethod() : 11
+synBlock() : 3</pre></td></tr></table>
+</div>
+</div>
+<h1 id="实例锁和全局锁">实例锁和全局锁</h1>
+
+<ul>
+<li>实例锁：锁在某一个实例对象上。如果该类是单例，那么该锁也具有全局锁的概念。实例锁对应的就是synchronized关键字。</li>
+<li>全局锁：该锁针对的是类，无论实例多少个对象，那么线程都共享该锁。全局锁对应的就是static synchronized（或者是锁在该类的class或者classloader对象上）</li>
+</ul>
+
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">pulbic class Something {
+    public synchronized void isSyncA(){}
+    public synchronized void isSyncB(){}
+    public static synchronized void cSyncA(){}
+    public static synchronized void cSyncB(){}
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;假设，Something有两个实例x和y。分析下面4组表达式获取的锁的情况。</p>
+
+<ol>
+<li>x.isSyncA()与x.isSyncB()</li>
+<li>x.isSyncA()与y.isSyncA()</li>
+<li>x.cSyncA()与y.cSyncB()</li>
+<li>x.isSyncA()与Something.cSyncA()</li>
+</ol>
+
+<h2 id="情况1">情况1</h2>
+
+<p>&emsp;&emsp;不能被同时访问，因为都是访问同一个对象x的同步锁</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// LockTest1.java的源码
+class Something {
+    public synchronized void isSyncA(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncA&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public synchronized void isSyncB(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncB&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+}
+
+public class LockTest1 {
+
+    Something x = new Something();
+    Something y = new Something();
+
+    // 比较(01) x.isSyncA()与x.isSyncB()
+    private void test1() {
+        // 新建t11, t11会调用 x.isSyncA()
+        Thread t11 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        x.isSyncA();
+                    }
+                }, &#34;t11&#34;);
+
+        // 新建t12, t12会调用 x.isSyncB()
+        Thread t12 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        x.isSyncB();
+                    }
+                }, &#34;t12&#34;);
+
+
+        t11.start();  // 启动t11
+        t12.start();  // 启动t12
+    }
+
+    public static void main(String[] args) {
+        LockTest1 demo = new LockTest1();
+        demo.test1();
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t11 : isSyncA
+t11 : isSyncA
+t11 : isSyncA
+t11 : isSyncA
+t11 : isSyncA
+t12 : isSyncB
+t12 : isSyncB
+t12 : isSyncB
+t12 : isSyncB
+t12 : isSyncB</pre></td></tr></table>
+</div>
+</div>
+<h2 id="情况2">情况2</h2>
+
+<p>&emsp;&emsp;可以同时被访问。因为访问的不是同一个对象的同步锁</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// LockTest2.java的源码
+class Something {
+    public synchronized void isSyncA(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncA&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public synchronized void isSyncB(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncB&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public static synchronized void cSyncA(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : cSyncA&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public static synchronized void cSyncB(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : cSyncB&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+}
+
+public class LockTest2 {
+
+    Something x = new Something();
+    Something y = new Something();
+
+    // 比较(02) x.isSyncA()与y.isSyncA()
+    private void test2() {
+        // 新建t21, t21会调用 x.isSyncA()
+        Thread t21 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        x.isSyncA();
+                    }
+                }, &#34;t21&#34;);
+
+        // 新建t22, t22会调用 x.isSyncB()
+        Thread t22 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        y.isSyncA();
+                    }
+                }, &#34;t22&#34;);
+
+
+        t21.start();  // 启动t21
+        t22.start();  // 启动t22
+    }
+
+    public static void main(String[] args) {
+        LockTest2 demo = new LockTest2();
+
+        demo.test2();
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t21 : isSyncA
+t22 : isSyncA
+t21 : isSyncA
+t22 : isSyncA
+t21 : isSyncA
+t22 : isSyncA
+t21 : isSyncA
+t22 : isSyncA
+t21 : isSyncA
+t22 : isSyncA</pre></td></tr></table>
+</div>
+</div>
+<h2 id="情况3">情况3</h2>
+
+<p>&emsp;&emsp;不能被同时访问。因为都是static类型，共用一个同步锁，不能被同时访问。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// LockTest3.java的源码
+class Something {
+    public synchronized void isSyncA(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncA&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public synchronized void isSyncB(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncB&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public static synchronized void cSyncA(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : cSyncA&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public static synchronized void cSyncB(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : cSyncB&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+}
+
+public class LockTest3 {
+
+    Something x = new Something();
+    Something y = new Something();
+
+    // 比较(03) x.cSyncA()与y.cSyncB()
+    private void test3() {
+        // 新建t31, t31会调用 x.isSyncA()
+        Thread t31 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        x.cSyncA();
+                    }
+                }, &#34;t31&#34;);
+
+        // 新建t32, t32会调用 x.isSyncB()
+        Thread t32 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        y.cSyncB();
+                    }
+                }, &#34;t32&#34;);
+
+
+        t31.start();  // 启动t31
+        t32.start();  // 启动t32
+    }
+
+    public static void main(String[] args) {
+        LockTest3 demo = new LockTest3();
+
+        demo.test3();
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t31 : cSyncA
+t31 : cSyncA
+t31 : cSyncA
+t31 : cSyncA
+t31 : cSyncA
+t32 : cSyncB
+t32 : cSyncB
+t32 : cSyncB
+t32 : cSyncB
+t32 : cSyncB</pre></td></tr></table>
+</div>
+</div>
+<h2 id="情况4">情况4</h2>
+
+<p>&emsp;&emsp;可以被同时访问。因为isSyncA是实例方法，x.isSyncA使用的是对象x的锁，而cSyncA是静态方法，Something.cSyncA可以理解使用的是&rdquo;类的锁&rdquo;。因此，他们可以被同时访问。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// LockTest4.java的源码
+class Something {
+    public synchronized void isSyncA(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncA&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public synchronized void isSyncB(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : isSyncB&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public static synchronized void cSyncA(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : cSyncA&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+    public static synchronized void cSyncB(){
+        try {
+            for (int i = 0; i &lt; 5; i++) {
+                Thread.sleep(100); // 休眠100ms
+                System.out.println(Thread.currentThread().getName()+&#34; : cSyncB&#34;);
+            }
+        }catch (InterruptedException ie) {
+        }
+    }
+}
+
+public class LockTest4 {
+
+    Something x = new Something();
+    Something y = new Something();
+
+    // 比较(04) x.isSyncA()与Something.cSyncA()
+    private void test4() {
+        // 新建t41, t41会调用 x.isSyncA()
+        Thread t41 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        x.isSyncA();
+                    }
+                }, &#34;t41&#34;);
+
+        // 新建t42, t42会调用 x.isSyncB()
+        Thread t42 = new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Something.cSyncA();
+                    }
+                }, &#34;t42&#34;);
+
+
+        t41.start();  // 启动t41
+        t42.start();  // 启动t42
+    }
+
+    public static void main(String[] args) {
+        LockTest4 demo = new LockTest4();
+
+        demo.test4();
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p></br></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">t41 : isSyncA
+t42 : cSyncA
+t41 : isSyncA
+t42 : cSyncA
+t41 : isSyncA
+t42 : cSyncA
+t41 : isSyncA
+t42 : cSyncA
+t41 : isSyncA
+t42 : cSyncA</pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-01-20
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/java/thread/2.synchronized/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">Java</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/java/thread/3.wait/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[Java | 线程等待于唤醒]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java/thread/1.gainian/">
+            <span class="next-text nav-default">[Java | 多线程基本概念]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

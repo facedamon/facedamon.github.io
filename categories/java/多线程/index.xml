@@ -6,10 +6,46 @@
     <description>Recent content in Java/多线程 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 02 Jan 2021 17:28:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 21 Jan 2021 18:42:56 +0800</lastBuildDate>
     
 	<atom:link href="http://facedamon.github.io/categories/java/%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Java | 生产消费问题]</title>
+      <link>http://facedamon.github.io/post/java/thread/4.producer/</link>
+      <pubDate>Thu, 21 Jan 2021 18:42:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/4.producer/</guid>
+      <description>模型 &amp;emsp;&amp;emsp;生产/消费者问题是个非常典型的多线程问题，涉及到的对象包括“生产者”、“消费者”、“仓库”和“产品”。他们之间的</description>
+    </item>
+    
+    <item>
+      <title>[Java | 线程等待于唤醒]</title>
+      <link>http://facedamon.github.io/post/java/thread/3.wait/</link>
+      <pubDate>Thu, 21 Jan 2021 15:50:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/3.wait/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作</description>
+    </item>
+    
+    <item>
+      <title>[Java | synchronized]</title>
+      <link>http://facedamon.github.io/post/java/thread/2.synchronized/</link>
+      <pubDate>Wed, 20 Jan 2021 21:40:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/2.synchronized/</guid>
+      <description>原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 &amp;emsp;&amp;emsp;当我们调用某个对象的synch</description>
+    </item>
+    
+    <item>
+      <title>[Java | 多线程基本概念]</title>
+      <link>http://facedamon.github.io/post/java/thread/1.gainian/</link>
+      <pubDate>Wed, 20 Jan 2021 20:08:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/1.gainian/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;多线程是Java中不可避免的一个重要主体。从本章开始，我们将展开对多线程的学习。接下来的内容，是对“JDK中新增</description>
+    </item>
     
     <item>
       <title>[Java | 乐观锁与悲观锁]</title>

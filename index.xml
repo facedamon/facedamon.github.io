@@ -6,7 +6,7 @@
     <description>Recent content on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 13 Jan 2021 20:00:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 21 Jan 2021 18:42:56 +0800</lastBuildDate>
     
 	<atom:link href="http://facedamon.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -18,6 +18,78 @@
       
       <guid>http://facedamon.github.io/about-me/</guid>
       <description>何许人也 &amp;emsp;&amp;emsp;FaceDamon，真名嘛？肯定是假的啦！小时候村里村外都晓得我，为啥？因为我是个名副其实的野孩子。生在富平</description>
+    </item>
+    
+    <item>
+      <title>[Java | 生产消费问题]</title>
+      <link>http://facedamon.github.io/post/java/thread/4.producer/</link>
+      <pubDate>Thu, 21 Jan 2021 18:42:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/4.producer/</guid>
+      <description>模型 &amp;emsp;&amp;emsp;生产/消费者问题是个非常典型的多线程问题，涉及到的对象包括“生产者”、“消费者”、“仓库”和“产品”。他们之间的</description>
+    </item>
+    
+    <item>
+      <title>[Java | 线程等待于唤醒]</title>
+      <link>http://facedamon.github.io/post/java/thread/3.wait/</link>
+      <pubDate>Thu, 21 Jan 2021 15:50:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/3.wait/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作</description>
+    </item>
+    
+    <item>
+      <title>[Java | synchronized]</title>
+      <link>http://facedamon.github.io/post/java/thread/2.synchronized/</link>
+      <pubDate>Wed, 20 Jan 2021 21:40:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/2.synchronized/</guid>
+      <description>原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 &amp;emsp;&amp;emsp;当我们调用某个对象的synch</description>
+    </item>
+    
+    <item>
+      <title>[Java | 多线程基本概念]</title>
+      <link>http://facedamon.github.io/post/java/thread/1.gainian/</link>
+      <pubDate>Wed, 20 Jan 2021 20:08:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/thread/1.gainian/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;多线程是Java中不可避免的一个重要主体。从本章开始，我们将展开对多线程的学习。接下来的内容，是对“JDK中新增</description>
+    </item>
+    
+    <item>
+      <title>[Java | 抽象类与接口]</title>
+      <link>http://facedamon.github.io/post/java/base/4.abstract-interface/</link>
+      <pubDate>Tue, 19 Jan 2021 17:40:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/base/4.abstract-interface/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;抽象类与接口是java语言中对抽象概念进行定义的两种机制，正是由于他们的存在才赋予java强大的面向对象的能力。</description>
+    </item>
+    
+    <item>
+      <title>[Java | 三大特性之多态]</title>
+      <link>http://facedamon.github.io/post/java/base/3.duotai/</link>
+      <pubDate>Tue, 19 Jan 2021 15:50:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/base/3.duotai/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;面向对象编程有三大特性：封装、继承、多态。 &amp;emsp;&amp;emsp;封装隐藏了类的内部实现机制，可以在不影响使用的</description>
+    </item>
+    
+    <item>
+      <title>[Java | 三大特性之继承]</title>
+      <link>http://facedamon.github.io/post/java/base/2.extends/</link>
+      <pubDate>Sun, 17 Jan 2021 17:54:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/base/2.extends/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;在《Thinnk in Java》中有这样一句话：复用代码是Java众多引人注目的功能之一。但是要想成为极具革命性的语</description>
+    </item>
+    
+    <item>
+      <title>[Java | 三大特性之封装]</title>
+      <link>http://facedamon.github.io/post/java/base/1.fengzhuang/</link>
+      <pubDate>Sun, 17 Jan 2021 17:04:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/base/1.fengzhuang/</guid>
+      <description>摘要 &amp;emsp;&amp;emsp;封装从字面上来理解就是包装的意思，就是隐藏信息，是指利用抽象数据类型将数据和基于数据的操作封装在一起，使其构成一</description>
     </item>
     
     <item>

@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2021-01-11T16:26:56&#43;08:00" />
 <meta itemprop="dateModified" content="2021-01-11T16:26:56&#43;08:00" />
-<meta itemprop="wordCount" content="883">
+<meta itemprop="wordCount" content="3136">
 
 
 
@@ -131,9 +131,10 @@
         <span class="post-time"> 2021-01-11 </span>
         <div class="post-category">
             <a href="/categories/java/%E9%9B%86%E5%90%88/"> Java/集合 </a>
+            <a href="/categories/%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD/"> 未完待续 </a>
             </div>
-          <span class="more-meta"> 约 883 字 </span>
-          <span class="more-meta"> 预计阅读 2 分钟 </span>
+          <span class="more-meta"> 约 3136 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -146,6 +147,10 @@
 <li><a href="#摘要">摘要</a>
 <ul>
 <li><a href="#红黑树的一些基本概念">红黑树的一些基本概念</a></li>
+<li><a href="#treemap基本数据结构">TreeMap基本数据结构</a>
+<ul>
+<li><a href="#添加">添加</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -171,9 +176,43 @@
 <p>因此总结而言：如果只需要存储功能，使用HashMap与LinkedHashMap是一种更好的选择；如果还需要保证统计性能或者需要对Key按照一定规则进行排序，那么使用TreeMap是一种更好的选择。</p>
 </blockquote>
 
-<p>&emsp;&emsp;对于集合，我认为关注的点主要有四点：</p>
-
 <h2 id="红黑树的一些基本概念">红黑树的一些基本概念</h2>
+
+<p>&emsp;&emsp;在讲TreeMap前还是先说一下红黑树的一些基本概念，这样可以更好地理解之后TreeMap的源代码。</p>
+
+<p>&emsp;&emsp;二叉查找树在生成的时候是非常容易失衡的，造成的最坏情况就是一边倒（即只有左子树/右子树），这样会导致树检索的效率大大降低。</p>
+
+<p>&emsp;&emsp;红黑树是为了维护二叉查找树的平衡而产生的一种树，根据维基百科的定义，红黑树有五个特性，但我觉得讲得不太易懂，我自己总结一下，红黑树的特性大致有三个（换句话说，插入、删除节点后整个红黑树也必须满足下面的三个性质，如果不满足则必须进行旋转）：</p>
+
+<ol>
+<li>根节点与叶节点都是黑色节点，其中叶节点为NULL节点</li>
+<li>每个红色节点的两个子节点都是黑色节点，换句话说就是不能有连续两个红色节点</li>
+<li>从根节点到所有叶子节点上的黑色节点数量是相同的</li>
+</ol>
+
+<p>&emsp;&emsp;上述的性质约束了红黑树的关键：<strong>从根到叶子的最长可能路径不多于最短可能路径的两倍长</strong>。得到这个理论的理由是：</p>
+
+<ol>
+<li>红黑树中最短的可能路径全部为黑色节点的路径</li>
+<li>红黑树中最长的可能路径是红黑相间的路径</li>
+</ol>
+
+<p>&emsp;&emsp;此时2正好是1的两倍长。结果就是这个树大致上是平衡的，因为插入、删除和查找某个值这样的操作最坏情况都要求与树的高度成正比，这个高度的理论上限允许红黑树在最坏情况下都是高效的，而不同于普通的二叉查找树，最终保证了红黑树能够以O(log2N)的时间复杂度进行搜索、插入、删除。</p>
+
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20170517224514744-1577819946.jpg" alt="avatar" /></p>
+
+<p>&emsp;&emsp;可以看到根节点到所有NULL叶子节点所经过的黑色节点都是2个。</p>
+
+<p>&emsp;&emsp;另外从这张图中我们还能得到一个理论：<strong>红黑树并不是高度的平衡树</strong>。所谓平衡二叉树指的是一个空树或它的左右两个子树的高度差绝对值不超过1，但是我们看：</p>
+
+<ul>
+<li>最左边的路径0026&ndash;&gt;0017&ndash;&gt;0012&ndash;&gt;0010&ndash;&gt;0003&ndash;&gt;NULL LEAF，它的高度为5</li>
+<li>最后边的路径0026&ndash;&gt;0041&ndash;&gt;0047&ndash;&gt;NULL LEAF，它的高度为3</li>
+</ul>
+
+<p>&emsp;&emsp;左右子树的高度差值为2，因此红黑树并不是高度平衡的，它放弃了高度平衡的特性而只追求部分平衡，这种特性降低了插入、删除时对树旋转的要求，从而提升了树的整体性能。而其他平衡树比如AVL树虽然查找性能为性能是O(logn)，但是为了维护其平衡特性，可能要在插入、删除操作时进行多次的旋转，产生比较大的消耗。</p>
+
+<p>&emsp;&emsp;对于集合，我认为关注的点主要有四点：</p>
 
 <table>
 <thead>
@@ -206,7 +245,205 @@
 </tbody>
 </table>
 
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/" alt="avatar" /></p>
+<h2 id="treemap基本数据结构">TreeMap基本数据结构</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public class TreeMap&lt;K,V&gt;
+    extends AbstractMap&lt;K,V&gt;
+        implements NavigableMap&lt;K,V&gt;, Cloneable, java.io.Serializable {}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;TreeMap基于红黑树实现，既然是红黑树，那么每个节点中除了Key&ndash;&gt;Value映射之外，必然存储了红黑树节点特有的一些内容，它们是：</p>
+
+<ol>
+<li>父节点引用</li>
+<li>左子节点引用</li>
+<li>右子节点引用</li>
+
+<li><p>节点颜色</p>
+
+<p>static final class Entry<K,V> implements Map.Entry<K,V> {
+    K key;
+    V value;
+    Entry<K,V> left = null;
+    Entry<K,V> right = null;
+    Entry<K,V> parent;
+    boolean color = BLACK;
+    &hellip;
+}</p></li>
+</ol>
+
+<p>&emsp;&emsp;由于颜色只有红色和黑色两种，因此颜色可以使用布尔类型（boolean）来表示，黑色表示为true，红色为false。</p>
+
+<h3 id="添加">添加</h3>
+
+<p>&emsp;&emsp;首先看一下测试代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public class MapTest {
+    @Test
+    public void testTreeMap() {
+        TreeMap&lt;Integer,String&gt; treeMap = new TreeMap&lt;Integer,String&gt;();
+        treeMap.put(10,&#34;10&#34;);
+        treeMap.put(85,&#34;85&#34;);
+        treeMap.put(15,&#34;15&#34;);
+        treeMap.put(70,&#34;70&#34;);
+        treeMap.put(20，&#34;20&#34;);
+        treeMap.put(60,&#34;60&#34;);
+        treeMap.put(30,&#34;30&#34;);
+        treeMap.put(50,&#34;50&#34;);
+
+        for (Map.Entry&lt;Integer,String&gt; entry : treeMap.entrySet()) {
+            sout(entry.getKey() + &#34;:&#34; + entry.getValue());
+        }
+    }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;本文接下来的内容会给出插入每条数据之后红黑树的数据结构是什么样子的。首先看一下treeMap的put方法的代码实现：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">public V put(K key, V value) {
+    Entry&lt;K,V&gt; t = root;
+    if (t == null) {
+        // type check
+        compare(key, key);
+        root = new Entry(key, value, null);
+        size = 1;
+        modCount++;
+        return null;
+    }
+    int cmp;
+    Entry&lt;K,V&gt; parent;
+    //split comparator and comparable paths
+    Comparator&lt;? super K&gt; cpr = comparator;
+    if (cpr != null) {
+        do {
+            parent = t;
+            cmp = cpr.compare(key, t.key);
+            if (cmp &lt; 0) 
+                t = t.left;
+            else if (cmp &gt; 0)
+                t = t.right;
+            else
+                return t.setValue(value);
+        } while (t != null);
+    }else {
+     if (key == null)
+         throw new NullPointerException();
+     Comparable&lt;? super K&gt; k = (Comparable&lt;? super K&gt;) key;
+     do {
+         parent = t;
+         cmp = k.compareTo(t.key);
+         if (cmp &lt; 0)
+             t = t.left;
+         else if (cmp &gt; 0)
+             t = t.right;
+         else
+             return t.setValue(value);
+        } while (t != null);
+    }
+    Entry&lt;K,V&gt; e = new Entry&lt;&gt;(key, value, parent);
+    if (cmp &lt; 0)
+        parent.left = e;
+    else
+        parent.right = e;
+    fixAfterInsertion(e);
+    size++;
+    modCount++;
+    return null;
+}</pre></td></tr></table>
+</div>
+</div>
+<p>&emsp;&emsp;从这段代码，先总结一下TreeMap添加数据的几个步骤：</p>
+
+<ol>
+<li>获取根节点，根节点为空，产生一个根节点，将其着色为黑色，退出余下流程</li>
+<li>获取比较器，如果传入的Comparator接口不为空，使用传入的Comparator接口实现类进行比较；如果传入的Comparator接口为空，将Key强转为Comparable接口进行比较</li>
+<li>从根节点开始逐一依照规定的排序算法进行比较，取比较值cmp，如果cmp=0，表示插入的Key已存在；如果cmp&gt;0，取当前节点的右子节点；如果cmp&lt;0，取当前节点的左子节点</li>
+<li>排除插入的Key已存在的情况，第（3）步的比较一直比较到当前节点t的左子节点或右子节点为null，此时t就是我们寻找到的节点，cmp&gt;0则准备往t的右子节点插入新节点，cmp&lt;0则准备往t的左子节点插入新节点</li>
+<li>new出一个新节点，默认为黑色，根据cmp的值向t的左边或者右边进行插入</li>
+<li>插入之后进行修复，包括左旋、右旋、重新着色这些操作，让树保持平衡性</li>
+</ol>
+
+<p>&emsp;&emsp;第1~第5步都没有什么问题，红黑树最核心的应当是第6步插入数据之后进行的修复工作，对应的Java代码是TreeMap中的fixAfterInsertion方法，下面看一下put每个数据之后TreeMap都做了什么操作，借此来理清TreeMap的实现原理。</p>
 
     </div>
 
