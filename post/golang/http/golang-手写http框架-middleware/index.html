@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不可能实现所有的功能。因此" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-middleware/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[手写http框架 (五) | golang middleware]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不" />
+<meta property="og:description" content="摘要 中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不可能实现所有的功能。因此" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-middleware/" />
-<meta property="article:published_time" content="2020-07-16T10:30:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-07-16T10:30:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-middleware/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-07-16T10:30:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-07-16T10:30:56&#43;08:00" />
 
 <meta itemprop="name" content="[手写http框架 (五) | golang middleware]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不">
-
-
-<meta itemprop="datePublished" content="2020-07-16T10:30:56&#43;08:00" />
+<meta itemprop="description" content="摘要 中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不可能实现所有的功能。因此"><meta itemprop="datePublished" content="2020-07-16T10:30:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-07-16T10:30:56&#43;08:00" />
-<meta itemprop="wordCount" content="2182">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1935">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[手写http框架 (五) | golang middleware]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不"/>
+<meta name="twitter:description" content="摘要 中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不可能实现所有的功能。因此"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/golang/%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6/"> golang/手写http框架 </a>
             </div>
-          <span class="more-meta"> 约 2182 字 </span>
-          <span class="more-meta"> 预计阅读 5 分钟 </span>
+          <span class="more-meta"> 约 1935 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,200 +135,103 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#中间件设计">中间件设计</a></li>
-<li><a href="#use">use</a></li>
-<li><a href="#test">Test</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#中间件设计">中间件设计</a></li>
+    <li><a href="#use">use</a></li>
+    <li><a href="#test">Test</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;中间件(middleware)，简单的说，就是<strong>非业务的技术类组件</strong>。http框架本身不可能去理解所有的业务，因而不可能实现所有的功能。因此，框架需要有一个插口，<strong>允许用户自己定义功能，嵌入到框架中，仿佛这个功能时框架原生支持的一样。</strong>因此，对中间件而言，需要考虑2两个非常关键的点：</p>
-
+      <h1 id="摘要">摘要</h1>
+<p>  中间件(middleware)，简单的说，就是<strong>非业务的技术类组件</strong>。http框架本身不可能去理解所有的业务，因而不可能实现所有的功能。因此，框架需要有一个插口，**允许用户自己定义功能，嵌入到框架中，仿佛这个功能时框架原生支持的一样。**因此，对中间件而言，需要考虑2两个非常关键的点：</p>
 <ul>
 <li><strong>插入点在哪?</strong> 使用框架的人并不关心底层逻辑的具体实现，如果插入点太底层，中间件逻辑就会非常复杂。如果插入点距离用户太近，那和用户直接定义一组函数，每次在Handler中手工调用没有多大的优势。</li>
 <li><strong>中间件的输入是什么?</strong> 中间件的输入，决定了扩展能力。暴露参数太少，用户发挥空间有限。</li>
 </ul>
-
-<p>&emsp;&emsp;针对这两个关键点，我们参考一下<code>Gin</code>框架。</p>
-
+<p>  针对这两个关键点，我们参考一下<code>Gin</code>框架。</p>
 <h2 id="中间件设计">中间件设计</h2>
-
-<p>&emsp;&emsp;geew的中间件定义与路由映射的Handler一致，处理的输入是<code>Context</code>对象。插入点是框架接收到请求初始化Context对象后，允许用户使用自己定义的中间件做一些额外的处理，例如记录日志等，以及对Context进行二次加工。另外通过调用<code>Next</code>方法，中间件可等待用户自己定义的Handler处理介乎后，再做一些额外的操作，例如计算本次处理所用时间。即<strong>geew的中间件支持用户在请求被处理的前后，做一些额外的操作</strong>。例如：我们希望最终能够支持如下定义的中间件，<code>c.Next()</code>表示等待执行其他中间件或用户的Handler:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// middleware.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">func</span> <span class="nf">TimeOpe</span><span class="p">()</span> <span class="nx">HandlerFunc</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">t</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
-            <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;[%d] %s in %v&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">StatusCode</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Req</span><span class="p">.</span><span class="nx">RequestURI</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nf">since</span><span class="p">(</span><span class="nx">t</span><span class="p">))</span>
-        <span class="p">}</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;另外，支持设置多个中间件，依次进行调用。
-&emsp;&emsp;我们在上一篇文章group中讲到，中间件是应用在group上的，应用在最顶层的group，相当于作用域全局，所有的请求都会被中间件处理。那为什么不作用在每一条路由规则上呢？作用在某条路由规则，那还不如用户直接在Handler中调用直观。只作用在某条路由的功能通用性太差，不太适合定义为中间件。
-&emsp;&emsp;我们之前的框架涉及是这样的，当接收到请求后，匹配路由，该请求的所有信息都保存在<code>Context</code>中。中间件也不例外，接收到请求后，应查找所有应作用于该路由的中间件，保存在Context中，依次进行调用。为什么依次调用后，还需要在Context中保存呢？因为在设计中，中间件不仅仅作用在处理流程前，也可以作用在处理流程后，即在用户定义的Handler处理完毕后，还可以执行剩下的操作。</p>
-
-<p>&emsp;&emsp;为此，我们给<code>Context</code>添加了2个参数，定义了<code>Next</code>方法以及<code>Abort</code>方法</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// context.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">type</span> <span class="nx">Context</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="c1">// origin objects
-</span><span class="c1"></span>        <span class="nx">Writer</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span>
-        <span class="nx">Req</span>    <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span>
-        <span class="c1">// request info
-</span><span class="c1"></span>        <span class="nx">Path</span>   <span class="kt">string</span>
-        <span class="nx">Method</span> <span class="kt">string</span>
-        <span class="nx">Params</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span>
-        <span class="c1">// response info
-</span><span class="c1"></span>        <span class="nx">StatusCode</span> <span class="kt">int</span>
-        <span class="c1">//middleware support
-</span><span class="c1"></span>        <span class="nx">handlers</span> <span class="p">[]</span><span class="nx">HandlerFunc</span>
-        <span class="nx">index</span>   <span class="kt">int8</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">newContext</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">req</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="o">*</span><span class="nx">Context</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">Context</span><span class="p">{</span>
-            <span class="nx">Path</span><span class="p">:</span>   <span class="nx">req</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nx">Path</span><span class="p">,</span>
-            <span class="nx">Method</span><span class="p">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span>
-            <span class="nx">Req</span><span class="p">:</span>    <span class="nx">req</span><span class="p">,</span>
-            <span class="nx">Writer</span><span class="p">:</span> <span class="nx">w</span><span class="p">,</span>
-            <span class="nx">index</span><span class="p">:</span>  <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span>
-        <span class="nx">s</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span><span class="p">)</span>
-        <span class="k">for</span> <span class="p">;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">index</span> <span class="p">&lt;</span> <span class="nb">int8</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span> <span class="nx">c</span><span class="p">.</span><span class="nx">index</span><span class="o">++</span> <span class="p">{</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span><span class="p">[</span><span class="nx">c</span><span class="p">.</span><span class="nx">index</span><span class="p">](</span><span class="nx">c</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kd">const</span> <span class="nx">abortIndex</span> <span class="kt">int8</span> <span class="p">=</span> <span class="nx">math</span><span class="p">.</span><span class="nx">MaxInt8</span> <span class="o">/</span> <span class="mi">2</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">Abort</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">index</span> <span class="p">=</span> <span class="nx">abortIndex</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">IsAbort</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">index</span> <span class="o">&gt;=</span> <span class="nx">abortIndex</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">AbortWIthStatusJSON</span><span class="p">(</span><span class="nx">code</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">o</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nf">Abort</span><span class="p">()</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">code</span><span class="p">,</span> <span class="nx">o</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<code>index</code>是记录当前执行到第几个中间件，当在中间件中调用<code>Next</code>方法时，控制权交给了下一个中间件，直到调用到最后一个中间件，然后再从后往前，调用每个中间件在<code>Next</code>方法之后定义的部分。如果我们将用户在映射路由时定义的Handler添加到c.handlers列表中，结果会怎么样呢？</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func A(c *Context) {
+<p>  geew的中间件定义与路由映射的Handler一致，处理的输入是<code>Context</code>对象。插入点是框架接收到请求初始化Context对象后，允许用户使用自己定义的中间件做一些额外的处理，例如记录日志等，以及对Context进行二次加工。另外通过调用<code>Next</code>方法，中间件可等待用户自己定义的Handler处理介乎后，再做一些额外的操作，例如计算本次处理所用时间。即<strong>geew的中间件支持用户在请求被处理的前后，做一些额外的操作</strong>。例如：我们希望最终能够支持如下定义的中间件，<code>c.Next()</code>表示等待执行其他中间件或用户的Handler:</p>
+<pre><code>    // middleware.go
+	package geew
+	
+	func TimeOpe() HandlerFunc {
+        return func(c *Context) {
+            t := time.Now()
+            c.Next()
+            log.Printf(&quot;[%d] %s in %v&quot;, c.StatusCode, c.Req.RequestURI, time.since(t))
+        }
+	}
+</code></pre>
+<p>  另外，支持设置多个中间件，依次进行调用。
+  我们在上一篇文章group中讲到，中间件是应用在group上的，应用在最顶层的group，相当于作用域全局，所有的请求都会被中间件处理。那为什么不作用在每一条路由规则上呢？作用在某条路由规则，那还不如用户直接在Handler中调用直观。只作用在某条路由的功能通用性太差，不太适合定义为中间件。
+  我们之前的框架涉及是这样的，当接收到请求后，匹配路由，该请求的所有信息都保存在<code>Context</code>中。中间件也不例外，接收到请求后，应查找所有应作用于该路由的中间件，保存在Context中，依次进行调用。为什么依次调用后，还需要在Context中保存呢？因为在设计中，中间件不仅仅作用在处理流程前，也可以作用在处理流程后，即在用户定义的Handler处理完毕后，还可以执行剩下的操作。</p>
+<p>  为此，我们给<code>Context</code>添加了2个参数，定义了<code>Next</code>方法以及<code>Abort</code>方法</p>
+<pre><code>    // context.go
+	package geew
+	
+	type Context struct {
+        // origin objects
+        Writer http.ResponseWriter
+        Req    *http.Request
+        // request info
+        Path   string
+        Method string
+        Params map[string]string
+        // response info
+        StatusCode int
+        //middleware support
+        handlers []HandlerFunc
+        index   int8
+	}
+	
+	func newContext(w http.ResponseWriter, req *http.Request) *Context {
+        return &amp;Context{
+            Path:   req.URL.Path,
+            Method: req.Method,
+            Req:    req,
+            Writer: w,
+            index:  -1,
+        }
+	}
+	
+	func (c *Context) Next() {
+        c.index++
+        s := len(c.handlers)
+        for ; c.index &lt; int8(s); c.index++ {
+            c.handlers[c.index](c)
+        }
+	}
+	
+	const abortIndex int8 = math.MaxInt8 / 2
+	
+	func (c *Context) Abort() {
+        c.index = abortIndex
+	}
+	
+	func (c *Context) IsAbort() bool {
+        return c.index &gt;= abortIndex
+	}
+	
+	func (c *Context) AbortWIthStatusJSON(code int, o interface{}) {
+        c.Abort()
+        c.JSON(code, o)
+	}
+</code></pre>
+<p>  <code>index</code>是记录当前执行到第几个中间件，当在中间件中调用<code>Next</code>方法时，控制权交给了下一个中间件，直到调用到最后一个中间件，然后再从后往前，调用每个中间件在<code>Next</code>方法之后定义的部分。如果我们将用户在映射路由时定义的Handler添加到c.handlers列表中，结果会怎么样呢？</p>
+<pre><code>    func A(c *Context) {
         part1
         c.Next()
         part2
-    }
-    func B(c *Context) {
+	}
+	func B(c *Context) {
         part3
         c.Next()
         part4
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;假设我们应用了中间件 A 和 B，和路由映射的 Handler。c.handlers是这样的[A, B, Handler]，c.index初始化为-1。调用c.Next()，接下来的流程是这样的：</p>
-
+	}
+</code></pre>
+<p>  假设我们应用了中间件 A 和 B，和路由映射的 Handler。c.handlers是这样的[A, B, Handler]，c.index初始化为-1。调用c.Next()，接下来的流程是这样的：</p>
 <ul>
 <li>c.index++，c.index 变为 0</li>
 <li>0 &lt; 3，调用 c.handlers[0]，即 A</li>
@@ -349,157 +245,80 @@
 <li>part4 执行完毕，返回到 A 中的 part2，执行 part2</li>
 <li>part2 执行完毕，结束。</li>
 </ul>
-
-<p>&emsp;&emsp;最终的顺序是part1 -&gt; part3 -&gt; Handler -&gt; part 4 -&gt; part2。恰恰满足了我们对中间件的要求，接下来看调用部分的代码，就能全部串起来了。至于<code>Abort</code>则是<strong>中断</strong>当前handler之后的所有handler立即返回。</p>
-
+<p>  最终的顺序是part1 -&gt; part3 -&gt; Handler -&gt; part 4 -&gt; part2。恰恰满足了我们对中间件的要求，接下来看调用部分的代码，就能全部串起来了。至于<code>Abort</code>则是<strong>中断</strong>当前handler之后的所有handler立即返回。</p>
 <h2 id="use">use</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// router.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">group</span><span class="p">)</span> <span class="nf">Use</span><span class="p">(</span><span class="nx">middlwares</span> <span class="o">...</span><span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">g</span><span class="p">.</span><span class="nx">middlewares</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">g</span><span class="p">.</span><span class="nx">middlewares</span><span class="p">,</span> <span class="nx">middlewares</span><span class="o">...</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="c1">// geew.go
-</span><span class="c1"></span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">Engine</span><span class="p">)</span> <span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">req</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">middlewares</span> <span class="p">[]</span><span class="nx">HandlerFunc</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">group</span> <span class="p">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">groups</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">HasPrefix</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">URL</span><span class="p">.</span><span class="nx">Path</span><span class="p">,</span> <span class="nx">group</span><span class="p">.</span><span class="nx">prefix</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">middlewares</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">middlewares</span><span class="p">,</span> <span class="nx">group</span><span class="p">.</span><span class="nx">middlewares</span><span class="o">...</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="nx">c</span> <span class="o">:=</span> <span class="nf">newContext</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">req</span><span class="p">)</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span> <span class="p">=</span> <span class="nx">middlewares</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;ServeHTTP 函数也有变化，当我们接收到一个具体请求时，要判断该请求适用于哪些中间件，在这里我们简单通过 URL 的前缀来判断。得到中间件列表后，赋值给 c.handlers。</p>
-
+<pre><code>    // router.go
+	package geew
+	
+	func (g *group) Use(middlwares ...HandlerFunc) {
+        g.middlewares = append(g.middlewares, middlewares...)
+	}
+	
+	// geew.go
+	
+	func (e *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+        var middlewares []HandlerFunc
+        for _, group : e.groups {
+            if strings.HasPrefix(req.URL.Path, group.prefix) {
+                middlewares = append(middlewares, group.middlewares...)
+            }
+        }
+        c := newContext(w, req)
+        c.handlers = middlewares
+        e.router.handle(c)
+	}
+</code></pre>
+<p>  ServeHTTP 函数也有变化，当我们接收到一个具体请求时，要判断该请求适用于哪些中间件，在这里我们简单通过 URL 的前缀来判断。得到中间件列表后，赋值给 c.handlers。</p>
 <ul>
-<li><p>handle 函数中，将从路由匹配得到的 Handler 添加到 c.handlers列表中，执行c.Next()</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="c1">// router.go
-</span><span class="c1"></span><span class="kn">package</span> <span class="nx">geew</span>
-
-<span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">router</span><span class="p">)</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">n</span><span class="p">,</span> <span class="nx">params</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">getRoute</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="nx">n</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nx">key</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Method</span> <span class="o">+</span> <span class="s">&#34;-&#34;</span> <span class="o">+</span> <span class="nx">n</span><span class="p">.</span><span class="nx">pattern</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">Params</span> <span class="p">=</span> <span class="nx">params</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">handlers</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">handlers</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusNotFound</span><span class="p">,</span> <span class="s">&#34;404 NOT FOUND: %s\n&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
-        <span class="p">})</span>
-    <span class="p">}</span>
-    <span class="nx">c</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span>
-<span class="p">}</span></pre></td></tr></table>
-</div>
-</div></li>
+<li>
+<p>handle 函数中，将从路由匹配得到的 Handler 添加到 c.handlers列表中，执行c.Next()</p>
+<pre><code>  // router.go
+  package geew
+	
+  func (r *router) handle(c *Context) {
+      n, params := r.getRoute(c.Method, c.Path)
+	
+      if n != nil {
+          key := c.Method + &quot;-&quot; + n.pattern
+          c.Params = params
+          c.handlers = append(c.handlers, r.handlers[key])
+      } else {
+          c.handlers = append(c.handlers, func(c *Context) {
+              c.String(http.StatusNotFound, &quot;404 NOT FOUND: %s\n&quot;, c.Path)
+          })
+      }
+      c.Next()
+  }
+</code></pre>
+</li>
 </ul>
-
 <h2 id="test">Test</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// example_test.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">example</span>
+<pre><code>    // example_test.go
+	package example
+	
+	func TestMiddleware(t *testing.T) {
+        r := geew.New()
+        r.GET(&quot;/&quot;, func(c *geew.Context){
+            c.HTML(http.StatusOK, &quot;&lt;h1&gt;Hello Geew&lt;/h1&gt;&quot;)
+        })
+	
+        v2 := r.Group(&quot;/v2&quot;)
+        v2.Use(func(c *geew.Context){
+            t := time.Now()
+            log.Printf(&quot;[%d] %s in %v for group v2&quot;, c.StatusCode, c.Req.RequestURI, time.Since(t))
+        })
+	
+        {
+            v2.GET(&quot;/hello/:name&quot;, func(c *geew.Context){
+                // expect /hello/geew
+                c.String(http.StatusOK, &quot;hello %s, you`re at %s\n&quot;, c.Param(&quot;name&quot;), c.Path)
+            })
+        }
+	
+        r.Run(&quot;:9999&quot;)
+	}
+</code></pre>
 
-    <span class="kd">func</span> <span class="nf">TestMiddleware</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">r</span> <span class="o">:=</span> <span class="nx">geew</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">){</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;&lt;h1&gt;Hello Geew&lt;/h1&gt;&#34;</span><span class="p">)</span>
-        <span class="p">})</span>
-
-        <span class="nx">v2</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/v2&#34;</span><span class="p">)</span>
-        <span class="nx">v2</span><span class="p">.</span><span class="nf">Use</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">){</span>
-            <span class="nx">t</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span>
-            <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;[%d] %s in %v for group v2&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">StatusCode</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Req</span><span class="p">.</span><span class="nx">RequestURI</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Since</span><span class="p">(</span><span class="nx">t</span><span class="p">))</span>
-        <span class="p">})</span>
-
-        <span class="p">{</span>
-            <span class="nx">v2</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello/:name&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">){</span>
-                <span class="c1">// expect /hello/geew
-</span><span class="c1"></span>                <span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;hello %s, you`re at %s\n&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Param</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">),</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
-            <span class="p">})</span>
-        <span class="p">}</span>
-
-        <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:9999&#34;</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
     </div>
 
     <div class="post-copyright">

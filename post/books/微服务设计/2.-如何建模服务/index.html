@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨论如何确定服务之间的边界" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/2.-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E6%9C%8D%E5%8A%A1/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[微服务设计(二) | 如何建模服务]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨" />
+<meta property="og:description" content="摘要 同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨论如何确定服务之间的边界" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/2.-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E6%9C%8D%E5%8A%A1/" />
-<meta property="article:published_time" content="2020-04-13T09:55:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-04-13T09:55:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/2.-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E6%9C%8D%E5%8A%A1/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-04-13T09:55:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-04-13T09:55:56&#43;08:00" />
 
 <meta itemprop="name" content="[微服务设计(二) | 如何建模服务]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨">
-
-
-<meta itemprop="datePublished" content="2020-04-13T09:55:56&#43;08:00" />
+<meta itemprop="description" content="摘要 同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨论如何确定服务之间的边界"><meta itemprop="datePublished" content="2020-04-13T09:55:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-04-13T09:55:56&#43;08:00" />
-<meta itemprop="wordCount" content="2170">
-
-
-
-<meta itemprop="keywords" content="微服务设计," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1954">
+<meta itemprop="keywords" content="微服务设计," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[微服务设计(二) | 如何建模服务]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨"/>
+<meta name="twitter:description" content="摘要 同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨论如何确定服务之间的边界"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/"> 微服务设计 </a>
             </div>
-          <span class="more-meta"> 约 2170 字 </span>
-          <span class="more-meta"> 预计阅读 5 分钟 </span>
+          <span class="more-meta"> 约 1954 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,102 +135,57 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#musiccorp简介">MusicCorp简介</a>
-<ul>
-<li><a href="#什么样的服务是好服务">什么样的服务是好服务</a>
-<ul>
-<li><a href="#松耦合">松耦合</a></li>
-<li><a href="#高内聚">高内聚</a></li>
-</ul></li>
-<li><a href="#界限上下文">界限上下文</a>
-<ul>
-<li><a href="#共享隐藏模型">共享隐藏模型</a></li>
-<li><a href="#模块">模块</a></li>
-<li><a href="#过早划分">过早划分</a></li>
-</ul></li>
-<li><a href="#业务功能">业务功能</a></li>
-<li><a href="#逐步划分上下文">逐步划分上下文</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#musiccorp简介">MusicCorp简介</a>
+      <ul>
+        <li><a href="#什么样的服务是好服务">什么样的服务是好服务</a></li>
+        <li><a href="#界限上下文">界限上下文</a></li>
+        <li><a href="#业务功能">业务功能</a></li>
+        <li><a href="#逐步划分上下文">逐步划分上下文</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<blockquote>
+      <blockquote>
 <p>摘要</p>
 </blockquote>
-
-<p>&emsp;&emsp;同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨论如何确定服务之间的边界，以期最大化微服务的好处，避开它的劣势。我们采用案例驱动的方式作为讨论的载体。</p>
-
+<p>  同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨论如何确定服务之间的边界，以期最大化微服务的好处，避开它的劣势。我们采用案例驱动的方式作为讨论的载体。</p>
 <h2 id="musiccorp简介">MusicCorp简介</h2>
-
-<p>&emsp;&emsp;MusicCorp最初是实体唱片经营店，伴随着电子音乐的兴起，MusicCorp准备把注意力转移到前沿在线零售，将CD送货上门，毕竟质量比方便更重要。</p>
-
+<p>  MusicCorp最初是实体唱片经营店，伴随着电子音乐的兴起，MusicCorp准备把注意力转移到前沿在线零售，将CD送货上门，毕竟质量比方便更重要。</p>
 <h3 id="什么样的服务是好服务">什么样的服务是好服务</h3>
-
-<p>&emsp;&emsp;MusicCorp团队开始了辛苦的工作，不过在创建一个又一个服务之前，先暂缓来讨论一些很重要的原则。什么是好的服务？如果你曾经尝试过SOA并且失败了，大概就知道我下一步要说什么了吧。我希望你专注在两个重要的概念上：<code>松耦合、高内聚。</code>这俩改变在不同的环境中被大量使用，尤其是面向对象编程中，so，我们先来讨论以下这俩概念在微服务中的含义。</p>
-
+<p>  MusicCorp团队开始了辛苦的工作，不过在创建一个又一个服务之前，先暂缓来讨论一些很重要的原则。什么是好的服务？如果你曾经尝试过SOA并且失败了，大概就知道我下一步要说什么了吧。我希望你专注在两个重要的概念上：<code>松耦合、高内聚。</code>这俩改变在不同的环境中被大量使用，尤其是面向对象编程中，so，我们先来讨论以下这俩概念在微服务中的含义。</p>
 <h4 id="松耦合">松耦合</h4>
-
-<p>&emsp;&emsp;使用微服务最重要的一点是，<code>能够独立修改及部署单个服务而不需要修改系统的其它部分</code>，这真的非常重要。使用紧耦合的方式做服务之间的集成，会使得一个服务的修改致使其它消费者的修改。</p>
-
-<p>&emsp;&emsp;<code>一个松耦合的服务应该尽可能少地知道与之协作的那些服务的信息</code>。应该限制两个服务之间不同调用形式的数量，过度的通信也可能会导致紧耦合。</p>
-
+<p>  使用微服务最重要的一点是，<code>能够独立修改及部署单个服务而不需要修改系统的其它部分</code>，这真的非常重要。使用紧耦合的方式做服务之间的集成，会使得一个服务的修改致使其它消费者的修改。</p>
+<p>  <code>一个松耦合的服务应该尽可能少地知道与之协作的那些服务的信息</code>。应该限制两个服务之间不同调用形式的数量，过度的通信也可能会导致紧耦合。</p>
 <h4 id="高内聚">高内聚</h4>
-
-<p>&emsp;&emsp;还记得我们在上一节中说的：把因相同原因而变化的东西聚合到一起，而把因不同原因而变化的东西分离开来。<code>如果你要改变某个行为，最好只在一个地方进行修改。</code>如果需要在很多不同的地方做这些修改，那么就需要同时发布多个服务才能交付，风险很高，进度也很慢。</p>
-
+<p>  还记得我们在上一节中说的：把因相同原因而变化的东西聚合到一起，而把因不同原因而变化的东西分离开来。<code>如果你要改变某个行为，最好只在一个地方进行修改。</code>如果需要在很多不同的地方做这些修改，那么就需要同时发布多个服务才能交付，风险很高，进度也很慢。</p>
 <blockquote>
 <p>重点是，要找到问题域的边界就可以确保相关的行为能放在同一个地方，并且它们会和其它边界以松耦合的形式进行通信。</p>
 </blockquote>
-
 <h3 id="界限上下文">界限上下文</h3>
-
-<p>&emsp;&emsp;<strong>有一个特别有趣的生物现象：细胞之所以会存在，是因为细胞膜定义了什么在细胞内，什么在细胞外，并且确定了什么物质可以通过细胞膜。</strong></p>
-
-<p>&emsp;&emsp;《领域驱动设计》作者Eric Evans认为<code>一个给定的领域包含多个界限上下文</code>，每个界限上下文中的模型可以分为两部分，一部分不需要与外部通信，另一部分则需要。每个上下文都有明确的接口，该接口决定了它会暴露那些模型给其它上下文。</p>
-
-<p>&emsp;&emsp;来看看MusicCorp的主业务，业务涵盖了从仓储到前台、从财务到订单的所有领域。我们尝试在领域中寻找Evans所提到的界限上下文。仓库负责管理发出去的订单及退回的剩余产品，接收新到的库存，保证多个铲车能同时正常运行。财务部门管理工资单和公司的账户，并生成重要的报表，还会配备有趣的报表工具。我们在第一节中讲过一些<a href="https://facedamon.github.io/post/books/微服务设计/1.-微服务/#分解-解耦-技术">解耦技术</a>,那么现在讨论一下对于MusicCorp业务的解耦。</p>
-
+<p>  <strong>有一个特别有趣的生物现象：细胞之所以会存在，是因为细胞膜定义了什么在细胞内，什么在细胞外，并且确定了什么物质可以通过细胞膜。</strong></p>
+<p>  《领域驱动设计》作者Eric Evans认为<code>一个给定的领域包含多个界限上下文</code>，每个界限上下文中的模型可以分为两部分，一部分不需要与外部通信，另一部分则需要。每个上下文都有明确的接口，该接口决定了它会暴露那些模型给其它上下文。</p>
+<p>  来看看MusicCorp的主业务，业务涵盖了从仓储到前台、从财务到订单的所有领域。我们尝试在领域中寻找Evans所提到的界限上下文。仓库负责管理发出去的订单及退回的剩余产品，接收新到的库存，保证多个铲车能同时正常运行。财务部门管理工资单和公司的账户，并生成重要的报表，还会配备有趣的报表工具。我们在第一节中讲过一些<a href="https://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/1.-%E5%BE%AE%E6%9C%8D%E5%8A%A1/#%E5%88%86%E8%A7%A3-%E8%A7%A3%E8%80%A6-%E6%8A%80%E6%9C%AF">解耦技术</a>,那么现在讨论一下对于MusicCorp业务的解耦。</p>
 <h4 id="共享隐藏模型">共享隐藏模型</h4>
-
-<p>&emsp;&emsp;财务部和仓库是两个独立的界限上下文。它们都有明确的对外接口，也都有着只需要自己知道的细节。不过财务部仍然需要知道一些仓库的事情，它需要知道库存水平以便更新账户。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/micro-design/3-1.jpeg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;上图中库存项就是两个界限上下文的共享模型。但是我们不会直接把这个模型暴露出去，它存在内部和外部两种表示方式。很多情况下，这都会导致是否采用REST的讨论，下一节我们会做这方面的讨论。</p>
-
+<p>  财务部和仓库是两个独立的界限上下文。它们都有明确的对外接口，也都有着只需要自己知道的细节。不过财务部仍然需要知道一些仓库的事情，它需要知道库存水平以便更新账户。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/micro-design/3-1.jpeg" alt="avatar"></p>
+<p>  上图中库存项就是两个界限上下文的共享模型。但是我们不会直接把这个模型暴露出去，它存在内部和外部两种表示方式。很多情况下，这都会导致是否采用REST的讨论，下一节我们会做这方面的讨论。</p>
 <h4 id="模块">模块</h4>
-
 <h4 id="过早划分">过早划分</h4>
-
-<p>&emsp;&emsp;过早将一个系统划分成为微服务的代价非常高，尤其是在面对新领域时。<strong>从单块系统开始花时间去理解服务边界到底在哪，要比从头开始构建微服务要简单得多。</strong></p>
-
+<p>  过早将一个系统划分成为微服务的代价非常高，尤其是在面对新领域时。<strong>从单块系统开始花时间去理解服务边界到底在哪，要比从头开始构建微服务要简单得多。</strong></p>
 <h3 id="业务功能">业务功能</h3>
-
-<p>&emsp;&emsp;当你在思考领域内的界限上下文时，不应该从共享数据角度考虑，而应该从上下文提供的功能来考虑。仓库是提供当前的库存清淡，财务提供月末账目和创建员工工资单。<code>为了实现这些功能，需要交换存储信息模型。</code></p>
-
-<p>&emsp;&emsp;切忌只考虑共享数据模型(create, read, update, delete)的服务.建模服务时，应该将这些功能作为关键操作提供给其协作者。</p>
-
+<p>  当你在思考领域内的界限上下文时，不应该从共享数据角度考虑，而应该从上下文提供的功能来考虑。仓库是提供当前的库存清淡，财务提供月末账目和创建员工工资单。<code>为了实现这些功能，需要交换存储信息模型。</code></p>
+<p>  切忌只考虑共享数据模型(create, read, update, delete)的服务.建模服务时，应该将这些功能作为关键操作提供给其协作者。</p>
 <h3 id="逐步划分上下文">逐步划分上下文</h3>
-
-<p>&emsp;&emsp;当考虑微服务的边界时，首先考虑比较大的、粗粒度的那些上下文，然后当发现合适的缝隙后，再进一步划分出那些嵌套的上下文。举个例子，你可以把仓库分解成为不同的部分：订单处理-&gt;库存管理-&gt;货物接收。</p>
-
-<p>&emsp;&emsp;我见过一种做法是，使这些嵌套的上下文不直接对外可见。对于外界来说，它们用的还是仓库的功能，但发出的请求其实被透明地映射到了两个或者更多地服务上。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/micro-service/epub_907756_11.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;当然，你也会认为，高层次的限界上下文不应该被显式地建模成为一个服务，也就是说不存在一个独立地仓库边界，而是把库存管理、订单处理和货物接收等这些服务分离开来。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/micro-service/epub_907756_12.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;到底是使用嵌套地方法还是完全分离地方法？如果订单管理、库存管理以及货物接收是由不同地团队维护，那么它们大概会希望这些服务都是顶层微服务。另一方面，如果它们都是由一个团队管理的，那么嵌套式结构会更合理，组织结构和软件架构会互相影响。另一个原因是，它可以使得架构更成块从而更好的测试。当测试仓库的消费方服务时，不需要对仓库上下文中的每个服务进行打桩，只需要专注于粗粒度的API即可。当考虑更大范围的测试时，这也能够给你一定的单元隔离。</p>
+<p>  当考虑微服务的边界时，首先考虑比较大的、粗粒度的那些上下文，然后当发现合适的缝隙后，再进一步划分出那些嵌套的上下文。举个例子，你可以把仓库分解成为不同的部分：订单处理-&gt;库存管理-&gt;货物接收。</p>
+<p>  我见过一种做法是，使这些嵌套的上下文不直接对外可见。对于外界来说，它们用的还是仓库的功能，但发出的请求其实被透明地映射到了两个或者更多地服务上。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/micro-service/epub_907756_11.jpg" alt="avatar"></p>
+<p>  当然，你也会认为，高层次的限界上下文不应该被显式地建模成为一个服务，也就是说不存在一个独立地仓库边界，而是把库存管理、订单处理和货物接收等这些服务分离开来。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/micro-service/epub_907756_12.jpg" alt="avatar"></p>
+<p>  到底是使用嵌套地方法还是完全分离地方法？如果订单管理、库存管理以及货物接收是由不同地团队维护，那么它们大概会希望这些服务都是顶层微服务。另一方面，如果它们都是由一个团队管理的，那么嵌套式结构会更合理，组织结构和软件架构会互相影响。另一个原因是，它可以使得架构更成块从而更好的测试。当测试仓库的消费方服务时，不需要对仓库上下文中的每个服务进行打桩，只需要专注于粗粒度的API即可。当考虑更大范围的测试时，这也能够给你一定的单元隔离。</p>
 
     </div>
 

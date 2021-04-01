@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="skywang12345" /><meta name="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &amp;emsp;&amp;emsp;本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 &amp;em" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="skywang12345" /><meta name="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 栈是一种线性存储结构，它有以下" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/data-struct/linear-struct/%E6%A0%88/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[数据结构与算法 | 栈 ]" />
-<meta property="og:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &emsp;&emsp;本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 &em" />
+<meta property="og:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 栈是一种线性存储结构，它有以下" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/data-struct/linear-struct/%E6%A0%88/" />
-<meta property="article:published_time" content="2019-11-05T10:21:56&#43;08:00"/>
-<meta property="article:modified_time" content="2019-11-05T10:21:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/data-struct/linear-struct/%E6%A0%88/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-11-05T10:21:56&#43;08:00" />
+<meta property="article:modified_time" content="2019-11-05T10:21:56&#43;08:00" />
 
 <meta itemprop="name" content="[数据结构与算法 | 栈 ]">
-<meta itemprop="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &emsp;&emsp;本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 &em">
-
-
-<meta itemprop="datePublished" content="2019-11-05T10:21:56&#43;08:00" />
+<meta itemprop="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 栈是一种线性存储结构，它有以下"><meta itemprop="datePublished" content="2019-11-05T10:21:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-11-05T10:21:56&#43;08:00" />
-<meta itemprop="wordCount" content="1134">
-
-
-
-<meta itemprop="keywords" content="数据结构与算法," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="894">
+<meta itemprop="keywords" content="数据结构与算法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[数据结构与算法 | 栈 ]"/>
-<meta name="twitter:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &emsp;&emsp;本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 &em"/>
+<meta name="twitter:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 栈是一种线性存储结构，它有以下"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"> 数据结构与算法 </a>
             </div>
-          <span class="more-meta"> 约 1134 字 </span>
-          <span class="more-meta"> 预计阅读 3 分钟 </span>
+          <span class="more-meta"> 约 894 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -141,129 +134,48 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#概要">概要</a></li>
-<li><a href="#栈的介绍">栈的介绍</a></li>
-<li><a href="#java实现">Java实现</a></li>
-<li><a href="#jdk自带">JDK自带</a></li>
-<li><a href="#golang实现">Golang实现</a></li>
-</ul>
-</nav>
+    <nav id="TableOfContents"></nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<blockquote>
+      <blockquote>
 <p>转载自 <a href="https://www.cnblogs.com/skywang12345/">https://www.cnblogs.com/skywang12345/</a></p>
 </blockquote>
-
 <h1 id="概要">概要</h1>
-
-<p>&emsp;&emsp;本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。</p>
-
+<p>  本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。</p>
 <h1 id="栈的介绍">栈的介绍</h1>
-
-<p>&emsp;&emsp;栈是一种线性存储结构，它有以下几个特点：</p>
-
+<p>  栈是一种线性存储结构，它有以下几个特点：</p>
 <ol>
-<li><p>栈中数据是按照&rdquo;先进后出 LIFO Last In First Out&rdquo; 方式进出栈的。</p></li>
-
-<li><p>向栈中添加/删除数据时，只能从栈顶进行操作。</p></li>
+<li>
+<p>栈中数据是按照&quot;先进后出 LIFO Last In First Out&quot; 方式进出栈的。</p>
+</li>
+<li>
+<p>向栈中添加/删除数据时，只能从栈顶进行操作。</p>
+</li>
 </ol>
-
-<p>&emsp;&emsp;栈通常包括三种操作: push, peek, pop.</p>
-
-<p>&emsp;&emsp;push &ndash; 向栈中添加元素。</p>
-
-<p>&emsp;&emsp;peek &ndash; 返回栈顶元素。</p>
-
-<p>&emsp;&emsp;push &ndash; 返回并删除栈顶元素。</p>
-
+<p>  栈通常包括三种操作: push, peek, pop.</p>
+<p>  push &ndash; 向栈中添加元素。</p>
+<p>  peek &ndash; 返回栈顶元素。</p>
+<p>  push &ndash; 返回并删除栈顶元素。</p>
 <ul>
 <li>栈示意图</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/栈示意图.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;栈中数据依次是30&ndash;&gt;20&ndash;&gt;10</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E6%A0%88%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt="avatar"></p>
+<p>  栈中数据依次是30&ndash;&gt;20&ndash;&gt;10</p>
 <ul>
 <li>出栈</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/出栈.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;出栈前：栈顶元素是30.此时，栈中的元素依次是30&ndash;&gt;30&ndash;&gt;10
-&emsp;&emsp;出栈后：30出栈后，栈顶元素变成20.此时，栈中的元素依次是20&ndash;&gt;10</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%87%BA%E6%A0%88.jpg" alt="avatar"></p>
+<p>  出栈前：栈顶元素是30.此时，栈中的元素依次是30&ndash;&gt;30&ndash;&gt;10
+  出栈后：30出栈后，栈顶元素变成20.此时，栈中的元素依次是20&ndash;&gt;10</p>
 <ul>
 <li>入栈</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/入栈.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;入栈前：栈顶元素是20.此时，栈中的元素依次是20&ndash;&gt;10
-&emsp;&emsp;入栈后：40入栈后，栈顶元素变成40.此时，栈中的元素依次是40&ndash;&gt;20&ndash;&gt;10</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%85%A5%E6%A0%88.jpg" alt="avatar"></p>
+<p>  入栈前：栈顶元素是20.此时，栈中的元素依次是20&ndash;&gt;10
+  入栈后：40入栈后，栈顶元素变成40.此时，栈中的元素依次是40&ndash;&gt;20&ndash;&gt;10</p>
 <h1 id="java实现">Java实现</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    import java.lang.reflect.Array;
+<pre><code>    import java.lang.reflect.Array;
 
     public class GeneralArrayStack&lt;T&gt; {
         private static final int DEFAULT_SIZE = 12;
@@ -303,7 +215,7 @@
         @Override
         public String toString() {
             if (isEmpty()) {
-                return &#34;stack is empty\n&#34;;
+                return &quot;stack is empty\n&quot;;
             }
             StringBuffer sBuffer = new StringBuffer();
             int i = size() - 1;
@@ -313,32 +225,10 @@
             }
             return sBuffer.toString;
         }
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h1 id="jdk自带">JDK自带</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    public class StackTest {
+<pre><code>    public class StackTest {
         public static void main(String[] args) {
             Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
             stack.push(10);
@@ -351,172 +241,92 @@
 
             while(!stack.empty()) {
                 tmp = stack.pop();
-                sout(&#34;tmp=%d\n&#34;, tmp);
+                sout(&quot;tmp=%d\n&quot;, tmp);
             }
         }
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h1 id="golang实现">Golang实现</h1>
-
 <ul>
-<li><p>CopyLeft <a href="https://github.com/emirpasic/gods">https://github.com/emirpasic/gods</a></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">arraystack</span>
+<li>
+<p>CopyLeft <a href="https://github.com/emirpasic/gods">https://github.com/emirpasic/gods</a></p>
+<pre><code>  package arraystack
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&#34;container/list&#34;</span>
-    <span class="s">&#34;github.com/facedamon/gods/lists/arraylist&#34;</span>
-<span class="p">)</span>
+  import (
+      &quot;container/list&quot;
+      &quot;github.com/facedamon/gods/lists/arraylist&quot;
+  )
 
-<span class="c1">// Stack holds elements in an array-list
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Stack</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">list</span> <span class="o">*</span><span class="nx">arraylist</span><span class="p">.</span><span class="nx">List</span>
-<span class="p">}</span>
+  // Stack holds elements in an array-list
+  type Stack struct {
+      list *arraylist.List
+  }
 
-<span class="c1">// New instantiates a new empty stack
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">New</span><span class="p">()</span> <span class="o">*</span><span class="nx">Stack</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="o">&amp;</span><span class="nx">Stack</span><span class="p">{</span><span class="nx">list</span><span class="p">:</span> <span class="nx">arraylist</span><span class="p">.</span><span class="nf">New</span><span class="p">()}</span>
-<span class="p">}</span>
+  // New instantiates a new empty stack
+  func New() *Stack {
+      return &amp;Stack{list: arraylist.New()}
+  }
 
-<span class="c1">// Push adds a value onto the top of the stack
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Push</span><span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-    <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span>
-<span class="p">}</span>
+  // Push adds a value onto the top of the stack
+  func (stack *Stack) Push(value interface{}) {
+      stack.list.Add(value)
+  }
 
-<span class="c1">// Pop removes top element on stack and returns it, or nil if stack is empty.
-</span><span class="c1">// Second return parameter is true, unless the stack was empty and there was nothing to top.
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Pop</span><span class="p">()</span> <span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">ok</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">value</span><span class="p">,</span> <span class="nx">ok</span> <span class="p">=</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span>
-<span class="p">}</span>
+  // Pop removes top element on stack and returns it, or nil if stack is empty.
+  // Second return parameter is true, unless the stack was empty and there was nothing to top.
+  func (stack *Stack) Pop() (value interface{}, ok bool) {
+      value, ok = stack.list.Get(stack.list.Size() - 1)
+      stack.list.Remove(stack.list.Size() - 1)
+      return
+  }
 
-<span class="c1">// Peek returns top element on the stack without removing it, or nil if stack is empty
-</span><span class="c1">// Second return parameter is true, unless the stack was empty and there was nothing to peek.
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Peek</span><span class="p">()</span> <span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">ok</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="p">}</span>
+  // Peek returns top element on the stack without removing it, or nil if stack is empty
+  // Second return parameter is true, unless the stack was empty and there was nothing to peek.
+  func (stack *Stack) Peek() (value interface{}, ok bool) {
+      return stack.list.Get(stack.list.Size() - 1)
+  }
 
-<span class="c1">// Empty returns true if stack does not contain any element
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Empty</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Empty</span><span class="p">()</span>
-<span class="p">}</span>
+  // Empty returns true if stack does not contain any element
+  func (stack *Stack) Empty() bool {
+      return stack.list.Empty()
+  }
 
-<span class="c1">// Size returns number of elements within the stack.
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Size</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span>
-<span class="p">}</span>
+  // Size returns number of elements within the stack.
+  func (stack *Stack) Size() int {
+      return stack.list.Size()
+  }
 
-<span class="c1">// Clear removes all elements from the stack
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Clear</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Clear</span><span class="p">()</span>
-<span class="p">}</span>
+  // Clear removes all elements from the stack
+  func (stack *Stack) Clear() {
+      stack.list.Clear()
+  }
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">Values</span><span class="p">()</span> <span class="p">[]</span><span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
-    <span class="nx">size</span> <span class="o">:=</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span>
-    <span class="nx">elements</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kd">interface</span><span class="p">]{},</span> <span class="nx">size</span><span class="p">,</span> <span class="nx">size</span><span class="p">)</span>
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">size</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-        <span class="nx">elements</span><span class="p">[</span><span class="nx">size</span> <span class="o">-</span> <span class="nx">i</span><span class="p">],</span> <span class="nx">_</span> <span class="p">=</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">elements</span>
-<span class="p">}</span>
+  func (stack *Stack) Values() []interface{} {
+      size := stack.list.Size()
+      elements := make([]interface]{}, size, size)
+      for i := 1; i &lt;= size; i++ {
+          elements[size - i], _ = stack.list.Get(i - 1)
+      }
+      return elements
+  }
 
-<span class="c1">// String returns a string representation of container
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="nx">str</span> <span class="o">:=</span> <span class="s">&#34;ArrayStack\n&#34;</span>
-    <span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{}</span>
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Values</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">values</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">values</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%v&#34;</span><span class="p">,</span> <span class="nx">value</span><span class="p">))</span>
-    <span class="p">}</span>
-    <span class="nx">str</span> <span class="o">+=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">values</span><span class="p">,</span> <span class="s">&#34;, &#34;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">str</span>
-<span class="p">}</span>
+  // String returns a string representation of container
+  func (stack *Stack) String() string {
+      str := &quot;ArrayStack\n&quot;
+      values := []string{}
+      for _, value := range stack.list.Values() {
+          values = append(values, fmt.Sprintf(&quot;%v&quot;, value))
+      }
+      str += strings.Join(values, &quot;, &quot;)
+      return str
+  }
 
-<span class="c1">// Check that the index is within dounds of the list
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">stack</span> <span class="o">*</span><span class="nx">Stack</span><span class="p">)</span> <span class="nf">withinRange</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">list</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span>
-<span class="p">}</span></pre></td></tr></table>
-</div>
-</div></li>
+  // Check that the index is within dounds of the list
+  func (stack *Stack) withinRange(index int) bool {
+      return index &gt;= 0 &amp;&amp; index &lt; stack.list.Size()
+  }
+</code></pre>
+</li>
 </ul>
 
     </div>

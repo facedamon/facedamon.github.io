@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。 前缀树主要应用于统计，排" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/data-struct/tree-struct/trie/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[数据结构与算法 | 前缀树(敏感词过滤)]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。" />
+<meta property="og:description" content="摘要 前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。 前缀树主要应用于统计，排" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/data-struct/tree-struct/trie/" />
-<meta property="article:published_time" content="2020-07-28T16:26:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-07-28T16:26:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/data-struct/tree-struct/trie/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-07-28T16:26:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-07-28T16:26:56&#43;08:00" />
 
 <meta itemprop="name" content="[数据结构与算法 | 前缀树(敏感词过滤)]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。">
-
-
-<meta itemprop="datePublished" content="2020-07-28T16:26:56&#43;08:00" />
+<meta itemprop="description" content="摘要 前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。 前缀树主要应用于统计，排"><meta itemprop="datePublished" content="2020-07-28T16:26:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-07-28T16:26:56&#43;08:00" />
-<meta itemprop="wordCount" content="4814">
-
-
-
-<meta itemprop="keywords" content="数据结构与算法," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="4264">
+<meta itemprop="keywords" content="数据结构与算法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[数据结构与算法 | 前缀树(敏感词过滤)]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。"/>
+<meta name="twitter:description" content="摘要 前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。 前缀树主要应用于统计，排"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"> 数据结构与算法 </a>
             </div>
-          <span class="more-meta"> 约 4814 字 </span>
-          <span class="more-meta"> 预计阅读 10 分钟 </span>
+          <span class="more-meta"> 约 4264 字 </span>
+          <span class="more-meta"> 预计阅读 9 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,56 +135,37 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#引入">引入</a></li>
-<li><a href="#定义">定义</a></li>
-<li><a href="#添加">添加</a></li>
-<li><a href="#删除">删除</a></li>
-<li><a href="#查找-校验">查找(校验)</a></li>
-<li><a href="#测试">测试</a></li>
-<li><a href="#测试-1">测试</a></li>
-<li><a href="#过滤">过滤</a></li>
-<li><a href="#测试-2">测试</a></li>
-<li><a href="#替换">替换</a></li>
-<li><a href="#测试-3">测试</a></li>
-</ul></li>
-<li><a href="#总结">总结</a></li>
-</ul>
+  <ul>
+    <li><a href="#引入">引入</a></li>
+    <li><a href="#定义">定义</a></li>
+    <li><a href="#添加">添加</a></li>
+    <li><a href="#删除">删除</a></li>
+    <li><a href="#查找校验">查找(校验)</a></li>
+    <li><a href="#测试">测试</a></li>
+    <li><a href="#测试-1">测试</a></li>
+    <li><a href="#过滤">过滤</a></li>
+    <li><a href="#测试-2">测试</a></li>
+    <li><a href="#替换">替换</a></li>
+    <li><a href="#测试-3">测试</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;前缀树，又称<code>字典树</code>。之前在<a href="https://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/">手写http框架(路由)</a>中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。</p>
-
-<p>&emsp;&emsp;前缀树主要应用于<strong>统计，排序和保存大量的字符。</strong> 最常用的莫过于HTTP路由分组和搜索引擎词频统计。</p>
-
+      <h1 id="摘要">摘要</h1>
+<p>  前缀树，又称<code>字典树</code>。之前在<a href="https://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/">手写http框架(路由)</a>中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。</p>
+<p>  前缀树主要应用于<strong>统计，排序和保存大量的字符。</strong> 最常用的莫过于HTTP路由分组和搜索引擎词频统计。</p>
 <blockquote>
 <p>思考</p>
 </blockquote>
-
-<p>&emsp;&emsp;<code>给出n个单词和m个询问，每次询问一个单词，回答这个单词是否在单词表中出现过？
-</code></p>
-
-<p>&emsp;&emsp;很多人的第一想法是使用map，这样足够简单。</p>
-
+<p>  <code>给出n个单词和m个询问，每次询问一个单词，回答这个单词是否在单词表中出现过？</code></p>
+<p>  很多人的第一想法是使用map，这样足够简单。</p>
 <p>假设有100W个单词，难道要把100W个单词都存到内存里吗？然后还要祈求map不会出现碰撞，在1s内查询出结果。这显然不可能。</p>
-
-<p>&emsp;&emsp;而且这样做还有个问题，假设单词只包含英文字母，那么就只会出现26个字符的不同组合，如果一股脑存储的话，重复率极高。我们可以把每个单词拆分成若干字母，总共有26中可能，如果一个字母已经存在，则不再存储而是存储下一个字母，并把前缀字母与自己关联起来。这就是我们今天要说的<code>前缀树</code>。</p>
-
+<p>  而且这样做还有个问题，假设单词只包含英文字母，那么就只会出现26个字符的不同组合，如果一股脑存储的话，重复率极高。我们可以把每个单词拆分成若干字母，总共有26中可能，如果一个字母已经存在，则不再存储而是存储下一个字母，并把前缀字母与自己关联起来。这就是我们今天要说的<code>前缀树</code>。</p>
 <h2 id="引入">引入</h2>
-
-<p>&emsp;&emsp;假设现在有5个单词：ab, ad, be, cd, cg, 我们把他们拆分成单个字母，并从上往下深度优先构建这棵树。(与之相反的是从左往右广度优先)</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/tree/trie.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;从这可树上可以看出，一下几个要点：</p>
-
+<p>  假设现在有5个单词：ab, ad, be, cd, cg, 我们把他们拆分成单个字母，并从上往下深度优先构建这棵树。(与之相反的是从左往右广度优先)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/tree/trie.png" alt="avatar"></p>
+<p>  从这可树上可以看出，一下几个要点：</p>
 <ol>
 <li><strong>有一个root节点，并且root节点没有元素。</strong></li>
 <li><strong>root节点可以有多个子节点。</strong></li>
@@ -199,63 +173,14 @@
 <li><strong>非root节点也可以有多个子节点。</strong></li>
 <li><strong>所有节点都是自顶向下。</strong></li>
 </ol>
-
-<p>&emsp;&emsp;OK, 到此我们可以定义我们的Node节点属性了。在此之前我们还要抉择一个事情，就是一个节点的子节点是使用<code>数组</code>呢还是<code>Map</code>来存储, 像这样：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    childs []*node;
-    childs map[key]node;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;我们都知道数组是一段连续内存地址，在知道下标的前提下，查询速度非常快，但是插入和删除在元素量很多的情况下会愈来愈慢，因为要重排整个数组。Map内部是一个十字双向链表(就是key为数组，value为数组指针指向的链表)，在插入和删除元素上非常快，在查询上会很慢，因为要从head开始遍历每个next指针。</p>
-
-<p>&emsp;&emsp;对于trie树来说，如果数据量非常大(十万及以上)就采用数组，否则采用map。在使用上没有太大的区别。我们今天的应用案例是<code>敏感词过滤</code>，就是从一堆字符中命中查询的字符。</p>
-
+<p>  OK, 到此我们可以定义我们的Node节点属性了。在此之前我们还要抉择一个事情，就是一个节点的子节点是使用<code>数组</code>呢还是<code>Map</code>来存储, 像这样：</p>
+<pre><code>    childs []*node;
+    childs map[key]node;
+</code></pre>
+<p>  我们都知道数组是一段连续内存地址，在知道下标的前提下，查询速度非常快，但是插入和删除在元素量很多的情况下会愈来愈慢，因为要重排整个数组。Map内部是一个十字双向链表(就是key为数组，value为数组指针指向的链表)，在插入和删除元素上非常快，在查询上会很慢，因为要从head开始遍历每个next指针。</p>
+<p>  对于trie树来说，如果数据量非常大(十万及以上)就采用数组，否则采用map。在使用上没有太大的区别。我们今天的应用案例是<code>敏感词过滤</code>，就是从一堆字符中命中查询的字符。</p>
 <h2 id="定义">定义</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type node struct {
+<pre><code>    type node struct {
         isRootNode bool
         isPathEnd bool
         character rune
@@ -289,46 +214,12 @@
             character: character,
             children: make(map[rune]*node, 0),
         }
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<code>node</code>节点就是上图中的每个节点对象。<code>trie</code>是root节点。children 是一个map对象，存储自身和自己点的映射关系，映射关键词是character元素, 此处采用<strong>rune</strong>类型，rune是golang特有的针对unicode编码的实现。</p>
-
+    }
+</code></pre>
+<p>  <code>node</code>节点就是上图中的每个节点对象。<code>trie</code>是root节点。children 是一个map对象，存储自身和自己点的映射关系，映射关键词是character元素, 此处采用<strong>rune</strong>类型，rune是golang特有的针对unicode编码的实现。</p>
 <h2 id="添加">添加</h2>
-
-<p>&emsp;&emsp;一颗树想要使用必然是现有创建树，就是插入元素。我们先设想一下，现在有一份包含汉字的字符串要插入这棵树，按照我们之前的理论，肯定是先将这串字符转换成UNICODE码数组，这样大家都有了相同的前缀标准了。假设这棵树已经有一些元素了，一个字符串想要进入，就拿自己的UNICODE码一个一个的去匹配节点，而且是深度优先的匹配，什么意思呢？就是一旦map里有值，那就说明有了相同的前缀了，继续往下查，直到找到map没值的情况或叶子节点。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">        // 批量添加关键词 public
+<p>  一颗树想要使用必然是现有创建树，就是插入元素。我们先设想一下，现在有一份包含汉字的字符串要插入这棵树，按照我们之前的理论，肯定是先将这串字符转换成UNICODE码数组，这样大家都有了相同的前缀标准了。假设这棵树已经有一些元素了，一个字符串想要进入，就拿自己的UNICODE码一个一个的去匹配节点，而且是深度优先的匹配，什么意思呢？就是一旦map里有值，那就说明有了相同的前缀了，继续往下查，直到找到map没值的情况或叶子节点。</p>
+<pre><code>        // 批量添加关键词 public
         func (t *trie) Add(words ...string) {
             for _, word := range words {
                 t.add(world)
@@ -354,49 +245,12 @@
                     current.isPathEnd = true
                 }
             }
-        }</pre></td></tr></table>
-</div>
-</div>
+        }
+</code></pre>
 <h2 id="删除">删除</h2>
-
-<p>&emsp;&emsp;有添加肯定有删除。说到删除，做过关系型数据库设计的人肯定有过这样的经历，一开始认为删除只是简单的delete，但是后来发现我们给误删了，没法了，或者这些数据本身是有价值的，不能删除。这时候就只能状态转化了，转化成客户看不到的状态，等到非删不可的时候再去删除。OK，我们的trie就采用这种思维。</p>
-
-<p>&emsp;&emsp;还有个问题，怎么删除？你总不能把整个单词都删了吧，这样其它单词的前缀怎么办，成了空指针了。所以我们采用删除(状态转换)最后一个UNICODE码的方式。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // 批量删除关键词 public
+<p>  有添加肯定有删除。说到删除，做过关系型数据库设计的人肯定有过这样的经历，一开始认为删除只是简单的delete，但是后来发现我们给误删了，没法了，或者这些数据本身是有价值的，不能删除。这时候就只能状态转化了，转化成客户看不到的状态，等到非删不可的时候再去删除。OK，我们的trie就采用这种思维。</p>
+<p>  还有个问题，怎么删除？你总不能把整个单词都删了吧，这样其它单词的前缀怎么办，成了空指针了。所以我们采用删除(状态转换)最后一个UNICODE码的方式。</p>
+<pre><code>    // 批量删除关键词 public
     func (t *trie) Del(words ...string) {
         for _, word := range words {
             t.del(word)
@@ -425,43 +279,30 @@
     // 软删除
     func (n *node) softDel() {
         n.isPathEnd = false
-    }</pre></td></tr></table>
-</div>
-</div>
-<h2 id="查找-校验">查找(校验)</h2>
-
-<p>&emsp;&emsp;已经把字符给软删除了，我们想测试一下，那最好的办法就是查找。我们先来看看几种可能的情况：</p>
-
+    }
+</code></pre>
+<h2 id="查找校验">查找(校验)</h2>
+<p>  已经把字符给软删除了，我们想测试一下，那最好的办法就是查找。我们先来看看几种可能的情况：</p>
 <ul>
 <li>敏感词：<code>fucking</code></li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/tree/trie/sensitive.png" alt="avatar" /></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/tree/trie/sensitive.png" alt="avatar"></p>
 <ol>
 <li>查询词为 <code>read the fucking code</code></li>
 </ol>
-
-<p>&emsp;&emsp;敏感词在<strong>中间</strong>， <strong>横向</strong>匹配字母<code>r</code>没找到，切换到下一个字母<code>e</code>，继续这个操作。当匹配到字母<code>f</code>时，开始<strong>纵向</strong>查找，完整的匹配到了<code>fucking</code>关键词，这时查询词自身还没有结束，但是搜索树已经到了<strong>叶子节点</strong>，那我们可以确定<code>fucking</code>这个词肯定是敏感词，但是<code>code</code>是不是就不知道了，直接返回第一个敏感词。</p>
-
-<ol>
+<p>  敏感词在<strong>中间</strong>， <strong>横向</strong>匹配字母<code>r</code>没找到，切换到下一个字母<code>e</code>，继续这个操作。当匹配到字母<code>f</code>时，开始<strong>纵向</strong>查找，完整的匹配到了<code>fucking</code>关键词，这时查询词自身还没有结束，但是搜索树已经到了<strong>叶子节点</strong>，那我们可以确定<code>fucking</code>这个词肯定是敏感词，但是<code>code</code>是不是就不知道了，直接返回第一个敏感词。</p>
+<ol start="2">
 <li>查询词为 <code>fucking asshole</code></li>
 </ol>
-
-<p>&emsp;&emsp;敏感词在<strong>开头</strong>，<strong>横向</strong>匹配字母<code>f</code>找到了，切换到下一个字母<code>u</code>开始<strong>纵向</strong>查找，完整的匹配到了<code>fucking</code>关键词，同样，查询词自身还没有结束，但是搜索树已经到了<strong>叶子节点</strong>，那我们可以确定<code>fucking</code>这个词肯定是敏感词, 直接返回第一个敏感词。</p>
-
-<ol>
+<p>  敏感词在<strong>开头</strong>，<strong>横向</strong>匹配字母<code>f</code>找到了，切换到下一个字母<code>u</code>开始<strong>纵向</strong>查找，完整的匹配到了<code>fucking</code>关键词，同样，查询词自身还没有结束，但是搜索树已经到了<strong>叶子节点</strong>，那我们可以确定<code>fucking</code>这个词肯定是敏感词, 直接返回第一个敏感词。</p>
+<ol start="3">
 <li>查询词为 <code>what fucking</code></li>
 </ol>
-
-<p>&emsp;&emsp;敏感词在<strong>结尾</strong>， <strong>横向</strong>匹配字母<code>w</code>没找到，切换到下一个字母<code>h</code>, 继续这个操作。当匹配到字母<code>f</code>时，开始<strong>纵向查找</strong>，完整的匹配到了<code>fucking</code>关键词，这时查询词已经结束了， 就不需要再判断树是否到达叶子节点了，直接返回第一个敏感词。</p>
-
-<ol>
+<p>  敏感词在<strong>结尾</strong>， <strong>横向</strong>匹配字母<code>w</code>没找到，切换到下一个字母<code>h</code>, 继续这个操作。当匹配到字母<code>f</code>时，开始<strong>纵向查找</strong>，完整的匹配到了<code>fucking</code>关键词，这时查询词已经结束了， 就不需要再判断树是否到达叶子节点了，直接返回第一个敏感词。</p>
+<ol start="4">
 <li>查询词为 <code>ee fuc gt</code></li>
 </ol>
-
-<p>&emsp;&emsp;这里面没有敏感词，我们试试看看它怎么走过这棵树。<strong>横向</strong>匹配字母<code>e</code>找到了，切换到下一个字母<code>e</code>开始<strong>纵向</strong>查找， 查询到<code>f</code>时发现没有匹配的，这时候，<strong>就要跳出这个分支了</strong>，当前查询字母已经变成了<code>f</code>了，但是我们应该从第二个单词<code>e</code>开始继续<strong>横向</strong>查找，找到了，切换到下一个字母<code>e</code>开始<strong>纵向</strong>查找， 查询到<code>f</code>时发现没有匹配的，这时候继续<strong>跳出这个分支</strong>，当前查询字母已经变成了<code>f</code>，我们应该从第三个单词<code>f</code>继续<strong>横向</strong>查找，找到了，切换到下一个字母<code>u</code>开始<strong>纵向</strong>查找，查询到<code>g</code>时发现没有匹配，这时候继续<strong>跳出这个分支</strong>，当前查询字母已经是<code>g</code>了， 但是我们应该从第四个单词&rsquo;u&rsquo;继续<strong>横向</strong>查找。。。。</p>
-
+<p>  这里面没有敏感词，我们试试看看它怎么走过这棵树。<strong>横向</strong>匹配字母<code>e</code>找到了，切换到下一个字母<code>e</code>开始<strong>纵向</strong>查找， 查询到<code>f</code>时发现没有匹配的，这时候，<strong>就要跳出这个分支了</strong>，当前查询字母已经变成了<code>f</code>了，但是我们应该从第二个单词<code>e</code>开始继续<strong>横向</strong>查找，找到了，切换到下一个字母<code>e</code>开始<strong>纵向</strong>查找， 查询到<code>f</code>时发现没有匹配的，这时候继续<strong>跳出这个分支</strong>，当前查询字母已经变成了<code>f</code>，我们应该从第三个单词<code>f</code>继续<strong>横向</strong>查找，找到了，切换到下一个字母<code>u</code>开始<strong>纵向</strong>查找，查询到<code>g</code>时发现没有匹配，这时候继续<strong>跳出这个分支</strong>，当前查询字母已经是<code>g</code>了， 但是我们应该从第四个单词&rsquo;u&rsquo;继续<strong>横向</strong>查找。。。。</p>
 <ol>
 <li>命中敏感词的一个必要条件是： 搜索到了叶子节点**</li>
 <li>跳出分支的必要条件是：没找到或者查询词已经结束了但是还没到叶子节点</li>
@@ -469,49 +310,10 @@
 <li>如何定位敏感词：标记第一个命中字母和<code>连续</code>的最后一个命中字母</li>
 <li>在每次跳出分支时的开始查询字母都与上次连续(标记第一个命中字母)</li>
 </ol>
-
 <blockquote>
 <p>题外思考，这种与上次字母连续的查找是不是可以优化，参考一下KMP算法，本次不做讨论。</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // Validate 验证字符串是否合法， 如果不合法则返回false和检测到的第一个敏感词
+<pre><code>    // Validate 验证字符串是否合法， 如果不合法则返回false和检测到的第一个敏感词
     func (t *trie) Validate(text string) (bool, string) {
         var (
             // 跳出分支的开始节点
@@ -544,70 +346,23 @@
 
     func (n *node) IsPathEnd() bool {
         return n.IsPathEnd
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="测试">测试</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func TestTrie_Validate(t *testing.T) {
+<pre><code>    func TestTrie_Validate(t *testing.T) {
         tree := New()
-        words := []string{&#34;FUCK&#34;, &#34;fuck&#34;}
+        words := []string{&quot;FUCK&quot;, &quot;fuck&quot;}
         err := tree.Add(words)
         if err != nil {
             t.Error(err)
         }
-        t.Log(tree.Validate(&#34;你好FUCK的fuck了&#34;))
+        t.Log(tree.Validate(&quot;你好FUCK的fuck了&quot;))
     }
-    // output: false FUCK</pre></td></tr></table>
-</div>
-</div>
-<p></br>
-</br></p>
-
-<p>&emsp;&emsp;至此，其实我们已经基本完成了字符串匹配的核心算法了。上面的方法只能找出第一个被命中的敏感词，如果想要把查询词中的敏感词都查出来呢？其实没什么区别，只要把每个命中的单词都存储起来就行了。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func (t *trie) FindAll(text string) []string {
+    // output: false FUCK
+</code></pre>
+<!-- raw HTML omitted -->
+<p>  至此，其实我们已经基本完成了字符串匹配的核心算法了。上面的方法只能找出第一个被命中的敏感词，如果想要把查询词中的敏感词都查出来呢？其实没什么区别，只要把每个命中的单词都存储起来就行了。</p>
+<pre><code>    func (t *trie) FindAll(text string) []string {
         var (
             matches []string
             parent = t.root
@@ -631,76 +386,24 @@
             parent = current
         }
         return matches
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="测试-1">测试</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func TestTrie_FindAll(t *testing.T) {
+<pre><code>    func TestTrie_FindAll(t *testing.T) {
         tree := New()
-        words := []string{&#34;FUCK&#34;, &#34;fuck&#34;}
+        words := []string{&quot;FUCK&quot;, &quot;fuck&quot;}
         err := tree.Add(words)
         if err != nil {
             t.Error(err)
         }
-        t.Log(tree.FindAll(&#34;F你好FUCK的fuck了&#34;))
+        t.Log(tree.FindAll(&quot;F你好FUCK的fuck了&quot;))
     }
-    // output: [FUCK fuck]</pre></td></tr></table>
-</div>
-</div>
+    // output: [FUCK fuck]
+</code></pre>
 <h2 id="过滤">过滤</h2>
-
-<p>&emsp;&emsp;做了校验和查询，那接下来肯定当属过滤了，在正常的业务系统中除了要应用校验功能，展示阶段肯定也就进行数据过滤。</p>
-
-<p>&emsp;&emsp;在我们前面已经探讨了查询的逻辑后，其实，已经基本涵盖了整个算法。思考一下，最终的过滤效果是什么样，像这样: <code>niuFUCKwofuck的nn六4gh</code> &gt;&gt; <code>niuwo的nngh</code> ，没错，这就是我们想要的最终结果。常规思路想一下，肯定是要初始化一个返回的数组的，那这个数组的元素肯定是只存储命中词之外的词，那每次命中之外是什么时候？<strong>就是跳出分支的时候。</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func (t *trie) Filter(text string) string {
+<p>  做了校验和查询，那接下来肯定当属过滤了，在正常的业务系统中除了要应用校验功能，展示阶段肯定也就进行数据过滤。</p>
+<p>  在我们前面已经探讨了查询的逻辑后，其实，已经基本涵盖了整个算法。思考一下，最终的过滤效果是什么样，像这样: <code>niuFUCKwofuck的nn六4gh</code> &raquo; <code>niuwo的nngh</code> ，没错，这就是我们想要的最终结果。常规思路想一下，肯定是要初始化一个返回的数组的，那这个数组的元素肯定是只存储命中词之外的词，那每次命中之外是什么时候？<strong>就是跳出分支的时候。</strong></p>
+<pre><code>    func (t *trie) Filter(text string) string {
         var (
             parent = t.root
             left = 0
@@ -709,7 +412,7 @@
         )
 
         for position := 0; position &lt; len(runes); position++ {
-            current, ok &#34;= parent.children[runes[position]]
+            current, ok &quot;= parent.children[runes[position]]
             if !ok || (!current.IsPathEnd() &amp;&amp; position == len(runes) - 1) {
                 // 就是这里了
                 rs = append(rs, runes[left])
@@ -729,73 +432,24 @@
             }
         }
         return string(rs)
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="测试-2">测试</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">        func TestTrie_Filter(t *testing.T) {
+<pre><code>        func TestTrie_Filter(t *testing.T) {
             tree := New()
-            words := []string{&#34;FUCK&#34;, &#34;fuck&#34;, &#34;六4&#34;}
+            words := []string{&quot;FUCK&quot;, &quot;fuck&quot;, &quot;六4&quot;}
             err := tree.Add(words)
             if err != nil {
                 t.Error(err)
             }
-            t.Log(tree.Filter(&#34;niuFUCKwofuck的nn六4gh&#34;))
+            t.Log(tree.Filter(&quot;niuFUCKwofuck的nn六4gh&quot;))
         }
-        //output: niuwo的nngh</pre></td></tr></table>
-</div>
-</div>
+        //output: niuwo的nngh
+</code></pre>
 <h2 id="替换">替换</h2>
-
-<p>&emsp;&emsp;还有最后一个功能性函数，就是替换，就像你在页面上输入密码一样，敏感词被命中后会直接被替换成指定字符。like this: <code>niuFUCKwofuck的nn六4gh</code> &gt;&gt; <code>niu####wo####的nn##gh</code></p>
-
-<p>&emsp;&emsp;回顾一下<strong>FindAll</strong>函数是怎么做的，它是从runes里面分片存储的，那我们只要在存储的时候给它偷梁换柱不就行了。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func (t *trie) Replace(text string, character rune) string {
+<p>  还有最后一个功能性函数，就是替换，就像你在页面上输入密码一样，敏感词被命中后会直接被替换成指定字符。like this: <code>niuFUCKwofuck的nn六4gh</code> &raquo; <code>niu####wo####的nn##gh</code></p>
+<p>  回顾一下<strong>FindAll</strong>函数是怎么做的，它是从runes里面分片存储的，那我们只要在存储的时候给它偷梁换柱不就行了。</p>
+<pre><code>    func (t *trie) Replace(text string, character rune) string {
         var (
             parent = t.root
             runes = []rune(text)
@@ -821,43 +475,24 @@
             parent = current
         }
         return string(runes)
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="测试-3">测试</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">        func TestTrie_Filter(t *testing.T) {
+<pre><code>        func TestTrie_Filter(t *testing.T) {
             tree := New()
-            words := []string{&#34;FUCK&#34;, &#34;fuck&#34;, &#34;六4&#34;}
+            words := []string{&quot;FUCK&quot;, &quot;fuck&quot;, &quot;六4&quot;}
             err := tree.Add(words)
             if err != nil {
                 t.Error(err)
             }
-            t.Log(tree.Replace(&#34;niuFUCKwofuck的nn六4gh&#34;, &#39;#&#39;))
+            t.Log(tree.Replace(&quot;niuFUCKwofuck的nn六4gh&quot;, '#'))
         }
-        //output: niu####wo####的nn##gh</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;至此，字典树的核心功能都已经完成了，只要数据量在十万级一下，就能够做到秒级命中，十万级以上就得改用数组了。</p>
-
+        //output: niu####wo####的nn##gh
+</code></pre>
+<p>  至此，字典树的核心功能都已经完成了，只要数据量在十万级一下，就能够做到秒级命中，十万级以上就得改用数组了。</p>
 <h1 id="总结">总结</h1>
-
-<p>&emsp;&emsp;不知道大家有没有发现，一个有趣的地方：任何复杂的算法，其实都是手工分析的表达，你看别人的代码，其实是在读作者的思想，没有任何一个算法会凭空出现，都是有理论指导的。还有一个地方值得我们学习，在学习一门新的算法的时候，不要急于求成，盲目抄代码，虽然抄代码是工程师进步的必经之路，但是一定要过一遍手工过程，只有自己手工过了，心里才有底，才明白这个地方为什么要这样写， 否则你就像农夫山泉一样，只是个搬运工。</p>
-
-<p>&emsp;&emsp;我在文章中留下了一个悬念，那就是使用<strong>KMP</strong>算法来优化<code>left</code>效率低下的问题，只能等到下次总结了。</p>
+<p>  不知道大家有没有发现，一个有趣的地方：任何复杂的算法，其实都是手工分析的表达，你看别人的代码，其实是在读作者的思想，没有任何一个算法会凭空出现，都是有理论指导的。还有一个地方值得我们学习，在学习一门新的算法的时候，不要急于求成，盲目抄代码，虽然抄代码是工程师进步的必经之路，但是一定要过一遍手工过程，只有自己手工过了，心里才有底，才明白这个地方为什么要这样写， 否则你就像农夫山泉一样，只是个搬运工。</p>
+<p>  我在文章中留下了一个悬念，那就是使用<strong>KMP</strong>算法来优化<code>left</code>效率低下的问题，只能等到下次总结了。</p>
 
     </div>
 

@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="数组 &amp;emsp;&amp;emsp;数量写在类型的前面 1 2 3 4 5 6 7 8 9 10 11 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="数组 数量写在类型的前面 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需要初始化赋值 arr2 := [3]int{1, 3, 5} // ... 编译器根据初始化赋值" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/base/2.%E5%86%85%E5%BB%BA%E5%AE%B9%E5%99%A8/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[golang base(二) | 内建容器]" />
-<meta property="og:description" content="数组 &emsp;&emsp;数量写在类型的前面 1 2 3 4 5 6 7 8 9 10 11 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需" />
+<meta property="og:description" content="数组 数量写在类型的前面 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需要初始化赋值 arr2 := [3]int{1, 3, 5} // ... 编译器根据初始化赋值" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/base/2.%E5%86%85%E5%BB%BA%E5%AE%B9%E5%99%A8/" />
-<meta property="article:published_time" content="2020-02-28T15:09:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-02-28T15:09:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/base/2.%E5%86%85%E5%BB%BA%E5%AE%B9%E5%99%A8/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-02-28T15:09:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-02-28T15:09:56&#43;08:00" />
 
 <meta itemprop="name" content="[golang base(二) | 内建容器]">
-<meta itemprop="description" content="数组 &emsp;&emsp;数量写在类型的前面 1 2 3 4 5 6 7 8 9 10 11 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需">
-
-
-<meta itemprop="datePublished" content="2020-02-28T15:09:56&#43;08:00" />
+<meta itemprop="description" content="数组 数量写在类型的前面 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需要初始化赋值 arr2 := [3]int{1, 3, 5} // ... 编译器根据初始化赋值"><meta itemprop="datePublished" content="2020-02-28T15:09:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-02-28T15:09:56&#43;08:00" />
-<meta itemprop="wordCount" content="2735">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="2448">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[golang base(二) | 内建容器]"/>
-<meta name="twitter:description" content="数组 &emsp;&emsp;数量写在类型的前面 1 2 3 4 5 6 7 8 9 10 11 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需"/>
+<meta name="twitter:description" content="数组 数量写在类型的前面 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需要初始化赋值 arr2 := [3]int{1, 3, 5} // ... 编译器根据初始化赋值"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/golang/base/"> golang/base </a>
             </div>
-          <span class="more-meta"> 约 2735 字 </span>
-          <span class="more-meta"> 预计阅读 6 分钟 </span>
+          <span class="more-meta"> 约 2448 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,104 +135,50 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#数组">数组</a></li>
-<li><a href="#切片-slice">切片(Slice)</a>
-<ul>
-<li><a href="#slice的扩展">Slice的扩展</a></li>
-<li><a href="#slice-实现">Slice 实现</a></li>
-<li><a href="#slice添加元素">Slice添加元素</a></li>
-<li><a href="#slice的其它操作">Slice的其它操作</a></li>
-</ul></li>
-<li><a href="#map">Map</a>
-<ul>
-<li><a href="#寻找最长不含有重复字符的子串">寻找最长不含有重复字符的子串</a></li>
-</ul></li>
-<li><a href="#字符和字符串处理">字符和字符串处理</a></li>
-<li><a href="#学习strings包">学习strings包</a></li>
-</ul>
+  <ul>
+    <li><a href="#slice的扩展">Slice的扩展</a></li>
+    <li><a href="#slice-实现">Slice 实现</a></li>
+    <li><a href="#slice添加元素">Slice添加元素</a></li>
+    <li><a href="#slice的其它操作">Slice的其它操作</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#寻找最长不含有重复字符的子串">寻找最长不含有重复字符的子串</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="数组">数组</h1>
-
-<p>&emsp;&emsp;数量写在类型的前面</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main() {
+      <h1 id="数组">数组</h1>
+<p>  数量写在类型的前面</p>
+<pre><code>    func main() {
         // var 需要确定大小，可以不用初始化赋值
         var arr1 [5]int
         // 简化，需要确定大小，需要初始化赋值
         arr2 := [3]int{1, 3, 5}
         // ... 编译器根据初始化赋值的长度确定数组大小
         arr3 := [...]int{2,4,6,8,10}
-
+	
         // 二维数组 4个长度为5的int数组
         grid [4][5]int
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;遍历数组</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    for _, v:= range arr3 {
+	}
+</code></pre>
+<p>  遍历数组</p>
+<pre><code>    for _, v:= range arr3 {
         fmt.Println(v)
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <blockquote>
 <p>数组是值类型</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func printArray(arr [5]int) {
+<pre><code>    func printArray(arr [5]int) {
         arr[0] = 100
         for _, v:= range arr {
         fmt.Println(v)
         }
-    }
-
-    func main() {
+	}
+	
+	func main() {
         // [100, 0, 0, 0, 0]
         printArray(arr1)
         // [100, 4, 6, 8, 10]
@@ -248,82 +187,38 @@
         // [0, 0, 0, 0, 0]
         // [2, 4, 6, 8, 10]
         fmt.Println(arr1, arr3)
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <ul>
 <li>[10]int 和 [20]int是不同类型</li>
 <li>调用func f(arr [10] int) 会<strong>拷贝</strong>数组</li>
 <li>在golang中一般不直接使用数组</li>
 </ul>
-
-<h1 id="切片-slice">切片(Slice)</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main() {
+<h1 id="切片slice">切片(Slice)</h1>
+<pre><code>    func main() {
         arr := [...]int{0, 1, 2, 3, 4, 5, 6, 7}
         // [2 3 4 5]
-        fmt.Println(&#34;arr[2:6] = &#34;, arr[2:6])
+        fmt.Println(&quot;arr[2:6] = &quot;, arr[2:6])
         // [0 1 2 3 4 5]
-        fmt.Println(&#34;arr[:6]&#34;, arr[:6])
+        fmt.Println(&quot;arr[:6]&quot;, arr[:6])
         // [2 3 4 5 6 7]
-        fmt.Println(&#34;arr[2:]&#34;, arr[2:])
+        fmt.Println(&quot;arr[2:]&quot;, arr[2:])
         // [0 1 2 3 4 5 6 7]
-        fmt.Println(&#34;arr[:]&#34;, arr[:])
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;上述arr[]是对arr数组的视图操作。也就是说slice是对数组的视图，那它是如何视图的呢？</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func updateSlice(s []int) {
+        fmt.Println(&quot;arr[:]&quot;, arr[:])
+	}
+</code></pre>
+<p>  上述arr[]是对arr数组的视图操作。也就是说slice是对数组的视图，那它是如何视图的呢？</p>
+<pre><code>    func updateSlice(s []int) {
         s[0] = 100
-    }
-
-    func main() {
+	}
+	
+	func main() {
         s1 := arr[2:]
         // [2 3 4 5 6 7]
-        fmt.Println(&#34;s1=&#34;, s1)
+        fmt.Println(&quot;s1=&quot;, s1)
         s2 := arr[:]
         // [0 1 2 3 4 5 6 7]
-        fmt.Println(&#34;s2=&#34;, s2)
+        fmt.Println(&quot;s2=&quot;, s2)
         updateSlice(s1)
         // [100 3 4 5 6 7]
         fmt.Println(s1)
@@ -334,394 +229,233 @@
         fmt.Println(s2)
         // [100 1 100 3 4 5 6 7]
         fmt.Println(arr)
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <blockquote>
 <p>Slice本身没有数据，是对底层array的一个view</p>
 </blockquote>
-
 <h2 id="slice的扩展">Slice的扩展</h2>
-
-<p>&emsp;&emsp;首先我们来看下面这个问题，s1是多少？s2是多少？会报错吗？
-        arr := [&hellip;]int{0, 1 ,2, 3, 4, 5, 6, 7}
-        s1 := arr[2:6]
-        s2 := s1[3:5]</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/slice扩展.png" alt="avatar" /></p>
-
+<p>  首先我们来看下面这个问题，s1是多少？s2是多少？会报错吗？
+arr := [&hellip;]int{0, 1 ,2, 3, 4, 5, 6, 7}
+s1 := arr[2:6]
+s2 := s1[3:5]</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/slice%E6%89%A9%E5%B1%95.png" alt="avatar"></p>
 <h2 id="slice-实现">Slice 实现</h2>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/slice结构.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;Slice的底层有一个Array，有三种颜色，其中ptr指向了Slice开头的那个元素，len说明这个Slice的长度是多少，我们使用[number]直接取值时，只能取到len内的值，number&gt;=len的话，会报错下标越界。cap代表整个Array,从ptr开始到结束整个的长度。在扩展的时候，只要不超过cap都会获取到。</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/slice%E7%BB%93%E6%9E%84.png" alt="avatar"></p>
+<p>  Slice的底层有一个Array，有三种颜色，其中ptr指向了Slice开头的那个元素，len说明这个Slice的长度是多少，我们使用[number]直接取值时，只能取到len内的值，number&gt;=len的话，会报错下标越界。cap代表整个Array,从ptr开始到结束整个的长度。在扩展的时候，只要不超过cap都会获取到。</p>
 <ul>
 <li>s1的值为[2 3 4 5], s2的值为[5 6]</li>
 <li>Slice可以向后扩展，不可以向前扩展</li>
 <li>s[i]不可以超越len(s),向后扩展不可以超越底层数组cap(s)</li>
 </ul>
-
-<p>&emsp;&emsp;如何获取len,cap呢？
-        // s1=[2 3 4 5], len(s1) = 4, cap(s1) = 6
-        fmt.Printf(&ldquo;s1=%v, len(s1)=%d, cap(s1)=%d\n&rdquo;, s1, len(s1), cap(s1))</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // s2=[5 6] len(s2) = 2, cap(s2) = 3
-    fmt.Printf(&#34;s2=%v, len(s2)=%d, cap(s2)=%d\n&#34;, s2, len(s2), cap(s2))</pre></td></tr></table>
-</div>
-</div>
+<p>  如何获取len,cap呢？
+// s1=[2 3 4 5], len(s1) = 4, cap(s1) = 6
+fmt.Printf(&ldquo;s1=%v, len(s1)=%d, cap(s1)=%d\n&rdquo;, s1, len(s1), cap(s1))</p>
+<pre><code>    // s2=[5 6] len(s2) = 2, cap(s2) = 3
+	fmt.Printf(&quot;s2=%v, len(s2)=%d, cap(s2)=%d\n&quot;, s2, len(s2), cap(s2))
+</code></pre>
 <h2 id="slice添加元素">Slice添加元素</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    s3 := append(s2, 10)
-    s4 := append(s3, 11)
-    s5 := append(s4, 12)
-
-    // s3, s4, s5 = [5 6 10] [5 6 10 11] [5 6 10 11 12]
-    fmt.Println(&#34;s3, s4, s5 = &#34;, s3, s4, s5)
-    // arr = [0 1 2 3 4 5 6 10]
-    // s4 and s5 no longer view arr
-    fmt.Println(&#34;arr = &#34;, arr)</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;我们看到append是可以做到的，cap(s2)=3, s2最后一个元素是7， arr还是一个长度为8的数组，第一次append时，将s2所视图的arr最后一个元素变成10了，所以arr自身变了。后面的append所视图的就不是arr本身了，它们所视图的是一个新的arr，golang会在内存开辟一个新的arr空间，将旧的arr拷贝到新的arr中，并且新的arr的cap设置的更长(长度翻倍，当元素超过1000后，每次增加25%)</p>
-
+<pre><code>    s3 := append(s2, 10)
+	s4 := append(s3, 11)
+	s5 := append(s4, 12)
+	
+	// s3, s4, s5 = [5 6 10] [5 6 10 11] [5 6 10 11 12]
+	fmt.Println(&quot;s3, s4, s5 = &quot;, s3, s4, s5)
+	// arr = [0 1 2 3 4 5 6 10]
+	// s4 and s5 no longer view arr
+	fmt.Println(&quot;arr = &quot;, arr)
+</code></pre>
+<p>  我们看到append是可以做到的，cap(s2)=3, s2最后一个元素是7， arr还是一个长度为8的数组，第一次append时，将s2所视图的arr最后一个元素变成10了，所以arr自身变了。后面的append所视图的就不是arr本身了，它们所视图的是一个新的arr，golang会在内存开辟一个新的arr空间，将旧的arr拷贝到新的arr中，并且新的arr的cap设置的更长(长度翻倍，当元素超过1000后，每次增加25%)</p>
 <ul>
 <li>添加元素时如果超越cap，系统会重新分配更大的底层数组</li>
 <li>由于值传递的关系，必须接收append的返回值</li>
 <li>s = append(s, val)</li>
 </ul>
-
 <h2 id="slice的其它操作">Slice的其它操作</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main() {
+<pre><code>    func main() {
         var s []int // Zero value for slice is nil and ptr is nil too
         s1 := []int{} // Zero value for slice is nil and ptr is not nil
         s1 = []int{2, 4, 6, 8}
-
+	
         s2 := make([]int, 16)
         s3 := make([]int, 10, 32)
-
-        fmt.Println(&#34;Copying slice&#34;)
+	
+        fmt.Println(&quot;Copying slice&quot;)
         // [2 4 6 8 0 0 0 0 0 0 0 0 0 0 0 0]
         copy(s2, s1)
-
-        fmt.Println(&#34;Deleting elements from slice&#34;)// golang slice没有删除的内建函数，我们可以使用reslice实现
+	
+        fmt.Println(&quot;Deleting elements from slice&quot;)// golang slice没有删除的内建函数，我们可以使用reslice实现
         s2 = append(s2[:3], s2[4:]...)
-
-        fmt.Println(&#34;Popping from front&#34;)
+	
+        fmt.Println(&quot;Popping from front&quot;)
         front := s2[0]
         s2 = s2[1:]
-
-        fmt.Println(&#34;Popping from back&#34;)
+	
+        fmt.Println(&quot;Popping from back&quot;)
          tail := s2[len(s2) - 1]
         s2 = s2[:len(s2) - 1]
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <h1 id="map">Map</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main() {
+<pre><code>    func main() {
         m := map[string]string {
-            &#34;name&#34;: &#34;ccmouse&#34;,
-            &#34;course&#34;: &#34;golang&#34;,
-            &#34;site&#34;: &#34;imooc&#34;,
-            &#34;quality&#34;: &#34;notbad&#34;,
+            &quot;name&quot;: &quot;ccmouse&quot;,
+            &quot;course&quot;: &quot;golang&quot;,
+            &quot;site&quot;: &quot;imooc&quot;,
+            &quot;quality&quot;: &quot;notbad&quot;,
         }
-
+	
         m2 := make(map[string]int) // mw == empty map
-
+	
         var m3 map[string]int // m3 == nil
-
-        fmt.Println(&#34;Traversing map&#34;)
+	
+        fmt.Println(&quot;Traversing map&quot;)
         // 无序的
         for k, v := range m {
             fmt.Println(k, v)
         }
-
-        fmt.Println(&#34;Getting values&#34;)
+	
+        fmt.Println(&quot;Getting values&quot;)
         // 如果没获取到，不会报错，是Zero value
-        courseName, ok := m[&#34;course&#34;]
+        courseName, ok := m[&quot;course&quot;]
         // golang true
         fmt.Println(courseName)
-        causeName, ok := m[&#34;cause&#34;]
+        causeName, ok := m[&quot;cause&quot;]
         // Zero Value false
         fmt.Println(causeName, ok)
         // 一般这样写
-        if causeName, ok := m[&#34;cause&#34;]; ok {
+        if causeName, ok := m[&quot;cause&quot;]; ok {
             fmt.Println(causeName, ok)
         } else {
-            fmt.Println(&#34;Key does not exist&#34;)
+            fmt.Println(&quot;Key does not exist&quot;)
         }
-
-        fmt.Println(&#34;Deleting values&#34;)
-        delete(m, &#34;name&#34;)
-    }</pre></td></tr></table>
-</div>
-</div>
+	
+        fmt.Println(&quot;Deleting values&quot;)
+        delete(m, &quot;name&quot;)
+	}
+</code></pre>
 <ul>
-<li>使用range遍历key, 或者遍历key, value对</li>
-<li>不保证遍历顺序，如果要顺序，需手动对key排序</li>
-
-<li><p>使用len获取长度</p></li>
-
-<li><p>map的key，在Java中满足key的元素必须实现hashcode&amp;equals方法。在golang中呢</p>
-
+<li>
+<p>使用range遍历key, 或者遍历key, value对</p>
+</li>
+<li>
+<p>不保证遍历顺序，如果要顺序，需手动对key排序</p>
+</li>
+<li>
+<p>使用len获取长度</p>
+</li>
+<li>
+<p>map的key，在Java中满足key的元素必须实现hashcode&amp;equals方法。在golang中呢</p>
 <ul>
 <li>使用哈希表，必须可以比较相等</li>
 <li>除了slice，map，function的内建类型都可以作为key</li>
 <li>struct类型不包含上述字段，也可以作为key</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="寻找最长不含有重复字符的子串">寻找最长不含有重复字符的子串</h2>
-
 <ul>
 <li>abcabcbb -&gt; abc</li>
 <li>bbbbb -&gt; b</li>
 <li>pwwkew -&gt; wke</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/map寻找最长不含有重复字符的字串.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;假设从左往右进行扫描，扫描到字母X，首先记录当前找到的最长不含有重复字符的字串的开始start,保证了从start到x的区间是不含有重复字符的，那么接下来，我们就要看从start到x-1位置是否含有x这个字符，我们记录lastOccurred[x]即x最后出现的位置，这当然是个map了，我们问map就行了。问出的结果有两种种，1. x从来没有出现过，或者出现在start之前，那么x就可以拿进来了，那么最长字串就可以+1了。2. 出现在中间的区间，那么x就不能拿进来了，这时候就要更新start为lastOccurred[x]+1的位置。</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/map%E5%AF%BB%E6%89%BE%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E6%9C%89%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%97%E4%B8%B2.png" alt="avatar"></p>
+<p>  假设从左往右进行扫描，扫描到字母X，首先记录当前找到的最长不含有重复字符的字串的开始start,保证了从start到x的区间是不含有重复字符的，那么接下来，我们就要看从start到x-1位置是否含有x这个字符，我们记录lastOccurred[x]即x最后出现的位置，这当然是个map了，我们问map就行了。问出的结果有两种种，1. x从来没有出现过，或者出现在start之前，那么x就可以拿进来了，那么最长字串就可以+1了。2. 出现在中间的区间，那么x就不能拿进来了，这时候就要更新start为lastOccurred[x]+1的位置。</p>
 <ul>
-<li><p>对于每一个字母X</p>
-
+<li>对于每一个字母X
 <ul>
-<li>lastOccurred[x]不存在，或者 &lt; start -&gt; 无需操作</li>
-<li>lastOccured[x] &gt;= start -&gt; 更新start</li>
-
-<li><p>更新lastOccurred[x], 更新maxLength</p>
-
+<li>
+<p>lastOccurred<input checked="" disabled="" type="checkbox"> 不存在，或者 &lt; start -&gt; 无需操作</p>
+</li>
+<li>
+<p>lastOccured<input checked="" disabled="" type="checkbox"> &gt;= start -&gt; 更新start</p>
+</li>
+<li>
+<p>更新lastOccurred<input checked="" disabled="" type="checkbox"> , 更新maxLength</p>
 <p>func lengthOfNonRepeatingSubStr(s string) int{
-    lastOccurred := make(map[byte]int)
-    start, maxLength := 0, 0
-    //byte不支持中文，国际化需要使用rune
-    for i, ch := range []byte(s) {
-        if lastI, ok := lastOccruued[ch];ok &amp;&amp; lastI &gt;= start {
-            start = lastI
-        }
-        // 区间，从start到i
-        if i - start + 1 &gt; maxLength {
-            maxLength = i - start + 1
-        }
-        lastOccurred[ch] = i
-    }
-    return maxLength
-}</p></li>
-</ul></li>
+lastOccurred := make(map[byte]int)
+start, maxLength := 0, 0
+//byte不支持中文，国际化需要使用rune
+for i, ch := range []byte(s) {
+if lastI, ok := lastOccruued[ch];ok &amp;&amp; lastI &gt;= start {
+start = lastI
+}
+// 区间，从start到i
+if i - start + 1 &gt; maxLength {
+maxLength = i - start + 1
+}
+lastOccurred[ch] = i
+}
+return maxLength
+}</p>
+</li>
 </ul>
-
+</li>
+</ul>
 <h1 id="字符和字符串处理">字符和字符串处理</h1>
-
 <ul>
-<li><p>rune is an alias for int32 and is equivalent to int32 in all ways</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">func main() {
-    s := &#34;Yes我爱慕课网!&#34; // UTF-8 中文三个字节
-    fmt.Println(s)
-    for _, b := range []byte(s) {
-        fmt.Printf(&#34;%X &#34;, b)
-    } 
-    // 59 65 73 E6 88 91 E7 88 B1 E6 85 95 E8 AF BE E7 BD 91 21
-    // 所以len(s) = 19
-    fmt.Println()
-
-    for i, ch := range s { // ch is a rune
-        fmt.Printf(&#34;(%d %X) &#34;, i, ch)
-    }
-    //(0 59)(1 65)(2 73)(3 6211)(6 7231)(9 6155)(12 8BFE)(15 7F51)(18 21)
-    // 将utf8解码后编码转成了unicode
-    fmt.Println()
-
-    fmt.Println(&#34;Rune count:&#34;, utf8.RuneCountInString(s))// 9
-
-    //接下来是常规的我们遍历string，由于是byte类型，所以如果直接循环的话，会出现三字节的拆分乱码
-    bytes := []byte(s)
-    for len(bytes) &gt; 0 {
-        ch, size := utf8.DecodeRune(bytes)
-        bytes = bytes[size:]
-        fmt.Printf(&#34;%c &#34;, ch)
-    }
-    fmt.Println() // Y e s 我 爱慕 课 网 !
-
-    //上面的操作过于繁琐，层面直接告诉我第几个元素是啥就行了
-    for i, ch := range []rune(s) {
-        fmt.Printf(&#34;(%d %c)&#34;, i, ch)
-    }
-    //(0 Y)(1 e)(2 s)(3 我)(4 爱)(5 慕)(6 课)（7 网）(8 !)
-    // 所以len([]rune(s)) = 9
-    fmt.Println()
-}</pre></td></tr></table>
-</div>
-</div>
+<li>
+<p>rune is an alias for int32 and is equivalent to int32 in all ways</p>
+<pre><code>  func main() {
+      s := &quot;Yes我爱慕课网!&quot; // UTF-8 中文三个字节
+      fmt.Println(s)
+      for _, b := range []byte(s) {
+          fmt.Printf(&quot;%X &quot;, b)
+      } 
+      // 59 65 73 E6 88 91 E7 88 B1 E6 85 95 E8 AF BE E7 BD 91 21
+      // 所以len(s) = 19
+      fmt.Println()
+	
+      for i, ch := range s { // ch is a rune
+          fmt.Printf(&quot;(%d %X) &quot;, i, ch)
+      }
+      //(0 59)(1 65)(2 73)(3 6211)(6 7231)(9 6155)(12 8BFE)(15 7F51)(18 21)
+      // 将utf8解码后编码转成了unicode
+      fmt.Println()
+	
+      fmt.Println(&quot;Rune count:&quot;, utf8.RuneCountInString(s))// 9
+	
+      //接下来是常规的我们遍历string，由于是byte类型，所以如果直接循环的话，会出现三字节的拆分乱码
+      bytes := []byte(s)
+      for len(bytes) &gt; 0 {
+          ch, size := utf8.DecodeRune(bytes)
+          bytes = bytes[size:]
+          fmt.Printf(&quot;%c &quot;, ch)
+      }
+      fmt.Println() // Y e s 我 爱慕 课 网 !
+	
+      //上面的操作过于繁琐，层面直接告诉我第几个元素是啥就行了
+      for i, ch := range []rune(s) {
+          fmt.Printf(&quot;(%d %c)&quot;, i, ch)
+      }
+      //(0 Y)(1 e)(2 s)(3 我)(4 爱)(5 慕)(6 课)（7 网）(8 !)
+      // 所以len([]rune(s)) = 9
+      fmt.Println()
+  }
+</code></pre>
+</li>
+</ul>
 <blockquote>
 <p>那么我们来修改一下上段的寻找最长无重复字符的字串问题，国际版</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">func lengthOfNonRepeatingSubStr(s string) int{
-    lastOccurred := make(map[rune]int)
-    start, maxLength := 0, 0
-
-    for i, ch := range []rune(s) {
-        if lastI, ok := lastOccruued[ch];ok &amp;&amp; lastI &gt;= start {
-            start = lastI
+<pre><code>    func lengthOfNonRepeatingSubStr(s string) int{
+        lastOccurred := make(map[rune]int)
+        start, maxLength := 0, 0
+	
+        for i, ch := range []rune(s) {
+            if lastI, ok := lastOccruued[ch];ok &amp;&amp; lastI &gt;= start {
+                start = lastI
+            }
+            // 区间，从start到i
+            if i - start + 1 &gt; maxLength {
+                maxLength = i - start + 1
+            }
+            lastOccurred[ch] = i
         }
-        // 区间，从start到i
-        if i - start + 1 &gt; maxLength {
-            maxLength = i - start + 1
-        }
-        lastOccurred[ch] = i
-    }
-    return maxLength
-}</pre></td></tr></table>
-</div>
-</div></li>
-</ul>
-
+        return maxLength
+	}
+</code></pre>
 <h1 id="学习strings包">学习strings包</h1>
-
 <ul>
 <li>Fields, Split, Join</li>
 <li>Contains, Index</li>

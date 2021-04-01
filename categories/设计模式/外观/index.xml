@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式/外观 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82/</link>
+    <description>Recent content in 设计模式/外观 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language><atom:link href="http://facedamon.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[设计模式 | 外观 | 模板模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 22 Mar 2021 15:06:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以</description>
+    </item>
+    
+  </channel>
+</rss>

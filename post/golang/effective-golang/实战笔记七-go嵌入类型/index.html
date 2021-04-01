@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B8%83-go%E5%B5%8C%E5%85%A5%E7%B1%BB%E5%9E%8B/" />
@@ -41,22 +41,15 @@
 <meta property="og:title" content="[实战笔记(七) | Go 嵌入类型]" />
 <meta property="og:description" content="转载自 https://www.flysnow.org 组合NO继承 敲入类型，这是一种可以把已有的类型声明在新的类型里的一种方式，这种功能对代码复用非常重要。 在其它语言中，有继承可以做同样" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B8%83-go%E5%B5%8C%E5%85%A5%E7%B1%BB%E5%9E%8B/" />
-<meta property="article:published_time" content="2019-10-14T01:46:56&#43;08:00"/>
-<meta property="article:modified_time" content="2019-10-14T01:46:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B8%83-go%E5%B5%8C%E5%85%A5%E7%B1%BB%E5%9E%8B/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-10-14T01:46:56&#43;08:00" />
+<meta property="article:modified_time" content="2019-10-14T01:46:56&#43;08:00" />
 
 <meta itemprop="name" content="[实战笔记(七) | Go 嵌入类型]">
-<meta itemprop="description" content="转载自 https://www.flysnow.org 组合NO继承 敲入类型，这是一种可以把已有的类型声明在新的类型里的一种方式，这种功能对代码复用非常重要。 在其它语言中，有继承可以做同样">
-
-
-<meta itemprop="datePublished" content="2019-10-14T01:46:56&#43;08:00" />
+<meta itemprop="description" content="转载自 https://www.flysnow.org 组合NO继承 敲入类型，这是一种可以把已有的类型声明在新的类型里的一种方式，这种功能对代码复用非常重要。 在其它语言中，有继承可以做同样"><meta itemprop="datePublished" content="2019-10-14T01:46:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-14T01:46:56&#43;08:00" />
-<meta itemprop="wordCount" content="1741">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1735">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[实战笔记(七) | Go 嵌入类型]"/>
 <meta name="twitter:description" content="转载自 https://www.flysnow.org 组合NO继承 敲入类型，这是一种可以把已有的类型声明在新的类型里的一种方式，这种功能对代码复用非常重要。 在其它语言中，有继承可以做同样"/>
 
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/golang/%E5%AE%9E%E6%88%98%E7%B3%BB%E5%88%97/"> golang/实战系列 </a>
             </div>
-          <span class="more-meta"> 约 1741 字 </span>
+          <span class="more-meta"> 约 1735 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,135 +135,101 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#组合no继承">组合NO继承</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#组合no继承">组合NO继承</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<blockquote>
+      <blockquote>
 <p>转载自 <a href="https://www.flysnow.org">https://www.flysnow.org</a></p>
 </blockquote>
-
 <h2 id="组合no继承">组合NO继承</h2>
-
 <p>敲入类型，这是一种可以把已有的类型声明在新的类型里的一种方式，这种功能对代码复用非常重要。
 在其它语言中，有继承可以做同样的事情，但是在go语言中，没有继承的概念，go提倡代码复用的方式是组合，所以这也是嵌入类型的意义所在，组合而不是继承，所以go才会更灵活。
-        type Reader interface {
-            Read(p []byte) (n int, err error)
-        }
-        type Writer interface {
-            Write(p []byte) (n int, err error)
-        }
-        type Closer interface {
-            Close() error
-        }
-        type ReadWriter interface {
-            Reader
-            Writer
-        }
-        type ReadCloser interface {
-            Reader
-            Closer
-        }
-        type WriteCloser interface {
-            Writer
-            Closer
-        }
+type Reader interface {
+Read(p []byte) (n int, err error)
+}
+type Writer interface {
+Write(p []byte) (n int, err error)
+}
+type Closer interface {
+Close() error
+}
+type ReadWriter interface {
+Reader
+Writer
+}
+type ReadCloser interface {
+Reader
+Closer
+}
+type WriteCloser interface {
+Writer
+Closer
+}
 以上是标准库io包里，我们常用的接口，可以看到ReadWriter接口是嵌入Reader和Writer接口而组合成的新接口，这样我们就不用重复的定义被嵌入接口里的方法，直接通过嵌入就可以了。嵌入类型同样适用于结构体。
-        type user struct {
-            name string
-            email string
-        }
-        type admin struct {
-            user
-            level string
-        }
+type user struct {
+name string
+email string
+}
+type admin struct {
+user
+level string
+}
 嵌入后，被嵌入类型被成为内部类型、新定义的类型称之为外部类型，这里user就是内部类型。而admin就是外部类型。
 通过嵌入类型，与内部类型相关联的所有字段、方法、标志等所有，都会被外部类型所拥有，就像外部类型自己的一样，这就达到了代码快捷复用的组合的目的，而且定义非常简单，只需要声明这个类型的名字就可以了。同时，外部类型还可以添加自己的方法、字段属性等，可以很方便的扩展外部类型的功能。
-        func main(){
-            ad := admin{user{&ldquo;张三&rdquo;，&rdquo;zhangsan@163.com&rdquo;}，&rdquo;管理员&rdquo;}
-            fmt.Println(&ldquo;可以直接调用，名字为：&rdquo;, ad.name)
-            fmt.Println(&ldquo;也可以通过内部类型调用，名字为：&rdquo;, ad.user.name)
-            fmt.Println(&ldquo;但是新增加的属性只能直接调用，级别为：&rdquo;,ad.level)
-        }
+func main(){
+ad := admin{user{&ldquo;张三&rdquo;，&ldquo;<a href="mailto:zhangsan@163.com">zhangsan@163.com</a>&rdquo;}，&ldquo;管理员&rdquo;}
+fmt.Println(&ldquo;可以直接调用，名字为：&rdquo;, ad.name)
+fmt.Println(&ldquo;也可以通过内部类型调用，名字为：&rdquo;, ad.user.name)
+fmt.Println(&ldquo;但是新增加的属性只能直接调用，级别为：&quot;,ad.level)
+}
 以上是嵌入类型的使用，可以看到，我们在初始化的时候，采用的是字面值的方式，所以要按其定义的结构进行初始化，先初始化user这个内部类型的，再初始化新增的level属性。
 对于内部类型的属性和方法访问上，我们可以用外部类型直接访问，也可以痛殴内部类型进行访问；但是我们为外部类型新增的方法属性字段只能使用外部类型访问，因为内部类型没有这些。
 当然，外部类型也可以声明同名的字段或者方法，来覆盖内部类型，这种情况方法比较多，我们以方法为例
-        type user struct {
-            name string
-            email string
-        }
-        type admin struct{
-            user
-            level
-        }
-        func (u suer) sayhello() {
-            fmt.Println(&ldquo;Hello, i am a user&rdquo;)
-        }</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func (a admin) sayhello() {
-        fmt.Println(&#34;Hello, i am a admin&#34;)
-    }
-
-    func main() {
-        ad : admin{user{&#34;张三&#34;，&#34;zhangsan@163.com&#34;}， &#34;管理员&#34;}
+type user struct {
+name string
+email string
+}
+type admin struct{
+user
+level
+}
+func (u suer) sayhello() {
+fmt.Println(&ldquo;Hello, i am a user&rdquo;)
+}</p>
+<pre><code>    func (a admin) sayhello() {
+        fmt.Println(&quot;Hello, i am a admin&quot;)
+	}
+	
+	func main() {
+        ad : admin{user{&quot;张三&quot;，&quot;zhangsan@163.com&quot;}， &quot;管理员&quot;}
         ad.user.sayhello()
         ad.sayhello()
-    }
-    //output
-    Hello, i am a user
-    Hello, i am a admin</pre></td></tr></table>
-</div>
-</div>
+	}
+	//output
+	Hello, i am a user
+	Hello, i am a admin
+</code></pre>
 <p>内部类型user有一个sayhello方法，外部类型对其进行了覆盖，同名重写sayhello，然后我们在main 方法里分别访问这两个类型的方法。
 嵌入类型的强大，还体现在：如果内部类型实现了某个接口，那么外部类型也被认为实现了这个接口。我们稍微改造一下这个案例。
-        type Hello interface {
-            hello
-        }
-        func (u user) hello(){
-            fmt.Println(&ldquo;hello, i am a user&rdquo;)
-        }
-        func sayhello(h Hello) {
-            h.hello()
-        }</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main(){
-        ad := admin{user{&#34;张三&#34;,&#34;zhangsan@163.com&#34;}，&#34;管理员&#34;}
+type Hello interface {
+hello
+}
+func (u user) hello(){
+fmt.Println(&ldquo;hello, i am a user&rdquo;)
+}
+func sayhello(h Hello) {
+h.hello()
+}</p>
+<pre><code>    func main(){
+        ad := admin{user{&quot;张三&quot;,&quot;zhangsan@163.com&quot;}，&quot;管理员&quot;}
         sayhello(ad.user)
         sayhello(ad)
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <p>这个例子原来的结构体类型user和admin的定义不变，新增了一个接口hello，然后让user类型实现这个接口，最后我们定义了一个sayhello方法，它接受一个hello接口类型的参数，最终我们在main函数演示的时候，发现不管是user类型，还是admin类型作为参数传递给sayhello方法的时候，都可以正常调用。
 这里就可以说明admin实现了hello接口，但是我们又没有显示的声明类型admin实现，所以这个实现是通过内部类型user实现的，因为admin包含了user所有的方法函数，所以也就实现了接口hello。
 当然外部类型也可以重新实现，只需要像上面例子一样覆盖同名的方法即可。这里要说明的是，不管我们如何同名覆盖，都不会影响内部类型，我们还可以通过访问内部类型来访问它的方法、属性。

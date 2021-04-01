@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main func adder() func(int) int { sum := 0 // 自由变" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 package main func adder() func(int) int { sum := 0 // 自由变量 return func (v int) int { sum &#43;= v //v 局部变量 return" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/base/5.%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[golang base(五) | 函数式编程]" />
-<meta property="og:description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main func adder() func(int) int { sum := 0 // 自由变" />
+<meta property="og:description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 package main func adder() func(int) int { sum := 0 // 自由变量 return func (v int) int { sum &#43;= v //v 局部变量 return" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/base/5.%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" />
-<meta property="article:published_time" content="2020-02-28T17:36:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-02-28T17:36:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/base/5.%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-02-28T17:36:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-02-28T17:36:56&#43;08:00" />
 
 <meta itemprop="name" content="[golang base(五) | 函数式编程]">
-<meta itemprop="description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main func adder() func(int) int { sum := 0 // 自由变">
-
-
-<meta itemprop="datePublished" content="2020-02-28T17:36:56&#43;08:00" />
+<meta itemprop="description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 package main func adder() func(int) int { sum := 0 // 自由变量 return func (v int) int { sum &#43;= v //v 局部变量 return"><meta itemprop="datePublished" content="2020-02-28T17:36:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-02-28T17:36:56&#43;08:00" />
-<meta itemprop="wordCount" content="646">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="525">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[golang base(五) | 函数式编程]"/>
-<meta name="twitter:description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main func adder() func(int) int { sum := 0 // 自由变"/>
+<meta name="twitter:description" content="函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 package main func adder() func(int) int { sum := 0 // 自由变量 return func (v int) int { sum &#43;= v //v 局部变量 return"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/golang/base/"> golang/base </a>
             </div>
-          <span class="more-meta"> 约 646 字 </span>
+          <span class="more-meta"> 约 525 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -141,245 +134,137 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#函数式编程">函数式编程</a></li>
-</ul>
-</nav>
+    <nav id="TableOfContents"></nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="函数式编程">函数式编程</h1>
-
+      <h1 id="函数式编程">函数式编程</h1>
 <blockquote>
 <p>函数式编程 VS 函数指针</p>
 </blockquote>
-
 <ul>
-<li>函数是一等公民：参数，变量，返回值都可以是函数</li>
-
-<li><p>闭包</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="kd">func</span> <span class="nf">adder</span><span class="p">()</span> <span class="kd">func</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="nx">sum</span> <span class="o">:=</span> <span class="mi">0</span> <span class="c1">// 自由变量
-</span><span class="c1"></span>    <span class="k">return</span> <span class="kd">func</span> <span class="p">(</span><span class="nx">v</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
-        <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">v</span> <span class="c1">//v 局部变量
-</span><span class="c1"></span>        <span class="k">return</span> <span class="nx">sum</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">a</span> <span class="o">:=</span> <span class="nf">adder</span><span class="p">()</span>
-    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;0 + 1 + ... + %d = %d\n&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nf">a</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span>
-    <span class="p">}</span>
-<span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/闭包.png" alt="avatar" /></p></li>
+<li>
+<p>函数是一等公民：参数，变量，返回值都可以是函数</p>
+</li>
+<li>
+<p>闭包</p>
+<pre><code>  package main
+	
+  func adder() func(int) int {
+      sum := 0 // 自由变量
+      return func (v int) int {
+          sum += v //v 局部变量
+          return sum
+      }
+  }
+	
+  func main() {
+      a := adder()
+      for i := 0; i &lt; 10; i++ {
+          fmt.Printf(&quot;0 + 1 + ... + %d = %d\n&quot;, i, a(i))
+      }
+  }
+</code></pre>
+</li>
 </ul>
-
-<p>&emsp;&emsp;所以，当函数返回的时候，返回的是一个闭包。我们return这个func不是说返回这个代码，而是返回了这个函数以及对sum的引用</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/%E9%97%AD%E5%8C%85.png" alt="avatar"></p>
+<p>  所以，当函数返回的时候，返回的是一个闭包。我们return这个func不是说返回这个代码，而是返回了这个函数以及对sum的引用</p>
 <blockquote>
 <p>golang语言闭包应用</p>
 </blockquote>
-
 <ul>
-<li><p>斐波那契数列(func 返回值)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="c1">// 1, 1, 2, 3, 5, 8, 13, ...
-</span><span class="c1">//    a, b
-</span><span class="c1">//       a  b
-</span><span class="c1"></span><span class="kd">func</span> <span class="nx">fibonacci</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="c1">//自由变量
-</span><span class="c1"></span>    <span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-        <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span> <span class="p">=</span> <span class="nx">b</span><span class="p">,</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
-        <span class="k">return</span> <span class="nx">a</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">f</span> <span class="o">:=</span> <span class="nf">fibonacci</span><span class="p">()</span> <span class="c1">//生成器
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//1
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//1
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//2
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//3
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//5
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//8
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//13
-</span><span class="c1"></span>    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">f</span><span class="p">())</span> <span class="c1">//21
-</span><span class="c1"></span><span class="p">}</span></pre></td></tr></table>
-</div>
-</div></li>
-
-<li><p>为函数实现接口</p></li>
+<li>
+<p>斐波那契数列(func 返回值)</p>
+<pre><code>  package main
+	
+  // 1, 1, 2, 3, 5, 8, 13, ...
+  //    a, b
+  //       a  b
+  func fibonacci func() int {
+      a, b := 0, 1 //自由变量
+      return func() int {
+          a, b = b, a + b
+          return a
+      }
+  }
+	
+  func main() {
+      f := fibonacci() //生成器
+      fmt.Println(f()) //1
+      fmt.Println(f()) //1
+      fmt.Println(f()) //2
+      fmt.Println(f()) //3
+      fmt.Println(f()) //5
+      fmt.Println(f()) //8
+      fmt.Println(f()) //13
+      fmt.Println(f()) //21
+  }
+</code></pre>
+</li>
+<li>
+<p>为函数实现接口</p>
+</li>
 </ul>
-
-<p>&emsp;&emsp;上述数列调用有个缺点，我每次都要手动调用f, 那能不能像读文件一样读取数列内容呢？我们只要让数列生成器实现Reader接口，每扫描一次文件，就在Read方法里调一次数列生成器
-        type intGen func() int</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func (g intGen) Read(p []byte) (n int, err error) {
+<p>  上述数列调用有个缺点，我每次都要手动调用f, 那能不能像读文件一样读取数列内容呢？我们只要让数列生成器实现Reader接口，每扫描一次文件，就在Read方法里调一次数列生成器
+type intGen func() int</p>
+<pre><code>    func (g intGen) Read(p []byte) (n int, err error) {
         next := g()
         if next &gt; 10000 {
             return 0, io.EOF
         }
-        s := fmt.Sprintf(&#34;%d\n&#34;, next)
+        s := fmt.Sprintf(&quot;%d\n&quot;, next)
         return strings.NewReader(s).Read(p)
-    }
-
-    func printFileContents(reader io.Reader) {
+	}
+	
+	func printFileContents(reader io.Reader) {
         scanner := bufio.NewScanner(reader)
-
+	
         for scanner.Scan() {
             fmt.Println(scanner.Text())
         }
-    }
-
-    func main() {
+	}
+	
+	func main() {
         f := fibonacci()
         printFileContents(s)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;接口型函数详见-&gt;<a href="https://facedamon.github.io/post/golang/standard-lib/标准库database/接口型函数/">接口型函数</a></p>
-
+	}
+</code></pre>
+<p>  接口型函数详见-&gt;<a href="https://facedamon.github.io/post/golang/standard-lib/%E6%A0%87%E5%87%86%E5%BA%93database/%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/">接口型函数</a></p>
 <ul>
-<li><p>使用函数来遍历二叉树(func 参数)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">type Node struct {
-    value int
-    Left, Right *Node
-}
-
-func (node *Node) TraverseFunc(f func(*Node)) {
-    if node == nil {
-        return
-    }
-    node.Left.TraverseFunc(f)
-    f(node)
-    node.Right.TraverseFunc(f)
-}
-
-func (node *Node) Traverse() {
-    node.TraverseFunc(func(n *Node){
-        n.Print()
-    })
-    fmt.Println()
-}
-
-func (node *Node) Print() {
-    fmt.Println(node.value, &#34; &#34;)
-}</pre></td></tr></table>
-</div>
-</div></li>
-
-<li><p>更为自然，不需要修饰如何访问自由变量</p></li>
-
-<li><p>没有Lambda表达式</p></li>
+<li>
+<p>使用函数来遍历二叉树(func 参数)</p>
+<pre><code>  type Node struct {
+      value int
+      Left, Right *Node
+  }
+	
+  func (node *Node) TraverseFunc(f func(*Node)) {
+      if node == nil {
+          return
+      }
+      node.Left.TraverseFunc(f)
+      f(node)
+      node.Right.TraverseFunc(f)
+  }
+	
+  func (node *Node) Traverse() {
+      node.TraverseFunc(func(n *Node){
+          n.Print()
+      })
+      fmt.Println()
+  }
+	
+  func (node *Node) Print() {
+      fmt.Println(node.value, &quot; &quot;)
+  }
+</code></pre>
+</li>
+<li>
+<p>更为自然，不需要修饰如何访问自由变量</p>
+</li>
+<li>
+<p>没有Lambda表达式</p>
+</li>
 </ul>
 
     </div>

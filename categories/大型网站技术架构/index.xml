@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>大型网站技术架构 on FaceDamon`s Blog</title>
@@ -6,18 +6,14 @@
     <description>Recent content in 大型网站技术架构 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 30 Dec 2020 16:46:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/categories/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 30 Dec 2020 16:46:56 +0800</lastBuildDate><atom:link href="http://facedamon.github.io/categories/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[大型网站技术架构 | 漏桶算法与令牌桶算法]</title>
       <link>http://facedamon.github.io/post/books/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95/</link>
       <pubDate>Wed, 30 Dec 2020 16:46:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95/</guid>
-      <description>转载自 https://www.cnblogs.com/xuwc/p/9123078.html 问题描述 &amp;emsp;&amp;emsp;某天A君突然发现自己的接口请求量突然涨到之前的10倍，没多久该接口几乎不可使用，并引发连锁反应导致整</description>
+      <description>转载自 https://www.cnblogs.com/xuwc/p/9123078.html 问题描述 某天A君突然发现自己的接口请求量突然涨到之前的10倍，没多久该接口几乎不可使用，并引发连锁反应导致整个系统崩溃。如何应对这种</description>
     </item>
     
     <item>

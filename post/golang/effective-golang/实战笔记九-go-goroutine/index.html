@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B9%9D-go-goroutine/" />
@@ -41,22 +41,15 @@
 <meta property="og:title" content="[实战笔记(九) | Go goroutine]" />
 <meta property="og:description" content="转载自 https://www.flysnow.org 并发和并行 在谈goroutine之前，我们先谈谈并发和并行。 一般的程序，如果没有特殊的要求的话，是顺序执行的，这样的程序也容易编写维" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B9%9D-go-goroutine/" />
-<meta property="article:published_time" content="2019-10-14T01:48:56&#43;08:00"/>
-<meta property="article:modified_time" content="2019-10-14T01:48:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%B9%9D-go-goroutine/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-10-14T01:48:56&#43;08:00" />
+<meta property="article:modified_time" content="2019-10-14T01:48:56&#43;08:00" />
 
 <meta itemprop="name" content="[实战笔记(九) | Go goroutine]">
-<meta itemprop="description" content="转载自 https://www.flysnow.org 并发和并行 在谈goroutine之前，我们先谈谈并发和并行。 一般的程序，如果没有特殊的要求的话，是顺序执行的，这样的程序也容易编写维">
-
-
-<meta itemprop="datePublished" content="2019-10-14T01:48:56&#43;08:00" />
+<meta itemprop="description" content="转载自 https://www.flysnow.org 并发和并行 在谈goroutine之前，我们先谈谈并发和并行。 一般的程序，如果没有特殊的要求的话，是顺序执行的，这样的程序也容易编写维"><meta itemprop="datePublished" content="2019-10-14T01:48:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-14T01:48:56&#43;08:00" />
-<meta itemprop="wordCount" content="2118">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="2081">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[实战笔记(九) | Go goroutine]"/>
 <meta name="twitter:description" content="转载自 https://www.flysnow.org 并发和并行 在谈goroutine之前，我们先谈谈并发和并行。 一般的程序，如果没有特殊的要求的话，是顺序执行的，这样的程序也容易编写维"/>
 
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/golang/%E5%AE%9E%E6%88%98%E7%B3%BB%E5%88%97/"> golang/实战系列 </a>
             </div>
-          <span class="more-meta"> 约 2118 字 </span>
+          <span class="more-meta"> 约 2081 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,188 +135,109 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#并发和并行">并发和并行</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#并发和并行">并发和并行</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<blockquote>
+      <blockquote>
 <p>转载自 <a href="https://www.flysnow.org">https://www.flysnow.org</a></p>
 </blockquote>
-
 <h2 id="并发和并行">并发和并行</h2>
-
 <p>在谈goroutine之前，我们先谈谈并发和并行。</p>
-
 <p>一般的程序，如果没有特殊的要求的话，是顺序执行的，这样的程序也容易编写维护
 但是随着科技的发展、业务的演进，我们不得不编写可以并行的程序，因为这样有很多好处。
 在操作系统中，有两个重要的概念：一个是进程、一个是线程。当我们运行一个程序的时候，比如你的IDE或者QQ等，操作系统会为这个程序创建一个进程，这个进程包含了运行这个程序所需的各种资源，可以说它是一个容器，是属于这个程序的工作空间、文件句柄、设备和线程等等。</p>
-
 <p>那么线程是什么呢？线程是一个<code>执行的空间</code>，比如要下载一个文件，访问一次网络等等。线程会被操作系统调用，来在不同的处理器上运行编写的代码人物，这个处理器不一定是该程序进程所在的处理。操作系统过的调度是操作系统负责的，不同的操作系统可能会不一样，但是对于我们程序编写者来说，不用关心，因为对我们都是透明的。</p>
-
 <p>一个进程在启动的时候，会创建一个主线程，这个主线程结束的时候，程序进程也就终止了，所以一个进程至少有一个线程，这也是我们在main函数里，使用goroutine的时候，要让主线程等待的原因，因为主线程结束了，程序就终止了，那么就有肯会不到goroutine的输出。</p>
-
 <p>go语言中并发指的是让某个函数独立于其它函数运行的能力，一个goroutine就是一个独立的工作单元，go的runtime会在逻辑处理器上调度这些goroutine来运行，一个逻辑处理器绑定一个操作系统线程，所以说goroutine不是线程，它是协程，也是这个原因，它是由go语言运行时本身的算法实现的。</p>
-
 <table>
 <thead>
 <tr>
-<th align="center">概念</th>
-<th align="center">说明</th>
+<th style="text-align:center">概念</th>
+<th style="text-align:center">说明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">进程</td>
-<td align="center">一个程序对应一个独立程序空间</td>
+<td style="text-align:center">进程</td>
+<td style="text-align:center">一个程序对应一个独立程序空间</td>
 </tr>
-
 <tr>
-<td align="center">线程</td>
-<td align="center">一个执行空间，一个进程可以有多个线程</td>
+<td style="text-align:center">线程</td>
+<td style="text-align:center">一个执行空间，一个进程可以有多个线程</td>
 </tr>
-
 <tr>
-<td align="center">逻辑处理器</td>
-<td align="center">执行创建的goroutine，绑定一个线程</td>
+<td style="text-align:center">逻辑处理器</td>
+<td style="text-align:center">执行创建的goroutine，绑定一个线程</td>
 </tr>
-
 <tr>
-<td align="center">调度器</td>
-<td align="center">Go运行中的，分配goroutine给不同的逻辑处理器</td>
+<td style="text-align:center">调度器</td>
+<td style="text-align:center">Go运行中的，分配goroutine给不同的逻辑处理器</td>
 </tr>
-
 <tr>
-<td align="center">全局运行队列</td>
-<td align="center">所有刚创建的goroutine都会放到这里</td>
+<td style="text-align:center">全局运行队列</td>
+<td style="text-align:center">所有刚创建的goroutine都会放到这里</td>
 </tr>
-
 <tr>
-<td align="center">本地运行队列</td>
-<td align="center">逻辑处理器的goroutine队列</td>
+<td style="text-align:center">本地运行队列</td>
+<td style="text-align:center">逻辑处理器的goroutine队列</td>
 </tr>
 </tbody>
 </table>
-
 <p><strong>当我们创建一个goroutine之后，会先存放在全局运行队列中，等待go运行时的调度器进行调度，把它们分配给其中一个逻辑处理器，并放到这个逻辑处理器对应的本地运行队列中，最终等着被逻辑处理器执行即可。</strong></p>
-
 <p>这一套管理、调度、执行goroutine的方式称之为go的并发。并发可以同时做很多事情，比如有个goroutine执行了一般，就被暂停执行其它goroutine去了，这是go控制管理的。所以并发的概念和并行不一样，并行指的是在不同的物理处理器上同时执行不同的代码片段，<strong>并行可以同时做很多事情，而并发是同时管理很多事情</strong>，因为操作系统和硬件的总资源比较少，所以并发的效果比并行好的多，使用较少的资源做更多的事情，也是go语言提倡的。</p>
-
 <p>go的并发原理我们刚刚讲了，那么go的并行是怎样的呢？其实答案非常简单，多创建一个逻辑处理器就好了，这样调度器就可以同时分配全局运行队列中的goroutine到不同的逻辑处理器上并行执行。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main(){
+<pre><code>    func main(){
         var wg sync.WaitGroup
         wg.Add(2)
         go func(){
             defer wg.Done()
             for i:=1;i&lt;100;i++{
-                fmt.Println(&#34;A:&#34;,i)
+                fmt.Println(&quot;A:&quot;,i)
             }
         }()
-
-    go func(){
+	   
+	go func(){
             defer wg.Done()
             for i:=1;i&lt;100;i++{
-                fmt.Println(&#34;B:&#34;,i)
+                fmt.Println(&quot;B:&quot;,i)
             }
         }()
-    wg.Wait()
-    }</pre></td></tr></table>
-</div>
-</div>
+	wg.Wait()
+	}
+</code></pre>
 <p>这是一个简单的并发程序。创建一个goroutine是通过go关键字的，其后跟一个函数或者方法即可。</p>
-
 <p>这里的sync.WaitGroup其实是一个计数的信号量，使用它的目的是要main函数等待两个goroutine执行完成后再结束，不然这两个goroutine还在运行的时候，程序就结束了，看不到想要的结果。</p>
-
 <p>sync.WaitGroup的使用也非常简单，先是使用add方法设置计算器为2，每一个goroutine的函数执行完后，就调用Done方法减1.Wait方法的意思是如果计数器大于0，就会阻塞，所以main函数会一直等待2个goroutine完成后，在结束。</p>
-
 <p>我们运行这个程序，会发现A和B前缀会交叉出现，并且每次运行的结果可能不一样，这就是go调度的结果。</p>
-
 <p>默认情况下，go默认是给每个可用的物理处理器都分配一个逻辑处理器，因为我的电脑是4核的，所以上面的例子默认创建了4个逻辑处理器，所以这个例子中同时也有并行的调度，如果我们强制只使用一个逻辑处理器，我们再看看结果。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main(){
+<pre><code>    func main(){
         runtime.GOMAXPROCS(1)
         var wg sync.WaitGroup
         wg.Add(2)
         go func(){
             defer wg.Done()
             for i := 1; i &lt; 100; i++ {
-                fmt.Println(&#34;A:&#34;, i)
+                fmt.Println(&quot;A:&quot;, i)
             }
         }()
         go func(){
             defer wg.Done()
             for i := 1; i &lt; 100; i++ {
-                fmt.Println(&#34;B&#34;, i)
+                fmt.Println(&quot;B&quot;, i)
             }
         }()
         wg.Wait() 
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <p>设置逻辑处理器个数也非常简单，在程序开头使用<code>runtime.GOMAXPROCS(1)</code>即可，这里设置的数量是1.我们这时候再运行，会发现打印A，再打印B。</p>
-
 <p>这里我们不要误认为是顺序执行，这里之所以顺序输出的原因，是因为我们的goroutine执行时间太短，还没来得及切换到第2个goroutine，第一个goroutine就完成了。这里我们可以把每个goroutine的执行时间拉长一些，就可以看到并发的效果了。</p>
-
 <p>对于逻辑处理器的个数，不是越多越好，要根据电脑的实际物理核数，如果不是多核的，设置再多的逻辑处理器个数也没用，如果要设置的话，一般我们采用如下代码设置。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    runtime.GOMAXPROCS(runtime.NumCPU())</pre></td></tr></table>
-</div>
-</div>
+<pre><code>    runtime.GOMAXPROCS(runtime.NumCPU())
+</code></pre>
 <p><strong><code>所以对于并发来说，就是go语言自己实现的调度，对于并行来说，是和运行的电脑的物理处理器的核数有关，多核就可以并行并发，单核只能并发了。</code></strong></p>
 
     </div>

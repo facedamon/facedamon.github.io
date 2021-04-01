@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式/结构 on FaceDamon`s Blog</title>
+    <link>http://facedamon.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%93%E6%9E%84/</link>
+    <description>Recent content in 设计模式/结构 on FaceDamon`s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language><atom:link href="http://facedamon.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[设计模式 | 结构 | 装饰器模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 01 Apr 2021 14:25:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它</description>
+    </item>
+    
+    <item>
+      <title>[设计模式 | 结构 | 享元模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 22 Mar 2021 15:21:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提</description>
+    </item>
+    
+    <item>
+      <title>[设计模式 | 结构 | 外观模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 20 Mar 2021 15:35:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，</description>
+    </item>
+    
+    <item>
+      <title>[设计模式 | 结构 | 代理模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 20 Mar 2021 11:11:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 在代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。在代理模式中，我们创建具有现有对象</description>
+    </item>
+    
+  </channel>
+</rss>

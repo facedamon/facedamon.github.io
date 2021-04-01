@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="变量定义 &amp;emsp;&amp;emsp;在golang中变量名在前变量类型在后 &amp;emsp;&amp;emsp;这样设计的初衷是什么?我们回想一下使用其它语言" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="变量定义 在golang中变量名在前变量类型在后 这样设计的初衷是什么?我们回想一下使用其它语言的变量的时候是先想到变量的名字还是先想到变量类型" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/base/1.%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[golang base(一) | 基础语法]" />
-<meta property="og:description" content="变量定义 &emsp;&emsp;在golang中变量名在前变量类型在后 &emsp;&emsp;这样设计的初衷是什么?我们回想一下使用其它语言" />
+<meta property="og:description" content="变量定义 在golang中变量名在前变量类型在后 这样设计的初衷是什么?我们回想一下使用其它语言的变量的时候是先想到变量的名字还是先想到变量类型" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/base/1.%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" />
-<meta property="article:published_time" content="2020-02-28T14:09:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-02-28T14:09:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/base/1.%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-02-28T14:09:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-02-28T14:09:56&#43;08:00" />
 
 <meta itemprop="name" content="[golang base(一) | 基础语法]">
-<meta itemprop="description" content="变量定义 &emsp;&emsp;在golang中变量名在前变量类型在后 &emsp;&emsp;这样设计的初衷是什么?我们回想一下使用其它语言">
-
-
-<meta itemprop="datePublished" content="2020-02-28T14:09:56&#43;08:00" />
+<meta itemprop="description" content="变量定义 在golang中变量名在前变量类型在后 这样设计的初衷是什么?我们回想一下使用其它语言的变量的时候是先想到变量的名字还是先想到变量类型"><meta itemprop="datePublished" content="2020-02-28T14:09:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-02-28T14:09:56&#43;08:00" />
-<meta itemprop="wordCount" content="2842">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="2346">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[golang base(一) | 基础语法]"/>
-<meta name="twitter:description" content="变量定义 &emsp;&emsp;在golang中变量名在前变量类型在后 &emsp;&emsp;这样设计的初衷是什么?我们回想一下使用其它语言"/>
+<meta name="twitter:description" content="变量定义 在golang中变量名在前变量类型在后 这样设计的初衷是什么?我们回想一下使用其它语言的变量的时候是先想到变量的名字还是先想到变量类型"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/golang/base/"> golang/base </a>
             </div>
-          <span class="more-meta"> 约 2842 字 </span>
-          <span class="more-meta"> 预计阅读 6 分钟 </span>
+          <span class="more-meta"> 约 2346 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,297 +135,156 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#变量定义">变量定义</a>
-<ul>
-<li><a href="#回顾一下">回顾一下</a></li>
-</ul></li>
-<li><a href="#内建变量类型">内建变量类型</a>
-<ul>
-<li><a href="#强制类型转换">强制类型转换</a></li>
-</ul></li>
-<li><a href="#常量与枚举">常量与枚举</a></li>
-<li><a href="#条件语句">条件语句</a>
-<ul>
-<li><a href="#if">if</a></li>
-<li><a href="#switch">switch</a></li>
-</ul></li>
-<li><a href="#循环">循环</a>
-<ul>
-<li><a href="#for">for</a></li>
-</ul></li>
-<li><a href="#函数">函数</a></li>
-<li><a href="#指针">指针</a></li>
-</ul>
+  <ul>
+    <li><a href="#回顾一下">回顾一下</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#强制类型转换">强制类型转换</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#if">if</a></li>
+    <li><a href="#switch">switch</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#for">for</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="变量定义">变量定义</h1>
-
-<p>&emsp;&emsp;在golang中变量名在前变量类型在后</p>
-
-<p>&emsp;&emsp;这样设计的初衷是什么?我们回想一下使用其它语言的变量的时候是先想到变量的名字还是先想到变量类型</p>
-
-<p>&emsp;&emsp;声明之后默认是空值,是一个具体的值</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
-
-    <span class="kd">func</span> <span class="nf">variableZeroValue</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">a</span> <span class="kt">int</span>
-        <span class="kd">var</span> <span class="nx">s</span> <span class="kt">string</span>
-        <span class="c1">// 0 &#34;&#34;
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%d %q\n&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Hello world&#34;</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;变量当然也可以赋初值，也可以同行赋值多个变量</p>
-
-<p>&emsp;&emsp;变量一旦定义一定要用到，否则就是语法错误(可能在刚开始学习的时候，觉得有点束缚手脚，但是当我们在做一个项目的时候，这是一个很好的习惯，避免了我们定义一些无用的变量)</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func variableInitialValue() {
+      <h1 id="变量定义">变量定义</h1>
+<p>  在golang中变量名在前变量类型在后</p>
+<p>  这样设计的初衷是什么?我们回想一下使用其它语言的变量的时候是先想到变量的名字还是先想到变量类型</p>
+<p>  声明之后默认是空值,是一个具体的值</p>
+<pre><code>    package main
+	
+	import &quot;fmt&quot;
+	
+	func variableZeroValue() {
+        var a int
+        var s string
+        // 0 &quot;&quot;
+        fmt.Printf(&quot;%d %q\n&quot;, a, s)
+	}
+	
+	func main() {
+        fmt.Println(&quot;Hello world&quot;)
+	}
+</code></pre>
+<p>  变量当然也可以赋初值，也可以同行赋值多个变量</p>
+<p>  变量一旦定义一定要用到，否则就是语法错误(可能在刚开始学习的时候，觉得有点束缚手脚，但是当我们在做一个项目的时候，这是一个很好的习惯，避免了我们定义一些无用的变量)</p>
+<pre><code>    func variableInitialValue() {
         var a， b int = 3, 4
-        var s string = &#34;abc&#34;
+        var s string = &quot;abc&quot;
         // 3 4 abc
         fmt.Println(a, b, s)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;我们再思考一下，上面的变量声明数据类型，好像也是多余的，因为现在的编译器完全可以从后面的值反向推断出数据类型。在早期的C和C++是不能这样做的，但是后来的C++有了auto关键字，因此golang它完全是可以做到的。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func variableTypeDeduction() {
-        var a, b, c ,s = 3, 4, true, &#34;def&#34;
+	}
+</code></pre>
+<p>  我们再思考一下，上面的变量声明数据类型，好像也是多余的，因为现在的编译器完全可以从后面的值反向推断出数据类型。在早期的C和C++是不能这样做的，但是后来的C++有了auto关键字，因此golang它完全是可以做到的。</p>
+<pre><code>    func variableTypeDeduction() {
+        var a, b, c ,s = 3, 4, true, &quot;def&quot;
         // 3, 4, true, def
         fmt.Println(a, b, c, s)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;上面的声明样式，看上去比较繁琐。所以有一种更加简单的写法。我们省略var关键字，使用&rdquo;:=&ldquo;进行赋值</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func variableShorter() {
-        a, b, c, s := 3, 4, true, &#34;def&#34;
+	}
+</code></pre>
+<p>  上面的声明样式，看上去比较繁琐。所以有一种更加简单的写法。我们省略var关键字，使用&quot;:=&ldquo;进行赋值</p>
+<pre><code>    func variableShorter() {
+        a, b, c, s := 3, 4, true, &quot;def&quot;
         b = 5
         // 3, 5, true, def
         fmt.Println(a, b, c, s)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;上面的变量定义示例，它们的作用域在函数里面。那在函数外面也能定义变量，此时就不能使用&rdquo;:=&ldquo;格式进行声明赋值了，必须使用var关键字。</p>
-
-<p>&emsp;&emsp;<strong>它并不是一个全局变量</strong>，它是一个包内部变量，它没有全局变量的说法</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
-
-    <span class="kd">var</span> <span class="nx">aa</span> <span class="p">=</span> <span class="mi">3</span>
-    <span class="kd">var</span> <span class="nx">ss</span> <span class="p">=</span> <span class="s">&#34;kkk&#34;</span>
-    <span class="nx">bb</span> <span class="o">:=</span> <span class="kc">true</span> <span class="c1">// error
-</span><span class="c1"></span>
-    <span class="o">...</span> </pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;上面的一行一行的声明比较啰嗦，可以这样</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
-
-    <span class="kd">var</span> <span class="p">(</span>
-        <span class="nx">aa</span> <span class="p">=</span> <span class="mi">3</span>
-        <span class="nx">ss</span> <span class="p">=</span> <span class="s">&#34;kkk&#34;</span>
-        <span class="nx">bb</span> <span class="p">=</span> <span class="kc">true</span>
-    <span class="p">)</span>
-
-    <span class="o">...</span></pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
+<p>  上面的变量定义示例，它们的作用域在函数里面。那在函数外面也能定义变量，此时就不能使用&rdquo;:=&ldquo;格式进行声明赋值了，必须使用var关键字。</p>
+<p>  <strong>它并不是一个全局变量</strong>，它是一个包内部变量，它没有全局变量的说法</p>
+<pre><code>    package main
+	
+	import &quot;fmt&quot;
+	
+	var aa = 3
+	var ss = &quot;kkk&quot;
+	bb := true // error
+	
+	... 
+</code></pre>
+<p>  上面的一行一行的声明比较啰嗦，可以这样</p>
+<pre><code>    package main
+	
+	import &quot;fmt&quot;
+	
+	var (
+        aa = 3
+        ss = &quot;kkk&quot;
+        bb = true
+	)
+	
+	...
+</code></pre>
 <h2 id="回顾一下">回顾一下</h2>
-
 <ul>
 <li>使用var关键字
-
 <ul>
 <li>var a, b, c bool</li>
 <li>var s1, s2 string = &ldquo;hello world&rdquo;</li>
 <li>可放在函数内， 或直接放在包内</li>
 <li>使用var()集中定义变量</li>
-</ul></li>
+</ul>
+</li>
 <li>编译器自动决定类型
-
 <ul>
 <li>var a, b, i, s1, s2 = true, false, 3, &ldquo;hello&rdquo;, &ldquo;world&rdquo;</li>
-</ul></li>
+</ul>
+</li>
 <li>使用:=定义变量
-
 <ul>
 <li>a, b, i, s1, s2 := true, false, 3, &ldquo;hello&rdquo;, &ldquo;world&rdquo;</li>
 <li>在函数内使用</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <blockquote>
 <p>函数内 能尽量使用:=就使用:=</p>
 </blockquote>
-
 <h1 id="内建变量类型">内建变量类型</h1>
-
 <ul>
 <li>bool, string</li>
-<li>(u)int, (u)int8, (u)int16, (u)int32, (u)int64, (<strong>无符号整数和有符号整数</strong>，有符号整数分为两类：1. 规定长度的，比如int8 int16 int32 int64, 2. 不规定长度的，那它的长度是跟着操作系统来的，在32位系统下是32位的，在64位系统下是64位的。 Golang没有诸如&rdquo;long/ longlong 这些东西&rdquo;)uintptr (指针长度也是跟着操作系统来的)</li>
+<li>(u)int, (u)int8, (u)int16, (u)int32, (u)int64, (<strong>无符号整数和有符号整数</strong>，有符号整数分为两类：1. 规定长度的，比如int8 int16 int32 int64, 2. 不规定长度的，那它的长度是跟着操作系统来的，在32位系统下是32位的，在64位系统下是64位的。 Golang没有诸如&quot;long/ longlong 这些东西&rdquo;)uintptr (指针长度也是跟着操作系统来的)</li>
 <li>byte, rune(<strong>字符型</strong>。字面意思有点像char，但char是1字节，现在是全球化应用，要应对多个语言，rune的长度是32位，rune is an alias for int32 and is equivalent to int32 in all ways. byte是8位， byte is an alias for uint8 and is equivalent to uint8 in all ways)</li>
 <li>float32, float64, complex64, complex128(浮点数类型)</li>
 </ul>
-
 <h2 id="强制类型转换">强制类型转换</h2>
-
 <ul>
-<li><p><strong>golang类型转换都是强制的</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">func triangle() {
-    var a, b int = 3, 4
-    var c int
-    c = int(math.Sqrt(float64(a * a + b * b)))
-
-}</pre></td></tr></table>
-</div>
-</div></li>
+<li>
+<p><strong>golang类型转换都是强制的</strong></p>
+<pre><code>  func triangle() {
+      var a, b int = 3, 4
+      var c int
+      c = int(math.Sqrt(float64(a * a + b * b)))
+	
+  }
+</code></pre>
+</li>
 </ul>
-
 <h1 id="常量与枚举">常量与枚举</h1>
-
-<p>&emsp;&emsp;使用关键字const,可以省略常量类型，声明时不确定具体是什么类型。常量只是<strong>替换动作</strong></p>
-
-<p>&emsp;&emsp;golang的常量并不需要全大写，可能在其它语言中会全大写，但是在golang中，首字母大写代表public,因此在这里不需要全部大写。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func consts() {
-        //const filename = &#34;abc.txt&#34;
+<p>  使用关键字const,可以省略常量类型，声明时不确定具体是什么类型。常量只是<strong>替换动作</strong></p>
+<p>  golang的常量并不需要全大写，可能在其它语言中会全大写，但是在golang中，首字母大写代表public,因此在这里不需要全部大写。</p>
+<pre><code>    func consts() {
+        //const filename = &quot;abc.txt&quot;
         //const a, b = 3, 4
         const (
-            filename = &#34;abc.txt&#34;
+            filename = &quot;abc.txt&quot;
             a, b = 3, 4
         )
         var c int
         // 因为a b 是常量，在这里只是替换动作，所以替换后是float64类型
         c = int(math.Sqrt(a * a + b * b))
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;枚举类型也是采用const关键字，但是每一个常量必须被赋值。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func enums() {
+	}
+</code></pre>
+<p>  枚举类型也是采用const关键字，但是每一个常量必须被赋值。</p>
+<pre><code>    func enums() {
         const (
             cpp = 0
             java = 1
@@ -440,37 +292,10 @@
             golang = 3
         )
         fmt.Println(cpp, java, python, golang)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;golang为了满足这种需求，做了一个简化。<strong>iota表示这组const是自增的</strong>。iota可以作为一个计算种子，只要你可以写出枚举的公式，就可以实现枚举自增</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func enums() {
+	}
+</code></pre>
+<p>  golang为了满足这种需求，做了一个简化。<strong>iota表示这组const是自增的</strong>。iota可以作为一个计算种子，只要你可以写出枚举的公式，就可以实现枚举自增</p>
+<pre><code>    func enums() {
         const (
             cpp iota
             _ 
@@ -479,7 +304,7 @@
             javascript
         )
         fmt.Println(cpp,  python, golang,javascript)
-
+	
         //b, kb, mb, gb, tb, pb
         const (
             b = 1 &lt;&lt; (10 * iota)    // 1 &lt;&lt; 0 = 1
@@ -488,327 +313,159 @@
             gb
             tb
             pb
-
+	
         )
         fmt.Println(b, kb, mb, gb, tb, pb)
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <h1 id="条件语句">条件语句</h1>
-
 <h2 id="if">if</h2>
-
-<p>&emsp;&emsp;if条件是不需要括号的
-        package main</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    import &#34;io/ioutil&#34;
-
-    func main () {
-        const filename = &#34;abc.txt&#34;
+<p>  if条件是不需要括号的
+package main</p>
+<pre><code>    import &quot;io/ioutil&quot;
+	
+	func main () {
+        const filename = &quot;abc.txt&quot;
         contents, err := ioutil.ReadFile(filename)
         if err != nil {
             // no such file or directory abc.txt
             fmt.Println(err)
         } else {
             // ...
-            fmt.Printf(&#34;%s\n&#34;, contents)
+            fmt.Printf(&quot;%s\n&quot;, contents)
         }
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;上面这样写比较繁琐，golang的if是可以像for一样写的。但是这样做的话，像下面的contents和err的作用域就只能在if结构中访问了。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kn">import</span> <span class="s">&#34;io/ioutil&#34;</span>
-
-    <span class="kd">func</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">filename</span> <span class="p">=</span> <span class="s">&#34;abc.txt&#34;</span>
-        <span class="k">if</span> <span class="nx">contents</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadFile</span><span class="p">(</span><span class="nx">filename</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="c1">// no such file or directory abc.txt
-</span><span class="c1"></span>            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="c1">// ...
-</span><span class="c1"></span>            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s\n&#34;</span><span class="p">,</span> <span class="nx">contents</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span> <span class="c1">// error
-</span><span class="c1"></span>    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
+<p>  上面这样写比较繁琐，golang的if是可以像for一样写的。但是这样做的话，像下面的contents和err的作用域就只能在if结构中访问了。</p>
+<pre><code>    package main
+	
+	import &quot;io/ioutil&quot;
+	
+	func main () {
+        const filename = &quot;abc.txt&quot;
+        if contents, err := ioutil.ReadFile(filename); err != nil {
+            // no such file or directory abc.txt
+            fmt.Println(err)
+        } else {
+            // ...
+            fmt.Printf(&quot;%s\n&quot;, contents)
+        }
+        fmt.Println(contents) // error
+	}
+</code></pre>
 <h2 id="switch">switch</h2>
-
-<p>&emsp;&emsp;switch会自动break，除非使用fallthrough。Golang的switch非常灵活，表达式不鄙视常量或整数，如果switch没有表达式，它会匹配true</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func grade(scare int) string {
-        g := &#34;&#34;
+<p>  switch会自动break，除非使用fallthrough。Golang的switch非常灵活，表达式不鄙视常量或整数，如果switch没有表达式，它会匹配true</p>
+<pre><code>    func grade(scare int) string {
+        g := &quot;&quot;
         switch {
             case score &lt; 0 || score &gt; 100 : 
-            panic(fmt.Sprintf(&#34;Wrong score: %d&#34;, score))
-            case score &lt; 60: g = &#34;F&#34;
-            case score &lt; 80: g = &#34;C&#34;
-            case score &lt; 90: g = &#34;B&#34;
-            case score &lt; 100: g = &#34;A&#34;
+            panic(fmt.Sprintf(&quot;Wrong score: %d&quot;, score))
+            case score &lt; 60: g = &quot;F&quot;
+            case score &lt; 80: g = &quot;C&quot;
+            case score &lt; 90: g = &quot;B&quot;
+            case score &lt; 100: g = &quot;A&quot;
         }
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <h1 id="循环">循环</h1>
-
 <h2 id="for">for</h2>
-
-<p>&emsp;&emsp;for条件不需要括号；for的条件可以圣洛初始条件，结束条件，递增表达式</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kn">import</span> <span class="p">(</span>
-        <span class="s">&#34;fmt&#34;</span>
-        <span class="s">&#34;strconv&#34;</span>
-    <span class="p">)</span>
-
-    <span class="c1">// 省略初始条件
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">convertToBin</span><span class="p">(</span><span class="nx">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">string</span><span class="p">{</span>
-        <span class="nx">result</span> <span class="o">:=</span> <span class="s">&#34;&#34;</span>
-        <span class="k">for</span> <span class="p">;</span> <span class="nx">n</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">n</span> <span class="o">/=</span> <span class="mi">2</span> <span class="p">{</span>
-            <span class="nx">lsb</span> <span class="o">:=</span> <span class="nx">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="c1">// 最低位
-</span><span class="c1"></span>            <span class="nx">result</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Itoa</span><span class="p">(</span><span class="nx">lsb</span><span class="p">)</span> <span class="o">+</span> <span class="nx">result</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">result</span>
-    <span class="p">}</span>
-
-    <span class="c1">// 一行一行的读
-</span><span class="c1"></span>    <span class="c1">// 省略起始条件，省略自增表达式
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">printFile</span><span class="p">(</span><span class="nx">filename</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nx">filename</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span> 
-        <span class="nx">scanner</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewScanner</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="nx">scanner</span><span class="p">.</span><span class="nf">Scan</span><span class="p">()</span> <span class="p">{</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">scanner</span><span class="p">.</span><span class="nf">Text</span><span class="p">())</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="c1">// 全部省略
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">forever</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="p">{</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;abc&#34;</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nf">convertToBin</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span><span class="nf">convertToBin</span><span class="p">(</span><span class="mi">13</span><span class="p">))</span> <span class="c1">// 101, 1101
-</span><span class="c1"></span>    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<h1 id="函数">函数</h1>
-
-<p>&emsp;&emsp;函数名在前，返回值在后，参数也一样，名在前类型在后</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func eval(a, b int, op string) int {
-        switch op {
-            case &#34;+&#34;: return a + b
-            case &#34;-&#34;: return a - b
-            case &#34;*&#34;: return a * b
-            case &#34;/&#34;: return a / b
-            default: panic(&#34;unsupported operation: &#34; + op)
+<p>  for条件不需要括号；for的条件可以圣洛初始条件，结束条件，递增表达式</p>
+<pre><code>    package main
+	
+	import (
+        &quot;fmt&quot;
+        &quot;strconv&quot;
+	)
+	
+	// 省略初始条件
+	func convertToBin(n int) string{
+        result := &quot;&quot;
+        for ; n &gt; 0; n /= 2 {
+            lsb := n % 2 // 最低位
+            result = strconv.Itoa(lsb) + result
         }
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;函数可以返回多个值</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // 13 / 3 = 4 ... 1
-    func div(a, b int) (q, r int) {
+        return result
+	}
+	
+	// 一行一行的读
+	// 省略起始条件，省略自增表达式
+	func printFile(filename string) {
+        file, err := os.Open(filename)
+        if err != nil {
+            panic(err)
+        } 
+        scanner := bufio.NewScanner(file)
+	    
+        for scanner.Scan() {
+            fmt.Println(scanner.Text())
+        }
+	}
+	
+	// 全部省略
+	func forever() {
+        for {
+            fmt.Println(&quot;abc&quot;)
+        }
+	}
+	
+	func main() {
+        fmt.Println(convertToBin(5),convertToBin(13)) // 101, 1101
+	}
+</code></pre>
+<h1 id="函数">函数</h1>
+<p>  函数名在前，返回值在后，参数也一样，名在前类型在后</p>
+<pre><code>    func eval(a, b int, op string) int {
+        switch op {
+            case &quot;+&quot;: return a + b
+            case &quot;-&quot;: return a - b
+            case &quot;*&quot;: return a * b
+            case &quot;/&quot;: return a / b
+            default: panic(&quot;unsupported operation: &quot; + op)
+        }
+	}
+</code></pre>
+<p>  函数可以返回多个值</p>
+<pre><code>    // 13 / 3 = 4 ... 1
+	func div(a, b int) (q, r int) {
         return a / b, a % b
         //q = a / b
         //r = a % b
         //return // 自动返回q r
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;上面的eval的写法比较繁琐，在golang中函数是一等公民，我们使用函数式编程实现一下。这里只是简单的展示一下，后期会详细讲解函数式编程。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func apply(op func(int, int) int, a, b int) int {
+	}
+</code></pre>
+<p>  上面的eval的写法比较繁琐，在golang中函数是一等公民，我们使用函数式编程实现一下。这里只是简单的展示一下，后期会详细讲解函数式编程。</p>
+<pre><code>    func apply(op func(int, int) int, a, b int) int {
         p := reflect.ValudOf(op).Pointer()
         opName := runtime.FuncForPC(p).Name()
-        fmt.Printf(&#34;Calling function %s with args (%d, %d)&#34;, opName, a, b)
+        fmt.Printf(&quot;Calling function %s with args (%d, %d)&quot;, opName, a, b)
         return op(a, b)
-    }
-
-    func main() {
+	}
+	
+	func main() {
         fmt.Println(
             // 匿名函数
             apply(func(a, b int) int{
                 return int(math.Pow(float64(a), float64(b)))
             }, 3, 4)
         )
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;golang没有默认参数、可选参数、操作符重载、函数重载这些花销的东西，唯一有的是可变参数列表。&rdquo;&hellip;&ldquo;函数可以接收多个参数，还有就是后期的数组概念，可以将其打散</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func sum(numbers ...int) int {
+	}
+</code></pre>
+<p>  golang没有默认参数、可选参数、操作符重载、函数重载这些花销的东西，唯一有的是可变参数列表。&quot;&hellip;&ldquo;函数可以接收多个参数，还有就是后期的数组概念，可以将其打散</p>
+<pre><code>    func sum(numbers ...int) int {
         s := 0
         for i := range numbers {
             s += numbers[i]
         }
         return s
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <h1 id="指针">指针</h1>
-
-<p>&emsp;&emsp;首先我们不用怕，golang的指针比C语言的指针简单多了，虽然它是一个很重要的概念，但是它也是一个挺简单的概念。</p>
-
+<p>  首先我们不用怕，golang的指针比C语言的指针简单多了，虽然它是一个很重要的概念，但是它也是一个挺简单的概念。</p>
 <ul>
 <li>指针不可以参与运算</li>
 </ul>
-
 <blockquote>
-<p>Go语言只有值传递一种方式，详见<a href="https://facedamon.github.io/post/golang/golang是值传递/">杂谈 | golang是值传递</a></p>
+<p>Go语言只有值传递一种方式，详见<a href="https://facedamon.github.io/post/golang/golang%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92/">杂谈 | golang是值传递</a></p>
 </blockquote>
 
     </div>

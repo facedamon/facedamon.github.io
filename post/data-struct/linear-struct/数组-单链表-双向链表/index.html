@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="skywang12345" /><meta name="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &amp;emsp;&amp;emsp;线性表是一种线性结构，它是具有相同类型的n(n&amp;gt;=0)个元素的有序序列。本节介绍线性表的几个基本组" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="skywang12345" /><meta name="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 线性表是一种线性结构，它是具有相同类型的n(n&amp;gt;=0)个元素的有序序列。本节介绍线性表的几个基本组成部分：数组、单向链表、" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/data-struct/linear-struct/%E6%95%B0%E7%BB%84-%E5%8D%95%E9%93%BE%E8%A1%A8-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[数据结构与算法 | 数组、单链表、双向链表]" />
-<meta property="og:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &emsp;&emsp;线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组" />
+<meta property="og:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组成部分：数组、单向链表、" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/data-struct/linear-struct/%E6%95%B0%E7%BB%84-%E5%8D%95%E9%93%BE%E8%A1%A8-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/" />
-<meta property="article:published_time" content="2019-10-24T15:31:56&#43;08:00"/>
-<meta property="article:modified_time" content="2019-10-24T15:31:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/data-struct/linear-struct/%E6%95%B0%E7%BB%84-%E5%8D%95%E9%93%BE%E8%A1%A8-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-10-24T15:31:56&#43;08:00" />
+<meta property="article:modified_time" content="2019-10-24T15:31:56&#43;08:00" />
 
 <meta itemprop="name" content="[数据结构与算法 | 数组、单链表、双向链表]">
-<meta itemprop="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &emsp;&emsp;线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组">
-
-
-<meta itemprop="datePublished" content="2019-10-24T15:31:56&#43;08:00" />
+<meta itemprop="description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组成部分：数组、单向链表、"><meta itemprop="datePublished" content="2019-10-24T15:31:56&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-24T15:31:56&#43;08:00" />
-<meta itemprop="wordCount" content="4300">
-
-
-
-<meta itemprop="keywords" content="数据结构与算法," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="3457">
+<meta itemprop="keywords" content="数据结构与算法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[数据结构与算法 | 数组、单链表、双向链表]"/>
-<meta name="twitter:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 &emsp;&emsp;线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组"/>
+<meta name="twitter:description" content="转载自 https://www.cnblogs.com/skywang12345/ 概要 线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组成部分：数组、单向链表、"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"> 数据结构与算法 </a>
             </div>
-          <span class="more-meta"> 约 4300 字 </span>
-          <span class="more-meta"> 预计阅读 9 分钟 </span>
+          <span class="more-meta"> 约 3457 字 </span>
+          <span class="more-meta"> 预计阅读 7 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -141,1172 +134,595 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#概要">概要</a></li>
-<li><a href="#数组">数组</a></li>
-<li><a href="#单向链表">单向链表</a></li>
-<li><a href="#双向链表">双向链表</a></li>
-<li><a href="#java实现双链表">Java实现双链表</a></li>
-<li><a href="#golang实现双链表">Golang实现双链表</a></li>
-</ul>
-</nav>
+    <nav id="TableOfContents"></nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<blockquote>
+      <blockquote>
 <p>转载自 <a href="https://www.cnblogs.com/skywang12345/">https://www.cnblogs.com/skywang12345/</a></p>
 </blockquote>
-
 <h1 id="概要">概要</h1>
-
-<p>&emsp;&emsp;线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组成部分：数组、单向链表、双向链表。</p>
-
+<p>  线性表是一种线性结构，它是具有相同类型的n(n&gt;=0)个元素的有序序列。本节介绍线性表的几个基本组成部分：数组、单向链表、双向链表。</p>
 <h1 id="数组">数组</h1>
-
-<p>&emsp;&emsp;数组是有上届和下届的元素在上下届内是连续的。存储10,20,30,40,50的数组的示意图如下：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/数组存储示例.jpg" alt="avatar" /></p>
-
+<p>  数组是有上届和下届的元素在上下届内是连续的。存储10,20,30,40,50的数组的示意图如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E6%95%B0%E7%BB%84%E5%AD%98%E5%82%A8%E7%A4%BA%E4%BE%8B.jpg" alt="avatar"></p>
 <ul>
 <li>数组的特点是:
-
 <ul>
 <li>连续的</li>
 <li>随机访问快
-&emsp;&emsp;数组中稍微复杂一点的是多维数组和动态数组。对于C语言而言，多维数组本质上也是通过一维数组实现的。至于动态数组，是指数组的容量能动态增长的数组；对于C语言而言若要提供动态数组，需要手动实现；而对于Java而言，Collection集合中提供了ArrayList和Vector；对于Golang而言，默认提供了Slice。</li>
-</ul></li>
+  数组中稍微复杂一点的是多维数组和动态数组。对于C语言而言，多维数组本质上也是通过一维数组实现的。至于动态数组，是指数组的容量能动态增长的数组；对于C语言而言若要提供动态数组，需要手动实现；而对于Java而言，Collection集合中提供了ArrayList和Vector；对于Golang而言，默认提供了Slice。</li>
 </ul>
-
+</li>
+</ul>
 <h1 id="单向链表">单向链表</h1>
-
-<p>&emsp;&emsp;单向链表是链表的一种，它由节点组成，每个节点都包含下一个节点的指针。单链表的示意图如下:</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/单链表示例.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;表头为空，表头的后继节点是&rdquo;节点10&rdquo;，&rdquo;节点10&rdquo;的后继节点是&rdquo;节点20&rdquo;。&rdquo;节点20&rdquo;的前驱节点是&rdquo;节点10&rdquo;</p>
-
+<p>  单向链表是链表的一种，它由节点组成，每个节点都包含下一个节点的指针。单链表的示意图如下:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%8D%95%E9%93%BE%E8%A1%A8%E7%A4%BA%E4%BE%8B.jpg" alt="avatar"></p>
+<p>  表头为空，表头的后继节点是&quot;节点10&quot;，&ldquo;节点10&quot;的后继节点是&quot;节点20&rdquo;。&ldquo;节点20&quot;的前驱节点是&quot;节点10&rdquo;</p>
 <ul>
 <li>单链表删除节点</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/单链表删除节点示例.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;删除&rdquo;节点30&rdquo;：</p>
-
-<p>&emsp;&emsp;删除之前：&rdquo;节点20&rdquo;的后继为&rdquo;节点30&rdquo;，而&rdquo;节点30&rdquo;的后继节点为&rdquo;节点40&rdquo;。</p>
-
-<p>&emsp;&emsp;删除之后：&rdquo;节点20&rdquo;的后继节点为&rdquo;节点40&rdquo;</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9%E7%A4%BA%E4%BE%8B.jpg" alt="avatar"></p>
+<p>  删除&quot;节点30&quot;：</p>
+<p>  删除之前：&ldquo;节点20&quot;的后继为&quot;节点30&rdquo;，而&quot;节点30&quot;的后继节点为&quot;节点40&quot;。</p>
+<p>  删除之后：&ldquo;节点20&quot;的后继节点为&quot;节点40&rdquo;</p>
 <ul>
 <li>单链表添加节点</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/单链表添加节点示例.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;在&rdquo;节点10&rdquo;与&rdquo;节点20&rdquo;之间添加&rdquo;节点15&rdquo;</p>
-
-<p>&emsp;&emsp;<strong>添加之前</strong>：&rdquo;节点10&rdquo;的后继节点为&rdquo;节点20&rdquo;。</p>
-
-<p>&emsp;&emsp;<strong>添加之后</strong>: &ldquo;节点10&rdquo;的后继节点为&rdquo;节点15&rdquo;，而&rdquo;节点15&rdquo;的后继节点为&rdquo;节点20&rdquo;.</p>
-
-<p>&emsp;&emsp;单链表的特点是: <code>节点的链接方向是单向的；相对于数组来说，单链表的随机访问速度慢，但是单链表删除、添加数据的效率很高</code>.</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%8D%95%E9%93%BE%E8%A1%A8%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9%E7%A4%BA%E4%BE%8B.jpg" alt="avatar"></p>
+<p>  在&quot;节点10&quot;与&quot;节点20&quot;之间添加&quot;节点15&quot;</p>
+<p>  <strong>添加之前</strong>：&ldquo;节点10&quot;的后继节点为&quot;节点20&rdquo;。</p>
+<p>  <strong>添加之后</strong>: &ldquo;节点10&quot;的后继节点为&quot;节点15&rdquo;，而&quot;节点15&quot;的后继节点为&quot;节点20&quot;.</p>
+<p>  单链表的特点是: <code>节点的链接方向是单向的；相对于数组来说，单链表的随机访问速度慢，但是单链表删除、添加数据的效率很高</code>.</p>
 <h1 id="双向链表">双向链表</h1>
-
-<p>&emsp;&emsp;双向链表是链表的一种。和单链表一样，双链表也是由节点组成，它的每个数据节点中都有两个指针，分别指向后继和前驱所以，从双向链表中的任意一个节点开始，都可以很方便地昂问它的前驱节点和后继节点，一般我们都构造双向循环链表。</p>
-
-<p>&emsp;&emsp;双链表的示意图如下：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/双链表示例.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;表头为空，表头的后继节点为&rdquo;节点10&rdquo;；&rdquo;节点10&rdquo;的后继节点是&rdquo;节点20&rdquo;，&rdquo;节点20&rdquo;的前驱节点是&rdquo;节点10&rdquo;；&rdquo;节点20&rdquo;的后继节点是&rdquo;节点30&rdquo;，&rdquo;节点30&rdquo;的前驱节点是&rdquo;节点20&rdquo;，。。。；末尾节点的后继节点是表头。</p>
-
+<p>  双向链表是链表的一种。和单链表一样，双链表也是由节点组成，它的每个数据节点中都有两个指针，分别指向后继和前驱所以，从双向链表中的任意一个节点开始，都可以很方便地昂问它的前驱节点和后继节点，一般我们都构造双向循环链表。</p>
+<p>  双链表的示意图如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%8F%8C%E9%93%BE%E8%A1%A8%E7%A4%BA%E4%BE%8B.jpg" alt="avatar"></p>
+<p>  表头为空，表头的后继节点为&quot;节点10&quot;；&ldquo;节点10&quot;的后继节点是&quot;节点20&rdquo;，&ldquo;节点20&quot;的前驱节点是&quot;节点10&rdquo;；&ldquo;节点20&quot;的后继节点是&quot;节点30&rdquo;，&ldquo;节点30&quot;的前驱节点是&quot;节点20&rdquo;，。。。；末尾节点的后继节点是表头。</p>
 <ul>
 <li>双链表删除节点</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/双链表删除节点示例.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;<strong>删除&rdquo;节点30&rdquo;</strong>：</p>
-
-<p>&emsp;&emsp;<strong>删除之前</strong>：&rdquo;节点20&rdquo;的后继节点为&rdquo;节点30&rdquo;，&rdquo;节点30&rdquo;的前驱节点为&rdquo;节点20&rdquo;。&rdquo;节点30&rdquo;的后继节点为&rdquo;节点40&rdquo;，&rdquo;节点40&rdquo;的前驱节点为&rdquo;节点30&rdquo;。</p>
-
-<p>&emsp;&emsp;<strong>删除之后</strong>：&rdquo;节点20&rdquo;的后继节点为&rdquo;节点40&rdquo;，&rdquo;节点40&rdquo;的前驱节点为&rdquo;节点20&rdquo;</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%8F%8C%E9%93%BE%E8%A1%A8%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9%E7%A4%BA%E4%BE%8B.jpg" alt="avatar"></p>
+<p>  <strong>删除&quot;节点30&quot;</strong>：</p>
+<p>  <strong>删除之前</strong>：&ldquo;节点20&quot;的后继节点为&quot;节点30&rdquo;，&ldquo;节点30&quot;的前驱节点为&quot;节点20&rdquo;。&ldquo;节点30&quot;的后继节点为&quot;节点40&rdquo;，&ldquo;节点40&quot;的前驱节点为&quot;节点30&rdquo;。</p>
+<p>  <strong>删除之后</strong>：&ldquo;节点20&quot;的后继节点为&quot;节点40&rdquo;，&ldquo;节点40&quot;的前驱节点为&quot;节点20&rdquo;</p>
 <ul>
 <li>双链表添加节点</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/双链表添加节点.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;在&rdquo;节点10&rdquo;与&rdquo;节点20&rdquo;之间添加&rdquo;节点15&rdquo;</p>
-
-<p>&emsp;&emsp;<strong>添加之前</strong>：&rdquo;节点10&rdquo;的后继节点为&rdquo;节点20&rdquo;，&rdquo;节点20&rdquo;的前驱节点为&rdquo;节点10&rdquo;</p>
-
-<p>&emsp;&emsp;<strong>添加之后</strong>：&rdquo;节点10&rdquo;的后继节点为&rdquo;节点15&rdquo;，&rdquo;节点15&rdquo;的前驱节点为&rdquo;节点10&rdquo;。&rdquo;节点15&rdquo;的后继节点为&rdquo;节点20&rdquo;，&rdquo;节点20&rdquo;的前驱节点为&rdquo;节点15&rdquo;</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/data-struct/linear-struct/%E5%8F%8C%E9%93%BE%E8%A1%A8%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9.jpg" alt="avatar"></p>
+<p>  在&quot;节点10&quot;与&quot;节点20&quot;之间添加&quot;节点15&quot;</p>
+<p>  <strong>添加之前</strong>：&ldquo;节点10&quot;的后继节点为&quot;节点20&rdquo;，&ldquo;节点20&quot;的前驱节点为&quot;节点10&rdquo;</p>
+<p>  <strong>添加之后</strong>：&ldquo;节点10&quot;的后继节点为&quot;节点15&rdquo;，&ldquo;节点15&quot;的前驱节点为&quot;节点10&rdquo;。&ldquo;节点15&quot;的后继节点为&quot;节点20&rdquo;，&ldquo;节点20&quot;的前驱节点为&quot;节点15&rdquo;</p>
 <blockquote>
 <p>下面介绍双链表的实现，分别介绍Java/Golang两种实现</p>
 </blockquote>
-
 <h1 id="java实现双链表">Java实现双链表</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span><span class="lnt">161
-</span><span class="lnt">162
-</span><span class="lnt">163
-</span><span class="lnt">164
-</span><span class="lnt">165
-</span><span class="lnt">166
-</span><span class="lnt">167
-</span><span class="lnt">168
-</span><span class="lnt">169
-</span><span class="lnt">170
-</span><span class="lnt">171
-</span><span class="lnt">172
-</span><span class="lnt">173
-</span><span class="lnt">174
-</span><span class="lnt">175
-</span><span class="lnt">176
-</span><span class="lnt">177
-</span><span class="lnt">178
-</span><span class="lnt">179
-</span><span class="lnt">180
-</span><span class="lnt">181
-</span><span class="lnt">182
-</span><span class="lnt">183
-</span><span class="lnt">184
-</span><span class="lnt">185
-</span><span class="lnt">186
-</span><span class="lnt">187
-</span><span class="lnt">188
-</span><span class="lnt">189
-</span><span class="lnt">190
-</span><span class="lnt">191
-</span><span class="lnt">192
-</span><span class="lnt">193
-</span><span class="lnt">194
-</span><span class="lnt">195
-</span><span class="lnt">196
-</span><span class="lnt">197
-</span><span class="lnt">198
-</span><span class="lnt">199
-</span><span class="lnt">200
-</span><span class="lnt">201
-</span><span class="lnt">202
-</span><span class="lnt">203
-</span><span class="lnt">204
-</span><span class="lnt">205
-</span><span class="lnt">206
-</span><span class="lnt">207
-</span><span class="lnt">208
-</span><span class="lnt">209
-</span><span class="lnt">210
-</span><span class="lnt">211
-</span><span class="lnt">212
-</span><span class="lnt">213
-</span><span class="lnt">214
-</span><span class="lnt">215
-</span><span class="lnt">216
-</span><span class="lnt">217
-</span><span class="lnt">218
-</span><span class="lnt">219
-</span><span class="lnt">220
-</span><span class="lnt">221
-</span><span class="lnt">222
-</span><span class="lnt">223
-</span><span class="lnt">224
-</span><span class="lnt">225
-</span><span class="lnt">226
-</span><span class="lnt">227
-</span><span class="lnt">228
-</span><span class="lnt">229
-</span><span class="lnt">230
-</span><span class="lnt">231
-</span><span class="lnt">232
-</span><span class="lnt">233
-</span><span class="lnt">234
-</span><span class="lnt">235
-</span><span class="lnt">236
-</span><span class="lnt">237
-</span><span class="lnt">238
-</span><span class="lnt">239
-</span><span class="lnt">240
-</span><span class="lnt">241
-</span><span class="lnt">242
-</span><span class="lnt">243
-</span><span class="lnt">244
-</span><span class="lnt">245
-</span><span class="lnt">246
-</span><span class="lnt">247
-</span><span class="lnt">248
-</span><span class="lnt">249
-</span><span class="lnt">250
-</span><span class="lnt">251
-</span><span class="lnt">252
-</span><span class="lnt">253
-</span><span class="lnt">254
-</span><span class="lnt">255
-</span><span class="lnt">256
-</span><span class="lnt">257
-</span><span class="lnt">258
-</span><span class="lnt">259
-</span><span class="lnt">260
-</span><span class="lnt">261
-</span><span class="lnt">262
-</span><span class="lnt">263
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">org</span><span class="p">.</span><span class="nx">example</span><span class="p">;</span>
+<pre><code>    package org.example;
 
-    <span class="kn">import</span> <span class="nx">org</span><span class="p">.</span><span class="nx">junit</span><span class="p">.</span><span class="nx">Test</span><span class="p">;</span>
+    import org.junit.Test;
 
-    <span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">ListIterator</span><span class="p">;</span>
-    <span class="kn">import</span> <span class="nx">java</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">NoSuchElementException</span><span class="p">;</span>
+    import java.util.ListIterator;
+    import java.util.NoSuchElementException;
 
-    <span class="nx">public</span> <span class="nx">class</span> <span class="nx">LinkedList</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;{</span>
+    public class LinkedList&lt;Item&gt;{
 
-        <span class="nx">private</span> <span class="nx">Node</span> <span class="nx">first</span><span class="p">;</span>
-        <span class="nx">private</span> <span class="nx">Node</span> <span class="nx">last</span><span class="p">;</span>
-        <span class="nx">private</span> <span class="kt">int</span> <span class="nx">N</span><span class="p">;</span>
+        private Node first;
+        private Node last;
+        private int N;
 
-        <span class="nx">public</span> <span class="nf">LinkedList</span><span class="p">(){}</span>
+        public LinkedList(){}
 
-        <span class="nx">private</span> <span class="nx">class</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="p">{</span>
-            <span class="nx">Item</span> <span class="nx">item</span><span class="p">;</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span><span class="p">;</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span><span class="p">;</span>
+        private class Node&lt;Item&gt; {
+            Item item;
+            Node&lt;Item&gt; next;
+            Node&lt;Item&gt; prev;
 
-            <span class="nf">Node</span><span class="p">(</span><span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span><span class="p">,</span> <span class="nx">Item</span> <span class="nx">ele</span><span class="p">,</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">this</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">ele</span><span class="p">;</span>
-                <span class="nx">this</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
-                <span class="nx">this</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            Node(Node&lt;Item&gt; prev, Item ele, Node&lt;Item&gt; next) {
+                this.item = ele;
+                this.next = next;
+                this.prev = prev;
+            }
+        }
 
-        <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">isEmpty</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">N</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
-        <span class="p">}</span>
+        public boolean isEmpty() {
+            return N == 0;
+        }
 
-        <span class="nx">public</span> <span class="kt">int</span> <span class="nf">size</span><span class="p">()</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">N</span><span class="p">;</span>
-        <span class="p">}</span>
+        public int size() {
+            return N;
+        }
 
-        <span class="c1">// 向栈顶压入元素
-</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">void</span> <span class="nf">push</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">oldFirst</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">newNode</span> <span class="p">=</span> <span class="nx">new</span> <span class="nf">Node</span><span class="p">(</span><span class="nx">null</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">oldFirst</span><span class="p">);</span>
-            <span class="nx">first</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">oldFirst</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">last</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">oldFirst</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">N</span><span class="o">++</span><span class="p">;</span>
-        <span class="p">}</span>
+        // 向栈顶压入元素
+        public void push(Item item) {
+            Node&lt;Item&gt; oldFirst = first;
+            Node&lt;Item&gt; newNode = new Node(null, item, oldFirst);
+            first = newNode;
+            if (oldFirst == null) {
+                last = newNode;
+            } else {
+                oldFirst.prev = newNode;
+            }
+            N++;
+        }
 
-        <span class="c1">// 从栈顶弹出元素
-</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">pop</span><span class="p">()</span> <span class="p">{</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">f</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">f</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">NoSuchElementException</span><span class="p">();</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">Item</span> <span class="nx">item</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
-                <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
-                <span class="nx">f</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="nx">f</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="nx">first</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">next</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">last</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                    <span class="nx">next</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="o">--</span><span class="nx">N</span><span class="p">;</span>
-                <span class="k">return</span> <span class="nx">item</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        // 从栈顶弹出元素
+        public Item pop() {
+            Node&lt;Item&gt; f = first;
+            if (f == null) {
+                throw new NoSuchElementException();
+            } else {
+                Item item = f.item;
+                Node&lt;Item&gt; next = f.next;
+                f.item = null;
+                f.next = null;
+                first = next;
+                if (next == null) {
+                    last = null;
+                } else {
+                    next.prev = null;
+                }
+                --N;
+                return item;
+            }
+        }
 
-        <span class="c1">// 向队尾添加元素
-</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">void</span> <span class="nf">enqueue</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">f</span> <span class="p">=</span> <span class="nx">last</span><span class="p">;</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">newNode</span> <span class="p">=</span> <span class="nx">new</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;(</span><span class="nx">last</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">null</span><span class="p">);</span>
-            <span class="nx">last</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">f</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">first</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">f</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">newNode</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="o">++</span><span class="nx">N</span><span class="p">;</span>
-        <span class="p">}</span>
+        // 向队尾添加元素
+        public void enqueue(Item item) {
+            Node&lt;Item&gt; f = last;
+            Node&lt;Item&gt; newNode = new Node&lt;Item&gt;(last, item, null);
+            last = newNode;
+            if (f == null) {
+                first = newNode;
+            } else {
+                f.next = newNode;
+            }
+            ++N;
+        }
 
-        <span class="c1">// 从队尾删除元素
-</span><span class="c1"></span>        <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">dequeue</span><span class="p">()</span> <span class="p">{</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">f</span> <span class="p">=</span> <span class="nx">last</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">f</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">null</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
-                <span class="nx">Item</span> <span class="nx">ele</span> <span class="p">=</span> <span class="nx">f</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
-                <span class="nx">f</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="nx">f</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="nx">last</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">prev</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">first</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                    <span class="nx">prev</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="o">--</span><span class="nx">N</span><span class="p">;</span>
-                <span class="k">return</span> <span class="nx">ele</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        // 从队尾删除元素
+        public Item dequeue() {
+            Node&lt;Item&gt; f = last;
+            if (f == null) {
+                return null;
+            } else {
+                Node&lt;Item&gt; prev = f.prev;
+                Item ele = f.item;
+                f.item = null;
+                f.prev = null;
+                last = prev;
+                if (prev == null) {
+                    first = null;
+                } else {
+                    prev.next = null;
+                }
+                --N;
+                return ele;
+            }
+        }
 
-        <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nf">node</span><span class="p">(</span><span class="kt">int</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">Node</span> <span class="nx">x</span><span class="p">;</span>
-            <span class="kt">int</span> <span class="nx">i</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">N</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">x</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span>
-                <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">index</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">x</span> <span class="p">=</span> <span class="nx">last</span><span class="p">;</span>
-                <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="p">=</span> <span class="nx">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&gt;</span> <span class="nx">index</span><span class="p">;</span> <span class="o">--</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+        Node&lt;Item&gt; node(int index) {
+            Node x;
+            int i;
+            if (index &lt; N &gt;&gt; 1) {
+                x = first;
+                for (i = 0; i &lt; index; ++i) {
+                    x = x.next;
+                }
+                return x;
+            } else {
+                x = last;
+                for (i = N - 1; i &gt; index; --i) {
+                    x = x.prev;
+                }
+                return x;
+            }
+        }
 
-        <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">remove</span><span class="p">(</span><span class="nx">Object</span> <span class="nx">o</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">Node</span> <span class="nx">x</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">o</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">for</span> <span class="p">(</span><span class="nx">x</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span> <span class="nx">x</span> <span class="o">!=</span> <span class="nx">null</span><span class="p">;</span> <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">item</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="nf">unlink</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
-                        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="k">for</span> <span class="p">(</span><span class="nx">x</span> <span class="p">=</span> <span class="nx">first</span><span class="p">;</span> <span class="nx">x</span> <span class="o">!=</span> <span class="nx">null</span><span class="p">;</span> <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nf">equals</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">item</span><span class="p">))</span> <span class="p">{</span>
-                        <span class="nf">unlink</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
-                        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-                    <span class="p">}</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
+        public boolean remove(Object o) {
+            Node x;
+            if (o == null) {
+                for (x = first; x != null; x = x.next) {
+                    if (x.item == null) {
+                        unlink(x);
+                        return true;
+                    }
+                }
+            } else {
+                for (x = first; x != null; x = x.next) {
+                    if (o.equals(x.item)) {
+                        unlink(x);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
-        <span class="nx">Item</span> <span class="nf">unlink</span><span class="p">(</span><span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">Item</span> <span class="nx">ele</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
-            <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">prev</span> <span class="p">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">prev</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">first</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">prev</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
-                <span class="nx">x</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">next</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">last</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">next</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">prev</span><span class="p">;</span>
-                <span class="nx">x</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="nx">x</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">null</span><span class="p">;</span>
-            <span class="o">--</span><span class="nx">N</span><span class="p">;</span>
-            <span class="k">return</span> <span class="nx">ele</span><span class="p">;</span>
-        <span class="p">}</span>
+        Item unlink(Node&lt;Item&gt; x) {
+            Item ele = x.item;
+            Node&lt;Item&gt; next = x.next;
+            Node&lt;Item&gt; prev = x.prev;
+            if (prev == null) {
+                first = next;
+            } else {
+                prev.next = next;
+                x.prev = null;
+            }
+            if (next == null) {
+                last = prev;
+            } else {
+                next.prev = prev;
+                x.next = null;
+            }
+            x.item = null;
+            --N;
+            return ele;
+        }
 
-        <span class="nx">private</span> <span class="nx">class</span> <span class="nx">LinkedListIterator</span> <span class="nx">implements</span> <span class="nx">ListIterator</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="p">{</span>
+        private class LinkedListIterator implements ListIterator&lt;Item&gt; {
 
-            <span class="nx">private</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span>  <span class="nx">lastReturned</span><span class="p">;</span>
-            <span class="nx">private</span> <span class="nx">Node</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nx">next</span><span class="p">;</span>
-            <span class="nx">private</span> <span class="kt">int</span> <span class="nx">nextIndex</span><span class="p">;</span>
+            private Node&lt;Item&gt;  lastReturned;
+            private Node&lt;Item&gt; next;
+            private int nextIndex;
 
-            <span class="nx">public</span> <span class="nf">LinkedListIterator</span><span class="p">(</span><span class="kt">int</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">this</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="p">(</span><span class="nx">index</span> <span class="o">==</span> <span class="nx">N</span><span class="p">)</span> <span class="err">?</span> <span class="nx">null</span> <span class="p">:</span> <span class="nf">node</span><span class="p">(</span><span class="nx">index</span><span class="p">);</span>
-                <span class="nx">this</span><span class="p">.</span><span class="nx">nextIndex</span> <span class="p">=</span> <span class="nx">index</span><span class="p">;</span>
-            <span class="p">}</span>
+            public LinkedListIterator(int index) {
+                this.next = (index == N) ? null : node(index);
+                this.nextIndex = index;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">hasNext</span><span class="p">()</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">nextIndex</span> <span class="p">&lt;</span> <span class="nx">N</span><span class="p">;</span>
-            <span class="p">}</span>
+            @Override
+            public boolean hasNext() {
+                return nextIndex &lt; N;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">next</span><span class="p">()</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(!</span><span class="nf">hasNext</span><span class="p">())</span> <span class="p">{</span>
-                    <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">NoSuchElementException</span><span class="p">();</span>
-                <span class="p">}</span>
-                <span class="nx">lastReturned</span> <span class="p">=</span> <span class="nx">next</span><span class="p">;</span>
-                <span class="nx">next</span> <span class="p">=</span> <span class="nx">next</span><span class="p">.</span><span class="nx">next</span><span class="p">;</span>
-                <span class="nx">nextIndex</span><span class="o">++</span><span class="p">;</span>
-                <span class="k">return</span> <span class="nx">lastReturned</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
-            <span class="p">}</span>
+            @Override
+            public Item next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                lastReturned = next;
+                next = next.next;
+                nextIndex++;
+                return lastReturned.item;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="nx">boolean</span> <span class="nf">hasPrevious</span><span class="p">()</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">nextIndex</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">;</span>
-            <span class="p">}</span>
+            @Override
+            public boolean hasPrevious() {
+                return nextIndex &gt; 0;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="nx">Item</span> <span class="nf">previous</span><span class="p">()</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(!</span><span class="nf">hasPrevious</span><span class="p">())</span> <span class="p">{</span>
-                    <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">NoSuchElementException</span><span class="p">();</span>
-                <span class="p">}</span>
-                <span class="nx">lastReturned</span> <span class="p">=</span> <span class="nx">next</span> <span class="p">=</span> <span class="p">(</span><span class="nx">next</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="err">?</span> <span class="nx">last</span> <span class="p">:</span> <span class="nx">next</span><span class="p">.</span><span class="nx">prev</span><span class="p">;</span>
-                <span class="nx">nextIndex</span><span class="o">--</span><span class="p">;</span>
-                <span class="k">return</span> <span class="nx">lastReturned</span><span class="p">.</span><span class="nx">item</span><span class="p">;</span>
-            <span class="p">}</span>
+            @Override
+            public Item previous() {
+                if (!hasPrevious()) {
+                    throw new NoSuchElementException();
+                }
+                lastReturned = next = (next == null) ? last : next.prev;
+                nextIndex--;
+                return lastReturned.item;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="kt">int</span> <span class="nf">nextIndex</span><span class="p">()</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">nextIndex</span><span class="p">;</span>
-            <span class="p">}</span>
+            @Override
+            public int nextIndex() {
+                return nextIndex;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="kt">int</span> <span class="nf">previousIndex</span><span class="p">()</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">nextIndex</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-            <span class="p">}</span>
+            @Override
+            public int previousIndex() {
+                return nextIndex - 1;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="nx">void</span> <span class="nf">remove</span><span class="p">()</span> <span class="p">{</span>
-            <span class="p">}</span>
+            @Override
+            public void remove() {
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="nx">void</span> <span class="nf">set</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">lastReturned</span> <span class="o">==</span> <span class="nx">null</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">throw</span> <span class="nx">new</span> <span class="nf">IllegalStateException</span><span class="p">();</span>
-                <span class="p">}</span>
-                <span class="nx">lastReturned</span><span class="p">.</span><span class="nx">item</span> <span class="p">=</span> <span class="nx">item</span><span class="p">;</span>
-            <span class="p">}</span>
+            @Override
+            public void set(Item item) {
+                if (lastReturned == null) {
+                    throw new IllegalStateException();
+                }
+                lastReturned.item = item;
+            }
 
-            <span class="err">@</span><span class="nx">Override</span>
-            <span class="nx">public</span> <span class="nx">void</span> <span class="nf">add</span><span class="p">(</span><span class="nx">Item</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+            @Override
+            public void add(Item item) {
+            }
+        }
 
-        <span class="nx">public</span> <span class="nx">ListIterator</span><span class="p">&lt;</span><span class="nx">Item</span><span class="p">&gt;</span> <span class="nf">listIterator</span><span class="p">(</span><span class="kt">int</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">new</span> <span class="nf">LinkedListIterator</span><span class="p">(</span><span class="nx">index</span><span class="p">);</span>
-        <span class="p">}</span>
+        public ListIterator&lt;Item&gt; listIterator(int index) {
+            return new LinkedListIterator(index);
+        }
 
-        <span class="err">@</span><span class="nx">Test</span>
-        <span class="nx">public</span> <span class="nx">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
-            <span class="nx">LinkedList</span><span class="p">&lt;</span><span class="nx">Integer</span><span class="p">&gt;</span> <span class="nx">linkedList</span> <span class="p">=</span> <span class="nx">new</span> <span class="nx">LinkedList</span><span class="p">&lt;</span><span class="nx">Integer</span><span class="p">&gt;();</span>
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        @Test
+        public void test() {
+            LinkedList&lt;Integer&gt; linkedList = new LinkedList&lt;Integer&gt;();
+            linkedList.push(1);
+            linkedList.push(4);
+            linkedList.push(0);
 
-            <span class="nx">ListIterator</span><span class="p">&lt;</span><span class="nx">Integer</span><span class="p">&gt;</span> <span class="nx">iterable</span> <span class="p">=</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">listIterator</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-            <span class="nf">while</span> <span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">hasNext</span><span class="p">()){</span>
-                <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">next</span><span class="p">());</span>
-            <span class="p">}</span>
-            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %b\n&#34;</span><span class="p">,</span> <span class="s">&#34;isEmpty&#34;</span><span class="p">,</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">()));</span>
-            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %d\n&#34;</span><span class="p">,</span> <span class="s">&#34;previous&#34;</span><span class="p">,</span> <span class="nx">iterable</span><span class="p">.</span><span class="nf">previous</span><span class="p">()));</span>
+            ListIterator&lt;Integer&gt; iterable = linkedList.listIterator(0);
+            while (iterable.hasNext()){
+                System.out.println(iterable.next());
+            }
+            System.out.println(String.format(&quot;%s: %b\n&quot;, &quot;isEmpty&quot;, linkedList.isEmpty()));
+            System.out.println(String.format(&quot;%s: %d\n&quot;, &quot;previous&quot;, iterable.previous()));
 
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">enqueue</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">enqueue</span><span class="p">(</span><span class="mi">19</span><span class="p">);</span>
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">enqueue</span><span class="p">(</span><span class="mi">13</span><span class="p">);</span>
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">dequeue</span><span class="p">();</span>
-            <span class="nx">linkedList</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+            linkedList.enqueue(6);
+            linkedList.enqueue(19);
+            linkedList.enqueue(13);
+            linkedList.dequeue();
+            linkedList.remove(6);
 
-            <span class="nx">iterable</span> <span class="p">=</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">listIterator</span><span class="p">(</span><span class="nx">linkedList</span><span class="p">.</span><span class="nf">size</span><span class="p">());</span>
-            <span class="nf">while</span> <span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">hasPrevious</span><span class="p">()){</span>
-                <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">iterable</span><span class="p">.</span><span class="nf">previous</span><span class="p">());</span>
-            <span class="p">}</span>
-            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %b\n&#34;</span><span class="p">,</span> <span class="s">&#34;isEmpty&#34;</span><span class="p">,</span> <span class="nx">linkedList</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">()));</span>
-            <span class="nx">System</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nb">println</span><span class="p">(</span><span class="nx">String</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="s">&#34;%s: %d\n&#34;</span><span class="p">,</span> <span class="s">&#34;next&#34;</span><span class="p">,</span> <span class="nx">iterable</span><span class="p">.</span><span class="nf">next</span><span class="p">()));</span>
-        <span class="p">}</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+            iterable = linkedList.listIterator(linkedList.size());
+            while (iterable.hasPrevious()){
+                System.out.println(iterable.previous());
+            }
+            System.out.println(String.format(&quot;%s: %b\n&quot;, &quot;isEmpty&quot;, linkedList.isEmpty()));
+            System.out.println(String.format(&quot;%s: %d\n&quot;, &quot;next&quot;, iterable.next()));
+        }
+    }
+</code></pre>
 <h1 id="golang实现双链表">Golang实现双链表</h1>
-
 <ul>
-<li><p>CopyLeft <a href="https://github.com/emirpasic/gods">https://github.com/emirpasic/gods</a></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span><span class="lnt">161
-</span><span class="lnt">162
-</span><span class="lnt">163
-</span><span class="lnt">164
-</span><span class="lnt">165
-</span><span class="lnt">166
-</span><span class="lnt">167
-</span><span class="lnt">168
-</span><span class="lnt">169
-</span><span class="lnt">170
-</span><span class="lnt">171
-</span><span class="lnt">172
-</span><span class="lnt">173
-</span><span class="lnt">174
-</span><span class="lnt">175
-</span><span class="lnt">176
-</span><span class="lnt">177
-</span><span class="lnt">178
-</span><span class="lnt">179
-</span><span class="lnt">180
-</span><span class="lnt">181
-</span><span class="lnt">182
-</span><span class="lnt">183
-</span><span class="lnt">184
-</span><span class="lnt">185
-</span><span class="lnt">186
-</span><span class="lnt">187
-</span><span class="lnt">188
-</span><span class="lnt">189
-</span><span class="lnt">190
-</span><span class="lnt">191
-</span><span class="lnt">192
-</span><span class="lnt">193
-</span><span class="lnt">194
-</span><span class="lnt">195
-</span><span class="lnt">196
-</span><span class="lnt">197
-</span><span class="lnt">198
-</span><span class="lnt">199
-</span><span class="lnt">200
-</span><span class="lnt">201
-</span><span class="lnt">202
-</span><span class="lnt">203
-</span><span class="lnt">204
-</span><span class="lnt">205
-</span><span class="lnt">206
-</span><span class="lnt">207
-</span><span class="lnt">208
-</span><span class="lnt">209
-</span><span class="lnt">210
-</span><span class="lnt">211
-</span><span class="lnt">212
-</span><span class="lnt">213
-</span><span class="lnt">214
-</span><span class="lnt">215
-</span><span class="lnt">216
-</span><span class="lnt">217
-</span><span class="lnt">218
-</span><span class="lnt">219
-</span><span class="lnt">220
-</span><span class="lnt">221
-</span><span class="lnt">222
-</span><span class="lnt">223
-</span><span class="lnt">224
-</span><span class="lnt">225
-</span><span class="lnt">226
-</span><span class="lnt">227
-</span><span class="lnt">228
-</span><span class="lnt">229
-</span><span class="lnt">230
-</span><span class="lnt">231
-</span><span class="lnt">232
-</span><span class="lnt">233
-</span><span class="lnt">234
-</span><span class="lnt">235
-</span><span class="lnt">236
-</span><span class="lnt">237
-</span><span class="lnt">238
-</span><span class="lnt">239
-</span><span class="lnt">240
-</span><span class="lnt">241
-</span><span class="lnt">242
-</span><span class="lnt">243
-</span><span class="lnt">244
-</span><span class="lnt">245
-</span><span class="lnt">246
-</span><span class="lnt">247
-</span><span class="lnt">248
-</span><span class="lnt">249
-</span><span class="lnt">250
-</span><span class="lnt">251
-</span><span class="lnt">252
-</span><span class="lnt">253
-</span><span class="lnt">254
-</span><span class="lnt">255
-</span><span class="lnt">256
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">doublylinkedlist</span>
+<li>
+<p>CopyLeft <a href="https://github.com/emirpasic/gods">https://github.com/emirpasic/gods</a></p>
+<pre><code>  package doublylinkedlist
 
-<span class="kn">import</span> <span class="p">(</span>
-    <span class="s">&#34;fmt&#34;</span>
-    <span class="s">&#34;strings&#34;</span>
-    <span class="s">&#34;github.com/facedamon/gods/utils&#34;</span>
-<span class="p">)</span>
+  import (
+      &quot;fmt&quot;
+      &quot;strings&quot;
+      &quot;github.com/facedamon/gods/utils&quot;
+  )
 
-<span class="kd">type</span> <span class="nx">element</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">value</span> <span class="kd">interface</span><span class="p">{}</span>
-    <span class="nx">prev</span>  <span class="o">*</span><span class="nx">element</span>
-    <span class="nx">next</span>  <span class="o">*</span><span class="nx">element</span>
-<span class="p">}</span>
+  type element struct {
+      value interface{}
+      prev  *element
+      next  *element
+  }
 
-<span class="c1">// List holds the elements, where each element points to
-</span><span class="c1">// the next and previous element
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">List</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">first</span> <span class="o">*</span><span class="nx">element</span>
-    <span class="nx">last</span>  <span class="o">*</span><span class="nx">element</span>
-    <span class="nx">size</span>  <span class="kt">int</span>
-<span class="p">}</span>
+  // List holds the elements, where each element points to
+  // the next and previous element
+  type List struct {
+      first *element
+      last  *element
+      size  int
+  }
 
-<span class="c1">// New instantiates a new list and adds the passed values, if any, to the list
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">New</span><span class="p">(</span><span class="nx">values</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="o">*</span><span class="nx">List</span> <span class="p">{</span>
-    <span class="nx">list</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">List</span><span class="p">{}</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">values</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="nx">list</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">values</span><span class="o">...</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">list</span>
-<span class="p">}</span>
+  // New instantiates a new list and adds the passed values, if any, to the list
+  func New(values ...interface{}) *List {
+      list := &amp;List{}
+      if len(values) &gt; 0 {
+          list.Add(values...)
+      }
+      return list
+  }
 
-<span class="c1">// Add appends a value at the end of the list
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">values</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
-        <span class="nx">newElement</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">element</span><span class="p">{</span><span class="nx">value</span><span class="p">:</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">prev</span><span class="p">:</span> <span class="nx">list</span><span class="p">.</span><span class="nx">last</span><span class="p">}</span>
-        <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">=</span> <span class="nx">newElement</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">last</span> <span class="p">=</span> <span class="nx">newElement</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">last</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">newElement</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">last</span> <span class="p">=</span> <span class="nx">newElement</span>
-        <span class="p">}</span>
-        <span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="o">++</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+  // Add appends a value at the end of the list
+  func (list *List) Add(values ...interface{}) {
+      for _, value := range values {
+          newElement := &amp;element{value: value, prev: list.last}
+          if list.size == 0 {
+              list.first = newElement
+              list.last = newElement
+          } else {
+              list.last.next = newElement
+              list.last = newElement
+          }
+          list.size++
+      }
+  }
 
-<span class="c1">// Prepend prepends a values
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Prepend</span><span class="p">(</span><span class="nx">values</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="nx">v</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">v</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">v</span><span class="o">--</span> <span class="p">{</span>
-        <span class="nx">newElement</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">element</span><span class="p">{</span><span class="nx">value</span><span class="p">:</span> <span class="nx">values</span><span class="p">[</span><span class="nx">v</span><span class="p">],</span> <span class="nx">next</span><span class="p">:</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span><span class="p">}</span>
-        <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">=</span> <span class="nx">newElement</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">last</span> <span class="p">=</span> <span class="nx">newElement</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">first</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">newElement</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">=</span> <span class="nx">newElement</span>
-        <span class="p">}</span>
-        <span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="o">++</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+  // Prepend prepends a values
+  func (list *List) Prepend(values ...interface{}) {
+      for v := len(values) - 1; v &gt;= 0; v-- {
+          newElement := &amp;element{value: values[v], next: list.first}
+          if list.size == 0 {
+              list.first = newElement
+              list.last = newElement
+          } else {
+              list.first.prev = newElement
+              list.first = newElement
+          }
+          list.size++
+      }
+  }
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">withinRange</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span>
-<span class="p">}</span>
+  func (list *List) withinRange(index int) bool {
+      return index &gt;= 0 &amp;&amp; index &lt; list.size
+  }
 
-<span class="c1">// Clear removes all elements from the list
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Clear</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="p">=</span> <span class="mi">0</span>
-    <span class="nx">list</span><span class="p">.</span><span class="nx">last</span> <span class="p">=</span> <span class="kc">nil</span>
-    <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">=</span> <span class="kc">nil</span>
-<span class="p">}</span>
+  // Clear removes all elements from the list
+  func (list *List) Clear() {
+      list.size = 0
+      list.last = nil
+      list.first = nil
+  }
 
-<span class="c1">// Get returns the element at index.
-</span><span class="c1">// Second return parameter is true if index is within bounds of the array and array is not empty
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Get</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="p">(</span><span class="kd">interface</span><span class="p">{},</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">!</span><span class="nx">list</span><span class="p">.</span><span class="nf">withinRange</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">false</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="o">-</span><span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">index</span> <span class="p">{</span>
-        <span class="nx">element</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">last</span>
-        <span class="k">for</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">element</span> <span class="p">=</span> <span class="nx">e</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">element</span><span class="p">.</span><span class="nx">prev</span> <span class="p">{</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">true</span>
-    <span class="p">}</span>
-    <span class="nx">element</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span>
-    <span class="k">for</span> <span class="nx">e</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">element</span> <span class="p">=</span> <span class="nx">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span> <span class="p">{</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="kc">true</span>
-<span class="p">}</span>
+  // Get returns the element at index.
+  // Second return parameter is true if index is within bounds of the array and array is not empty
+  func (list *List) Get(index int) (interface{}, bool) {
+      if !list.withinRange(index) {
+          return nil, false
+      }
+      if list.size-index &lt; index {
+          element := list.last
+          for e := list.size - 1; e != index; e, element = e-1, element.prev {
+          }
+          return element.value, true
+      }
+      element := list.first
+      for e := 0; e != index; e, element = e+1, element.next {
+      }
+      return element.value, true
+  }
 
-<span class="c1">// Remove removes the element at the given index from the list.
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Remove</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">!</span><span class="nx">list</span><span class="p">.</span><span class="nf">withinRange</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span>
-        <span class="nx">list</span><span class="p">.</span><span class="nf">Clear</span><span class="p">()</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">element</span> <span class="o">*</span><span class="nx">element</span>
-    <span class="c1">//二分法
-</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="o">-</span><span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">index</span> <span class="p">{</span>
-        <span class="nx">element</span> <span class="p">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">last</span>
-        <span class="k">for</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">element</span> <span class="p">=</span> <span class="nx">e</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">element</span><span class="p">.</span><span class="nx">prev</span> <span class="p">{</span>
-        <span class="p">}</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">element</span> <span class="p">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span>
-        <span class="k">for</span> <span class="nx">e</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">element</span> <span class="p">=</span> <span class="nx">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span> <span class="p">{</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">element</span> <span class="o">==</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">{</span>
-        <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">element</span> <span class="o">==</span> <span class="nx">list</span><span class="p">.</span><span class="nx">last</span> <span class="p">{</span>
-        <span class="nx">list</span><span class="p">.</span><span class="nx">last</span> <span class="p">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">prev</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">element</span><span class="p">.</span><span class="nx">prev</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nx">element</span><span class="p">.</span><span class="nx">prev</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nx">element</span><span class="p">.</span><span class="nx">next</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">prev</span>
-    <span class="p">}</span>
+  // Remove removes the element at the given index from the list.
+  func (list *List) Remove(index int) {
+      if !list.withinRange(index) {
+          return
+      }
+      if list.size == 1 {
+          list.Clear()
+          return
+      }
+      var element *element
+      //二分法
+      if list.size-index &lt; index {
+          element = list.last
+          for e := list.size - 1; e != index; e, element = e-1, element.prev {
+          }
+      } else {
+          element = list.first
+          for e := 0; e != index; e, element = e+1, element.next {
+          }
+      }
+      if element == list.first {
+          list.first = element.next
+      }
+      if element == list.last {
+          list.last = element.prev
+      }
+      if element.prev != nil {
+          element.prev.next = element.next
+      }
+      if element.next != nil {
+          element.next.prev = element.prev
+      }
 
-    <span class="nx">element</span> <span class="p">=</span> <span class="kc">nil</span>
-    <span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="o">--</span>
-<span class="p">}</span>
+      element = nil
+      list.size--
+  }
 
-<span class="c1">// Contains check if values (one or more) are present int the set.
-</span><span class="c1">// All values have to be present in the set for the method to return true.
-</span><span class="c1">// Performance time complexity of n^2.
-</span><span class="c1">// Returns true if no arguments are passed at all.
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Contains</span><span class="p">(</span><span class="nx">values</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="kt">bool</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">true</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">value</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
-        <span class="nx">found</span> <span class="o">:=</span> <span class="kc">false</span>
-        <span class="k">for</span> <span class="nx">element</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span><span class="p">;</span> <span class="nx">element</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">element</span> <span class="p">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">element</span><span class="p">.</span><span class="nx">value</span> <span class="p">=</span> <span class="nx">value</span> <span class="p">{</span>
-                <span class="nx">found</span> <span class="p">=</span> <span class="kc">true</span>
-                <span class="k">break</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="p">!</span><span class="nx">found</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">false</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">true</span>
-<span class="p">}</span>
+  // Contains check if values (one or more) are present int the set.
+  // All values have to be present in the set for the method to return true.
+  // Performance time complexity of n^2.
+  // Returns true if no arguments are passed at all.
+  func (list *List) Contains(values ...interface{}) bool {
+      if len(values) == 0 {
+          return true
+      }
+      if list.size == 0 {
+          return false
+      }
+      for _, value := range values {
+          found := false
+          for element := list.first; element != nil; element = element.next {
+              if element.value = value {
+                  found = true
+                  break
+              }
+          }
+          if !found {
+              return false
+          }
+      }
+      return true
+  }
 
-<span class="c1">// Values returns all elements in the list.
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Values</span><span class="p">()</span> <span class="p">[]</span><span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
-    <span class="nx">values</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kd">interface</span><span class="p">{},</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="p">,</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span>
-    <span class="k">for</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">element</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span><span class="p">;</span> <span class="nx">element</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">element</span> <span class="p">=</span> <span class="nx">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span> <span class="p">{</span>
-        <span class="nx">values</span><span class="p">[</span><span class="nx">e</span><span class="p">]</span> <span class="p">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">value</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">values</span>
-<span class="p">}</span>
+  // Values returns all elements in the list.
+  func (list *List) Values() []interface{} {
+      values := make([]interface{}, list.size, list.size)
+      for e, element := 0, list.first; element != nil; e, element = e+1, element.next {
+          values[e] = element.value
+      }
+      return values
+  }
 
-<span class="c1">// IndexOf returns index of provided element
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">IndexOf</span><span class="p">(</span><span class="nx">value</span> <span class="kd">interface</span><span class="p">{})</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">element</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">list</span><span class="p">.</span><span class="nf">Values</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">element</span> <span class="o">==</span> <span class="nx">value</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">index</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
-<span class="p">}</span>
+  // IndexOf returns index of provided element
+  func (list *List) IndexOf(value interface{}) int {
+      if list.size == 0 {
+          return -1
+      }
+      for index, element := range list.Values() {
+          if element == value {
+              return index
+          }
+      }
+      return -1
+  }
 
-<span class="c1">// Empty returns true if list does not contain any elements.
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Empty</span><span class="p">()</span> <span class="kt">bool</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">==</span> <span class="mi">0</span>
-<span class="p">}</span>
+  // Empty returns true if list does not contain any elements.
+  func (list *List) Empty() bool {
+      return list.size == 0
+  }
 
-<span class="c1">// Sort sortts values using
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Sort</span><span class="p">(</span><span class="nx">comparator</span> <span class="nx">utils</span><span class="p">.</span><span class="nx">comparator</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="p">&lt;</span> <span class="mi">2</span> <span class="p">{</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
-    <span class="nx">values</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nf">Values</span><span class="p">()</span>
-    <span class="nx">utils</span><span class="p">.</span><span class="nf">Sort</span><span class="p">(</span><span class="nx">values</span><span class="p">,</span> <span class="nx">comparator</span><span class="p">)</span>
-    <span class="nx">list</span><span class="p">.</span><span class="nf">Clear</span><span class="p">()</span>
-    <span class="nx">list</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">values</span><span class="o">...</span><span class="p">)</span>
-<span class="p">}</span> 
+  // Sort sortts values using
+  func (list *List) Sort(comparator utils.comparator) {
+      if list.size &lt; 2 {
+          return
+      }
+      values := list.Values()
+      utils.Sort(values, comparator)
+      list.Clear()
+      list.Add(values...)
+  } 
 
-<span class="c1">// Insert inserts values at specified index position shifting the value at that position and any subsequent elements to the right.
-</span><span class="c1">// Does not do anything if position is negative or bigger than list`s size
-</span><span class="c1">// Note: position equal to list`s size is valid
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">Insert</span><span class="p">(</span><span class="nx">index</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">values</span> <span class="o">...</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">!</span><span class="nx">list</span><span class="p">.</span><span class="nf">withinRange</span><span class="p">((</span><span class="nx">index</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nx">index</span> <span class="o">==</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="p">{</span>
-            <span class="nx">list</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">values</span><span class="o">...</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
-    <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">values</span><span class="p">)</span>
+  // Insert inserts values at specified index position shifting the value at that position and any subsequent elements to the right.
+  // Does not do anything if position is negative or bigger than list`s size
+  // Note: position equal to list`s size is valid
+  func (list *List) Insert(index int, values ...interface{}) {
+      if !list.withinRange((index)) {
+          if index == list.size {
+              list.Add(values...)
+          }
+          return
+      }
+      list.size += len(values)
 
-    <span class="kd">var</span> <span class="nx">beforeElement</span> <span class="o">*</span><span class="nx">element</span>
-    <span class="kd">var</span> <span class="nx">foundElement</span> <span class="o">*</span><span class="nx">element</span>
+      var beforeElement *element
+      var foundElement *element
 
-    <span class="c1">// determine traversal direction, last to first or first to last
-</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">-</span> <span class="nx">index</span> <span class="p">&lt;</span> <span class="nx">index</span> <span class="p">{</span>
-        <span class="nx">foundElement</span> <span class="p">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">last</span>
-        <span class="k">for</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">foundElement</span> <span class="p">=</span> <span class="nx">e</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">foundElement</span><span class="p">.</span><span class="nx">prev</span> <span class="p">{</span>
-            <span class="nx">beforeElement</span> <span class="p">=</span> <span class="nx">foundElement</span><span class="p">.</span><span class="nx">prev</span>
-        <span class="p">}</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">foundElement</span> <span class="p">=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span>
-        <span class="k">for</span> <span class="nx">e</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">e</span> <span class="o">!=</span> <span class="nx">index</span><span class="p">;</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">foundElement</span> <span class="p">=</span> <span class="nx">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nx">foundElement</span><span class="p">.</span><span class="nx">next</span> <span class="p">{</span>
-            <span class="nx">beforeElement</span> <span class="p">=</span> <span class="nx">foundElement</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
+      // determine traversal direction, last to first or first to last
+      if list.size - index &lt; index {
+          foundElement = list.last
+          for e := list.size - 1; e != index; e, foundElement = e-1, foundElement.prev {
+              beforeElement = foundElement.prev
+          }
+      } else {
+          foundElement = list.first
+          for e := 0; e != index; e, foundElement = e+1, foundElement.next {
+              beforeElement = foundElement
+          }
+      }
 
-    <span class="k">if</span> <span class="nx">foundElement</span> <span class="o">==</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">{</span>
-        <span class="nx">oldNextElement</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span>
-        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
-            <span class="nx">newElement</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">element</span><span class="p">{</span><span class="nx">value</span><span class="p">:</span> <span class="nx">v</span><span class="p">}</span>
-            <span class="k">if</span> <span class="nx">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-                <span class="nx">list</span><span class="p">.</span><span class="nx">first</span> <span class="p">=</span> <span class="nx">newElement</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">newElement</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">beforeElement</span>
-                <span class="nx">beforeElement</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">newElement</span>
-            <span class="p">}</span>
-            <span class="nx">beforeElement</span> <span class="p">=</span> <span class="nx">newElement</span>
-        <span class="p">}</span>
-        <span class="nx">oldNextElement</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">beforeElement</span>
-        <span class="nx">beforeElement</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">oldNextElement</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">oldNextElement</span> <span class="o">:=</span> <span class="nx">beforeElement</span><span class="p">.</span><span class="nx">next</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
-            <span class="nx">newElement</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">element</span><span class="p">{</span><span class="nx">value</span><span class="p">:</span> <span class="nx">v</span><span class="p">}</span>
-            <span class="nx">newElement</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">beforeElement</span>
-            <span class="nx">beforeElement</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">newElement</span>
-            <span class="nx">beforeElement</span> <span class="p">=</span> <span class="nx">newElement</span>
-        <span class="p">}</span>
-        <span class="nx">oldNextElement</span><span class="p">.</span><span class="nx">prev</span> <span class="p">=</span> <span class="nx">beforeElement</span>
-        <span class="nx">beforeElement</span><span class="p">.</span><span class="nx">next</span> <span class="p">=</span> <span class="nx">oldNextElement</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+      if foundElement == list.first {
+          oldNextElement := list.first
+          for i, v := range values {
+              newElement := &amp;element{value: v}
+              if i == 0 {
+                  list.first = newElement
+              } else {
+                  newElement.prev = beforeElement
+                  beforeElement.next = newElement
+              }
+              beforeElement = newElement
+          }
+          oldNextElement.prev = beforeElement
+          beforeElement.next = oldNextElement
+      } else {
+          oldNextElement := beforeElement.next
+          for _, v := range values {
+              newElement := &amp;element{value: v}
+              newElement.prev = beforeElement
+              beforeElement.next = newElement
+              beforeElement = newElement
+          }
+          oldNextElement.prev = beforeElement
+          beforeElement.next = oldNextElement
+      }
+  }
 
-<span class="c1">// String returns a string representation of container
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">list</span> <span class="o">*</span><span class="nx">List</span><span class="p">)</span> <span class="nf">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="nx">str</span> <span class="o">:=</span> <span class="s">&#34;DoubleLinkedList\n&#34;</span>
-    <span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{}</span>
-    <span class="k">for</span> <span class="nx">element</span> <span class="o">:=</span> <span class="nx">list</span><span class="p">.</span><span class="nx">first</span><span class="p">;</span> <span class="nx">element</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">;</span> <span class="nx">element</span> <span class="p">=</span> <span class="nx">element</span><span class="p">.</span><span class="nx">next</span> <span class="p">{</span>
-        <span class="nx">values</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">values</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%f&#34;</span><span class="p">,</span> <span class="nx">element</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span>
-    <span class="p">}</span>
-    <span class="nx">str</span> <span class="o">+=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">values</span><span class="p">,</span> <span class="s">&#34;,&#34;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">str</span>
-<span class="p">}</span></pre></td></tr></table>
-</div>
-</div></li>
+  // String returns a string representation of container
+  func (list *List) String() string {
+      str := &quot;DoubleLinkedList\n&quot;
+      values := []string{}
+      for element := list.first; element != nil; element = element.next {
+          values = append(values, fmt.Sprintf(&quot;%f&quot;, element.value))
+      }
+      str += strings.Join(values, &quot;,&quot;)
+      return str
+  }
+</code></pre>
+</li>
 </ul>
 
     </div>

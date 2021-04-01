@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[设计模式 | 创建 | 抽象工厂模式]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式" />
+<meta property="og:description" content="摘要 抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" />
-<meta property="article:published_time" content="2020-09-10T15:51:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-09-10T15:51:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-09-10T15:51:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-09-10T15:51:56&#43;08:00" />
 
 <meta itemprop="name" content="[设计模式 | 创建 | 抽象工厂模式]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式">
-
-
-<meta itemprop="datePublished" content="2020-09-10T15:51:56&#43;08:00" />
+<meta itemprop="description" content="摘要 抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相"><meta itemprop="datePublished" content="2020-09-10T15:51:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-09-10T15:51:56&#43;08:00" />
-<meta itemprop="wordCount" content="1858">
-
-
-
-<meta itemprop="keywords" content="设计模式," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1567">
+<meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[设计模式 | 创建 | 抽象工厂模式]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式"/>
+<meta name="twitter:description" content="摘要 抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%88%9B%E5%BB%BA/"> 设计模式/创建 </a>
             </div>
-          <span class="more-meta"> 约 1858 字 </span>
+          <span class="more-meta"> 约 1567 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,43 +135,37 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#介绍">介绍</a></li>
-<li><a href="#实现">实现</a>
-<ul>
-<li><a href="#定义接口">定义接口</a></li>
-<li><a href="#创建接口的实现">创建接口的实现</a></li>
-<li><a href="#定义抽象工厂">定义抽象工厂</a></li>
-<li><a href="#定义工厂类">定义工厂类</a></li>
-<li><a href="#定义工厂生成器-关联产品族">定义工厂生成器(关联产品族)</a></li>
-<li><a href="#使用-传递类型信息获取实体类">使用(传递类型信息获取实体类)</a></li>
-</ul></li>
-<li><a href="#golang-版本">Golang 版本</a>
-<ul>
-<li><a href="#定义接口-1">定义接口</a></li>
-<li><a href="#创建接口的实现-1">创建接口的实现</a></li>
-<li><a href="#定义抽象工厂-1">定义抽象工厂</a></li>
-<li><a href="#定义工厂类-1">定义工厂类</a></li>
-<li><a href="#定义工厂生成器-关联产品族-1">定义工厂生成器(关联产品族)</a></li>
-</ul></li>
-<li><a href="#优点">优点</a></li>
-<li><a href="#缺点">缺点</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#介绍">介绍</a></li>
+    <li><a href="#实现">实现</a>
+      <ul>
+        <li><a href="#定义接口">定义接口</a></li>
+        <li><a href="#创建接口的实现">创建接口的实现</a></li>
+        <li><a href="#定义抽象工厂">定义抽象工厂</a></li>
+        <li><a href="#定义工厂类">定义工厂类</a></li>
+        <li><a href="#定义工厂生成器关联产品族">定义工厂生成器(关联产品族)</a></li>
+        <li><a href="#使用传递类型信息获取实体类">使用(传递类型信息获取实体类)</a></li>
+      </ul>
+    </li>
+    <li><a href="#golang-版本">Golang 版本</a>
+      <ul>
+        <li><a href="#定义接口-1">定义接口</a></li>
+        <li><a href="#创建接口的实现-1">创建接口的实现</a></li>
+        <li><a href="#定义抽象工厂-1">定义抽象工厂</a></li>
+        <li><a href="#定义工厂类-1">定义工厂类</a></li>
+        <li><a href="#定义工厂生成器关联产品族-1">定义工厂生成器(关联产品族)</a></li>
+      </ul>
+    </li>
+    <li><a href="#优点">优点</a></li>
+    <li><a href="#缺点">缺点</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相关对象的工厂，不需要显式指定它们的类。每个生成的工厂都能按照工厂模式提供对象。</p>
-
+      <h1 id="摘要">摘要</h1>
+<p>  抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相关对象的工厂，不需要显式指定它们的类。每个生成的工厂都能按照工厂模式提供对象。</p>
 <h2 id="介绍">介绍</h2>
-
 <ul>
 <li><strong>意图</strong>： 提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们的具体的类。</li>
 <li><strong>主要解决</strong>: 主要解决接口选择问题。</li>
@@ -187,93 +174,25 @@
 <li><strong>关键代码</strong>: 在一个工厂里聚合多个同类产品。</li>
 <li><strong>应用实例</strong>:</li>
 </ul>
-
-<p>&emsp;&emsp;工作了，为了参加一些聚会，肯定有两套或多套衣服吧，比如说有商务装（成套，一系列具体产品）、时尚装（成套，一系列具体产品），甚至对于一个家庭来说，可能有商务女装、商务男装、时尚女装、时尚男装，这些也都是成套的，即一系列具体产品。假设一种情况（现实中是不存在的，但有利于说明抽象工厂模式），在您的家中，某一个衣柜（具体工厂）只能存放某一种这样的衣服（成套，一系列具体产品），每次拿这种成套的衣服时也自然要从这个衣柜中取出了。用 OOP 的思想去理解，所有的衣柜（具体工厂）都是衣柜类的（抽象工厂）某一个，而每一件成套的衣服又包括具体的上衣（某一具体产品），裤子（某一具体产品），这些具体的上衣其实也都是上衣（抽象产品），具体的裤子也都是裤子（另一个抽象产品）。</p>
-
+<p>  工作了，为了参加一些聚会，肯定有两套或多套衣服吧，比如说有商务装（成套，一系列具体产品）、时尚装（成套，一系列具体产品），甚至对于一个家庭来说，可能有商务女装、商务男装、时尚女装、时尚男装，这些也都是成套的，即一系列具体产品。假设一种情况（现实中是不存在的，但有利于说明抽象工厂模式），在您的家中，某一个衣柜（具体工厂）只能存放某一种这样的衣服（成套，一系列具体产品），每次拿这种成套的衣服时也自然要从这个衣柜中取出了。用 OOP 的思想去理解，所有的衣柜（具体工厂）都是衣柜类的（抽象工厂）某一个，而每一件成套的衣服又包括具体的上衣（某一具体产品），裤子（某一具体产品），这些具体的上衣其实也都是上衣（抽象产品），具体的裤子也都是裤子（另一个抽象产品）。</p>
 <h2 id="实现">实现</h2>
-
-<p>&emsp;&emsp;我们将创建<code>Shape</code>和<code>Color</code>接口和实现这些接口的实体类。下一步是创建抽象工厂类<code>AbstractFactory</code>。接着定义工厂类<code>ShapeFactory</code>和<code>ColorFactory</code>，这两个工厂类都是扩展了<code>AbstractFactory</code>。然后创建一个工厂生成器<code>FactoryProducer</code>，演示类使用<code>FactoryProducer</code>来获取<code>AbstractFactory</code>对象，它将向<code>AbstractFactory</code>传递形状信息Shape，以便获取它所需对象的类型。同时它还向<code>AbstractFactory</code>传递颜色信息Color，以便获取它所需对象的类型。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/design-pattern/create/3E13CDD1-2CD2-4C66-BD33-DECBF172AE03.jpg" alt="avatar" /></p>
-
+<p>  我们将创建<code>Shape</code>和<code>Color</code>接口和实现这些接口的实体类。下一步是创建抽象工厂类<code>AbstractFactory</code>。接着定义工厂类<code>ShapeFactory</code>和<code>ColorFactory</code>，这两个工厂类都是扩展了<code>AbstractFactory</code>。然后创建一个工厂生成器<code>FactoryProducer</code>，演示类使用<code>FactoryProducer</code>来获取<code>AbstractFactory</code>对象，它将向<code>AbstractFactory</code>传递形状信息Shape，以便获取它所需对象的类型。同时它还向<code>AbstractFactory</code>传递颜色信息Color，以便获取它所需对象的类型。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/design-pattern/create/3E13CDD1-2CD2-4C66-BD33-DECBF172AE03.jpg" alt="avatar"></p>
 <h3 id="定义接口">定义接口</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    public interface Shape {
+<pre><code>    public interface Shape {
         void draw();
     }
 
     public interface Color {
         void fill();
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h3 id="创建接口的实现">创建接口的实现</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    public class Rectangle implements Shape {
+<pre><code>    public class Rectangle implements Shape {
 
         @Override
         public void draw() {
-            System.out.println(&#34;Inside Rectangle::draw() method.&#34;)
+            System.out.println(&quot;Inside Rectangle::draw() method.&quot;)
         }
     }
 
@@ -281,7 +200,7 @@
 
         @Override
         public void draw() {
-            System.out.println(&#34;Inside Square::draw() method.&#34;)
+            System.out.println(&quot;Inside Square::draw() method.&quot;)
         }
     }
 
@@ -289,7 +208,7 @@
 
         @Override
         public void draw() {
-            System.out.println(&#34;Inside Circle::draw() method.&#34;)
+            System.out.println(&quot;Inside Circle::draw() method.&quot;)
         }
     }
 
@@ -297,7 +216,7 @@
 
         @Override
         public void fill() {
-            System.out.println(&#34;Inside Red::fill() method.&#34;)
+            System.out.println(&quot;Inside Red::fill() method.&quot;)
         }
     }
 
@@ -305,7 +224,7 @@
 
         @Override
         public void fill() {
-            System.out.println(&#34;Inside Green::fill() method.&#34;)
+            System.out.println(&quot;Inside Green::fill() method.&quot;)
         }
     }
 
@@ -313,94 +232,31 @@
 
         @Override
         public void fill() {
-            System.out.println(&#34;Inside Blue::fill() method.&#34;)
+            System.out.println(&quot;Inside Blue::fill() method.&quot;)
         }
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h3 id="定义抽象工厂">定义抽象工厂</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    public abstract class AbstractFactory {
+<pre><code>    public abstract class AbstractFactory {
         public abstract Color getColor(String color);
         public abstract Shape getShape(String shape);
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h3 id="定义工厂类">定义工厂类</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    public class ShapeFactory extends AbstractFactory {
-
+<pre><code>    public class ShapeFactory extends AbstractFactory {
+        
         @Override
         public Shape getShape(String shapeType) {
             if (null == shapeType) {
                 return null;
             }
-            if (shapeType.equalsIgnoreCase(&#34;CIRCLE&#34;)) {
+            if (shapeType.equalsIgnoreCase(&quot;CIRCLE&quot;)) {
                 return new Circle();
             }
-            if (shapeType.equalsIgnoreCase(&#34;RECTANGLE&#34;)) {
+            if (shapeType.equalsIgnoreCase(&quot;RECTANGLE&quot;)) {
                 return new Rectangle();
             }
-            if (shapeType.equalsIgnoreCase(&#34;SQUARE&#34;)) {
+            if (shapeType.equalsIgnoreCase(&quot;SQUARE&quot;)) {
                 return new Square();
             }
             return null;
@@ -424,149 +280,62 @@
             if (null == color) {
                 return null;
             }
-            if (color.equalsIgnoreCase(&#34;RED&#34;)) {
+            if (color.equalsIgnoreCase(&quot;RED&quot;)) {
                 return new Red();
             }
-            if (color.equalsIgnoreCase(&#34;GREEN&#34;)) {
+            if (color.equalsIgnoreCase(&quot;GREEN&quot;)) {
                 return new Green();
             }
-            if (color.equalsIgnoreCase(&#34;BLUE&#34;)) {
+            if (color.equalsIgnoreCase(&quot;BLUE&quot;)) {
                 return new Blue();
             }
             return null;
         }
-    }</pre></td></tr></table>
-</div>
-</div>
-<h3 id="定义工厂生成器-关联产品族">定义工厂生成器(关联产品族)</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    public class FactoryProducer {
+    }
+</code></pre>
+<h3 id="定义工厂生成器关联产品族">定义工厂生成器(关联产品族)</h3>
+<pre><code>    public class FactoryProducer {
         public statuc AbstractFactory getFactory(String choice) {
-            if (choice.equalsIgnoreCase(&#34;SHAPE&#34;)) {
+            if (choice.equalsIgnoreCase(&quot;SHAPE&quot;)) {
                 return new ShapeFactory();
             }
-            if (choice.equalsIgnoreCase(&#34;COLOR&#34;)) {
+            if (choice.equalsIgnoreCase(&quot;COLOR&quot;)) {
                 return new ColorFactory();
             }
             return null;
         }
-    }</pre></td></tr></table>
-</div>
-</div>
-<h3 id="使用-传递类型信息获取实体类">使用(传递类型信息获取实体类)</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    public class AbstractFactoryPatternDemo {
+    }
+</code></pre>
+<h3 id="使用传递类型信息获取实体类">使用(传递类型信息获取实体类)</h3>
+<pre><code>    public class AbstractFactoryPatternDemo {
         public static void main(String[] args) {
-            AbstractFactory shapeFactory = FactoryProducer.getFactory(&#34;SHAPE&#34;);
-            Shape shape1 = shapeFactory.getShape(&#34;CIRCLE&#34;);
+            AbstractFactory shapeFactory = FactoryProducer.getFactory(&quot;SHAPE&quot;);
+            Shape shape1 = shapeFactory.getShape(&quot;CIRCLE&quot;);
             shape1.draw();
 
-            AbstractFactory colorFactory = FactoryProducer.getFactory(&#34;COLOR&#34;);
-            Color color1 = colorFactory.getColor(&#34;RED&#34;);
+            AbstractFactory colorFactory = FactoryProducer.getFactory(&quot;COLOR&quot;);
+            Color color1 = colorFactory.getColor(&quot;RED&quot;);
             color1.fill();
         }
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="golang-版本">Golang 版本</h2>
-
-<p>&emsp;&emsp;将上述行为使用Golang版本实现一边，因为Golang没有继承，我们采用组合的方式。</p>
-
+<p>  将上述行为使用Golang版本实现一边，因为Golang没有继承，我们采用组合的方式。</p>
 <h3 id="定义接口-1">定义接口</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">data</span>
+<pre><code>    package data
 
-    <span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+    import &quot;fmt&quot;
 
-    <span class="kd">type</span> <span class="nx">Shape</span> <span class="kd">interface</span> <span class="p">{</span>
-        <span class="nf">Draw</span><span class="p">()</span> <span class="kt">error</span>
-    <span class="p">}</span>
+    type Shape interface {
+        Draw() error
+    }
 
-    <span class="kd">type</span> <span class="nx">Color</span> <span class="kd">interface</span> <span class="p">{</span>
-        <span class="nf">Fill</span><span class="p">()</span> <span class="kt">error</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+    type Color interface {
+        Fill() error
+    }
+</code></pre>
 <h3 id="创建接口的实现-1">创建接口的实现</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type ShapeType int
+<pre><code>    type ShapeType int
     type ColorType int
 
     const (
@@ -597,59 +366,16 @@
     }
     func newBlue() Color() {
         // ...
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h3 id="定义抽象工厂-1">定义抽象工厂</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type AbstractFactory interface {
+<pre><code>    type AbstractFactory interface {
         getColor(ColorType color) Color
         getShape(ShapeType shape) Shape
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h3 id="定义工厂类-1">定义工厂类</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type ShapeFactory struct{}
+<pre><code>    type ShapeFactory struct{}
     func (*ShapeFactory) getShape(i ShapeType) Shape {
         switch i {
             case Rectangle:
@@ -677,29 +403,10 @@
     }
     func (*ColorFactory) getShape(i ShapeType) Shape {
         return nil
-    }</pre></td></tr></table>
-</div>
-</div>
-<h3 id="定义工厂生成器-关联产品族-1">定义工厂生成器(关联产品族)</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type choice int
+    }
+</code></pre>
+<h3 id="定义工厂生成器关联产品族-1">定义工厂生成器(关联产品族)</h3>
+<pre><code>    type choice int
     const (
         ShapeChoice choice = 1 &lt;&lt; iota
         ColorChoice choice
@@ -712,16 +419,12 @@
             default ColorChoice:
                 return ColorFactory{}
         }
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="优点">优点</h2>
-
-<p>&emsp;&emsp;当一个产品族中的多个对象被设计成一起工作时，它能保证客户端始终只使用同一个产品族中的对象。</p>
-
+<p>  当一个产品族中的多个对象被设计成一起工作时，它能保证客户端始终只使用同一个产品族中的对象。</p>
 <h2 id="缺点">缺点</h2>
-
-<p>&emsp;&emsp;产品族扩展非常困难，要增加一个系列的某一产品，既要在抽象的Creator里加代码，又要在具体的里面加代码。</p>
+<p>  产品族扩展非常困难，要增加一个系列的某一产品，既要在抽象的Creator里加代码，又要在具体的里面加代码。</p>
 
     </div>
 

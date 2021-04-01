@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="tigerb" /><meta name="description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 &amp;emsp;&amp;emsp;我们用&amp;rdquo;订阅通知&amp;rdquo;翻译下[观察者模式]" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="tigerb" /><meta name="description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 我们用&amp;quot;订阅通知&amp;quot;翻译下[观察者模式]的概念： &amp;ldquo;订阅者" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E8%A7%82%E5%AF%9F%E8%80%85%E5%AE%9E%E8%B7%B5/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[设计模式 | 行为 | 观察者模式实践之电商业务]" />
-<meta property="og:description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 &emsp;&emsp;我们用&rdquo;订阅通知&rdquo;翻译下[观察者模式]" />
+<meta property="og:description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 我们用&quot;订阅通知&quot;翻译下[观察者模式]的概念： &ldquo;订阅者" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E8%A7%82%E5%AF%9F%E8%80%85%E5%AE%9E%E8%B7%B5/" />
-<meta property="article:published_time" content="2020-09-02T11:04:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-09-02T11:04:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E8%A7%82%E5%AF%9F%E8%80%85%E5%AE%9E%E8%B7%B5/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-09-02T11:04:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-09-02T11:04:56&#43;08:00" />
 
 <meta itemprop="name" content="[设计模式 | 行为 | 观察者模式实践之电商业务]">
-<meta itemprop="description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 &emsp;&emsp;我们用&rdquo;订阅通知&rdquo;翻译下[观察者模式]">
-
-
-<meta itemprop="datePublished" content="2020-09-02T11:04:56&#43;08:00" />
+<meta itemprop="description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 我们用&quot;订阅通知&quot;翻译下[观察者模式]的概念： &ldquo;订阅者"><meta itemprop="datePublished" content="2020-09-02T11:04:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-09-02T11:04:56&#43;08:00" />
-<meta itemprop="wordCount" content="3459">
-
-
-
-<meta itemprop="keywords" content="设计模式," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="3022">
+<meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[设计模式 | 行为 | 观察者模式实践之电商业务]"/>
-<meta name="twitter:description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 &emsp;&emsp;我们用&rdquo;订阅通知&rdquo;翻译下[观察者模式]"/>
+<meta name="twitter:description" content="什么是观察者模式 观察者观察被观察者，被观察者通知观察者 我们用&quot;订阅通知&quot;翻译下[观察者模式]的概念： &ldquo;订阅者"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A1%8C%E4%B8%BA/"> 设计模式/行为 </a>
             </div>
-          <span class="more-meta"> 约 3459 字 </span>
+          <span class="more-meta"> 约 3022 字 </span>
           <span class="more-meta"> 预计阅读 7 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,201 +135,162 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#什么是观察者模式">什么是观察者模式</a></li>
-<li><a href="#什么真实业务场景可以用">什么真实业务场景可以用</a></li>
-<li><a href="#怎么用">怎么用</a>
-<ul>
-<li><a href="#业务梳理">业务梳理</a></li>
-<li><a href="#代码建模">代码建模</a></li>
-<li><a href="#代码demo">代码demo</a></li>
-</ul></li>
-<li><a href="#结语">结语</a></li>
-<li><a href="#变化">变化</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#什么是观察者模式">什么是观察者模式</a></li>
+    <li><a href="#什么真实业务场景可以用">什么真实业务场景可以用</a></li>
+    <li><a href="#怎么用">怎么用</a>
+      <ul>
+        <li><a href="#业务梳理">业务梳理</a></li>
+        <li><a href="#代码建模">代码建模</a></li>
+        <li><a href="#代码demo">代码demo</a></li>
+      </ul>
+    </li>
+    <li><a href="#结语">结语</a></li>
+    <li><a href="#变化">变化</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h2 id="什么是观察者模式">什么是观察者模式</h2>
-
+      <h2 id="什么是观察者模式">什么是观察者模式</h2>
 <blockquote>
 <p>观察者观察被观察者，被观察者通知观察者</p>
 </blockquote>
-
-<p>&emsp;&emsp;我们用&rdquo;订阅通知&rdquo;翻译下[观察者模式]的概念：</p>
-
+<p>  我们用&quot;订阅通知&quot;翻译下[观察者模式]的概念：</p>
 <blockquote>
 <p>&ldquo;订阅者订阅主题，主题通知订阅者&rdquo;</p>
 </blockquote>
-
-<p>&emsp;&emsp;我们再来拆解下这句话，得到：</p>
-
+<p>  我们再来拆解下这句话，得到：</p>
 <ul>
-<li><p>两个对象</p>
-
+<li>
+<p>两个对象</p>
 <ul>
 <li>被观察者 -&gt; 主题</li>
 <li>观察者   -&gt; 订阅者</li>
-</ul></li>
-
-<li><p>两个动作</p>
-
+</ul>
+</li>
+<li>
+<p>两个动作</p>
 <ul>
 <li>订阅     -&gt; 订阅者订阅主题</li>
 <li>通知     -&gt; 主题发生变动通知订阅者</li>
-</ul></li>
 </ul>
-
-<p>&emsp;&emsp;观察者模式的优势：</p>
-
+</li>
+</ul>
+<p>  观察者模式的优势：</p>
 <ul>
 <li>高内聚 -&gt; 不同业务代码变动互不影响</li>
 <li>可复用 -&gt; 新的业务(就是新的订阅者)订阅不同接口(主题，就是这里的接口)</li>
 <li>极易扩展 -&gt; 新增接口(就是新增主题);新增业务(就是新增订阅者)</li>
 </ul>
-
 <h2 id="什么真实业务场景可以用">什么真实业务场景可以用</h2>
-
 <blockquote>
 <p>所有发生变更，需要通知的业务场景</p>
 </blockquote>
-
-<p>&emsp;&emsp;比如，订单逆向流，也就是订单成立之后的各种取消操作，主要有如下取消类型：</p>
-
+<p>  比如，订单逆向流，也就是订单成立之后的各种取消操作，主要有如下取消类型：</p>
 <table>
 <thead>
 <tr>
 <th>订单消息类型</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>未支付取消订单</td>
 </tr>
-
 <tr>
 <td>超时关单</td>
 </tr>
-
 <tr>
 <td>已支付取消订单</td>
 </tr>
-
 <tr>
 <td>拒收</td>
 </tr>
 </tbody>
 </table>
-
-<p>&emsp;&emsp;在触发这些取消操作都要进行各种各样的子操作，显而易见不同的取消操作所涉及的子操作是存在交集的。其次，已支付取消订单的子操作应该是所有订单取消类型最全的，其它类型的服用代码即可，除了分装成函数片段，还有什么更好的封装方式吗？</p>
-
-<p>&emsp;&emsp;接着我们来分析下订单逆向流业务的变与不变：</p>
-
+<p>  在触发这些取消操作都要进行各种各样的子操作，显而易见不同的取消操作所涉及的子操作是存在交集的。其次，已支付取消订单的子操作应该是所有订单取消类型最全的，其它类型的服用代码即可，除了分装成函数片段，还有什么更好的封装方式吗？</p>
+<p>  接着我们来分析下订单逆向流业务的变与不变：</p>
 <ul>
-<li><p>变：</p>
-
+<li>
+<p>变：</p>
 <ul>
 <li>新增取消类型</li>
 <li>新增子操作</li>
 <li>修改某个子操作的逻辑</li>
 <li>取消类型和子操作的对应关系</li>
-</ul></li>
-
-<li><p>不变</p>
-
+</ul>
+</li>
+<li>
+<p>不变</p>
 <ul>
 <li>已存在的取消类型</li>
 <li>已存在的子操作</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h2 id="怎么用">怎么用</h2>
-
-<p>&emsp;&emsp;<strong>分四步走:</strong>
-1. 业务梳理
-2. 业务流程图
-3. 代码建模
-4. 代码demo</p>
-
+<p>  <strong>分四步走:</strong></p>
+<ol>
+<li>业务梳理</li>
+<li>业务流程图</li>
+<li>代码建模</li>
+<li>代码demo</li>
+</ol>
 <h3 id="业务梳理">业务梳理</h3>
-
-<p>&emsp;&emsp;梳理出所有存在的逆向业务的子操作：</p>
-
+<p>  梳理出所有存在的逆向业务的子操作：</p>
 <table>
 <thead>
 <tr>
 <th>所有子操作</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>修改订单状态</td>
 </tr>
-
 <tr>
 <td>记录订单状态变更日志</td>
 </tr>
-
 <tr>
 <td>退优惠券</td>
 </tr>
-
 <tr>
 <td>还优惠活动资格</td>
 </tr>
-
 <tr>
 <td>还库存</td>
 </tr>
-
 <tr>
 <td>还礼品卡</td>
 </tr>
-
 <tr>
 <td>退钱包余额</td>
 </tr>
-
 <tr>
 <td>修改发货订单状态</td>
 </tr>
-
 <tr>
 <td>记录发货单状态变更日志</td>
 </tr>
-
 <tr>
 <td>生成退款单</td>
 </tr>
-
 <tr>
 <td>生成发票</td>
 </tr>
-
 <tr>
 <td>发邮件</td>
 </tr>
-
 <tr>
 <td>发短信</td>
 </tr>
-
 <tr>
 <td>发微信消息</td>
 </tr>
 </tbody>
 </table>
-
-<p>&emsp;&emsp;找到不同订单取消类型和这些子操作的关系：</p>
-
+<p>  找到不同订单取消类型和这些子操作的关系：</p>
 <table>
 <thead>
 <tr>
@@ -344,352 +298,251 @@
 <th>子操作(订阅者)</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>取消未支付订单</td>
 <td></td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>修改订单状态</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>记录订单状态变更日志</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>退优惠券</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还优惠活动资格</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还库存</td>
 </tr>
-
 <tr>
 <td>超时关单</td>
 <td></td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>修改订单状态</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>记录订单状态变更日志</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>退优惠券</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还有会活动资格</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还库存</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发邮件</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发短信</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发微信消息</td>
 </tr>
-
 <tr>
 <td>已支付取消订单(未生成发货单)</td>
 <td></td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>取消订单状态</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>记录订单状态变更日志</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还优惠活动资格</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还库存</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还礼品卡</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>退钱包余额</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>生成退款单</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>生成发票</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发邮件</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发短信</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发微信消息</td>
 </tr>
-
 <tr>
 <td>取消发货单(未发货)</td>
 <td></td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>修改订单状态</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>记录订单状态变更日志</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>修改发货单状态变更日志</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还库存</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还礼品卡</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>退钱包余额</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>生成退款单</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>生成发票</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发邮件</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发短信</td>
 </tr>
-
 <tr>
 <td>拒收</td>
 <td></td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>修改订单状态</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>记录订单状态变更日志</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>修改发货单状态</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>记录发货单状态变更日志</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还库存</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>还礼品卡</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>退钱包余额</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>生成退款单</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>生成发票</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发邮件</td>
 </tr>
-
 <tr>
 <td>-</td>
 <td>发短信</td>
 </tr>
 </tbody>
 </table>
-
-<p>&emsp;&emsp;结论：</p>
-
+<p>  结论：</p>
 <ul>
 <li>不同的订单取消类型的子操作存在交集，子操作可被复用</li>
-<li>子操作可被看作&rdquo;订阅者&rdquo;</li>
-<li>订单取消类型可被看作&rdquo;主题&rdquo;</li>
+<li>子操作可被看作&quot;订阅者&quot;</li>
+<li>订单取消类型可被看作&quot;主题&quot;</li>
 <li>不同子操作订阅订单取消类型</li>
 <li>订单取消类型通知子操作</li>
 </ul>
-
 <h3 id="代码建模">代码建模</h3>
-
-<p>&emsp;&emsp;[观察者模式]的核心是两个接口：</p>
-
+<p>  [观察者模式]的核心是两个接口：</p>
 <ul>
-<li>&ldquo;主题&rdquo;接口<code>Observable</code>
-
+<li>&ldquo;主题&quot;接口<code>Observable</code>
 <ul>
 <li>抽象方法<code>Attach</code>: 增加订阅者</li>
 <li>抽象方法<code>Detach</code>: 删除订阅者</li>
 <li>抽象方法<code>Notify</code>: 通知订阅者</li>
-</ul></li>
-<li>&ldquo;订阅者&rdquo;接口<code>ObserverInterface</code>
-
+</ul>
+</li>
+<li>&ldquo;订阅者&quot;接口<code>ObserverInterface</code>
 <ul>
 <li>抽象方法<code>Do</code>: 自身业务</li>
-</ul></li>
 </ul>
-
-<p>&emsp;&emsp;订单逆向流的业务下，我们需要实现这两个接口：</p>
-
+</li>
+</ul>
+<p>  订单逆向流的业务下，我们需要实现这两个接口：</p>
 <ul>
-<li>具体订单取消的动作实现&rdquo;主题&rdquo;接口<code>Observable</code></li>
+<li>具体订单取消的动作实现&quot;主题&quot;接口<code>Observable</code></li>
 <li>子逻辑实现<code>订阅者</code>接口<code>ObserverInterface</code></li>
 </ul>
+<p>  来看看伪代码：</p>
+<pre><code>    // ----------这里实现一个具体的&quot;主题&quot;----------
+    具体订单取消的动作实现&quot;主题&quot;接口`Observable`.得到一个具体的主题：
 
-<p>&emsp;&emsp;来看看伪代码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // ----------这里实现一个具体的&#34;主题&#34;----------
-    具体订单取消的动作实现&#34;主题&#34;接口`Observable`.得到一个具体的主题：
-
-    - 订单取消的动作的&#34;主题&#34;结构体`ObservableConcrete`
+    - 订单取消的动作的&quot;主题&quot;结构体`ObservableConcrete`
         + 成员属性`observerList []ObserverInterface`: 订阅者列表
         + 具体方法`Attach`: 增加订阅者
         + 具体方法`Detach`: 删除订阅者
         + 具体方法`Notify`: 通知订阅者
 
-    // ----------这里实现所有具体的&#34;订阅者&#34;---------
+    // ----------这里实现所有具体的&quot;订阅者&quot;---------
 
-    子逻辑实现&#34;订阅者&#34;接口`ObserverInterface`:
+    子逻辑实现&quot;订阅者&quot;接口`ObserverInterface`:
 
     - 具体订阅者`OrderStatus`
         + 实现方法`Do`: 修改订单状态
@@ -716,470 +569,240 @@
     - 具体订阅者`Email`:
         + 实现方法`Do`: 发邮件
     - 具体订阅者`Sms`
-        + 实现方法`Do`: 发短信</pre></td></tr></table>
-</div>
-</div>
+        + 实现方法`Do`: 发短信
+</code></pre>
 <h3 id="代码demo">代码demo</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span><span class="lnt">161
-</span><span class="lnt">162
-</span><span class="lnt">163
-</span><span class="lnt">164
-</span><span class="lnt">165
-</span><span class="lnt">166
-</span><span class="lnt">167
-</span><span class="lnt">168
-</span><span class="lnt">169
-</span><span class="lnt">170
-</span><span class="lnt">171
-</span><span class="lnt">172
-</span><span class="lnt">173
-</span><span class="lnt">174
-</span><span class="lnt">175
-</span><span class="lnt">176
-</span><span class="lnt">177
-</span><span class="lnt">178
-</span><span class="lnt">179
-</span><span class="lnt">180
-</span><span class="lnt">181
-</span><span class="lnt">182
-</span><span class="lnt">183
-</span><span class="lnt">184
-</span><span class="lnt">185
-</span><span class="lnt">186
-</span><span class="lnt">187
-</span><span class="lnt">188
-</span><span class="lnt">189
-</span><span class="lnt">190
-</span><span class="lnt">191
-</span><span class="lnt">192
-</span><span class="lnt">193
-</span><span class="lnt">194
-</span><span class="lnt">195
-</span><span class="lnt">196
-</span><span class="lnt">197
-</span><span class="lnt">198
-</span><span class="lnt">199
-</span><span class="lnt">200
-</span><span class="lnt">201
-</span><span class="lnt">202
-</span><span class="lnt">203
-</span><span class="lnt">204
-</span><span class="lnt">205
-</span><span class="lnt">206
-</span><span class="lnt">207
-</span><span class="lnt">208
-</span><span class="lnt">209
-</span><span class="lnt">210
-</span><span class="lnt">211
-</span><span class="lnt">212
-</span><span class="lnt">213
-</span><span class="lnt">214
-</span><span class="lnt">215
-</span><span class="lnt">216
-</span><span class="lnt">217
-</span><span class="lnt">218
-</span><span class="lnt">219
-</span><span class="lnt">220
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
+<pre><code>    package main
 
-    <span class="kn">import</span> <span class="p">(</span>
-        <span class="s">&#34;fmt&#34;</span>
-        <span class="s">&#34;reflect&#34;</span>
-        <span class="s">&#34;runtime&#34;</span>
-    <span class="p">)</span>
+    import (
+        &quot;fmt&quot;
+        &quot;reflect&quot;
+        &quot;runtime&quot;
+    )
 
-    <span class="c1">// 主题
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">Observable</span> <span class="kd">interface</span> <span class="p">{</span>
-        <span class="nf">Attach</span><span class="p">(</span><span class="nx">observer</span> <span class="o">...</span><span class="nx">ObserverInterface</span><span class="p">)</span> <span class="nx">Observable</span>
-        <span class="nf">Detach</span><span class="p">(</span><span class="nx">observer</span> <span class="nx">ObserverInterface</span><span class="p">)</span> <span class="nx">Observable</span>
-        <span class="nf">Notify</span><span class="p">()</span> <span class="kt">error</span>
-    <span class="p">}</span>
+    // 主题
+    type Observable interface {
+        Attach(observer ...ObserverInterface) Observable
+        Detach(observer ObserverInterface) Observable
+        Notify() error
+    }
 
-    <span class="c1">// 主题实现
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">ObservableConcrete</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">observerList</span> <span class="p">[]</span><span class="nx">ObserverInterface</span>
-    <span class="p">}</span>
+    // 主题实现
+    type ObservableConcrete struct {
+        observerList []ObserverInterface
+    }
 
-    <span class="c1">// 获取正在运行的函数名
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">runFuncName</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-        <span class="nx">pc</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">uintptr</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="nx">runtime</span><span class="p">.</span><span class="nf">Callers</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nx">pc</span><span class="p">)</span>
-        <span class="nx">f</span> <span class="o">:=</span> <span class="nx">runtime</span><span class="p">.</span><span class="nf">FuncForPC</span><span class="p">(</span><span class="nx">pc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">return</span> <span class="nx">f</span><span class="p">.</span><span class="nf">Name</span><span class="p">()</span>
-    <span class="p">}</span>
+    // 获取正在运行的函数名
+    func runFuncName() string {
+        pc := make([]uintptr, 1)
+        runtime.Callers(2, pc)
+        f := runtime.FuncForPC(pc[0])
+        return f.Name()
+    }
 
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">o</span> <span class="o">*</span><span class="nx">ObservableConcrete</span><span class="p">)</span> <span class="nf">Attach</span><span class="p">(</span><span class="nx">observerInterface</span><span class="p">)</span> <span class="nx">Observable</span> <span class="p">{</span>
-        <span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span><span class="p">,</span> <span class="nx">observer</span><span class="o">...</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nx">o</span>
-    <span class="p">}</span>
+    func (o *ObservableConcrete) Attach(observerInterface) Observable {
+        o.observerList = append(o.observerList, observer...)
+        return o
+    }
 
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">o</span> <span class="o">*</span><span class="nx">ObservableConcrete</span><span class="p">)</span> <span class="nf">Detach</span><span class="p">(</span><span class="nx">observer</span> <span class="nx">ObserverInterface</span><span class="p">)</span> <span class="nx">Observable</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nx">o</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">observerItem</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">observer</span> <span class="o">==</span> <span class="nx">observerItem</span> <span class="p">{</span>
-                <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s 注销: %s\n&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">(),</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">observer</span><span class="p">))</span>
-                <span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span><span class="p">[:</span><span class="nx">k</span><span class="p">],</span> <span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span><span class="p">[</span><span class="nx">k</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span><span class="o">...</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">o</span>
-    <span class="p">}</span>
+    func (o *ObservableConcrete) Detach(observer ObserverInterface) Observable {
+        if len(o.observerList) == 0 {
+            return o
+        }
+        for k, observerItem := range o.observerList {
+            if observer == observerItem {
+                fmt.Printf(&quot;%s 注销: %s\n&quot;, runFuncName(), reflect.TypeOf(observer))
+                o.observerList = append(o.observerList[:k], o.observerList[k+1:]...)
+            }
+        }
+        return o
+    }
 
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">o</span> <span class="o">*</span><span class="nx">ObserverableConcrete</span><span class="p">)</span> <span class="nf">Notify</span><span class="p">()</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">observer</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">o</span><span class="p">.</span><span class="nx">observerList</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">observer</span><span class="p">.</span><span class="nf">Do</span><span class="p">(</span><span class="nx">o</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">err</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="kc">nil</span>
-    <span class="p">}</span>
+    func (o *ObserverableConcrete) Notify() (err error) {
+        for _, observer := range o.observerList {
+            if err = observer.Do(o); err != nil {
+                return err
+            }
+        }
+        return nil
+    }
 
-    <span class="c1">// 订阅者
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">ObserverInterface</span> <span class="kd">interface</span> <span class="p">{</span>
-        <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="kt">error</span>
-    <span class="p">}</span>
+    // 订阅者
+    type ObserverInterface interface {
+        Do(o Observable) error
+    }
 
-    <span class="kd">type</span> <span class="nx">OrderStatus</span> <span class="kd">struct</span><span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">ObserStatus</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 修改订单状态...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type OrderStatus struct{}
+    func (observer *ObserStatus) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 修改订单状态...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">OrderStatusLog</span> <span class="kd">struct</span><span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">OrderStatusLog</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 记录订单状态变更日志...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type OrderStatusLog struct{}
+    func (observer *OrderStatusLog) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 记录订单状态变更日志...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">CouponRefund</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">CouponRefund</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">/// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 退优惠券...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type CouponRefund struct {}
+    func (observer *CouponRefund) Do(o Observable) (err error) {
+        /// code...
+        fmt.Printf(&quot;%s, 退优惠券...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">PromotionRefund</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">PromotionRefund</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 还优惠活动资格...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type PromotionRefund struct {}
+    func (observer *PromotionRefund) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 还优惠活动资格...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">StockRefund</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">StockRefund</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 还库存...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type StockRefund struct {}
+    func (observer *StockRefund) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 还库存...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">GiftVardRefund</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">GiftCardRefund</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 还礼品卡...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type GiftVardRefund struct {}
+    func (observer *GiftCardRefund) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 还礼品卡...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">WalletRefund</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">WalletRefund</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 退钱包余额...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type WalletRefund struct {}
+    func (observer *WalletRefund) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 退钱包余额...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">DeliverBillStatus</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">DeliverBillStatus</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 修改发货单状态...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type DeliverBillStatus struct {}
+    func (observer *DeliverBillStatus) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 修改发货单状态...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">DeliverBillStatusLog</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">DeliverBillStatusLog</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code..
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 记录发货单状态变更日志...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type DeliverBillStatusLog struct {}
+    func (observer *DeliverBillStatusLog) Do(o Observable) (err error) {
+        // code..
+        fmt.Printf(&quot;%s, 记录发货单状态变更日志...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">Refund</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">Refund</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 生成退款单...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type Refund struct {}
+    func (observer *Refund) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 生成退款单...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">Invoice</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">Invoice</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 生成发票...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type Invoice struct {}
+    func (observer *Invoice) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 生成发票...&quot;, runFuncName())
+        return
+    }
 
-    <span class="kd">type</span> <span class="nx">Sms</span> <span class="kd">struct</span> <span class="p">{}</span>
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">observer</span> <span class="o">*</span><span class="nx">Sms</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">o</span> <span class="nx">Observable</span><span class="p">)</span> <span class="p">(</span><span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// code...
-</span><span class="c1"></span>        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;%s, 发短信...&#34;</span><span class="p">,</span> <span class="nf">runFuncName</span><span class="p">())</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
+    type Sms struct {}
+    func (observer *Sms) Do(o Observable) (err error) {
+        // code...
+        fmt.Printf(&quot;%s, 发短信...&quot;, runFuncName())
+        return
+    }
 
 
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="c1">// 创建 未支付去掉订单主题
-</span><span class="c1"></span>        <span class="nx">orderUnPaidCancelSubject</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">ObservableConcrete</span><span class="p">{}</span>
-        <span class="nx">orderUnPaidCancelSubject</span><span class="p">.</span><span class="nf">Attach</span><span class="p">(</span>
-            <span class="o">&amp;</span><span class="nx">OrderStatus</span><span class="p">{},</span>
-            <span class="o">&amp;</span><span class="nx">OrderStatusLog</span><span class="p">{},</span>
-            <span class="o">&amp;</span><span class="nx">CouponRefund</span><span class="p">{},</span>
-            <span class="o">&amp;</span><span class="nx">PromotionRefund</span><span class="p">{},</span>
-            <span class="o">&amp;</span><span class="nx">StockRefund</span><span class="p">{},</span>
-        <span class="p">)</span>
-        <span class="nx">orderUnPaidCancelSubject</span><span class="p">.</span><span class="nf">Notify</span><span class="p">()</span>
-    <span class="p">}</span>
+    func main() {
+        // 创建 未支付去掉订单主题
+        orderUnPaidCancelSubject := &amp;ObservableConcrete{}
+        orderUnPaidCancelSubject.Attach(
+            &amp;OrderStatus{},
+            &amp;OrderStatusLog{},
+            &amp;CouponRefund{},
+            &amp;PromotionRefund{},
+            &amp;StockRefund{},
+        )
+        orderUnPaidCancelSubject.Notify()
+    }
 
-    <span class="c1">// 创建 超时关单主题
-</span><span class="c1"></span>    <span class="nx">orderOverTimeSubject</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">ObservableConcrete</span><span class="p">{}</span>
-    <span class="nx">orderOverTimeSubject</span><span class="p">.</span><span class="nf">Attach</span><span class="p">(</span>
-        <span class="o">&amp;</span><span class="nx">OrderStatus</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">OrderStatusLog</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">CouponRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">PromotionRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">StockRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">Sms</span><span class="p">{},</span>
-    <span class="p">)</span>
-    <span class="nx">orderOverTimeSubject</span><span class="p">.</span><span class="nf">Notify</span><span class="p">()</span>
+    // 创建 超时关单主题
+    orderOverTimeSubject := &amp;ObservableConcrete{}
+    orderOverTimeSubject.Attach(
+        &amp;OrderStatus{},
+        &amp;OrderStatusLog{},
+        &amp;CouponRefund{},
+        &amp;PromotionRefund{},
+        &amp;StockRefund{},
+        &amp;Sms{},
+    )
+    orderOverTimeSubject.Notify()
 
-    <span class="c1">// 创建 已支付取消订单主题
-</span><span class="c1"></span>    <span class="nx">orderPaidCancelSubject</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">OrdervableConcrete</span><span class="p">{}</span>
-    <span class="nx">orderPaidCancelSubject</span><span class="p">.</span><span class="nf">Attach</span><span class="p">(</span>
-        <span class="o">&amp;</span><span class="nx">OrderStatus</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">OrderStatusLog</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">CouponRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">PromotionRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">StockRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">GiftCardRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">WalletRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">Refund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">Invoice</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">Sms</span><span class="p">{},</span>
-    <span class="p">)</span>
-    <span class="nx">orderPaidCancelSubject</span><span class="p">.</span><span class="nf">NOtify</span><span class="p">()</span>
+    // 创建 已支付取消订单主题
+    orderPaidCancelSubject := &amp;OrdervableConcrete{}
+    orderPaidCancelSubject.Attach(
+        &amp;OrderStatus{},
+        &amp;OrderStatusLog{},
+        &amp;CouponRefund{},
+        &amp;PromotionRefund{},
+        &amp;StockRefund{},
+        &amp;GiftCardRefund{},
+        &amp;WalletRefund{},
+        &amp;Refund{},
+        &amp;Invoice{},
+        &amp;Sms{},
+    )
+    orderPaidCancelSubject.NOtify()
 
-    <span class="c1">// 创建 取消发货单主题
-</span><span class="c1"></span>    <span class="nx">deliverBillCancelSubject</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">ObservableConcrete</span><span class="p">{}</span>
-    <span class="nx">deliverBillCancelSubject</span><span class="p">.</span><span class="nf">Attach</span><span class="p">(</span>
-        <span class="o">&amp;</span><span class="nx">OrderStatus</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">OrderStatusLog</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">DeliverBillStatus</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">DeliverBillStatusLog</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">StockRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">GiftCardRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">WalletRefund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">Refund</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">Invoice</span><span class="p">{},</span>
-        <span class="o">&amp;</span><span class="nx">Sms</span><span class="p">{},</span>
-    <span class="p">)</span>
-    <span class="nx">deliverBillCancelSubject</span><span class="p">.</span><span class="nf">Notify</span><span class="p">()</span>
+    // 创建 取消发货单主题
+    deliverBillCancelSubject := &amp;ObservableConcrete{}
+    deliverBillCancelSubject.Attach(
+        &amp;OrderStatus{},
+        &amp;OrderStatusLog{},
+        &amp;DeliverBillStatus{},
+        &amp;DeliverBillStatusLog{},
+        &amp;StockRefund{},
+        &amp;GiftCardRefund{},
+        &amp;WalletRefund{},
+        &amp;Refund{},
+        &amp;Invoice{},
+        &amp;Sms{},
+    )
+    deliverBillCancelSubject.Notify()
 
-    <span class="c1">// 创建 拒收主题
-</span><span class="c1"></span>    <span class="nx">deliverBillRejectSubject</span> <span class="o">:=</span> <span class="nx">OrdervableConcrete</span><span class="p">{}</span>
-    <span class="nx">deliverBillRejectSubject</span><span class="p">.</span><span class="nf">Attach</span><span class="p">(</span>
-        <span class="o">&amp;</span><span class="nx">OrderStatus</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">OrderStatusLog</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">DeliverBillStatus</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">DeliverBillStatusLog</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">StockRefund</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">GiftCardRefund</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">WalletRefund</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">Refund</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">Invoice</span><span class="p">{},</span>
-    <span class="o">&amp;</span><span class="nx">Sms</span><span class="p">{},</span>
-    <span class="p">)</span>
-    <span class="nx">deliverBillRejectSubject</span><span class="p">.</span><span class="nf">Notify</span><span class="p">()</span>
+    // 创建 拒收主题
+    deliverBillRejectSubject := OrdervableConcrete{}
+    deliverBillRejectSubject.Attach(
+        &amp;OrderStatus{},
+	&amp;OrderStatusLog{},
+	&amp;DeliverBillStatus{},
+	&amp;DeliverBillStatusLog{},
+	&amp;StockRefund{},
+	&amp;GiftCardRefund{},
+	&amp;WalletRefund{},
+	&amp;Refund{},
+	&amp;Invoice{},
+    &amp;Sms{},
+    )
+    deliverBillRejectSubject.Notify()
 
-    <span class="c1">// 未来可以快速的根据业务的变化 创建新的主题
-</span><span class="c1"></span>    <span class="o">//</span> <span class="nx">从而快速构建新的业务接口</span></pre></td></tr></table>
-</div>
-</div>
+    // 未来可以快速的根据业务的变化 创建新的主题
+    // 从而快速构建新的业务接口
+</code></pre>
 <h2 id="结语">结语</h2>
-
-<p>&emsp;&emsp;最后总结一下，[观察者模式]抽象过程的核心是：</p>
-
+<p>  最后总结一下，[观察者模式]抽象过程的核心是：</p>
 <ul>
-<li>被依赖的&rdquo;主题&rdquo;</li>
-<li>被通知的&rdquo;订阅者&rdquo;</li>
-<li>&ldquo;订阅者&rdquo;按需订阅&rdquo;主题&rdquo;</li>
-<li>&ldquo;主题&rdquo;变化通知&rdquo;订阅者&rdquo;</li>
+<li>被依赖的&quot;主题&rdquo;</li>
+<li>被通知的&quot;订阅者&rdquo;</li>
+<li>&ldquo;订阅者&quot;按需订阅&quot;主题&rdquo;</li>
+<li>&ldquo;主题&quot;变化通知&quot;订阅者&rdquo;</li>
 </ul>
-
 <h2 id="变化">变化</h2>
-
-<p>&emsp;&emsp;[观察者模式]最显著的特点是：消息的生产者和消费者是直连关系。下一期我们将看看[发布订阅模式]是如何处理这类问题的。</p>
+<p>  [观察者模式]最显著的特点是：消息的生产者和消费者是直连关系。下一期我们将看看[发布订阅模式]是如何处理这类问题的。</p>
 
     </div>
 

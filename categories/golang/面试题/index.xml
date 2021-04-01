@@ -1,23 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>golang/面试题 on FaceDamon`s Blog</title>
     <link>http://facedamon.github.io/categories/golang/%E9%9D%A2%E8%AF%95%E9%A2%98/</link>
     <description>Recent content in golang/面试题 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Sat, 12 Oct 2019 01:37:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/categories/golang/%E9%9D%A2%E8%AF%95%E9%A2%98/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language><atom:link href="http://facedamon.github.io/categories/golang/%E9%9D%A2%E8%AF%95%E9%A2%98/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Golang面试题]</title>
       <link>http://facedamon.github.io/post/golang/interview/golang-1/</link>
       <pubDate>Sat, 12 Oct 2019 01:37:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/interview/golang-1/</guid>
-      <description>此Golang面试题摘自网络，已经找不到作者了，所以使用someone代替。 1. 写出下面代码输出内容 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main import ( &amp;#34;fmt&amp;#34;</description>
+      <description>此Golang面试题摘自网络，已经找不到作者了，所以使用someone代替。 1. 写出下面代码输出内容 package main import ( &amp;quot;fmt&amp;quot; ) func main() { defer_call() } func defer_call() { defer func() { fmt.</description>
     </item>
     
   </channel>

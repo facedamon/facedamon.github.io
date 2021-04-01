@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler 1 2 3 type Handler interface { ServeHTTP(ResponseWriter, *Request) } &amp;emsp;&amp;emsp;Handler接口是一个" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler type Handler interface { ServeHTTP(ResponseWriter, *Request) } Handler接口是一个逻辑接口，所有的请求都会进入该" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/http/golang-http%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[HTTP | golang net/http 源码解读]" />
-<meta property="og:description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler 1 2 3 type Handler interface { ServeHTTP(ResponseWriter, *Request) } &emsp;&emsp;Handler接口是一个" />
+<meta property="og:description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler type Handler interface { ServeHTTP(ResponseWriter, *Request) } Handler接口是一个逻辑接口，所有的请求都会进入该" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-http%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" />
-<meta property="article:published_time" content="2020-06-20T10:19:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-06-20T10:19:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-http%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-06-20T10:19:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-06-20T10:19:56&#43;08:00" />
 
 <meta itemprop="name" content="[HTTP | golang net/http 源码解读]">
-<meta itemprop="description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler 1 2 3 type Handler interface { ServeHTTP(ResponseWriter, *Request) } &emsp;&emsp;Handler接口是一个">
-
-
-<meta itemprop="datePublished" content="2020-06-20T10:19:56&#43;08:00" />
+<meta itemprop="description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler type Handler interface { ServeHTTP(ResponseWriter, *Request) } Handler接口是一个逻辑接口，所有的请求都会进入该"><meta itemprop="datePublished" content="2020-06-20T10:19:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-06-20T10:19:56&#43;08:00" />
-<meta itemprop="wordCount" content="2055">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1818">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[HTTP | golang net/http 源码解读]"/>
-<meta name="twitter:description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler 1 2 3 type Handler interface { ServeHTTP(ResponseWriter, *Request) } &emsp;&emsp;Handler接口是一个"/>
+<meta name="twitter:description" content="重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler type Handler interface { ServeHTTP(ResponseWriter, *Request) } Handler接口是一个逻辑接口，所有的请求都会进入该"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/golang/http/"> golang/HTTP </a>
             </div>
-          <span class="more-meta"> 约 2055 字 </span>
-          <span class="more-meta"> 预计阅读 5 分钟 </span>
+          <span class="more-meta"> 约 1818 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,92 +135,55 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#重要接口">重要接口</a>
-<ul>
-<li><a href="#handler">Handler</a></li>
-<li><a href="#responsewriter">ResponseWriter</a></li>
-<li><a href="#response">response</a></li>
-<li><a href="#handlerfunc">HandlerFunc</a></li>
-</ul></li>
-<li><a href="#servemux-路由">ServeMux 路由</a>
-<ul>
-<li><a href="#defaultservemux">DefaultServeMux</a></li>
-</ul></li>
-<li><a href="#server">Server</a></li>
-<li><a href="#案例解析">案例解析</a></li>
-</ul>
+  <ul>
+    <li><a href="#handler">Handler</a></li>
+    <li><a href="#responsewriter">ResponseWriter</a></li>
+    <li><a href="#response">response</a></li>
+    <li><a href="#handlerfunc">HandlerFunc</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#defaultservemux">DefaultServeMux</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="重要接口">重要接口</h1>
-
+      <h1 id="重要接口">重要接口</h1>
 <table>
 <thead>
 <tr>
-<th align="center">接口名称</th>
-<th align="center">简略含义</th>
+<th style="text-align:center">接口名称</th>
+<th style="text-align:center">简略含义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">Handler</td>
-<td align="center">处理请求接口</td>
+<td style="text-align:center">Handler</td>
+<td style="text-align:center">处理请求接口</td>
 </tr>
-
 <tr>
-<td align="center">ResponseWriter</td>
-<td align="center">返回响应接口</td>
+<td style="text-align:center">ResponseWriter</td>
+<td style="text-align:center">返回响应接口</td>
 </tr>
-
 <tr>
-<td align="center">ServeMux</td>
-<td align="center">路由</td>
+<td style="text-align:center">ServeMux</td>
+<td style="text-align:center">路由</td>
 </tr>
-
 <tr>
-<td align="center">Conn</td>
-<td align="center">tcp连接</td>
+<td style="text-align:center">Conn</td>
+<td style="text-align:center">tcp连接</td>
 </tr>
 </tbody>
 </table>
-
 <h2 id="handler">Handler</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type Handler interface {
+<pre><code>    type Handler interface {
         ServeHTTP(ResponseWriter, *Request)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;Handler接口是一个逻辑接口，所有的请求都会进入该接口的实例进行逻辑处理。从它的名称就能猜出它的大概含义。</p>
-
+    }
+</code></pre>
+<p>  Handler接口是一个逻辑接口，所有的请求都会进入该接口的实例进行逻辑处理。从它的名称就能猜出它的大概含义。</p>
 <h2 id="responsewriter">ResponseWriter</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // ResponseWriter 的作用是被Handler作为形参调用来组装返回的Response
+<pre><code>    // ResponseWriter 的作用是被Handler作为形参调用来组装返回的Response
     type ResponseWriter interface {
         // 改写返回的Head
         Header() Header
@@ -237,54 +193,11 @@
 
         // 写入Head Code
         WriteHeader(int)
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="response">response</h2>
-
-<p>&emsp;&emsp;实现ResponseWriter接口的默认结构体。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type response struct {
+<p>  实现ResponseWriter接口的默认结构体。</p>
+<pre><code>    type response struct {
         // 保存http连接信息
         conn    *conn
 
@@ -320,70 +233,29 @@
 
         // 当requestBody太大时，response会返回411，并关闭连接
         requestBodyLimitHit bool
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <h2 id="handlerfunc">HandlerFunc</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type HandlerFunc func(ResponseWriter, *Request)
+<pre><code>    type HandlerFunc func(ResponseWriter, *Request)
 
     func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
         f(w, r)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;这就是往期文章中所描述的典型的<a href="https://github.com/facedamon/blob/post/golang/golang接口型函数/">接口型函数</a>。如果你已经理解了接口型函数，那么你在http包中会看到很多这样的使用技巧。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func NotFound(w ResponseWriter, r *Request) {
-        Error(w, &#34;404 page not found&#34;, StatusNotFound)
+    }
+</code></pre>
+<p>  这就是往期文章中所描述的典型的<a href="https://github.com/facedamon/blob/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/">接口型函数</a>。如果你已经理解了接口型函数，那么你在http包中会看到很多这样的使用技巧。</p>
+<pre><code>    func NotFound(w ResponseWriter, r *Request) {
+        Error(w, &quot;404 page not found&quot;, StatusNotFound)
     }
 
     func NotFoundHandler() Handler {
         return HandlerFunc(NotFound)
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <blockquote>
 <p>接下来我们来看看Server.go</p>
 </blockquote>
-
 <h1 id="servemux-路由">ServeMux 路由</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type ServeMux struct {
+<pre><code>    type ServeMux struct {
         // 由于请求涉及到并发，所以这里有了读写锁
         mu sync.RWMutx
         // 简单的map路由规则 string就是路由表达式
@@ -395,26 +267,11 @@
         explicit bool
         // 映射到哪个Handler接口
         h Handler
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;它就是http包的路由规则器，你可以在ServeMux中注册你的路由规则，所以开源社区出现了一大批的http rounter框架，它们就是做的这件事。
-&emsp;&emsp;当一个request请求进来时，server会依次根据ServeMux.m中的string路由表达式来匹配，如果找到了匹配的muxEntry，就取出h， 调用h的S而v俄HTTP来u装Response。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // 根据path获取Handler
+    }
+</code></pre>
+<p>  它就是http包的路由规则器，你可以在ServeMux中注册你的路由规则，所以开源社区出现了一大批的http rounter框架，它们就是做的这件事。
+  当一个request请求进来时，server会依次根据ServeMux.m中的string路由表达式来匹配，如果找到了匹配的muxEntry，就取出h， 调用h的S而v俄HTTP来u装Response。</p>
+<pre><code>    // 根据path获取Handler
     func (mux *ServeMux) match(path string) Handler
     // 根据Request获取Handler，内部实现调用match
     func (mux *ServeMux) handler(r *Request) Handler
@@ -423,51 +280,20 @@
     // 注册handler方法
     func (mux *ServeMux) Handle(pattern string, handler Handler)
     // 接口型函数
-    func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))</pre></td></tr></table>
-</div>
-</div>
+    func (mux *ServeMux) HandleFunc(pattern string, handler func(ResponseWriter, *Request))
+</code></pre>
 <h2 id="defaultservemux">DefaultServeMux</h2>
-
-<p>&emsp;&emsp;如果我们没有自定义的ServeMux, 系统默认使用该ServeMux。在http包外层中提供的几个方法, 内部就是调用ServeMux结构方法。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func Handle(pattern string, handler Handler) {DefaultServeMux.Handle(pattern, handler)}
+<p>  如果我们没有自定义的ServeMux, 系统默认使用该ServeMux。在http包外层中提供的几个方法, 内部就是调用ServeMux结构方法。</p>
+<pre><code>    func Handle(pattern string, handler Handler) {DefaultServeMux.Handle(pattern, handler)}
     func HandleFunc(pattern string, handler func(ResponseWriter, 8Request)) {
         DefaultServeMux.HandleFunc(pattern, handler)
-    }</pre></td></tr></table>
-</div>
-</div>
+    }
+</code></pre>
 <blockquote>
 <p>来看看Server结构</p>
 </blockquote>
-
 <h1 id="server">Server</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    type Server struct {
+<pre><code>    type Server struct {
         // 监听地址和端口
         Addr    string
 
@@ -481,98 +307,115 @@
 
         // 配置TLS
         TLSConfig   *tls.Config
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;Server提供的方法：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // 对某个端口监听，内部就是使用for死循环开启协程进行accept处理
+    }
+</code></pre>
+<p>  Server提供的方法：</p>
+<pre><code>    // 对某个端口监听，内部就是使用for死循环开启协程进行accept处理
     func (srv *Server) Serve(l net.Listener) error
 
     // 开启http server服务，内部调用Serve
     func (srv *Server) ListenAndServe() error
 
     // 开启https server， 内部调用Serve
-    func (srv *Server) LisAndServeTLS(certFile, keyFile string) error</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;Http包也直接提供了对外方法，实际上内部就是实例化一个Server，然后调用ListenAndServe方法。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func ListenAndServe(addr string, handler Handler) error
-    func ListenAndServeTLS(addr string, certFile string, keyFile string, handler Handler) error</pre></td></tr></table>
-</div>
-</div>
+    func (srv *Server) LisAndServeTLS(certFile, keyFile string) error
+</code></pre>
+<p>  Http包也直接提供了对外方法，实际上内部就是实例化一个Server，然后调用ListenAndServe方法。</p>
+<pre><code>    func ListenAndServe(addr string, handler Handler) error
+    func ListenAndServeTLS(addr string, certFile string, keyFile string, handler Handler) error
+</code></pre>
 <h1 id="案例解析">案例解析</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func main() {
-        http.HandleFunc(&#34;/hello&#34;, HelloServer)
-        err := http.ListenAndServe(&#34;:8080&#34;, nil)
+<pre><code>    func main() {
+        http.HandleFunc(&quot;/hello&quot;, HelloServer)
+        err := http.ListenAndServe(&quot;:8080&quot;, nil)
         if err != nil {
-            log.Fatal(&#34;ListenAndServe: &#34;, err)
+            log.Fatal(&quot;ListenAndServe: &quot;, err)
         }
     }
-
+    
     func HelloServer(w http.ResponseWriter, req *http.Request) {
-        w.Write([]byte(&#34;hello\n&#34;))
-    }</pre></td></tr></table>
-</div>
-</div>
+        w.Write([]byte(&quot;hello\n&quot;))
+    }
+</code></pre>
 <ul>
 <li>流程分析</li>
 <li>首先调用Http.HandleFunc
-
 <ul>
-<li>1. 调用DefaultServeMux.HandleFunc</li>
-<li>2. 调用DefaultServeMux.Handle</li>
-<li>3. 往map[string]muxEntry中注册handle路由规则</li>
-</ul></li>
+<li>
+<ol>
+<li>调用DefaultServeMux.HandleFunc</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>调用DefaultServeMux.Handle</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>往map[string]muxEntry中注册handle路由规则</li>
+</ol>
+</li>
+</ul>
+</li>
 <li>其次调用http.ListenAndServe
-
 <ul>
-<li>1. 实例话Server</li>
-<li>2. 调用Server.ListenAndServe()</li>
-<li>3. 调用net.Listen(&ldquo;tcp&rdquo;, addr)监听端口</li>
-<li>4. 启动for循环，在循环体中accept请求</li>
-<li>5. 对每个请求水花一个Conn，并开启goroutine为这个请求进行服务go c.serve()</li>
-<li>6. 读取每个请求的内容w, err := c.readRequest()</li>
-<li>7. 判断header是否为空，如果没有设置handler，handler就设置为DefaultServeMux</li>
-<li>8. 调用handler的ServeHttp</li>
-<li>9. 调用mux.handler&reg;.ServeHTTP</li>
-<li>10. 选择handler</li>
+<li>
+<ol>
+<li>实例话Server</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>调用Server.ListenAndServe()</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>调用net.Listen(&ldquo;tcp&rdquo;, addr)监听端口</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>启动for循环，在循环体中accept请求</li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li>对每个请求水花一个Conn，并开启goroutine为这个请求进行服务go c.serve()</li>
+</ol>
+</li>
+<li>
+<ol start="6">
+<li>读取每个请求的内容w, err := c.readRequest()</li>
+</ol>
+</li>
+<li>
+<ol start="7">
+<li>判断header是否为空，如果没有设置handler，handler就设置为DefaultServeMux</li>
+</ol>
+</li>
+<li>
+<ol start="8">
+<li>调用handler的ServeHttp</li>
+</ol>
+</li>
+<li>
+<ol start="9">
+<li>调用mux.handler(r).ServeHTTP</li>
+</ol>
+</li>
+<li>
+<ol start="10">
+<li>选择handler</li>
+</ol>
+<ul>
 <li>A 判断是否有路由能满足这个request(循环遍历ServerMux的muxEntry)</li>
 <li>B 如果有路由满足，调用该路由handler.ServeHttp</li>
 <li>C 如果没有路由满足，调用NotFoundHandler.ServeHttp</li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
     </div>

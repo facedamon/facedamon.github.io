@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 &amp;emsp;&amp;emsp;上一节，我们用了一个非常简单的" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 上一节，我们用了一个非常简单的map结果来存储了路由表" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[手写http框架 (三) | golang router]" />
-<meta property="og:description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 &emsp;&emsp;上一节，我们用了一个非常简单的" />
+<meta property="og:description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 上一节，我们用了一个非常简单的map结果来存储了路由表" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/" />
-<meta property="article:published_time" content="2020-07-14T16:19:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-07-14T16:19:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-07-14T16:19:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-07-14T16:19:56&#43;08:00" />
 
 <meta itemprop="name" content="[手写http框架 (三) | golang router]">
-<meta itemprop="description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 &emsp;&emsp;上一节，我们用了一个非常简单的">
-
-
-<meta itemprop="datePublished" content="2020-07-14T16:19:56&#43;08:00" />
+<meta itemprop="description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 上一节，我们用了一个非常简单的map结果来存储了路由表"><meta itemprop="datePublished" content="2020-07-14T16:19:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-07-14T16:19:56&#43;08:00" />
-<meta itemprop="wordCount" content="2579">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="2233">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[手写http框架 (三) | golang router]"/>
-<meta name="twitter:description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 &emsp;&emsp;上一节，我们用了一个非常简单的"/>
+<meta name="twitter:description" content="摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 上一节，我们用了一个非常简单的map结果来存储了路由表"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/golang/%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6/"> golang/手写http框架 </a>
             </div>
-          <span class="more-meta"> 约 2579 字 </span>
-          <span class="more-meta"> 预计阅读 6 分钟 </span>
+          <span class="more-meta"> 约 2233 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,38 +135,27 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#trie树">trie树</a></li>
-<li><a href="#trie前缀树实现">trie前缀树实现</a></li>
-<li><a href="#router">router</a></li>
-<li><a href="#context变化">context变化</a></li>
-<li><a href="#router变化">router变化</a></li>
-<li><a href="#测试">测试</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#trie树">trie树</a></li>
+    <li><a href="#trie前缀树实现">trie前缀树实现</a></li>
+    <li><a href="#router">router</a></li>
+    <li><a href="#context变化">context变化</a></li>
+    <li><a href="#router变化">router变化</a></li>
+    <li><a href="#测试">测试</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
+      <h1 id="摘要">摘要</h1>
 <ul>
 <li>使用trie树实现<code>动态路由</code>解析</li>
 <li>支持两种模式<code>:name</code>和<code>*filepath</code></li>
 </ul>
-
 <h2 id="trie树">trie树</h2>
-
-<p>&emsp;&emsp;上一节，我们用了一个非常简单的<code>map</code>结果来存储了路由表，使用<code>map</code>存储键值对，索引非常高效，但是有一个弊端，键值对的存储的方式，只能用来索引静态路由。如果我们想支持类似于<code>/hello/:name</code>这样的动态路由该怎么办呢？所谓动态路由，即一条路由规则可以匹配某一类型而非某一条固定的路由。例如<code>/hello/:name</code>，可以匹配<code>/hello/geew</code>, <code>/hello/zack</code>等。</p>
-
-<p>&emsp;&emsp;动态路由有很多种实现方式，支持的规则、性能等有很大的差异。例如开源的路由<a href="https://github.com/gorilla/mux">mux</a>，支持在路由中嵌入正则表达式，例如<code>/p[0-9A-Za-z]+</code>，即路径中的参数仅匹配数字和字母；另一个开源实现<code>httprouter</code>就不支持正则表达式。著名的Web开源框架<code>gin</code>在早期的版本，并没有实现自己的路由，而是直接使用了<code>httprouter</code>，后来gin作者放弃了<code>httprouter</code>，自己实现了一个版本。</p>
-
-<p>&emsp;&emsp;实现动态路由最常见的数据结构，就是前缀树<code>trie</code>。前缀树每一个节点的所有子节点都拥有相同的前缀。这种结构非常适合适用于路由匹配，比如我们定义了如下路由规则：</p>
-
+<p>  上一节，我们用了一个非常简单的<code>map</code>结果来存储了路由表，使用<code>map</code>存储键值对，索引非常高效，但是有一个弊端，键值对的存储的方式，只能用来索引静态路由。如果我们想支持类似于<code>/hello/:name</code>这样的动态路由该怎么办呢？所谓动态路由，即一条路由规则可以匹配某一类型而非某一条固定的路由。例如<code>/hello/:name</code>，可以匹配<code>/hello/geew</code>, <code>/hello/zack</code>等。</p>
+<p>  动态路由有很多种实现方式，支持的规则、性能等有很大的差异。例如开源的路由<a href="https://github.com/gorilla/mux">mux</a>，支持在路由中嵌入正则表达式，例如<code>/p[0-9A-Za-z]+</code>，即路径中的参数仅匹配数字和字母；另一个开源实现<code>httprouter</code>就不支持正则表达式。著名的Web开源框架<code>gin</code>在早期的版本，并没有实现自己的路由，而是直接使用了<code>httprouter</code>，后来gin作者放弃了<code>httprouter</code>，自己实现了一个版本。</p>
+<p>  实现动态路由最常见的数据结构，就是前缀树<code>trie</code>。前缀树每一个节点的所有子节点都拥有相同的前缀。这种结构非常适合适用于路由匹配，比如我们定义了如下路由规则：</p>
 <ul>
 <li><strong>/:lang/doc</strong></li>
 <li><strong>/:lang/tutorial</strong></li>
@@ -182,88 +164,41 @@
 <li><strong>/p/blog</strong></li>
 <li><strong>/p/related</strong></li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/trie_router.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;HTTP请求的路径恰好是由<code>/</code>分割的多端构成，因此，每一段可以作为前缀树的一个节点。我们通过树结构查询，如果中间某一层的节点都不满足条件，那么就说明没有匹配到路由。</p>
-
-<p>&emsp;&emsp;接下来我们实现的动态路由具备以下两个功能。</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/trie_router.jpg" alt="avatar"></p>
+<p>  HTTP请求的路径恰好是由<code>/</code>分割的多端构成，因此，每一段可以作为前缀树的一个节点。我们通过树结构查询，如果中间某一层的节点都不满足条件，那么就说明没有匹配到路由。</p>
+<p>  接下来我们实现的动态路由具备以下两个功能。</p>
 <ul>
 <li><strong>参数匹配：</strong> 例如 <code>/p/:lang/doc</code>，可以匹配 <code>/p/c/doc</code>和<code>/p/go/doc</code>.</li>
 <li><strong>通配：</strong> 例如 <code>/static/*filepath</code>, 可以匹配 <code>/static/fav.ico</code>,也可以匹配<code>/static/js/jQuery.js</code>.这种模式常用于静态服务器，能够递归地匹配子路径.</li>
 </ul>
-
 <h2 id="trie前缀树实现">trie前缀树实现</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// trie.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">type</span> <span class="nx">node</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="c1">// 待匹配路由 eg: /p/:lang/doc
-</span><span class="c1"></span>        <span class="nx">pattern</span> <span class="kt">string</span>
-        <span class="c1">//路由的一部分 eg: :lang
-</span><span class="c1"></span>        <span class="nx">part</span> <span class="kt">string</span>
-        <span class="c1">//子节点    eg: [doc, intro]
-</span><span class="c1"></span>        <span class="nx">children</span> <span class="p">[]</span><span class="o">*</span><span class="nx">node</span>
-        <span class="c1">//是否精确匹配 part含有:或*时为true
-</span><span class="c1"></span>        <span class="nx">isWild</span> <span class="kt">bool</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;与普通树不同，为了实现动态匹配，加上了<code>isWild</code>这个参数。即当我们匹配<code>/p/go/doc</code>这个路由时，第一层节点，<code>p</code>精准匹配到了<code>p</code>，第二层节点，<code>go</code>模糊匹配到<code>:lang</code>，那么将会把<code>lang</code>这个参数赋值为<code>go</code>，继续下一层匹配。我们将匹配的逻辑包装为一个<strong>辅助函数</strong>。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // 第一次匹配成功的节点
-    func (n *node) matchChild(part string) *node {
+<pre><code>    // trie.go
+	package geew
+	
+	type node struct {
+        // 待匹配路由 eg: /p/:lang/doc
+        pattern string
+        //路由的一部分 eg: :lang
+        part string
+        //子节点    eg: [doc, intro]
+        children []*node
+        //是否精确匹配 part含有:或*时为true
+        isWild bool
+	}
+</code></pre>
+<p>  与普通树不同，为了实现动态匹配，加上了<code>isWild</code>这个参数。即当我们匹配<code>/p/go/doc</code>这个路由时，第一层节点，<code>p</code>精准匹配到了<code>p</code>，第二层节点，<code>go</code>模糊匹配到<code>:lang</code>，那么将会把<code>lang</code>这个参数赋值为<code>go</code>，继续下一层匹配。我们将匹配的逻辑包装为一个<strong>辅助函数</strong>。</p>
+<pre><code>    // 第一次匹配成功的节点
+	func (n *node) matchChild(part string) *node {
         for _, c := range n.children {
             if c.part == part || c.isWild {
                 return c
             }
         }
         return nil
-    }
-
-    // 匹配所有子节点
-    func (n *node) matchChildren(part string) *node {    
+	}
+	
+	// 匹配所有子节点
+	func (n *node) matchChildren(part string) *node {    
         nodes := make([]*node, 0)
         for _, c := range n.children {
             if c.part == part || c.isWild {
@@ -271,83 +206,38 @@
             }
         }
         return nodes
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;对于路由来说，最重要的当然是注册与匹配了。开发服务时，注册路由规则，映射handler。访问时，匹配路由规则，查找对应的handler。因此，trie树需要支持节点的插入与查询。<strong>插入功能:递归查找每一层的节点，如果没有匹配到当前part的节点，则新建一个，有一点需要注意，<code>/p/:lang/doc</code>只有在第三层节点(叶子节点)，即<code>doc</code>节点，<code>pattern</code>才会被设置为<code>/p/:lang/doc</code>。</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func (n *node) insert(pattern string, parts[]string, height int) {
+	}
+</code></pre>
+<p>  对于路由来说，最重要的当然是注册与匹配了。开发服务时，注册路由规则，映射handler。访问时，匹配路由规则，查找对应的handler。因此，trie树需要支持节点的插入与查询。<strong>插入功能:递归查找每一层的节点，如果没有匹配到当前part的节点，则新建一个，有一点需要注意，<code>/p/:lang/doc</code>只有在第三层节点(叶子节点)，即<code>doc</code>节点，<code>pattern</code>才会被设置为<code>/p/:lang/doc</code>。</strong></p>
+<pre><code>    func (n *node) insert(pattern string, parts[]string, height int) {
         //只有在叶子节点才会设置pattern
         if len(parts) == height {
             n.pattern = pattern
             return
         }
-
+	
         p := parts[height]
         c := n.matchChild(p)
         if c == nil {
-            c = &amp;node{part: p, isWild: p[0] == &#39;:&#39;|| p[0] == &#39;*&#39;}
+            c = &amp;node{part: p, isWild: p[0] == ':'|| p[0] == '*'}
             n.children = append(n.children, c)
         }
         c.insert(pattern, parts, height+1)
-    }</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<strong>当插入完成时，只有叶子节点的pattern是被赋值的，叶子节点的前缀节点的pattern是空的，因此，查询功能：当查询结束时，可以使用<code>n.pattern == ''</code>来判断路由是否匹配成功，递归查询每一层的节点，退出条件是，匹配到了<code>*</code>，或者匹配到了叶子节点</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    func (n *node) search(parts []string, height int) *node {
-        if len(parts) == height || strings.HasPrefix(n.part, &#34;*&#34;) {
-            if n.pattern == &#34;&#34; {
+	}
+</code></pre>
+<p>  <strong>当插入完成时，只有叶子节点的pattern是被赋值的，叶子节点的前缀节点的pattern是空的，因此，查询功能：当查询结束时，可以使用<code>n.pattern == ''</code>来判断路由是否匹配成功，递归查询每一层的节点，退出条件是，匹配到了<code>*</code>，或者匹配到了叶子节点</strong></p>
+<pre><code>    func (n *node) search(parts []string, height int) *node {
+        if len(parts) == height || strings.HasPrefix(n.part, &quot;*&quot;) {
+            if n.pattern == &quot;&quot; {
                 return nil
             }
             // 匹配到叶子节点
             return n
         }
-
+	
         p := parts[height]
         cs := n.matchChildren(p)
-
+	
         for _, c := range cs {
             rs := c.search(parts, height+1)
             if rs != nil {
@@ -355,335 +245,166 @@
             }
         }
         return nil
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <h2 id="router">router</h2>
-
-<p>&emsp;&emsp;接下来我们将trie树应用到路由中去吧。我们使用<code>roots</code>来存储每种请求方式的trie树根节点。使用<code>handlers</code>存储每种请求方式的<code>HandlerFunc</code>。getRoute函数解析了<code>:</code>和<code>*</code>两种通配符，返回一个map。例如<code>/p/go/doc</code>匹配到<code>/p/:lang/doc</code>，解析结果为<code>{lang: &quot;go&quot;}</code>。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// router.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">type</span> <span class="nx">router</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">roots</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">node</span>
-        <span class="nx">handlers</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">HandlerFunc</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">newRouter</span><span class="p">()</span> <span class="o">*</span><span class="nx">router</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="o">&amp;</span><span class="nx">router</span><span class="p">{</span>
-            <span class="nx">roots</span><span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">node</span><span class="p">),</span>
-            <span class="nx">handlers</span><span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">HandlerFunc</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">parsePattern</span><span class="p">(</span><span class="nx">pattern</span> <span class="kt">string</span><span class="p">)</span> <span class="p">[]</span><span class="kt">string</span> <span class="p">{</span>
-        <span class="nx">vs</span> <span class="o">:=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Split</span><span class="p">(</span><span class="nx">pattern</span><span class="p">,</span> <span class="s">&#34;/&#34;</span><span class="p">)</span>
-
-        <span class="nx">ps</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">vs</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">item</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-                <span class="nx">ps</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">ps</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nx">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;*&#39;</span> <span class="p">{</span>
-                    <span class="k">break</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">ps</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">router</span><span class="p">)</span> <span class="nf">addRoute</span><span class="p">(</span><span class="nx">method</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// register router
-</span><span class="c1"></span>        <span class="c1">// constains &#39;:&#39; or &#39;*&#39;
-</span><span class="c1"></span>        <span class="nx">ps</span> <span class="o">:=</span> <span class="nf">parsePattern</span><span class="p">(</span><span class="nx">pattern</span><span class="p">)</span>
-
-        <span class="nx">key</span> <span class="o">:=</span> <span class="nx">method</span> <span class="o">+</span> <span class="s">&#34;-&#34;</span> <span class="o">+</span> <span class="nx">pattern</span>
-        <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">roots</span><span class="p">[</span><span class="nx">method</span><span class="p">]</span>
-        <span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
-            <span class="nx">r</span><span class="p">.</span><span class="nx">roots</span><span class="p">[</span><span class="nx">method</span><span class="p">]</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">node</span><span class="p">{}</span>
-        <span class="p">}</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nx">roots</span><span class="p">[</span><span class="nx">method</span><span class="p">].</span><span class="nf">insert</span><span class="p">(</span><span class="nx">pattern</span><span class="p">,</span> <span class="nx">parts</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nx">handlers</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="p">=</span> <span class="nx">handler</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">router</span><span class="p">)</span> <span class="nf">getRoute</span><span class="p">(</span><span class="nx">method</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">path</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="o">*</span><span class="nx">node</span><span class="p">,</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// search node
-</span><span class="c1"></span>        <span class="c1">// not constains &#39;:&#39; and &#39;*&#39;
-</span><span class="c1"></span>        <span class="nx">ps</span> <span class="o">:=</span> <span class="nf">parsePattern</span><span class="p">(</span><span class="nx">pattern</span><span class="p">)</span>
-        <span class="nx">params</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span>
-        <span class="nx">root</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nx">roots</span><span class="p">[</span><span class="nx">method</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
-        <span class="p">}</span>
-
-        <span class="nx">n</span> <span class="o">:=</span> <span class="nx">root</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="nx">ps</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nx">n</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">parts</span> <span class="o">:=</span> <span class="nf">parsePattern</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">pattern</span><span class="p">)</span>
-            <span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">part</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">parts</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="nx">part</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;:&#39;</span> <span class="p">{</span>
-                    <span class="c1">// :lang
-</span><span class="c1"></span>                    <span class="c1">//[1:]=lang
-</span><span class="c1"></span>                    <span class="nx">params</span><span class="p">[</span><span class="nx">part</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span> <span class="p">=</span> <span class="nx">ps</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span>
-                <span class="p">}</span>
-                <span class="k">if</span> <span class="nx">part</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;*&#39;</span> <span class="o">&amp;&amp;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">part</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">1</span> <span class="p">{</span>
-                    <span class="c1">// *filepath
-</span><span class="c1"></span>                    <span class="c1">// [1:]=filepath
-</span><span class="c1"></span>                    <span class="nx">params</span><span class="p">[</span><span class="nx">part</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span> <span class="p">=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">ps</span><span class="p">[</span><span class="nx">index</span><span class="p">:],</span> <span class="s">&#34;/&#34;</span><span class="p">)</span>
-                    <span class="k">break</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-            <span class="k">return</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">params</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<p>  接下来我们将trie树应用到路由中去吧。我们使用<code>roots</code>来存储每种请求方式的trie树根节点。使用<code>handlers</code>存储每种请求方式的<code>HandlerFunc</code>。getRoute函数解析了<code>:</code>和<code>*</code>两种通配符，返回一个map。例如<code>/p/go/doc</code>匹配到<code>/p/:lang/doc</code>，解析结果为<code>{lang: &quot;go&quot;}</code>。</p>
+<pre><code>    // router.go
+	package geew
+	
+	type router struct {
+        roots map[string]*node
+        handlers map[string]HandlerFunc
+	}
+	
+	func newRouter() *router {
+        return &amp;router{
+            roots: make(map[string]*node),
+            handlers: make(map[string]HandlerFunc)
+        }
+	}
+	
+	func parsePattern(pattern string) []string {
+        vs := strings.Split(pattern, &quot;/&quot;)
+	
+        ps := make([]string, 0)
+        for _, item := range vs {
+            if item != &quot;&quot; {
+                ps = append(ps, item)
+                if item[0] == '*' {
+                    break
+                }
+            }
+        }
+        return ps
+	}
+	
+	func (r *router) addRoute(method string, pattern string, handler HandlerFunc) {
+        // register router
+        // constains ':' or '*'
+        ps := parsePattern(pattern)
+	
+        key := method + &quot;-&quot; + pattern
+        _, ok := r.roots[method]
+        if !ok {
+            r.roots[method] = &amp;node{}
+        }
+        r.roots[method].insert(pattern, parts, 0)
+        r.handlers[key] = handler
+	}
+	
+	func (r *router) getRoute(method string, path string) (*node, map[string]string) {
+        // search node
+        // not constains ':' and '*'
+        ps := parsePattern(pattern)
+        params = make(map[string]string)
+        root, ok := r.roots[method]
+	
+        if !ok {
+            return nil, nil
+        }
+	
+        n := root.search(ps, 0)
+	
+        if n != nil {
+            parts := parsePattern(n.pattern)
+            for index, part := range parts {
+                if part[0] == ':' {
+                    // :lang
+                    //[1:]=lang
+                    params[part[1:]] = ps[index]
+                }
+                if part[0] == '*' &amp;&amp; len(part) &gt; 1 {
+                    // *filepath
+                    // [1:]=filepath
+                    params[part[1:]] = strings.Join(ps[index:], &quot;/&quot;)
+                    break
+                }
+            }
+            return n, params
+        }
+        return nil, nil
+	}
+</code></pre>
 <h2 id="context变化">context变化</h2>
-
-<p>&emsp;&emsp;在HandlerFunc中，希望能够访问到解析的参数，因此需要对context对象增加一个属性和方法来提供对路由参数(Restful)的访问。我们将解析后的参数存储到<code>Params</code>中，通过<code>c.Param(&quot;xxx&quot;)</code>的方式获取对应的值。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// context.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">type</span> <span class="nx">Context</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">Writer</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span>
-        <span class="nx">Req</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span>
-        <span class="nx">Path</span> <span class="kt">string</span>
-        <span class="nx">Method</span> <span class="kt">string</span>
-        <span class="nx">Params</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span>
-        <span class="nx">StatusCode</span> <span class="kt">int</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="nf">Param</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-        <span class="nx">value</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Params</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
-        <span class="k">return</span> <span class="nx">value</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<p>  在HandlerFunc中，希望能够访问到解析的参数，因此需要对context对象增加一个属性和方法来提供对路由参数(Restful)的访问。我们将解析后的参数存储到<code>Params</code>中，通过<code>c.Param(&quot;xxx&quot;)</code>的方式获取对应的值。</p>
+<pre><code>    // context.go
+	package geew
+	
+	type Context struct {
+        Writer http.ResponseWriter
+        Req *http.Request
+        Path string
+        Method string
+        Params map[string]string
+        StatusCode int
+	}
+	
+	func (c *Context) Param(key string) string {
+        value, _ := c.Params[key]
+        return value
+	}
+</code></pre>
 <h2 id="router变化">router变化</h2>
-
-<p>&emsp;&emsp;router胡变化比较小，比较重要的一点是，在调用匹配到的handler前，将解析出来的路由参数赋值给Params.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// router.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">router</span><span class="p">)</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">n</span><span class="p">,</span> <span class="nx">params</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">getRoute</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">n</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nx">Params</span> <span class="p">=</span> <span class="nx">params</span>
-            <span class="nx">key</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Method</span> <span class="o">+</span> <span class="s">&#34;-&#34;</span> <span class="o">+</span> <span class="nx">n</span><span class="p">.</span><span class="nx">pattern</span>
-            <span class="nx">r</span><span class="p">.</span><span class="nx">handlers</span><span class="p">[</span><span class="nx">key</span><span class="p">](</span><span class="nx">c</span><span class="p">)</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusNotFound</span><span class="p">,</span> <span class="s">&#34;404 NOT FOUND: %s\n&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<p>  router胡变化比较小，比较重要的一点是，在调用匹配到的handler前，将解析出来的路由参数赋值给Params.</p>
+<pre><code>    // router.go
+	package geew
+	
+	func (r *router) handle(c *Context) {
+        n, params := r.getRoute(c.Method, c.Path)
+        if n != nil {
+            c.Params = params
+            key := c.Method + &quot;-&quot; + n.pattern
+            r.handlers[key](c)
+        } else {
+            c.String(http.StatusNotFound, &quot;404 NOT FOUND: %s\n&quot;, c.Path)
+        }
+	}
+</code></pre>
 <h2 id="测试">测试</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// router_test.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
+<pre><code>    // router_test.go
+	package geew
+	
+	func TestParsePattern(t *testing.T) {
+        ok := reflect.DeepEqual(parsePattern(&quot;/p/:name&quot;), []string{&quot;p&quot;, &quot;:name&quot;})
+        ok = ok &amp;&amp; reflect.DeepEqual(parsePattern(&quot;/p/*&quot;), []string{&quot;p&quot;, &quot;*&quot;})
+        ok = ok &amp;&amp; reflect.DeepEqual(parsePattern(&quot;/p/*name/*&quot;), []string{&quot;p&quot;, &quot;*name&quot;})
+        if !ok {
+            t.Fatal(&quot;test parsePattern failed&quot;)
+        }
+	}
+	
+	func newTestRouter() *router {
+        r := newRouter()
+        r.addRoute(&quot;GET&quot;, &quot;/&quot;, nil)
+        r.addRoute(&quot;GET&quot;, &quot;/hello/:name&quot;, nil)
+        r.addRoute(&quot;GET&quot;, &quot;/hello/b/c&quot;, nil)
+        r.addRoute(&quot;GET&quot;, &quot;/hi/:name&quot;, nil)
+        r.addRoute(&quot;GET&quot;, &quot;/assets/*filepath&quot;, nil)
+        return r
+	}
+	
+	func TestGetRoute(t *testing.T) {
+        r := newTestRouter()
+        n, ps := r.getRoute(&quot;GET&quot;, &quot;/hello/geew&quot;)
+	
+        if n == nil {
+            t.Fatal(&quot;nil shouldn't be returned&quot;)
+        }
+	
+        if n.pattern != &quot;/hello/:name&quot; {
+            t.Fatal(&quot;should match /hello/:name&quot;)
+        }
+	
+        if ps[&quot;name&quot;] != &quot;geew&quot; {
+            t.Fatal(&quot;name should be equal to 'geew'&quot;)
+        }
+	
+        fmt.Printf(&quot;matched path: %s, params['name']: %s\n&quot;, n.pattern, ps[&quot;name&quot;])
+	
+	}
+</code></pre>
 
-    <span class="kd">func</span> <span class="nf">TestParsePattern</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">DeepEqual</span><span class="p">(</span><span class="nf">parsePattern</span><span class="p">(</span><span class="s">&#34;/p/:name&#34;</span><span class="p">),</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;p&#34;</span><span class="p">,</span> <span class="s">&#34;:name&#34;</span><span class="p">})</span>
-        <span class="nx">ok</span> <span class="p">=</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">DeepEqual</span><span class="p">(</span><span class="nf">parsePattern</span><span class="p">(</span><span class="s">&#34;/p/*&#34;</span><span class="p">),</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;p&#34;</span><span class="p">,</span> <span class="s">&#34;*&#34;</span><span class="p">})</span>
-        <span class="nx">ok</span> <span class="p">=</span> <span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">DeepEqual</span><span class="p">(</span><span class="nf">parsePattern</span><span class="p">(</span><span class="s">&#34;/p/*name/*&#34;</span><span class="p">),</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;p&#34;</span><span class="p">,</span> <span class="s">&#34;*name&#34;</span><span class="p">})</span>
-        <span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;test parsePattern failed&#34;</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">newTestRouter</span><span class="p">()</span> <span class="o">*</span><span class="nx">router</span> <span class="p">{</span>
-        <span class="nx">r</span> <span class="o">:=</span> <span class="nf">newRouter</span><span class="p">()</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;/hello/:name&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;/hello/b/c&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;/hi/:name&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;/assets/*filepath&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nx">r</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">TestGetRoute</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">r</span> <span class="o">:=</span> <span class="nf">newTestRouter</span><span class="p">()</span>
-        <span class="nx">n</span><span class="p">,</span> <span class="nx">ps</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">getRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="s">&#34;/hello/geew&#34;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nx">n</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;nil shouldn&#39;t be returned&#34;</span><span class="p">)</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="nx">n</span><span class="p">.</span><span class="nx">pattern</span> <span class="o">!=</span> <span class="s">&#34;/hello/:name&#34;</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;should match /hello/:name&#34;</span><span class="p">)</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="nx">ps</span><span class="p">[</span><span class="s">&#34;name&#34;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#34;geew&#34;</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;name should be equal to &#39;geew&#39;&#34;</span><span class="p">)</span>
-        <span class="p">}</span>
-
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;matched path: %s, params[&#39;name&#39;]: %s\n&#34;</span><span class="p">,</span> <span class="nx">n</span><span class="p">.</span><span class="nx">pattern</span><span class="p">,</span> <span class="nx">ps</span><span class="p">[</span><span class="s">&#34;name&#34;</span><span class="p">])</span>
-
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
     </div>
 
     <div class="post-copyright">

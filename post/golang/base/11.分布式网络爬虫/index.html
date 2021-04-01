@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/base/11.%E5%88%86%E5%B8%83%E5%BC%8F%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB/" />
@@ -41,22 +41,15 @@
 <meta property="og:title" content="[golang base(十一) | 分布式网络爬虫]" />
 <meta property="og:description" content="原因 有一定的复杂性 可以灵活调整项目的复杂性 平衡语言/爬虫之间的比重 爬虫分类 通用爬虫，如baidu，google 聚焦爬虫，从互联网获取结构化数" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/base/11.%E5%88%86%E5%B8%83%E5%BC%8F%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB/" />
-<meta property="article:published_time" content="2020-03-06T17:08:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-03-06T17:08:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/base/11.%E5%88%86%E5%B8%83%E5%BC%8F%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-03-06T17:08:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-03-06T17:08:56&#43;08:00" />
 
 <meta itemprop="name" content="[golang base(十一) | 分布式网络爬虫]">
-<meta itemprop="description" content="原因 有一定的复杂性 可以灵活调整项目的复杂性 平衡语言/爬虫之间的比重 爬虫分类 通用爬虫，如baidu，google 聚焦爬虫，从互联网获取结构化数">
-
-
-<meta itemprop="datePublished" content="2020-03-06T17:08:56&#43;08:00" />
+<meta itemprop="description" content="原因 有一定的复杂性 可以灵活调整项目的复杂性 平衡语言/爬虫之间的比重 爬虫分类 通用爬虫，如baidu，google 聚焦爬虫，从互联网获取结构化数"><meta itemprop="datePublished" content="2020-03-06T17:08:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-03-06T17:08:56&#43;08:00" />
-<meta itemprop="wordCount" content="5127">
-
-
-
-<meta itemprop="keywords" content="golang,未完待续," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="4383">
+<meta itemprop="keywords" content="golang,未完待续," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[golang base(十一) | 分布式网络爬虫]"/>
 <meta name="twitter:description" content="原因 有一定的复杂性 可以灵活调整项目的复杂性 平衡语言/爬虫之间的比重 爬虫分类 通用爬虫，如baidu，google 聚焦爬虫，从互联网获取结构化数"/>
 
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/golang/base/"> golang/base </a>
             </div>
-          <span class="more-meta"> 约 5127 字 </span>
-          <span class="more-meta"> 预计阅读 11 分钟 </span>
+          <span class="more-meta"> 约 4383 字 </span>
+          <span class="more-meta"> 预计阅读 9 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,1051 +135,293 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#原因">原因</a></li>
-<li><a href="#爬虫分类">爬虫分类</a></li>
-<li><a href="#总体结构">总体结构</a></li>
-<li><a href="#golang的库-框架">golang的库/框架</a></li>
-<li><a href="#爬虫主题">爬虫主题</a></li>
-<li><a href="#尝试人工获取内容">尝试人工获取内容</a>
-<ul>
-<li><a href="#如何发现用户">如何发现用户</a></li>
-</ul></li>
-<li><a href="#爬虫总体算法">爬虫总体算法</a></li>
-<li><a href="#步骤">步骤</a></li>
-<li><a href="#单任务版爬虫">单任务版爬虫</a>
-<ul>
-<li><a href="#获取城市列表">获取城市列表</a>
-<ul>
-<li><a href="#正则表达式">正则表达式</a></li>
-</ul></li>
-<li><a href="#继续">继续</a></li>
-<li><a href="#抽象解析器">抽象解析器</a></li>
-<li><a href="#抽象架构">抽象架构</a></li>
-<li><a href="#城市解析器">城市解析器</a></li>
-<li><a href="#用户解析器">用户解析器</a></li>
-</ul></li>
-<li><a href="#并发版">并发版</a>
-<ul>
-<li><a href="#并发结构">并发结构</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#如何发现用户">如何发现用户</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#获取城市列表">获取城市列表</a>
+      <ul>
+        <li><a href="#正则表达式">正则表达式</a></li>
+      </ul>
+    </li>
+    <li><a href="#继续">继续</a></li>
+    <li><a href="#抽象解析器">抽象解析器</a></li>
+    <li><a href="#抽象架构">抽象架构</a></li>
+    <li><a href="#城市解析器">城市解析器</a></li>
+    <li><a href="#用户解析器">用户解析器</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#并发结构">并发结构</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="原因">原因</h1>
-
+      <h1 id="原因">原因</h1>
 <ul>
 <li>有一定的复杂性</li>
 <li>可以灵活调整项目的复杂性</li>
 <li>平衡语言/爬虫之间的比重</li>
 </ul>
-
 <h1 id="爬虫分类">爬虫分类</h1>
-
 <ul>
 <li>通用爬虫，如baidu，google</li>
 <li>聚焦爬虫，从互联网获取结构化数据</li>
 </ul>
-
 <h1 id="总体结构">总体结构</h1>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawler.png" alt="avatar" /></p>
-
-<h1 id="golang的库-框架">golang的库/框架</h1>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawler.png" alt="avatar"></p>
+<h1 id="golang的库框架">golang的库/框架</h1>
 <ul>
 <li>henrylee2cn/pholcus</li>
 <li>colly</li>
 <li>gocrawl</li>
 <li>hu17889/go_spider</li>
 </ul>
-
 <blockquote>
 <p>将不使用现成的库/框架</p>
-
+</blockquote>
+<blockquote>
 <p>使用ElasticSearch作为数据存储</p>
-
+</blockquote>
+<blockquote>
 <p>使用Go标准模板库实现http数据展示</p>
 </blockquote>
-
 <h1 id="爬虫主题">爬虫主题</h1>
-
 <ul>
 <li>内容： 如新闻，博客，社区。。。</li>
 <li>人：QQ空间，人人网，微博，微信，facebook？比较难
-
 <ul>
 <li>相亲网站，求职网站？静态简单，切忌隐私数据</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h1 id="尝试人工获取内容">尝试人工获取内容</h1>
-
-<p>&emsp;&emsp;target: <a href="http://www.zhenai.com/zhenghun">珍爱网</a>，因为该网站的隐私数据相对求职网站较少，并且目录很明显.对于翻页操作也很方便，直接反应在了url上，还有“猜你喜欢”可以连接跳转，但是需要处理闭环问题，重复的人比较多。每个用户主页的url都自带了有顺序的id，这也很有帮助</p>
-
+<p>  target: <a href="http://www.zhenai.com/zhenghun">珍爱网</a>，因为该网站的隐私数据相对求职网站较少，并且目录很明显.对于翻页操作也很方便，直接反应在了url上，还有“猜你喜欢”可以连接跳转，但是需要处理闭环问题，重复的人比较多。每个用户主页的url都自带了有顺序的id，这也很有帮助</p>
 <h2 id="如何发现用户">如何发现用户</h2>
-
 <ul>
 <li>通过城市列表-&gt;城市-&gt;(下一页)-&gt;用户</li>
 <li>通过用户-&gt;猜你喜欢</li>
 <li>通过已有用户id+1来猜测用户id</li>
 </ul>
-
 <h1 id="爬虫总体算法">爬虫总体算法</h1>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/city.png" alt="avatar" /></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/city.png" alt="avatar"></p>
 <h1 id="步骤">步骤</h1>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/bingfa.png" alt="avatar" /></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/bingfa.png" alt="avatar"></p>
 <h1 id="单任务版爬虫">单任务版爬虫</h1>
-
 <ul>
-<li><p>目标： 获取并打印所有城市第一页用户的详细信息</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">main</span>
-
-<span class="c1">// 猜编码
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">determineEncoding</span><span class="p">(</span><span class="nx">r</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Reader</span><span class="p">)</span> <span class="nx">encoding</span><span class="p">.</span><span class="nx">Encoding</span> <span class="p">{</span>
-    <span class="nx">bytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">r</span><span class="p">).</span><span class="nf">Peek</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="nx">e</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">charset</span><span class="p">.</span><span class="nf">DetermineEncoding</span><span class="p">(</span><span class="nx">bytes</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nx">e</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;http://www.zhenai.com/zhenghun&#34;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">defer</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">StatusCode</span> <span class="o">!=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOk</span> <span class="p">{</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Error: status code&#34;</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">StatusCode</span><span class="p">)</span>
-        <span class="k">return</span>
-    <span class="p">}</span>
-
-    <span class="nx">e</span> <span class="o">:=</span> <span class="nf">determineEncoding</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
-    <span class="nx">uft8Reader</span> <span class="o">:=</span> <span class="nx">transform</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">())</span>
-
-    <span class="nx">all</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">utf8Reader</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="c1">// fmt.Printf(&#34;%s\n&#34;, all)发现城市乱码，发现编码是gbk格式, 需要transform  
-</span><span class="c1"></span><span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<h2 id="获取城市列表">获取城市列表</h2>
-
-<p>&emsp;&emsp;我们采用正则表达式来获取信息的位置，该网页中数据都存放在css<code>$('#cityList&gt;dd&gt;a')</code>下。</p></li>
+<li>
+<p>目标： 获取并打印所有城市第一页用户的详细信息</p>
+<pre><code>  package main
+	
+  // 猜编码
+  func determineEncoding(r io.Reader) encoding.Encoding {
+      bytes, err := bufio.NewReader(r).Peek(1024)
+      if err != nil {
+          panic(err)
+      }
+      e, _, _ := charset.DetermineEncoding(bytes, &quot;&quot;)
+      return e
+  }
+	
+  func main() {
+      resp, err := http.Get(&quot;http://www.zhenai.com/zhenghun&quot;)
+      if err != nil {
+          panic(err)
+      }
+      defer resp.Body.Close()
+	
+      if resp.StatusCode != http.StatusOk {
+          fmt.Println(&quot;Error: status code&quot;, resp.StatusCode)
+          return
+      }
+	
+      e := determineEncoding(resp.Body)
+      uft8Reader := transform.NewReader(resp.Body, e.NewDecoder())
+	
+      all, err := ioutil.ReadAll(utf8Reader)
+      if err != nil {
+          panic(err)
+      }
+      // fmt.Printf(&quot;%s\n&quot;, all)发现城市乱码，发现编码是gbk格式, 需要transform  
+  }
+</code></pre>
+</li>
 </ul>
-
+<h2 id="获取城市列表">获取城市列表</h2>
+<p>  我们采用正则表达式来获取信息的位置，该网页中数据都存放在css<code>$('#cityList&gt;dd&gt;a')</code>下。</p>
 <h3 id="正则表达式">正则表达式</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span> 
-
-    <span class="kd">const</span> <span class="nx">text</span> <span class="p">=</span> <span class="s">&#34;My email is ccmouse@gmail.com&#34;</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">re</span> <span class="o">:=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="err">&#39;</span><span class="p">[</span><span class="nx">a</span><span class="o">-</span><span class="nx">zA</span><span class="o">-</span><span class="nx">Z0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">+</span><span class="err">@</span><span class="p">[</span><span class="nx">a</span><span class="o">-</span><span class="nx">zA</span><span class="o">-</span><span class="nx">Z0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">+</span><span class="err">\</span><span class="p">.[</span><span class="nx">a</span><span class="o">-</span><span class="nx">zA</span><span class="o">-</span><span class="nx">Z0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">+</span><span class="err">&#39;</span><span class="p">)</span>
-        <span class="nx">match</span> <span class="o">:=</span> <span class="nx">re</span><span class="p">.</span><span class="nf">Findstring</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">match</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="kn">package</span> <span class="nx">main</span> 
-
-    <span class="kd">const</span> <span class="nx">text</span> <span class="p">=</span> <span class="s">`
-</span><span class="s">    My email is ccmouse@gmail.com
-</span><span class="s">    email is abc@def.org
-</span><span class="s">    email2 is    kkk@qq.com
-</span><span class="s">    email3 is ddd@abc.com.cn
-</span><span class="s">    `</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">re</span> <span class="o">:=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`[a-zA-Z0-9]+@[a-zA-Z0-9.]+\.[a-zA-Z0-9]+`</span><span class="p">)</span>
-        <span class="nx">match</span> <span class="o">:=</span> <span class="nx">re</span><span class="p">.</span><span class="nf">FindAllString</span><span class="p">(</span><span class="nx">text</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">match</span><span class="p">)</span>
-        <span class="c1">// output
-</span><span class="c1"></span>        <span class="c1">// [ccmouse@gmail.com abc@def.org kkk@qq.com ddd@abc.com.cn]
-</span><span class="c1"></span>
-        <span class="nx">re</span> <span class="o">:=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\(.[a-zA-Z0-9]+)`</span><span class="p">)</span>
-        <span class="nx">match</span> <span class="p">=</span> <span class="nx">re</span><span class="p">.</span><span class="nf">FindAllStringSubmatch</span><span class="p">(</span><span class="nx">text</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">m</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">match</span> <span class="p">{</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="c1">// output
-</span><span class="c1"></span>        <span class="c1">// [ccmouse@gmail.com ccmouse gmail .com]
-</span><span class="c1"></span>        <span class="c1">// [abc@def.org abc def .org]
-</span><span class="c1"></span>        <span class="c1">// [kkk@qq.com kkk qq .com]
-</span><span class="c1"></span>        <span class="c1">// [ddd@abc.com.cn ddd abc .com.cn]
-</span><span class="c1"></span>    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<pre><code>    package main 
+	
+	const text = &quot;My email is ccmouse@gmail.com&quot;
+	
+	func main() {
+        re := regexp.MustCompile('[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+')
+        match := re.Findstring(text)
+        fmt.Println(match)
+	}
+	package main 
+	
+	const text = `
+	My email is ccmouse@gmail.com
+	email is abc@def.org
+	email2 is    kkk@qq.com
+	email3 is ddd@abc.com.cn
+	`
+	
+	func main() {
+        re := regexp.MustCompile(`[a-zA-Z0-9]+@[a-zA-Z0-9.]+\.[a-zA-Z0-9]+`)
+        match := re.FindAllString(text, -1)
+        fmt.Println(match)
+        // output
+        // [ccmouse@gmail.com abc@def.org kkk@qq.com ddd@abc.com.cn]
+	
+        re := regexp.MustCompile(`([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\(.[a-zA-Z0-9]+)`)
+        match = re.FindAllStringSubmatch(text, -1)
+        for _, m := range match {
+            fmt.Println(m)
+        }
+        // output
+        // [ccmouse@gmail.com ccmouse gmail .com]
+        // [abc@def.org abc def .org]
+        // [kkk@qq.com kkk qq .com]
+        // [ddd@abc.com.cn ddd abc .com.cn]
+	}
+</code></pre>
 <h2 id="继续">继续</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="c1">// 猜编码
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">determineEncoding</span><span class="p">(</span><span class="nx">r</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Reader</span><span class="p">)</span> <span class="nx">encoding</span><span class="p">.</span><span class="nx">Encoding</span> <span class="p">{</span>
-        <span class="nx">bytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">r</span><span class="p">).</span><span class="nf">Peek</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="nx">e</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">charset</span><span class="p">.</span><span class="nf">DetermineEncoding</span><span class="p">(</span><span class="nx">bytes</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nx">e</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">printCityList</span><span class="p">(</span><span class="nx">contents</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">re</span> <span class="o">:=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`&lt;a href=&#34;(http://www.zhenai.com/zhenghun[0-9a-z]+)&#34;[^&gt;]*&gt;([^&lt;]+)&lt;/a&gt;`</span><span class="p">)</span>
-        <span class="nx">matches</span> <span class="o">:=</span> <span class="nx">re</span><span class="p">.</span><span class="nf">FindAllSubmatch</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// return [][][]string
-</span><span class="c1"></span>        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">m</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">matches</span><span class="p">{</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;City: %s, URL: %s\n&#34;</span><span class="p">,</span> <span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="p">}</span>
-        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Matches found: %d\n&#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">matches</span><span class="p">))</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;http://www.zhenai.com/zhenghun&#34;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">defer</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">StatusCode</span> <span class="o">!=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOk</span> <span class="p">{</span>
-            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Error: status code&#34;</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">StatusCode</span><span class="p">)</span>
-            <span class="k">return</span>
-        <span class="p">}</span>
-
-        <span class="nx">e</span> <span class="o">:=</span> <span class="nf">determineEncoding</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
-        <span class="nx">uft8Reader</span> <span class="o">:=</span> <span class="nx">transform</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">())</span>
-
-        <span class="nx">all</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">utf8Reader</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="c1">// fmt.Printf(&#34;%s\n&#34;, all)发现城市乱码，发现编码是gbk格式, 需要transform  
-</span><span class="c1"></span>    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;从上面的程序中已经获取到了城市列表。我们需要一些解析器来专门解析数据。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/parse.png" alt="avatar" /></p>
-
+<pre><code>    package main
+	
+	// 猜编码
+	func determineEncoding(r io.Reader) encoding.Encoding {
+        bytes, err := bufio.NewReader(r).Peek(1024)
+        if err != nil {
+            panic(err)
+        }
+        e, _, _ := charset.DetermineEncoding(bytes, &quot;&quot;)
+        return e
+	}
+	
+	func printCityList(contents []byte) {
+        re := regexp.MustCompile(`&lt;a href=&quot;(http://www.zhenai.com/zhenghun[0-9a-z]+)&quot;[^&gt;]*&gt;([^&lt;]+)&lt;/a&gt;`)
+        matches := re.FindAllSubmatch(contents, -1) // return [][][]string
+        for _, m := range matches{
+            fmt.Printf(&quot;City: %s, URL: %s\n&quot;, m[2], m[1])
+        }
+        fmt.Printf(&quot;Matches found: %d\n&quot;, len(matches))
+	}
+	
+	func main() {
+        resp, err := http.Get(&quot;http://www.zhenai.com/zhenghun&quot;)
+        if err != nil {
+            panic(err)
+        }
+        defer resp.Body.Close()
+	
+        if resp.StatusCode != http.StatusOk {
+            fmt.Println(&quot;Error: status code&quot;, resp.StatusCode)
+            return
+        }
+	
+        e := determineEncoding(resp.Body)
+        uft8Reader := transform.NewReader(resp.Body, e.NewDecoder())
+	
+        all, err := ioutil.ReadAll(utf8Reader)
+        if err != nil {
+            panic(err)
+        }
+        // fmt.Printf(&quot;%s\n&quot;, all)发现城市乱码，发现编码是gbk格式, 需要transform  
+	}
+</code></pre>
+<p>  从上面的程序中已经获取到了城市列表。我们需要一些解析器来专门解析数据。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/parse.png" alt="avatar"></p>
 <h2 id="抽象解析器">抽象解析器</h2>
-
 <ul>
 <li>输入：utf-8编码的文本</li>
 <li>输出：Request{URL, 对应Parser}列表， Item列表</li>
 </ul>
-
 <h2 id="抽象架构">抽象架构</h2>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/engine.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;engine驱动，有一些seed种子页面，对种子进行Request包装，在上面程序中就是城市列表的url和城市列表的parser，送给engine之后，加入到任务队列，取出任务之后，将任务的URL送给Fetcher，Fetcher就是一个从网络上获取数据的模块，Fetcher返回text文本给engine，engine给Parser，返回request和item列表，这些requests就是我们将来要做的任务，那么就把他们加入任务队列。目前来说item列表，只是打印操作。</p>
-
-<p>&emsp;&emsp;上面代码中func main里面其实是Fetcher所做的事情，我们把它们摘出来。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// fetcher.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">fetcher</span>
-
-    <span class="c1">// 猜编码
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">determineEncoding</span><span class="p">(</span><span class="nx">r</span> <span class="nx">io</span><span class="p">.</span><span class="nx">Reader</span><span class="p">)</span> <span class="nx">encoding</span><span class="p">.</span><span class="nx">Encoding</span> <span class="p">{</span>
-        <span class="nx">bytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">r</span><span class="p">).</span><span class="nf">Peek</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;fetcher error: %v&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nx">unicode</span><span class="p">.</span><span class="nx">UTF8</span>
-        <span class="p">}</span>
-        <span class="nx">e</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">charset</span><span class="p">.</span><span class="nf">DetermineEncoding</span><span class="p">(</span><span class="nx">bytes</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nx">e</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">Fetch</span><span class="p">(</span><span class="nx">url</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-       <span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">defer</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">StatusCode</span> <span class="o">!=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">StatusOk</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> 
-                <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;wrong status code: %d&#34;</span><span class="p">,</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">StatusCode</span><span class="p">)</span>
-        <span class="p">}</span>
-
-        <span class="nx">e</span> <span class="o">:=</span> <span class="nf">determineEncoding</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
-        <span class="nx">uft8Reader</span> <span class="o">:=</span> <span class="nx">transform</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">())</span>
-
-        <span class="k">return</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">utf8Reader</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;接下来隔离parser和engine</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// engine/types.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">engine</span>
-
-    <span class="kd">type</span> <span class="nx">Request</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">Url</span>         <span class="kt">string</span>
-        <span class="nx">ParserFunc</span>  <span class="kd">func</span><span class="p">([]</span><span class="kt">byte</span><span class="p">)</span> <span class="nx">ParseResult</span>
-    <span class="p">}</span>
-
-    <span class="kd">type</span> <span class="nx">ParseResult</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">Requests</span>    <span class="p">[]</span><span class="nx">Request</span>
-        <span class="nx">Items</span>       <span class="p">[]</span><span class="kd">interface</span><span class="p">{}</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">NilParser</span><span class="p">([]</span><span class="kt">byte</span><span class="p">)</span> <span class="nx">ParseResult</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">ParseResult</span><span class="p">{}</span>
-    <span class="p">}</span>
-
-    <span class="c1">// zhenai/parser/citylist.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">parser</span>
-
-    <span class="kd">const</span> <span class="nx">cityListRe</span> <span class="p">=</span> <span class="s">`&lt;a href=&#34;(http://www.zhenai.com/zhenghun/[0-9a-z]+)&#34;[^&gt;]*&gt;([^&lt;]+)&lt;/a&gt;`</span>
-
-    <span class="kd">func</span> <span class="nf">ParseCityList</span><span class="p">(</span><span class="nx">contents</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ParseResult</span><span class="p">{</span>
-        <span class="nx">re</span> <span class="o">:=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="nx">cityListRe</span><span class="p">)</span>
-            <span class="nx">matches</span> <span class="o">:=</span> <span class="nx">re</span><span class="p">.</span><span class="nf">FindAllSubmatch</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// return [][][]string
-</span><span class="c1"></span>
-            <span class="c1">// 每一个URL就是一个ParseResult
-</span><span class="c1"></span>            <span class="nx">result</span> <span class="o">:=</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ParseResult</span><span class="p">{}</span>
-            <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">m</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">matches</span><span class="p">{</span>
-                <span class="c1">// 城市名字
-</span><span class="c1"></span>                <span class="nx">result</span><span class="p">.</span><span class="nx">Items</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Items</span><span class="p">,</span> <span class="s">&#34;City &#34;</span> <span class="o">+</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-                <span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span><span class="p">,</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">{</span>
-                    <span class="nx">Url</span><span class="p">:</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                    <span class="c1">// 这里的Parser其实已经是第二层的城市解析器了
-</span><span class="c1"></span>                    <span class="nx">ParserFunc</span><span class="p">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">NilParser</span><span class="p">,</span>
-                <span class="p">})</span>
-            <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">result</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;上面出现的NilParser,主要是起到一个临时不会运行出错的作用，因为我们还没有实现其它的Parser。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// engine/engine.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">engine</span>
-
-    <span class="kd">func</span> <span class="nf">Run</span><span class="p">(</span><span class="nx">seeds</span> <span class="o">...</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">requests</span> <span class="p">[]</span><span class="nx">Request</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">r</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">seeds</span> <span class="p">{</span>
-            <span class="nx">requests</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">requests</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="nx">r</span> <span class="o">:=</span> <span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="nx">requests</span> <span class="p">=</span> <span class="nx">requests</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-
-            <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;fetching %s&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Url</span><span class="p">)</span>
-            <span class="nx">body</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fetcher</span><span class="p">.</span><span class="nf">Fetch</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Url</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-                <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Fetcher: error fetching url %s: %v&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Url</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-                <span class="k">continue</span>
-            <span class="p">}</span>
-
-            <span class="c1">// 开始解析
-</span><span class="c1"></span>            <span class="nx">parseResult</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">ParserFunc</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span>
-            <span class="c1">// 加入队列
-</span><span class="c1"></span>            <span class="nx">resuests</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">Requests</span><span class="o">...</span><span class="p">)</span> 
-
-            <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">Items</span> <span class="p">{</span>
-                <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;got item %v&#34;</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">engine</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">{</span>
-            <span class="nx">Url</span><span class="p">:</span>        <span class="s">&#34;http://www.zhenai.com/zhenghun&#34;</span><span class="p">,</span>
-            <span class="nx">ParserFunc</span><span class="p">:</span> <span class="nx">parser</span><span class="p">.</span><span class="nx">ParseCityList</span><span class="p">,</span>
-        <span class="p">})</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;我们看到main现在已经很简洁了，Run启动后的流程和图片中的抽象架构图一致。养成一个好习惯，编写测试案例，我们来测试一下parsecitylist。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// zhenai/parser/citylist_test.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">parser</span>
-
-    <span class="kn">import</span> <span class="p">(</span>
-        <span class="s">&#34;testing&#34;</span>
-    <span class="p">)</span>
-
-    <span class="kd">func</span> <span class="nf">TestParseCityList</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-        <span class="cm">/*
-</span><span class="cm">            contents, err := fetcher.Fetch(
-</span><span class="cm">                &#34;http://www.zhenai.com/zhenghun&#34;
-</span><span class="cm">            )
-</span><span class="cm">            if err != nil {
-</span><span class="cm">                panic(err)
-</span><span class="cm">            }
-</span><span class="cm">            fmt.Printf(&#34;%s\n&#34;, contens)
-</span><span class="cm">            我们发现，打印下来的html文件头部少了一些符号。
-</span><span class="cm">            猜测一下，是哪里除了问题？
-</span><span class="cm">            回顾一下我们编写的猜测byte编码的程序，我们使用Reader peek了1024字节
-</span><span class="cm">            应该就是这1024字节不见了。为什么呢？
-</span><span class="cm">            bufio.NewReader(r).Peek(1024) 
-</span><span class="cm">            bufio对r的1024字节读取后存了起来，下次读的时候从1025开始读，这就是bufio的作用。
-</span><span class="cm">            既然如此，那我们就不传Reader对象了，直接传bufio.Reader，这样就算读了1024字节bufio自身不会变
-</span><span class="cm">
-</span><span class="cm">            func determineEncoding(r *bufio.Reader) encoding.Encoding {
-</span><span class="cm">                bytes, err := r.Peek(1024)
-</span><span class="cm">                ....
-</span><span class="cm">            }
-</span><span class="cm">
-</span><span class="cm">            func Fetch(url string) ([]byte, error) {
-</span><span class="cm">                ....
-</span><span class="cm">                bodyReader := bufio.NewReader(resp.Body)
-</span><span class="cm">                e := determineEncoding(bodyReader)
-</span><span class="cm">                utf8Reader := transform.NewReader(bodyReader, e.NewDecoder())
-</span><span class="cm">                return ioutil.ReadAll(utf8Reader)
-</span><span class="cm">            }
-</span><span class="cm">        */</span>
-        <span class="c1">// 将网站主页的内容提前存储在html文件中
-</span><span class="c1"></span>        <span class="nx">contents</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadFile</span><span class="p">(</span><span class="s">&#34;citylist_test_data.html&#34;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
-        <span class="p">}</span>
-
-        <span class="nx">result</span> <span class="o">:=</span> <span class="nf">ParseCityList</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
-
-        <span class="kd">const</span> <span class="nx">resultSize</span> <span class="p">=</span> <span class="mi">470</span>
-        <span class="nx">expectedUrls</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
-            <span class="s">&#34;http://www.zhenai.com/zhenghun/aba&#34;</span><span class="p">,</span>
-            <span class="s">&#34;http://www.zhenai.com/zhenghun/akesu&#34;</span><span class="p">,</span>
-            <span class="s">&#34;http://www.zhenai.com/zhenghun/alashanmeng&#34;</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="nx">expectedCities</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span> <span class="p">{</span>
-            <span class="s">&#34;City 阿坝&#34;</span><span class="p">,</span> <span class="s">&#34;City 阿克苏&#34;</span><span class="p">,</span> <span class="s">&#34;City 阿拉善盟&#34;</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">url</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">expectedUirls</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Url</span> <span class="o">!=</span> <span class="nx">url</span> <span class="p">{</span>
-                <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;expected url #%d: %s; but was %s&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">url</span><span class="p">,</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Url</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">city</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">expectedCities</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Items</span><span class="p">[</span><span class="nx">i</span><span class="p">].(</span><span class="kt">string</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">city</span> <span class="p">{</span>
-                <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;expected city #%d: %s; but was %s&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">city</span><span class="p">,</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Items</span><span class="p">[</span><span class="nx">i</span><span class="p">].(</span><span class="kt">string</span><span class="p">))</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">Requests</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">resultSize</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;result should have %d requests; but had %d&#34;</span><span class="p">,</span> <span class="nx">resultSize</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span><span class="p">))</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">Items</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">resultSize</span> <span class="p">{</span>
-            <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;result should have %d items; but had %d&#34;</span><span class="p">,</span> <span class="nx">resultSize</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Items</span><span class="p">))</span>
-        <span class="p">}</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<h2 id="城市解析器">城市解析器</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// zhanai/parser/city.go
-</span><span class="c1"></span>
-    <span class="kn">package</span> <span class="nx">parser</span>
-
-    <span class="kd">const</span> <span class="nx">cityRe</span> <span class="p">=</span> <span class="s">`&lt;a href=&#34;(http://album.zhenai.com/u/[0-9]+)&#34;[^&gt;]*&gt;([^&lt;]+)&lt;/a&gt;`</span>
-
-    <span class="kd">func</span> <span class="nf">ParseCity</span><span class="p">(</span><span class="nx">contents</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ParseResult</span> <span class="p">{</span>
-        <span class="nx">re</span> <span class="o">:=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="nx">cityRe</span><span class="p">)</span>
-        <span class="nx">matches</span> <span class="o">:=</span> <span class="nx">re</span><span class="p">.</span><span class="nf">FindAllSubmatch</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="nx">result</span> <span class="o">:=</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ParseResult</span><span class="p">{}</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">m</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">matches</span> <span class="p">{</span>
-            <span class="nx">result</span><span class="p">.</span><span class="nx">Items</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Items</span><span class="p">,</span> <span class="s">&#34;User &#34;</span> <span class="o">+</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m2</span><span class="p">))</span>
-            <span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span><span class="p">,</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">{</span>
-                <span class="nx">Url</span><span class="p">:</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="nx">ParserFunc</span><span class="p">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">NilParser</span><span class="p">,</span>
-            <span class="p">})</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">result</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;这时候就可以把ParserCityList中的NilParser修改为ParseCity了
-        func ParseCityList(contents []byte) engine.ParseResult {
-            &hellip;
-            result.Requests = append(result.Requests, engine.Request{
-                Url: string(m[1]),
-                parserFunc: ParseCity,
-            })
-        }</p>
-
-<h2 id="用户解析器">用户解析器</h2>
-
-<p>&emsp;&emsp;用户自身的信息和择偶条件，有重复的字段，我们采用正则和css选择器来获取。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// model/profile.go
-</span><span class="c1"></span>
-    <span class="kn">package</span> <span class="nx">model</span>
-
-    <span class="kd">type</span> <span class="nx">Profile</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">Name</span>            <span class="kt">string</span>      <span class="c1">// 姓名
-</span><span class="c1"></span>        <span class="nx">Gender</span>          <span class="kt">string</span>      <span class="c1">// 性别
-</span><span class="c1"></span>        <span class="nx">Age</span>             <span class="kt">int</span>         <span class="c1">// 年龄
-</span><span class="c1"></span>        <span class="nx">Height</span>          <span class="kt">int</span>         <span class="c1">// 身高
-</span><span class="c1"></span>        <span class="nx">Weight</span>          <span class="kt">int</span>         <span class="c1">// 体重
-</span><span class="c1"></span>        <span class="nx">Income</span>          <span class="kt">string</span>      <span class="c1">// 收入
-</span><span class="c1"></span>        <span class="nx">Marriage</span>        <span class="kt">string</span>      <span class="c1">// 婚姻状况
-</span><span class="c1"></span>        <span class="nx">Education</span>       <span class="kt">string</span>      <span class="c1">// 教育
-</span><span class="c1"></span>        <span class="nx">Occupation</span>      <span class="kt">string</span>      <span class="c1">// 职业
-</span><span class="c1"></span>        <span class="nx">Hokou</span>           <span class="kt">string</span>      <span class="c1">// 户口
-</span><span class="c1"></span>        <span class="nx">Xinzuo</span>          <span class="kt">string</span>      <span class="c1">// 星座
-</span><span class="c1"></span>        <span class="nx">House</span>           <span class="kt">string</span>      <span class="c1">// 房子
-</span><span class="c1"></span>        <span class="nx">Car</span>             <span class="kt">string</span>      <span class="c1">// 车子
-</span><span class="c1"></span>    <span class="p">}</span>
-
-    <span class="c1">// zhenai/parser/profile.go
-</span><span class="c1"></span>
-    <span class="kn">package</span> <span class="nx">parser</span>
-
-    <span class="c1">// 由于正则比较多，不能每次调用func去编译，比较耗时，这里直接先编译
-</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">ageRe</span> <span class="p">=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`&lt;td&gt;&lt;span class=&#34;label&#34;&gt;年龄: &lt;/span&gt;([\d]+)岁&lt;/td&gt;`</span><span class="p">)</span>
-    <span class="kd">var</span> <span class="nx">heightRe</span> <span class="p">=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`&lt;td&gt;&lt;span class=&#34;label&#34;&gt;身高: &lt;/span&gt;(\d+)CM&lt;/td&gt;`</span><span class="p">)</span>
-    <span class="kd">var</span> <span class="nx">incomeRe</span> <span class="p">=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`&lt;td&gt;&lt;span class=&#34;label&#34;&gt;月收入: &lt;/span&gt;([^&lt;]+)&lt;/td&gt;`</span><span class="p">)</span>
-    <span class="kd">var</span> <span class="nx">weightRe</span> <span class="p">=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`&lt;td&gt;&lt;span class=&#34;label&#34;&gt;体重: &lt;/span&gt;&lt;span field=&#34;&#34;&gt;`</span><span class="p">)</span>
-    <span class="kd">var</span> <span class="nx">marriageRe</span> <span class="p">=</span> <span class="nx">regexp</span><span class="p">.</span><span class="nf">MustCompile</span><span class="p">(</span><span class="s">`&lt;td&gt;&lt;span class=&#34;label&#34;&gt;婚况: &lt;/span&gt;([^&lt;]+)&lt;/td&gt;`</span><span class="p">)</span>
-
-    <span class="c1">// 这里为什么要加name呢，是因为在parsecity中已经获取了name，就没必要再获取了
-</span><span class="c1"></span>    <span class="c1">// 这里加了name后，那上层的ParseCity的ParserFunc就需要函数式编程包装一下了
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">ParseProfile</span><span class="p">(</span><span class="nx">contents</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ParseResult</span> <span class="p">{</span>
-        <span class="c1">// 建立人的结构model
-</span><span class="c1"></span>        <span class="nx">profile</span> <span class="o">:=</span> <span class="nx">model</span><span class="p">.</span><span class="nx">Profile</span><span class="p">{}</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="nx">name</span>
-
-        <span class="k">if</span> <span class="nx">age</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">ageRe</span><span class="p">));</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">profile</span><span class="p">.</span><span class="nx">Age</span> <span class="p">=</span> <span class="nx">age</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="nx">height</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">heightRe</span><span class="p">));</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">profile</span><span class="p">.</span><span class="nx">Height</span> <span class="p">=</span> <span class="nx">height</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="nx">weight</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">Atoi</span><span class="p">(</span><span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">weightRe</span><span class="p">));</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">profile</span><span class="p">.</span><span class="nx">Weight</span> <span class="p">=</span> <span class="nx">weight</span>
-        <span class="p">}</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Income</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">incomeRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Gender</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">.</span> <span class="nx">genderRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Car</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">carRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Education</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">educationRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Hukou</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">hukouRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">House</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">houseRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Marriage</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">marriageRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Occupation</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">occupationRe</span><span class="p">)</span>
-        <span class="nx">profile</span><span class="p">.</span><span class="nx">Xinzuo</span> <span class="p">=</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span><span class="p">,</span> <span class="nx">xinzuoRe</span><span class="p">)</span>
-
-        <span class="nx">result</span> <span class="o">:=</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ParseResult</span> <span class="p">{</span>
-            <span class="nx">Items</span> <span class="p">:[]</span><span class="kd">interface</span><span class="p">{}{</span><span class="nx">profile</span><span class="p">},</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="nx">result</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">extractString</span><span class="p">(</span><span class="nx">contents</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">re</span> <span class="o">*</span><span class="nx">regexp</span><span class="p">.</span><span class="nx">Regexp</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
-        <span class="nx">match</span> <span class="o">:=</span> <span class="nx">re</span><span class="p">.</span><span class="nf">FindSubmatch</span><span class="p">(</span><span class="nx">contents</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">match</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nb">string</span><span class="p">(</span><span class="nx">match</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="s">&#34;&#34;</span>
-    <span class="p">}</span>
-    <span class="c1">// zhenai/parser/city.go 修改parsecity
-</span><span class="c1"></span>
-    <span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span><span class="p">,</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">{</span>
-                <span class="nx">Url</span><span class="p">:</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="nx">ParserFunc</span><span class="p">:</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ParseResult</span> <span class="p">{</span>
-                    <span class="k">return</span> <span class="nf">ParseProfile</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nb">string</span><span class="p">(</span><span class="nx">m</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
-                <span class="p">},</span>
-            <span class="p">})</span></pre></td></tr></table>
-</div>
-</div>
-<h1 id="并发版">并发版</h1>
-
-<p>&emsp;&emsp;在单任务版中速度特别慢，每个页面都要去请求然后等待它返回以后再请求下一个页面，这些动作完全是可以并发处理的。要把其中耗时最长等待实践最久的模块，当然是Fetcher模块，拿到URL后，到互联网上获得文本，这部分的时间是比较慢的，有远程的网络传输。Parser模块毕竟是对本地内存里文本的解析，这当然是快一些的。我们再看一步，这个Fetcher和Parser可以合成一个较大的模块，Fetcher的输出就是Parser的输入，完全可以把Fetcher和Parser合并起来，这个模块叫做Worker。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawl_worker.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;这个Worker包含了Fetcher和Parser，还包含了一部分Engine。因为engine拿到了Fetcher的文本给了Parser。我们提取一下engine。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // engine/engine.go
-
-    func worker(r Request) (ParseResult, error) {
-        log.Printf(&#34;Fetching %s&#34;, r.Url)
-        body, err := fetcher.Fetch(r.Url)
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/engine.png" alt="avatar"></p>
+<p>  engine驱动，有一些seed种子页面，对种子进行Request包装，在上面程序中就是城市列表的url和城市列表的parser，送给engine之后，加入到任务队列，取出任务之后，将任务的URL送给Fetcher，Fetcher就是一个从网络上获取数据的模块，Fetcher返回text文本给engine，engine给Parser，返回request和item列表，这些requests就是我们将来要做的任务，那么就把他们加入任务队列。目前来说item列表，只是打印操作。</p>
+<p>  上面代码中func main里面其实是Fetcher所做的事情，我们把它们摘出来。</p>
+<pre><code>    // fetcher.go
+	package fetcher
+	
+	// 猜编码
+	func determineEncoding(r io.Reader) encoding.Encoding {
+        bytes, err := bufio.NewReader(r).Peek(1024)
         if err != nil {
-            log.Printf(&#34;Fetcher: error fetching url %s: %v&#34;, r.Url, err)
-            return ParseResult{}, err
+            log.Printf(&quot;fetcher error: %v&quot;, err)
+            return unicode.UTF8
         }
-        return r.ParserFunc(body), nil
-    }
+        e, _, _ := charset.DetermineEncoding(bytes, &quot;&quot;)
+        return e
+	}
+	
+	func Fetch(url string) ([]byte, error) {
+       resp, err := http.Get(url)
+        if err != nil {
+            panic(err)
+        }
+        defer resp.Body.Close()
+	
+        if resp.StatusCode != http.StatusOk {
+            return nil, 
+                fmt.Errorf(&quot;wrong status code: %d&quot;, resp.StatusCode)
+        }
+	
+        e := determineEncoding(resp.Body)
+        uft8Reader := transform.NewReader(resp.Body, e.NewDecoder())
+	
+        return ioutil.ReadAll(utf8Reader)
+	}
+</code></pre>
+<p>  接下来隔离parser和engine</p>
+<pre><code>    // engine/types.go
+	package engine
+	
+	type Request struct {
+        Url         string
+        ParserFunc  func([]byte) ParseResult
+	}
+	
+	type ParseResult struct {
+        Requests    []Request
+        Items       []interface{}
+	}
+	
+	func NilParser([]byte) ParseResult {
+        return ParseResult{}
+	}
 
-    func Run(seeds ...Request) {
+	// zhenai/parser/citylist.go
+	package parser
+	
+	const cityListRe = `&lt;a href=&quot;(http://www.zhenai.com/zhenghun/[0-9a-z]+)&quot;[^&gt;]*&gt;([^&lt;]+)&lt;/a&gt;`
+	
+	func ParseCityList(contents []byte) engine.ParseResult{
+        re := regexp.MustCompile(cityListRe)
+            matches := re.FindAllSubmatch(contents, -1) // return [][][]string
+	
+            // 每一个URL就是一个ParseResult
+            result := engine.ParseResult{}
+            for _, m := range matches{
+                // 城市名字
+                result.Items = append(result.Items, &quot;City &quot; + string(m[2]))
+                result.Requests = append(result.Requests, engine.Request{
+                    Url: string(m[1]),
+                    // 这里的Parser其实已经是第二层的城市解析器了
+                    ParserFunc: engine.NilParser,
+                })
+            }
+        return result
+	}
+</code></pre>
+<p>  上面出现的NilParser,主要是起到一个临时不会运行出错的作用，因为我们还没有实现其它的Parser。</p>
+<pre><code>    // engine/engine.go
+	package engine
+	
+	func Run(seeds ...Request) {
         var requests []Request
         for _, r := range seeds {
             requests = append(requests, r)
@@ -1194,324 +429,411 @@
         for len(requests) &gt; 0 {
             r := requests[0]
             requests = requests[1:]
+	
+            log.Printf(&quot;fetching %s&quot;, r.Url)
+            body, err := fetcher.Fetch(r.Url)
+            if err != nil {
+                log.Printf(&quot;Fetcher: error fetching url %s: %v&quot;, r.Url, err)
+                continue
+            }
+	
+            // 开始解析
+            parseResult := r.ParserFunc(body)
+            // 加入队列
+            resuests = append(requests, parseResult.Requests...) 
+	
+            for _, item := range parseResult.Items {
+                log.Printf(&quot;got item %v&quot;, item)
+            }
+	        
+        }
+	}
+	package main
+	
+	func main() {
+        engine.Run(engine.Request{
+            Url:        &quot;http://www.zhenai.com/zhenghun&quot;,
+            ParserFunc: parser.ParseCityList,
+        })
+	}
+</code></pre>
+<p>  我们看到main现在已经很简洁了，Run启动后的流程和图片中的抽象架构图一致。养成一个好习惯，编写测试案例，我们来测试一下parsecitylist。</p>
+<pre><code>    // zhenai/parser/citylist_test.go
+	package parser
+	
+	import (
+        &quot;testing&quot;
+	)
+	
+	func TestParseCityList(t *testing.T) {
+        /*
+            contents, err := fetcher.Fetch(
+                &quot;http://www.zhenai.com/zhenghun&quot;
+            )
+            if err != nil {
+                panic(err)
+            }
+            fmt.Printf(&quot;%s\n&quot;, contens)
+            我们发现，打印下来的html文件头部少了一些符号。
+            猜测一下，是哪里除了问题？
+            回顾一下我们编写的猜测byte编码的程序，我们使用Reader peek了1024字节
+            应该就是这1024字节不见了。为什么呢？
+            bufio.NewReader(r).Peek(1024) 
+            bufio对r的1024字节读取后存了起来，下次读的时候从1025开始读，这就是bufio的作用。
+            既然如此，那我们就不传Reader对象了，直接传bufio.Reader，这样就算读了1024字节bufio自身不会变
+	
+            func determineEncoding(r *bufio.Reader) encoding.Encoding {
+                bytes, err := r.Peek(1024)
+                ....
+            }
+	
+            func Fetch(url string) ([]byte, error) {
+                ....
+                bodyReader := bufio.NewReader(resp.Body)
+                e := determineEncoding(bodyReader)
+                utf8Reader := transform.NewReader(bodyReader, e.NewDecoder())
+                return ioutil.ReadAll(utf8Reader)
+            }
+        */
+        // 将网站主页的内容提前存储在html文件中
+        contents, err := ioutil.ReadFile(&quot;citylist_test_data.html&quot;)
+        if err != nil {
+            panic(err)
+        }
+	    
+        result := ParseCityList(contents)
+	
+        const resultSize = 470
+        expectedUrls := []string{
+            &quot;http://www.zhenai.com/zhenghun/aba&quot;,
+            &quot;http://www.zhenai.com/zhenghun/akesu&quot;,
+            &quot;http://www.zhenai.com/zhenghun/alashanmeng&quot;,
+        }
+        expectedCities := []string {
+            &quot;City 阿坝&quot;, &quot;City 阿克苏&quot;, &quot;City 阿拉善盟&quot;,
+        }
+	
+        for i, url := range expectedUirls {
+            if result.Requests[i].Url != url {
+                t.Errorf(&quot;expected url #%d: %s; but was %s&quot;, i, url, result.Requests[i].Url)
+            }
+        }
+        for i, city := range expectedCities {
+            if result.Items[i].(string) != city {
+                t.Errorf(&quot;expected city #%d: %s; but was %s&quot;, i, city, result.Items[i].(string))
+            }
+        }
+	
+        if len(res.Requests) != resultSize {
+            t.Errorf(&quot;result should have %d requests; but had %d&quot;, resultSize, len(result.Requests))
+        }
+	    
+        if len(res.Items) != resultSize {
+            t.Errorf(&quot;result should have %d items; but had %d&quot;, resultSize, len(result.Items))
+        }
+	}
+</code></pre>
+<h2 id="城市解析器">城市解析器</h2>
+<pre><code>    // zhanai/parser/city.go
+	
+	package parser
+	
+	const cityRe = `&lt;a href=&quot;(http://album.zhenai.com/u/[0-9]+)&quot;[^&gt;]*&gt;([^&lt;]+)&lt;/a&gt;`
+	
+	func ParseCity(contents []byte) engine.ParseResult {
+        re := regexp.MustCompile(cityRe)
+        matches := re.FindAllSubmatch(contents, -1)
+	
+        result := engine.ParseResult{}
+        for _, m := range matches {
+            result.Items = append(result.Items, &quot;User &quot; + string(m2))
+            result.Requests = append(result.Requests, engine.Request{
+                Url: string(m[1]),
+                ParserFunc: engine.NilParser,
+            })
+        }
+        return result
+	}
+</code></pre>
+<p>  这时候就可以把ParserCityList中的NilParser修改为ParseCity了
+func ParseCityList(contents []byte) engine.ParseResult {
+&hellip;
+result.Requests = append(result.Requests, engine.Request{
+Url: string(m[1]),
+parserFunc: ParseCity,
+})
+}</p>
+<h2 id="用户解析器">用户解析器</h2>
+<p>  用户自身的信息和择偶条件，有重复的字段，我们采用正则和css选择器来获取。</p>
+<pre><code>    // model/profile.go
+	
+	package model
+	
+	type Profile struct {
+        Name            string      // 姓名
+        Gender          string      // 性别
+        Age             int         // 年龄
+        Height          int         // 身高
+        Weight          int         // 体重
+        Income          string      // 收入
+        Marriage        string      // 婚姻状况
+        Education       string      // 教育
+        Occupation      string      // 职业
+        Hokou           string      // 户口
+        Xinzuo          string      // 星座
+        House           string      // 房子
+        Car             string      // 车子
+	}
 
+	// zhenai/parser/profile.go
+	
+	package parser
+	
+	// 由于正则比较多，不能每次调用func去编译，比较耗时，这里直接先编译
+	var ageRe = regexp.MustCompile(`&lt;td&gt;&lt;span class=&quot;label&quot;&gt;年龄: &lt;/span&gt;([\d]+)岁&lt;/td&gt;`)
+	var heightRe = regexp.MustCompile(`&lt;td&gt;&lt;span class=&quot;label&quot;&gt;身高: &lt;/span&gt;(\d+)CM&lt;/td&gt;`)
+	var incomeRe = regexp.MustCompile(`&lt;td&gt;&lt;span class=&quot;label&quot;&gt;月收入: &lt;/span&gt;([^&lt;]+)&lt;/td&gt;`)
+	var weightRe = regexp.MustCompile(`&lt;td&gt;&lt;span class=&quot;label&quot;&gt;体重: &lt;/span&gt;&lt;span field=&quot;&quot;&gt;`)
+	var marriageRe = regexp.MustCompile(`&lt;td&gt;&lt;span class=&quot;label&quot;&gt;婚况: &lt;/span&gt;([^&lt;]+)&lt;/td&gt;`)
+	
+	// 这里为什么要加name呢，是因为在parsecity中已经获取了name，就没必要再获取了
+	// 这里加了name后，那上层的ParseCity的ParserFunc就需要函数式编程包装一下了
+	func ParseProfile(contents []byte, name string) engine.ParseResult {
+        // 建立人的结构model
+        profile := model.Profile{}
+        profile.Name = name
+	
+        if age, err := strconv.Atoi(extractString(contents, ageRe)); err == nil {
+            profile.Age = age
+        }
+        if height, err = strconv.Atoi(extractString(contents, heightRe)); err == nil {
+            profile.Height = height
+        }
+        if weight, err := strconv.Atoi(extractString(contents, weightRe)); err == nil {
+            profile.Weight = weight
+        }
+        profile.Income = extractString(contents, incomeRe)
+        profile.Gender = extractString(contents. genderRe)
+        profile.Car = extractString(contents, carRe)
+        profile.Education = extractString(contents, educationRe)
+        profile.Hukou = extractString(contents, hukouRe)
+        profile.House = extractString(contents, houseRe)
+        profile.Marriage = extractString(contents, marriageRe)
+        profile.Occupation = extractString(contents, occupationRe)
+        profile.Xinzuo = extractString(contents, xinzuoRe)
+	
+        result := engine.ParseResult {
+            Items :[]interface{}{profile},
+        }
+	
+        return result
+	}
+	
+	func extractString(contents []byte, re *regexp.Regexp) string {
+        match := re.FindSubmatch(contents)
+	
+        if len(match) &gt;= 2 {
+            return string(match[1])
+        }
+        return &quot;&quot;
+	}
+	// zhenai/parser/city.go 修改parsecity
+	
+	result.Requests = append(result.Requests, engine.Request{
+                Url: string(m[1]),
+                ParserFunc: func(c []byte) engine.ParseResult {
+                    return ParseProfile(c, string(m[2]))
+                },
+            })
+</code></pre>
+<h1 id="并发版">并发版</h1>
+<p>  在单任务版中速度特别慢，每个页面都要去请求然后等待它返回以后再请求下一个页面，这些动作完全是可以并发处理的。要把其中耗时最长等待实践最久的模块，当然是Fetcher模块，拿到URL后，到互联网上获得文本，这部分的时间是比较慢的，有远程的网络传输。Parser模块毕竟是对本地内存里文本的解析，这当然是快一些的。我们再看一步，这个Fetcher和Parser可以合成一个较大的模块，Fetcher的输出就是Parser的输入，完全可以把Fetcher和Parser合并起来，这个模块叫做Worker。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawl_worker.png" alt="avatar"></p>
+<p>  这个Worker包含了Fetcher和Parser，还包含了一部分Engine。因为engine拿到了Fetcher的文本给了Parser。我们提取一下engine。</p>
+<pre><code>    // engine/engine.go
+	
+	func worker(r Request) (ParseResult, error) {
+        log.Printf(&quot;Fetching %s&quot;, r.Url)
+        body, err := fetcher.Fetch(r.Url)
+        if err != nil {
+            log.Printf(&quot;Fetcher: error fetching url %s: %v&quot;, r.Url, err)
+            return ParseResult{}, err
+        }
+        return r.ParserFunc(body), nil
+	}
+	
+	func Run(seeds ...Request) {
+        var requests []Request
+        for _, r := range seeds {
+            requests = append(requests, r)
+        }
+        for len(requests) &gt; 0 {
+            r := requests[0]
+            requests = requests[1:]
+	
             parsrResult, err := worker(r)
             if err != nil {
                 continue
             }
-
+	
             //加入队列
             requests = append(requests, parseResult.Requests...)
-
+	
             for _, item := range parseResult.Items {
-                log.Printf(&#34;got item %v&#34;, item)
+                log.Printf(&quot;got item %v&quot;, item)
             }
         }
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <h2 id="并发结构">并发结构</h2>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawl_worker_bingfa.png" alt="avatar"></p>
+<p>  我们要并发worker，然后engine不动，加入了scheduler模块，因为要面临一个多对多并发目录的分配，有很多的Request，有很多的Worker等待要执行的Request，所以这个scheduler来分配这些任务。首先Worker的输入是Request输出是Requests，Items，上面的代码已经改好了。接下来engine接收之后，打印Items，把Request分给Scheduler。单任务结构图的箭头代表函数的输入输出参数，并发版的箭头就变成了channel.每个方框代表一个goroutine。那目前最核心的事情就是scheduler。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawl_worker_1.png" alt="avatar"></p>
+<p>  scheduler最简单的做法：所有Worker公用一个channel，所有的Worker都是在同一时间抢同一个request，做完了继续抢下一个。</p>
+<p>  接下来我们把之前的engine修改为simpleengine，这样做的目的是将来实现的concurrentengine可以来回的切换。并且修改main.go</p>
+<pre><code>    $ mv engine.go simple.go
+	
+	// engine/simple.go
+	
+	type SimpleEngine struct{}
+	
+	func worker(r Request) (ParseResult, error) {
+        log.Printf(&quot;Fetching %s&quot;, r.Url)
+        body, err := fetcher.Fetch(r.Url)
+        if err != nil {
+            log.Printf(&quot;Fetcher: error fetching url %s: %v&quot;, r.Url, err)
+            return ParseResult{}, err
+        }
+        return r.ParserFunc(body), nil
+	}
+	
+	func (e SimpleEngine)Run(seeds ...Request) {
+        var requests []Request
+        for _, r := range seeds {
+            requests = append(requests, r)
+        }
+        for len(requests) &gt; 0 {
+            r := requests[0]
+            requests = requests[1:]
+	
+            parsrResult, err := worker(r)
+            if err != nil {
+                continue
+            }
+	
+            //加入队列
+            requests = append(requests, parseResult.Requests...)
+	
+            for _, item := range parseResult.Items {
+                log.Printf(&quot;got item %v&quot;, item)
+            }
+        }
+	}
+	
+	package main
+	
+	func main(){
+        // 这里将来可以切换ConcurrentEngine
+        engine.SimpleEngine{}.Run(engine.Request{
+            Url:    &quot;http://www.zhenai.com/zhenghun&quot;,
+            ParserFunc: parser.ParseCityList,
+        })
+	}
+</code></pre>
+<p>  现在开始撰写ConCurrentEngine
+// engine/concurrentEngine.go</p>
+<pre><code>    package engine
+	
+	// ConcurrentEngine本身就是一个scheduler，里面的参数给外面的scheduler设置
+	type ConcurrentEngine struct {
+        Scheduler Schedler
+        WorkerCount int
+	}
+	
+	// Scheduler 是一个接口，可以有很多实现
+	type Scheduler interface {
+        // 提交给worker的操作
+        Submit(Request)
+        // 这就是work chan 送给worker的任务
+        ConfigureMasterWorkerChan(chan Request)
+	}
+	
+	func (e *ConcurrentEngine) Run(seeds ...Request) {
+        // 所有的worker公用一个输入输出
+        in := make(chan Request)
+        out := make(chan ParseResult)
+        // 设置scheduler的输出，也就是worker的输入
+        e.Scheduler.ConfigureMasterWorkerChan(in)
+	
+        // 开始建worker
+        for i := 0； i &lt; e.WorkerCount; i++ {
+            createWorker(in, out)
+        }
+        // 创建完之后，再submit给worker chan
+        for _, r := range seeds {
+            e.Scheduler.Submit(r)
+        }
+	
+        // 收out
+        for {
+            result := &lt;- out
+            for _, item := range result.Items {
+                log.Printf(&quot;Got item: %v&quot;, item)
+            }
+            // 把下一批Request送给scheduler装载
+            for _, request := range result.Requests {
+                e.Scheduler.Submit(request)
+            }
+        }
+	}
+	
+	func createWorker(in chan Request, out chan ParseResult) {
+        // 从work chan中抢request
+        // 执行完后还给work chan out
+        go func(){
+            for {
+                request := &lt;- in
+                result, err := worker(request)
+                if err != nil {
+                    continue
+                }
+                out &lt;- result
+            }
+        }()
+	}
 
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawl_worker_bingfa.png" alt="avatar" /></p>
+	// scheduler/simple.go
+	
+	package scheduler
+	
+	type SimpleScheduler struct {
+        // 这其实就是ConfigureMasterChan
+        workerChan chan engine.Request
+	}
+	
+	func (s *SimpleSchedluer) Submit(r engine.Request) {
+        // 把request送给work chan
+        s.workerChan &lt;- r
+	}
+	
+	func (s *SimpleScheduler) ConfigureMasterWorkerChan(c chan engine.Request) {
+        s.workerChan = c
+	}
 
-<p>&emsp;&emsp;我们要并发worker，然后engine不动，加入了scheduler模块，因为要面临一个多对多并发目录的分配，有很多的Request，有很多的Worker等待要执行的Request，所以这个scheduler来分配这些任务。首先Worker的输入是Request输出是Requests，Items，上面的代码已经改好了。接下来engine接收之后，打印Items，把Request分给Scheduler。单任务结构图的箭头代表函数的输入输出参数，并发版的箭头就变成了channel.每个方框代表一个goroutine。那目前最核心的事情就是scheduler。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/golang/crawl_worker_1.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;scheduler最简单的做法：所有Worker公用一个channel，所有的Worker都是在同一时间抢同一个request，做完了继续抢下一个。</p>
-
-<p>&emsp;&emsp;接下来我们把之前的engine修改为simpleengine，这样做的目的是将来实现的concurrentengine可以来回的切换。并且修改main.go</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="err">$</span> <span class="nx">mv</span> <span class="nx">engine</span><span class="p">.</span><span class="k">go</span> <span class="nx">simple</span><span class="p">.</span><span class="k">go</span>
-
-    <span class="c1">// engine/simple.go
-</span><span class="c1"></span>
-    <span class="kd">type</span> <span class="nx">SimpleEngine</span> <span class="kd">struct</span><span class="p">{}</span>
-
-    <span class="kd">func</span> <span class="nf">worker</span><span class="p">(</span><span class="nx">r</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">(</span><span class="nx">ParseResult</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Fetching %s&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Url</span><span class="p">)</span>
-        <span class="nx">body</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">fetcher</span><span class="p">.</span><span class="nf">Fetch</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Url</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Fetcher: error fetching url %s: %v&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Url</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nx">ParseResult</span><span class="p">{},</span> <span class="nx">err</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nf">ParserFunc</span><span class="p">(</span><span class="nx">body</span><span class="p">),</span> <span class="kc">nil</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="nx">SimpleEngine</span><span class="p">)</span><span class="nf">Run</span><span class="p">(</span><span class="nx">seeds</span> <span class="o">...</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">requests</span> <span class="p">[]</span><span class="nx">Request</span>
-        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">r</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">seeds</span> <span class="p">{</span>
-            <span class="nx">requests</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="nb">len</span><span class="p">(</span><span class="nx">requests</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
-            <span class="nx">r</span> <span class="o">:=</span> <span class="nx">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="nx">requests</span> <span class="p">=</span> <span class="nx">requests</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-
-            <span class="nx">parsrResult</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">worker</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-                <span class="k">continue</span>
-            <span class="p">}</span>
-
-            <span class="c1">//加入队列
-</span><span class="c1"></span>            <span class="nx">requests</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">Requests</span><span class="o">...</span><span class="p">)</span>
-
-            <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">Items</span> <span class="p">{</span>
-                <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;got item %v&#34;</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">(){</span>
-        <span class="c1">// 这里将来可以切换ConcurrentEngine
-</span><span class="c1"></span>        <span class="nx">engine</span><span class="p">.</span><span class="nx">SimpleEngine</span><span class="p">{}.</span><span class="nf">Run</span><span class="p">(</span><span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">{</span>
-            <span class="nx">Url</span><span class="p">:</span>    <span class="s">&#34;http://www.zhenai.com/zhenghun&#34;</span><span class="p">,</span>
-            <span class="nx">ParserFunc</span><span class="p">:</span> <span class="nx">parser</span><span class="p">.</span><span class="nx">ParseCityList</span><span class="p">,</span>
-        <span class="p">})</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;现在开始撰写ConCurrentEngine
-        // engine/concurrentEngine.go</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span><span class="lnt">86
-</span><span class="lnt">87
-</span><span class="lnt">88
-</span><span class="lnt">89
-</span><span class="lnt">90
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="kn">package</span> <span class="nx">engine</span>
-
-    <span class="c1">// ConcurrentEngine本身就是一个scheduler，里面的参数给外面的scheduler设置
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">ConcurrentEngine</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">Scheduler</span> <span class="nx">Schedler</span>
-        <span class="nx">WorkerCount</span> <span class="kt">int</span>
-    <span class="p">}</span>
-
-    <span class="c1">// Scheduler 是一个接口，可以有很多实现
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">Scheduler</span> <span class="kd">interface</span> <span class="p">{</span>
-        <span class="c1">// 提交给worker的操作
-</span><span class="c1"></span>        <span class="nf">Submit</span><span class="p">(</span><span class="nx">Request</span><span class="p">)</span>
-        <span class="c1">// 这就是work chan 送给worker的任务
-</span><span class="c1"></span>        <span class="nf">ConfigureMasterWorkerChan</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">Request</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">e</span> <span class="o">*</span><span class="nx">ConcurrentEngine</span><span class="p">)</span> <span class="nf">Run</span><span class="p">(</span><span class="nx">seeds</span> <span class="o">...</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// 所有的worker公用一个输入输出
-</span><span class="c1"></span>        <span class="nx">in</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">Request</span><span class="p">)</span>
-        <span class="nx">out</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="nx">ParseResult</span><span class="p">)</span>
-        <span class="c1">// 设置scheduler的输出，也就是worker的输入
-</span><span class="c1"></span>        <span class="nx">e</span><span class="p">.</span><span class="nx">Scheduler</span><span class="p">.</span><span class="nf">ConfigureMasterWorkerChan</span><span class="p">(</span><span class="nx">in</span><span class="p">)</span>
-
-        <span class="c1">// 开始建worker
-</span><span class="c1"></span>        <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="err">；</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">WorkerCount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-            <span class="nf">createWorker</span><span class="p">(</span><span class="nx">in</span><span class="p">,</span> <span class="nx">out</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="c1">// 创建完之后，再submit给worker chan
-</span><span class="c1"></span>        <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">r</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">seeds</span> <span class="p">{</span>
-            <span class="nx">e</span><span class="p">.</span><span class="nx">Scheduler</span><span class="p">.</span><span class="nf">Submit</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span>
-        <span class="p">}</span>
-
-        <span class="c1">// 收out
-</span><span class="c1"></span>        <span class="k">for</span> <span class="p">{</span>
-            <span class="nx">result</span> <span class="o">:=</span> <span class="o">&lt;-</span> <span class="nx">out</span>
-            <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">item</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Items</span> <span class="p">{</span>
-                <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Got item: %v&#34;</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span>
-            <span class="p">}</span>
-            <span class="c1">// 把下一批Request送给scheduler装载
-</span><span class="c1"></span>            <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">request</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">result</span><span class="p">.</span><span class="nx">Requests</span> <span class="p">{</span>
-                <span class="nx">e</span><span class="p">.</span><span class="nx">Scheduler</span><span class="p">.</span><span class="nf">Submit</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">createWorker</span><span class="p">(</span><span class="nx">in</span> <span class="kd">chan</span> <span class="nx">Request</span><span class="p">,</span> <span class="nx">out</span> <span class="kd">chan</span> <span class="nx">ParseResult</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// 从work chan中抢request
-</span><span class="c1"></span>        <span class="c1">// 执行完后还给work chan out
-</span><span class="c1"></span>        <span class="k">go</span> <span class="kd">func</span><span class="p">(){</span>
-            <span class="k">for</span> <span class="p">{</span>
-                <span class="nx">request</span> <span class="o">:=</span> <span class="o">&lt;-</span> <span class="nx">in</span>
-                <span class="nx">result</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">worker</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-                    <span class="k">continue</span>
-                <span class="p">}</span>
-                <span class="nx">out</span> <span class="o">&lt;-</span> <span class="nx">result</span>
-            <span class="p">}</span>
-        <span class="p">}()</span>
-    <span class="p">}</span>
-
-    <span class="c1">// scheduler/simple.go
-</span><span class="c1"></span>
-    <span class="kn">package</span> <span class="nx">scheduler</span>
-
-    <span class="kd">type</span> <span class="nx">SimpleScheduler</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="c1">// 这其实就是ConfigureMasterChan
-</span><span class="c1"></span>        <span class="nx">workerChan</span> <span class="kd">chan</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">SimpleSchedluer</span><span class="p">)</span> <span class="nf">Submit</span><span class="p">(</span><span class="nx">r</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// 把request送给work chan
-</span><span class="c1"></span>        <span class="nx">s</span><span class="p">.</span><span class="nx">workerChan</span> <span class="o">&lt;-</span> <span class="nx">r</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">SimpleScheduler</span><span class="p">)</span> <span class="nf">ConfigureMasterWorkerChan</span><span class="p">(</span><span class="nx">c</span> <span class="kd">chan</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">s</span><span class="p">.</span><span class="nx">workerChan</span> <span class="p">=</span> <span class="nx">c</span>
-    <span class="p">}</span>
-
-    <span class="kn">package</span> <span class="nx">main</span>
-
-    <span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">e</span> <span class="o">:=</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">ConCurrentEngine</span><span class="p">{</span>
-            <span class="nx">Scheduler</span><span class="p">:</span> <span class="o">&amp;</span><span class="nx">engine</span><span class="p">.</span><span class="nx">SimpleScheduler</span><span class="p">{},</span>
-            <span class="nx">WorkerCount</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="nx">engine</span><span class="p">.</span><span class="nx">Request</span><span class="p">{</span>
-            <span class="nx">Url</span><span class="p">:</span> <span class="s">&#34;http://www.zhenai.com/zhenghun&#34;</span><span class="p">,</span>
-            <span class="nx">ParserFunc</span><span class="p">:</span> <span class="nx">ParseCityList</span><span class="p">,</span>
-        <span class="p">})</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;运行之后，发现程序卡在了10条数据之后。我们回顾一下</p>
+	package main
+	
+	func main() {
+        e := engine.ConCurrentEngine{
+            Scheduler: &amp;engine.SimpleScheduler{},
+            WorkerCount: 10,
+        }
+        e.Run(engine.Request{
+            Url: &quot;http://www.zhenai.com/zhenghun&quot;,
+            ParserFunc: ParseCityList,
+        })
+	}
+</code></pre>
+<p>  运行之后，发现程序卡在了10条数据之后。我们回顾一下</p>
 
     </div>
 

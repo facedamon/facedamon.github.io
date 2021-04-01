@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[mybatis源码(二) | 核心组件] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 SqlSession是MyBatis提供的面向用户的操作数据库API。那么MyBatis底层是如何工作的呢？为了解开MyBatis的神秘" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/java/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[mybatis源码(二) | 核心组件]" />
+<meta property="og:description" content="摘要 SqlSession是MyBatis提供的面向用户的操作数据库API。那么MyBatis底层是如何工作的呢？为了解开MyBatis的神秘" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/java/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-03-20T15:01:56&#43;08:00" />
+<meta property="article:modified_time" content="2021-03-20T15:01:56&#43;08:00" />
+
+<meta itemprop="name" content="[mybatis源码(二) | 核心组件]">
+<meta itemprop="description" content="摘要 SqlSession是MyBatis提供的面向用户的操作数据库API。那么MyBatis底层是如何工作的呢？为了解开MyBatis的神秘"><meta itemprop="datePublished" content="2021-03-20T15:01:56&#43;08:00" />
+<meta itemprop="dateModified" content="2021-03-20T15:01:56&#43;08:00" />
+<meta itemprop="wordCount" content="4636">
+<meta itemprop="keywords" content="Java,未完待续," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[mybatis源码(二) | 核心组件]"/>
+<meta name="twitter:description" content="摘要 SqlSession是MyBatis提供的面向用户的操作数据库API。那么MyBatis底层是如何工作的呢？为了解开MyBatis的神秘"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[mybatis源码(二) | 核心组件]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-20 </span>
+        <div class="post-category">
+            <a href="/categories/java/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/"> Java/源码学习 </a>
+            </div>
+          <span class="more-meta"> 约 4636 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#configuration">Configuration</a></li>
+    <li><a href="#executor">Executor</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="摘要">摘要</h1>
+<p>  SqlSession是MyBatis提供的面向用户的操作数据库API。那么MyBatis底层是如何工作的呢？为了解开MyBatis的神秘面纱，我们需要了解一下MyBatis的其他几个比较核心的组件及这些组件的作用。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/epub_27563388_132.jpg" alt="avatar"></p>
+<ul>
+<li><strong>Configuration</strong>：用于描述MyBatis的主配置信息，其他组件需要获取配置信息时，直接通过Configuration对象获取。除此之外，MyBatis在应用启动时，将Mapper配置信息、类型别名、TypeHandler等注册到Configuration组件中，其他组件需要这些信息时，也可以从Configuration对象中获取。</li>
+<li><strong>MappedStatement</strong>：MappedStatement用于描述Mapper中的SQL配置信息，是对Mapper XML配置文件中&lt;select|update|delete|insert&gt;等标签或者@Select/@Update等注解配置信息的封装</li>
+<li><strong>SqlSession</strong>：SqlSession是MyBatis提供的面向用户的API，表示和数据库交互时的会话对象，用于完成数据库的增删改查功能。SqlSession是Executor组件的外观，目的是对外提供易于理解和使用的数据库操作接口。</li>
+<li><strong>Executor</strong>：Executor是MyBatis的SQL执行器，MyBatis中对数据库所有的增删改查操作都是由Executor组件完成的。</li>
+<li><strong>StatementHandler</strong>：StatementHandler封装了对JDBC Statement对象的操作，比如为Statement对象设置参数，调用Statement接口提供的方法与数据库交互，等等。</li>
+<li><strong>ParameterHandler</strong>：当MyBatis框架使用的Statement类型为CallableStatement和PreparedStatement时，ParameterHandler用于为Statement对象参数占位符设置值。</li>
+<li><strong>ResultSetHandler</strong>：ResultSetHandler封装了对JDBC中的ResultSet对象操作，当执行SQL类型为SELECT语句时，ResultSetHandler用于将查询结果转换成Java对象。</li>
+<li><strong>TypeHandler</strong>：TypeHandler是MyBatis中的类型处理器，用于处理Java类型与JDBC类型之间的映射。它的作用主要体现在能够根据Java类型调用PreparedStatement或CallableStatement对象对应的setXXX()方法为Statement对象设置值，而且能够根据Java类型调用ResultSet对象对应的getXXX()获取SQL执行结果。</li>
+</ul>
+<p>  <code>SqlSession</code>组件，它是用户层面的API。实际上<code>SqlSession</code>是<code>Executor</code>组件的外观，目的是为用户提供更友好的数据库操作接口，这是设计模式中<a href="http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F">外观模式</a>的典型应用。真正执行SQL操作的是Executor组件，Executor可以理解为SQL执行器，它会使用<code>StatementHandler</code>组件对JDBC的<code>Statement</code>对象进行操作。当Statement类型为<code>CallableStatement</code>和<code>PreparedStatement</code>时，会通过<code>ParameterHandler</code>组件为参数占位符赋值。ParameterHandler组件中会根据Java类型找到对应的<code>TypeHandler</code>对象，TypeHandler中会通过Statement对象提供的setXXX()方法（例如setString()方法）为Statement对象中的参数占位符设置值。<code>StatementHandler</code>组件使用JDBC中的Statement对象与数据库完成交互后，当SQL语句类型为SELECT时，MyBatis通过<code>ResultSetHandler</code>组件从Statement对象中获取ResultSet对象，然后将ResultSet对象转换为Java对象。</p>
+<h2 id="configuration">Configuration</h2>
+<p>  MyBatis框架的配置信息有两种，<strong>一种是配置MyBatis框架属性的主配置文件；另一种是配置执行SQL语句的Mapper配置文件</strong>。Configuration的作用是描述MyBatis主配置文件的信息。Configuration类中定义了一系列的属性用来控制MyBatis运行时的行为，这些属性的值可以在MyBatis主配置文件中通过&lt;setting&gt;标签指定。</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cacheEnabled</td>
+<td>是都开启Mapper二级缓存</td>
+</tr>
+<tr>
+<td>lazyLoadingEnabled</td>
+<td>延迟加载的全局开关。当开启时，所有关联对象都会延迟加载</td>
+</tr>
+<tr>
+<td>useColumnLabel</td>
+<td>使用列标签代替列名</td>
+</tr>
+<tr>
+<td>useGeneratedKeys</td>
+<td>允许JDBC支持自动生成主键</td>
+</tr>
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+</tbody>
+</table>
+<p>  Configuration除了提供了表4-1中的属性控制MyBatis的行为外，还作为容器存放TypeHandler（类型处理器）、TypeAlias（类型别名）、Mapper接口及Mapper SQL配置信息。这些信息在MyBatis框架启动时注册到Configuration组件中。</p>
+<ul>
+<li><strong>mapperRegistry</strong>: 用于注册Mapper接口信息，建立Mapper接口的Class对象和MapperProxyFactory对象之间的关系，其中MapperProxyFactory对象用于创建Mapper动态代理对象。</li>
+<li><strong>interceptorChain</strong>: 用于注册MyBatis插件信息，MyBatis插件实际上就是一个拦截器。</li>
+<li><strong>typeHandlerRegistry</strong>：用于注册所有的TypeHandler，并建立JDBC类型、JDBC类型与TypeHandler之间的对应关系</li>
+<li><strong>typeAliasRegistry</strong>：用于注册所有的类型别名。</li>
+<li><strong>languageRegistry</strong>：用于注册LanguageDriver，LanguageDriver用于解析SQL配置，将配置信息转换为SqlSource对象。</li>
+<li><strong>mappedStatements</strong>：MappedStatement对象描述&lt;insert|select|update|delete&gt;等标签或者通过@Select、@Delete、@Update、@Insert等注解配置的SQL信息。MyBatis将所有的MappedStatement对象注册到该属性中，其中<strong>Key为Mapper的Id，Value为MappedStatement对象</strong>。</li>
+<li><strong>caches</strong>：用于注册Mapper中配置的所有缓存信息，<strong>其中Key为Cache的Id，也就是Mapper的命名空间，Value为Cache对象</strong>。</li>
+<li><strong>resultMaps</strong>：用于注册Mapper配置文件中通过&lt;resultMap&gt;标签配置的ResultMap信息，ResultMap用于建立Java实体属性与数据库字段之间的映射关系，其中Key为ResultMap的Id，该Id是由Mapper命名空间和&lt;resultMap&gt;标签的id属性组成的，Value为解析&lt;resultMap&gt;标签后得到的ResultMap对象。</li>
+<li><strong>parameterMaps</strong>：用于注册Mapper中通过<!-- raw HTML omitted -->标签注册的参数映射信息。Key为ParameterMap的Id，由Mapper命名空间和<!-- raw HTML omitted -->标签的id属性构成，Value为解析<!-- raw HTML omitted -->标签后得到的ParameterMap对象。</li>
+<li><strong>keyGenerators</strong>：用于注册KeyGenerator，KeyGenerator是MyBatis的主键生成器，MyBatis中提供了3种KeyGenerator，即Jdbc3KeyGenerator（数据库自增主键）、NoKeyGenerator（无自增主键）、SelectKeyGenerator（通过select语句查询自增主键，例如oracle的sequence）。</li>
+<li><strong>loadedResources</strong>：用于注册所有Mapper XML配置文件路径。</li>
+<li><strong>sqlFragments</strong>：用于注册Mapper中通过<!-- raw HTML omitted -->标签配置的SQL片段，Key为SQL片段的Id，Value为MyBatis封装的表示XML节点的XNode对象。</li>
+<li><strong>incompleteStatements</strong>：用于注册解析出现异常的XMLStatementBuilder对象。</li>
+<li><strong>incompleteCacheRefs</strong>：用于注册解析出现异常的CacheRefResolver对象。</li>
+<li><strong>incompleteResultMaps</strong>：用于注册解析出现异常的ResultMapResolver对象。</li>
+<li><strong>incompleteMethods</strong>：用于注册解析出现异常的MethodResolver对象。</li>
+</ul>
+<p>  MyBatis框架启动时，会对所有的配置信息进行解析，然后将解析后的内容注册到Configuration对象的这些属性中。除此之外，Configuration组件还作为Executor、StatementHandler、ResultSetHandler、ParameterHandler组件的工厂类，用于创建这些组件的实例。Configuration类中提供了这些组件的工厂方法，这些工厂方法签名如下:</p>
+<pre><code>    //ParameterHandler组件工厂方法
+    public ParameterHandler newParameterHandler(
+                MappedStatement mappedStatement, 
+                Object parameterObject, 
+                BoundSql boundSql)
+    ;
+    //ResultSetHandler组件工厂方法
+    public ResultsetHandler newResultSetHandler(
+                Executor executor, 
+                MappedStatement mappedStatement, 
+                RowBounds rowBounds, 
+                ParameterHandler parameterHandler, 
+                ResultHandler resultHandler, 
+                BoundSql boundSql)
+    ;
+    //StatementHandler组件工厂方法
+    public StatementHandler newStatementHandler(
+                Executor executor, 
+                MappedStatement mappedStatement, 
+                RowBounds rowBounds, 
+                ParameterHandler parameterHandler, 
+                ResultHandler resultHandler, 
+                BoundSql boundSql)
+    ;
+    //Executor组件工厂方法
+    public Executor newExecutor(
+                Transaction transaction, 
+                ExecutorType executorType)
+    ;
+</code></pre>
+<p>  这些工厂方法会根据MyBatis不同的配置创建对应的实现类。例如，Executor组件有4种不同的实现，分别为<code>BatchExecutor</code>、<code>ReuseExecutor</code>、<code>SimpleExecutor</code>、<code>CachingExecutor</code>，当defaultExecutorType的参数值为REUSE时，newExecutor()方法返回的是ReuseExecutor实例，当参数值为SIMPLE时，返回的是SimpleExecutor实例，这是典型的<a href="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F">工厂方法模式</a>的应用。</p>
+<h2 id="executor">Executor</h2>
+<p>  Executor接口中定义了对数据库的增删改查方法，其中query()和queryCursor()方法用于执行查询操作，update()方法用于执行插入、删除、修改操作。Executor接口有几种不同的实现类:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/epub_27563388_141.jpg" alt="avatar"></p>
+<p>  MyBatis提供了3种不同的Executor，分别为<code>SimpleExecutor</code>、<code>ResueExecutor</code>、<code>BatchExecutor</code>，这些Executor都继承至<code>BaseExecutor</code>，BaseExecutor中定义的方法的执行流程及通用的处理逻辑，具体的方法由子类来实现，是典型的<a href="http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F">模板方法模式</a>的应用。</p>
+<p>  <code>SimpleExecutor</code>是基础的Executor，能够完成基本的增删改查操作，<code>ResueExecutor</code>对JDBC中的Statement对象做了缓存，当执行相同的SQL语句时，直接从缓存中取出Statement对象进行复用，避免了频繁创建和销毁Statement对象，从而提升系统性能，这是<a href="http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F">享元思想</a>的应用。BatchExecutor则会对调用同一个Mapper执行的update、insert和delete操作，调用Statement对象的批量操作功能。</p>
+<p>  当MyBatis开启了二级缓存功能时，会使用<code>CachingExecutor</code>对SimpleExecutor、ResueExecutor、BatchExecutor进行装饰，为查询操作增加二级缓存功能，这是<a href="http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/">装饰器模式</a>的应用</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-20
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/java/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">Java</a>
+          <a href="/tags/%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD/">未完待续</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[设计模式 | 结构 | 外观模式]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">
+            <span class="next-text nav-default">[设计模式 | 结构 | 代理模式]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

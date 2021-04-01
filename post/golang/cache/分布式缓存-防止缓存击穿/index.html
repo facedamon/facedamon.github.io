@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-%E9%98%B2%E6%AD%A2%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" />
@@ -41,22 +41,15 @@
 <meta property="og:title" content="[分布式缓存 (六) | 防止缓存击穿]" />
 <meta property="og:description" content="摘要 缓存雪崩：缓存在同一时刻全部失效，造成瞬间DB请求量大、压力骤增，引起雪崩。缓存雪崩通常因为缓存服务器宕机、缓存的key设置了相同的过期" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-%E9%98%B2%E6%AD%A2%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" />
-<meta property="article:published_time" content="2020-10-21T10:16:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-10-21T10:16:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-%E9%98%B2%E6%AD%A2%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-10-21T10:16:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-10-21T10:16:56&#43;08:00" />
 
 <meta itemprop="name" content="[分布式缓存 (六) | 防止缓存击穿]">
-<meta itemprop="description" content="摘要 缓存雪崩：缓存在同一时刻全部失效，造成瞬间DB请求量大、压力骤增，引起雪崩。缓存雪崩通常因为缓存服务器宕机、缓存的key设置了相同的过期">
-
-
-<meta itemprop="datePublished" content="2020-10-21T10:16:56&#43;08:00" />
+<meta itemprop="description" content="摘要 缓存雪崩：缓存在同一时刻全部失效，造成瞬间DB请求量大、压力骤增，引起雪崩。缓存雪崩通常因为缓存服务器宕机、缓存的key设置了相同的过期"><meta itemprop="datePublished" content="2020-10-21T10:16:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-10-21T10:16:56&#43;08:00" />
-<meta itemprop="wordCount" content="1626">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1429">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[分布式缓存 (六) | 防止缓存击穿]"/>
 <meta name="twitter:description" content="摘要 缓存雪崩：缓存在同一时刻全部失效，造成瞬间DB请求量大、压力骤增，引起雪崩。缓存雪崩通常因为缓存服务器宕机、缓存的key设置了相同的过期"/>
 
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/golang/%E6%89%8B%E5%86%99%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/"> golang/手写分布式缓存 </a>
             </div>
-          <span class="more-meta"> 约 1626 字 </span>
-          <span class="more-meta"> 预计阅读 4 分钟 </span>
+          <span class="more-meta"> 约 1429 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -141,113 +134,42 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a></li>
-<li><a href="#如何解决">如何解决</a></li>
-<li><a href="#使用">使用</a></li>
-<li><a href="#测试">测试</a></li>
-</ul>
-</nav>
+    <nav id="TableOfContents"></nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
+      <h1 id="摘要">摘要</h1>
 <ul>
 <li><strong>缓存雪崩</strong>：缓存在同一时刻全部失效，造成瞬间DB请求量大、压力骤增，引起雪崩。缓存雪崩通常因为缓存服务器宕机、缓存的key设置了相同的过期时间引起。</li>
 <li><strong>缓存击穿</strong>：一个存在的key，在缓存过期的一刻，同时有大量的请求，这些请求都会击穿到DB，造成瞬间DB请求量巨大、压力骤增</li>
 <li><strong>缓存穿透</strong>：查询一个不存在的数据，因为不存在则不会写到缓存中，所以每次都会去请求DB，如果瞬间流量过大，穿透到DB，导致宕机。</li>
 </ul>
-
 <h1 id="如何解决">如何解决</h1>
+<p>  在上节中，我们并发了N个请求，8003节点向8001同时发起了N次请求。假设对数据库的访问没哦1没有任何限制，很可能向数据库发起N次请求，容易导致缓存击穿。即使对数据库做了防护，HTTP请求是非常耗费资源的操作，针对相同的key，8003节点向8001发起三次请求也是没有必要的。那这种情况下，我们如何做到只向远端节点发起一次请求呢？</p>
+<p>  geec实现了一个名为singleflight的package来解决这个问题。</p>
+<pre><code>package singleflight
 
-<p>&emsp;&emsp;在上节中，我们并发了N个请求，8003节点向8001同时发起了N次请求。假设对数据库的访问没哦1没有任何限制，很可能向数据库发起N次请求，容易导致缓存击穿。即使对数据库做了防护，HTTP请求是非常耗费资源的操作，针对相同的key，8003节点向8001发起三次请求也是没有必要的。那这种情况下，我们如何做到只向远端节点发起一次请求呢？</p>
+import &quot;sync&quot;
 
-<p>&emsp;&emsp;geec实现了一个名为singleflight的package来解决这个问题。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">singleflight</span>
+type call struct {
+    wg  sync.WaitGroup
+    // 返回值
+    val interface{}
+    err error
+}
 
-<span class="kn">import</span> <span class="s">&#34;sync&#34;</span>
-
-<span class="kd">type</span> <span class="nx">call</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">wg</span>  <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
-    <span class="c1">// 返回值
-</span><span class="c1"></span>    <span class="nx">val</span> <span class="kd">interface</span><span class="p">{}</span>
-    <span class="nx">err</span> <span class="kt">error</span>
-<span class="p">}</span>
-
-<span class="kd">type</span> <span class="nx">Group</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">mu</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
-    <span class="c1">// key，call
-</span><span class="c1"></span>    <span class="nx">m</span>  <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="o">*</span><span class="nx">call</span>
-<span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+type Group struct {
+    mu sync.Mutex
+    // key，call
+    m  map[string]*call
+}
+</code></pre>
 <ul>
 <li>call代表正在进行中，或已经结束的请求。使用WaitGroup锁避免重入</li>
 <li>Group是singleflight的主数据结构，管理不同key的请求call</li>
 </ul>
-
-<p>&emsp;&emsp;实现Do方法</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">func (g *Group) Do(key string, fn func() (interface{}, error)) (interface{},     error) {
+<p>  实现Do方法</p>
+<pre><code>func (g *Group) Do(key string, fn func() (interface{}, error)) (interface{},     error) {
     g.mu.Lock()
     if g.m == nil {
         g.m = make(map[string]*call)
@@ -278,41 +200,13 @@
 
     // 返回结果
     return c.val, c.err
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <ul>
 <li>Do方法，接收2个参数，第一个参数是key，第二个参数是一个函数fn。Do的作用就是针对相同的key，无论Do被调用多少次，函数fn都只会被调用一次，等待fn调用结束，返回返回值或错误。</li>
 </ul>
-
-<p>&emsp;&emsp;<code>g.mu</code>是保护Group的成员变量<code>m</code>不被并发读写而加上的锁。为了便于理解Do函数，我们将<code>g.mu</code>暂时去掉。并且把<code>g.m</code>延迟初始化的不分去掉，延迟初始化的目的很简单，提高内存使用效率。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">func (g *Group) Do(key string, fn func()) (interface{}. error)) (interface{}, error) {
+<p>  <code>g.mu</code>是保护Group的成员变量<code>m</code>不被并发读写而加上的锁。为了便于理解Do函数，我们将<code>g.mu</code>暂时去掉。并且把<code>g.m</code>延迟初始化的不分去掉，延迟初始化的目的很简单，提高内存使用效率。</p>
+<pre><code>func (g *Group) Do(key string, fn func()) (interface{}. error)) (interface{}, error) {
     if c, ok := g.m[key]; ok {
         // 如果请求正在进行中，则等待
         c.wg.Wait()
@@ -333,63 +227,16 @@
     delete(g.m, key)
 
     return c.val, c.err
-}</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;并发协程之间不需要消息传递，非常适合<code>sync.WaitGroup</code></p>
-
+}
+</code></pre>
+<p>  并发协程之间不需要消息传递，非常适合<code>sync.WaitGroup</code></p>
 <ul>
 <li>wg.Add(1)锁加1</li>
 <li>wg.Wait()阻塞，知道锁被释放</li>
 <li>wg.Done()锁减1</li>
 </ul>
-
 <h1 id="使用">使用</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">type Group struct {
+<pre><code>type Group struct {
     name      string
     getter    Getter
     mainCache cache
@@ -417,7 +264,7 @@ func (g *Group) load(key string) (value ByteView, err error) {
                 if value, err = g.getFromPeer(peer, key); err == nil {
                     return value, nil
                 }
-                log.Println(&#34;[GeeCache] Failed to get from peer&#34;, err)
+                log.Println(&quot;[GeeCache] Failed to get from peer&quot;, err)
             }
         }
 
@@ -428,30 +275,19 @@ func (g *Group) load(key string) (value ByteView, err error) {
         return viewi.(ByteView), nil
     }
     return
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <ul>
 <li>修改geec.go中的Group，添加成员变量loader，并更新构建函数NewGroup</li>
 <li>修改load函数，将原来的load的逻辑，使用<code>g.loader.Do</code>包裹起来即可，这样确保了并发场景下针对相同的key，load过程只会调用一次。</li>
 </ul>
-
 <h1 id="测试">测试</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">[Server http://127.0.0.1:8003] Pick peer http://127.0.0.1:8001
+<pre><code>[Server http://127.0.0.1:8003] Pick peer http://127.0.0.1:8001
 [Server http://127.0.0.1:8001] GET /_geec/scores/Tom
-[SlowDB] search key tom</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;可以看到，向API发起了三次并发请求，但8003只向8001发起了一次请求，就搞定了。</p>
-
-<p>&emsp;&emsp;如果并发度不高，可能仍会看到向8001请求三次的场景。这种情况下三次请求是串行的，并没有触发singleflight的锁机制工作，可以加大并发数量再测试。</p>
+[SlowDB] search key tom
+</code></pre>
+<p>  可以看到，向API发起了三次并发请求，但8003只向8001发起了一次请求，就搞定了。</p>
+<p>  如果并发度不高，可能仍会看到向8001请求三次的场景。这种情况下三次请求是串行的，并没有触发singleflight的锁机制工作，可以加大并发数量再测试。</p>
 
     </div>
 

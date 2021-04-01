@@ -1,23 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>golang/杂谈 on FaceDamon`s Blog</title>
     <link>http://facedamon.github.io/categories/golang/%E6%9D%82%E8%B0%88/</link>
     <description>Recent content in golang/杂谈 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Fri, 22 May 2020 09:19:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/categories/golang/%E6%9D%82%E8%B0%88/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language><atom:link href="http://facedamon.github.io/categories/golang/%E6%9D%82%E8%B0%88/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[杂谈 | golang接口型函数]</title>
       <link>http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/</link>
       <pubDate>Fri, 22 May 2020 09:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/</guid>
-      <description>转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 &amp;emsp;&amp;emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接</description>
+      <description>转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接口 我们以迭代一个map为</description>
     </item>
     
     <item>
@@ -26,7 +21,7 @@
       <pubDate>Mon, 11 May 2020 14:09:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/</guid>
-      <description>转载自 https://segmentfault.com/a/1190000003036452 概述 &amp;emsp;&amp;emsp;sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正</description>
+      <description>转载自 https://segmentfault.com/a/1190000003036452 概述 sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正在使用的连接被标记为繁忙</description>
     </item>
     
     <item>
@@ -53,7 +48,7 @@
       <pubDate>Thu, 02 Jan 2020 12:36:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/golang%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92/</guid>
-      <description>什么是值传递 &amp;emsp;&amp;emsp;值传递的意思是：函数传递总是原来这个东西的一个副本，一幅拷贝。比如我们传递一个int类型的参数，传递的其</description>
+      <description>什么是值传递 值传递的意思是：函数传递总是原来这个东西的一个副本，一幅拷贝。比如我们传递一个int类型的参数，传递的其实是这个参数的一个副本；</description>
     </item>
     
   </channel>

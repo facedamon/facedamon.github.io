@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-group/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[手写http框架 (四) | golang group]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行" />
+<meta property="og:description" content="摘要 分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-group/" />
-<meta property="article:published_time" content="2020-07-16T09:19:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-07-16T09:19:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-group/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-07-16T09:19:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-07-16T09:19:56&#43;08:00" />
 
 <meta itemprop="name" content="[手写http框架 (四) | golang group]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行">
-
-
-<meta itemprop="datePublished" content="2020-07-16T09:19:56&#43;08:00" />
+<meta itemprop="description" content="摘要 分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景"><meta itemprop="datePublished" content="2020-07-16T09:19:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-07-16T09:19:56&#43;08:00" />
-<meta itemprop="wordCount" content="1475">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1285">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[手写http框架 (四) | golang group]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行"/>
+<meta name="twitter:description" content="摘要 分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/golang/%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6/"> golang/手写http框架 </a>
             </div>
-          <span class="more-meta"> 约 1475 字 </span>
+          <span class="more-meta"> 约 1285 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,285 +135,144 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#分组嵌套">分组嵌套</a></li>
-<li><a href="#test">Test</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#分组嵌套">分组嵌套</a></li>
+    <li><a href="#test">Test</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;<strong>分组控制</strong>是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景中，往往<strong>某一组路由需要相似的处理</strong>。例如：</p>
-
+      <h1 id="摘要">摘要</h1>
+<p>  <strong>分组控制</strong>是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景中，往往<strong>某一组路由需要相似的处理</strong>。例如：</p>
 <ul>
 <li>以<code>/post</code>开头的路由匿名可访问</li>
 <li>以<code>/admin</code>开头的路由需要鉴权</li>
 <li>以<code>/api</code>开头的路由是RESTful接口，可以对接第三方，需要三方平台鉴权</li>
 </ul>
-
-<p>&emsp;&emsp;大部分情况下的路由分组，是以相同的前缀来区分的。我们实现的分组控制也是以前缀来区分，并且支持分组的<strong>嵌套</strong>。例如<code>/post</code>是一个分组，<code>/post/a</code>和<code>/post/b</code>可以是该分组下的子分组。作用在<code>/post</code>分组上的中间件(middleware)，也都会作用在子分组，子分组还可以应用自己特有的中间件。</p>
-
-<p>&emsp;&emsp;<strong>中间件可以给框架提供无限的扩展能力</strong>，应用在分组上，可以使得分组控制的收益更为明显，而不是共享相同的路由前缀。例如<code>/admin</code>分组，可以应用鉴权中间件，<code>/</code>分组应用日志中间件，<code>/</code>是默认的最顶层分组，也就意味着给所有的路由，即整个框架增加了记录日志的能力。提供扩展能力支持中间件的内容，我们将在下一节当中介绍。</p>
-
+<p>  大部分情况下的路由分组，是以相同的前缀来区分的。我们实现的分组控制也是以前缀来区分，并且支持分组的<strong>嵌套</strong>。例如<code>/post</code>是一个分组，<code>/post/a</code>和<code>/post/b</code>可以是该分组下的子分组。作用在<code>/post</code>分组上的中间件(middleware)，也都会作用在子分组，子分组还可以应用自己特有的中间件。</p>
+<p>  <strong>中间件可以给框架提供无限的扩展能力</strong>，应用在分组上，可以使得分组控制的收益更为明显，而不是共享相同的路由前缀。例如<code>/admin</code>分组，可以应用鉴权中间件，<code>/</code>分组应用日志中间件，<code>/</code>是默认的最顶层分组，也就意味着给所有的路由，即整个框架增加了记录日志的能力。提供扩展能力支持中间件的内容，我们将在下一节当中介绍。</p>
 <h2 id="分组嵌套">分组嵌套</h2>
+<p>  一个group对象需要哪些属性？首先想到的肯定是前缀(prefix)，比如<code>/</code>，或者<code>/api</code>;要支持分组嵌套，那么需要知道当前分组的父节点(parent)是谁。当然了，按照我们一开始的分析，中间件是应用在分组上的，那还需要存储应用在该分组上的中间件(middlewares)。还记得我们之前调用函数<code>(*Engine).addRoute()</code>来映射所有的路由规则和Handler。如果group对象需要直接映射路由规则的话，比如我们想在使用框架时，这么调用：</p>
+<pre><code>    r := geew.New()
+	v1 := r.Group(&quot;/v1&quot;)
+	v1.GET(&quot;/&quot;, func(c *Context){
+        c.HTML(http.StatusOK,&quot;&lt;h1&gt;Hello Geew&lt;/h1&gt;&quot;)
+	})
+</code></pre>
+<p>  那么<strong>group对象，还需要有访问<code>router</code>的能力</strong>，为了方便，我们可以在group中，保存一个指针，指向<code>Engine</code>,整个框架的所有资源都是由<code>Engine</code>统一协调的，那么就可以通过Engine间接访问各种接口了。</p>
+<pre><code>    // group.go
+	package geew
+	
+	type group struct {
+        prefix  string
+        // support middleware
+        middlewares []HandlerFunc
+        // support nesting
+        parent  *group
+        // all groups share a engine instance
+        engine  *Engine
+	}
+</code></pre>
+<p>  我们还可以进一步抽象，将<code>Engine</code>作为最顶层的分组，也就是说Engine拥有group所有的能力，这样就可以将和路由有关的函数，都交给group实现了。</p>
+<pre><code>    // geew.go
+	package geew
+	
+	type Engine struct {
+        *group
+        router  *router
+        // store all group
+        groups  []*group
+	}
+	
+	func New() *Engine {
+        e := &amp;Engine{router: newRouter()}
+        e.group = &amp;group{engine: e}
+        e.groups = []*group{e.group}
+	}
 
-<p>&emsp;&emsp;一个group对象需要哪些属性？首先想到的肯定是前缀(prefix)，比如<code>/</code>，或者<code>/api</code>;要支持分组嵌套，那么需要知道当前分组的父节点(parent)是谁。当然了，按照我们一开始的分析，中间件是应用在分组上的，那还需要存储应用在该分组上的中间件(middlewares)。还记得我们之前调用函数<code>(*Engine).addRoute()</code>来映射所有的路由规则和Handler。如果group对象需要直接映射路由规则的话，比如我们想在使用框架时，这么调用：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    r := geew.New()
-    v1 := r.Group(&#34;/v1&#34;)
-    v1.GET(&#34;/&#34;, func(c *Context){
-        c.HTML(http.StatusOK,&#34;&lt;h1&gt;Hello Geew&lt;/h1&gt;&#34;)
-    })</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;那么<strong>group对象，还需要有访问<code>router</code>的能力</strong>，为了方便，我们可以在group中，保存一个指针，指向<code>Engine</code>,整个框架的所有资源都是由<code>Engine</code>统一协调的，那么就可以通过Engine间接访问各种接口了。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// group.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">type</span> <span class="nx">group</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">prefix</span>  <span class="kt">string</span>
-        <span class="c1">// support middleware
-</span><span class="c1"></span>        <span class="nx">middlewares</span> <span class="p">[]</span><span class="nx">HandlerFunc</span>
-        <span class="c1">// support nesting
-</span><span class="c1"></span>        <span class="nx">parent</span>  <span class="o">*</span><span class="nx">group</span>
-        <span class="c1">// all groups share a engine instance
-</span><span class="c1"></span>        <span class="nx">engine</span>  <span class="o">*</span><span class="nx">Engine</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;我们还可以进一步抽象，将<code>Engine</code>作为最顶层的分组，也就是说Engine拥有group所有的能力，这样就可以将和路由有关的函数，都交给group实现了。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// geew.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="kd">type</span> <span class="nx">Engine</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="o">*</span><span class="nx">group</span>
-        <span class="nx">router</span>  <span class="o">*</span><span class="nx">router</span>
-        <span class="c1">// store all group
-</span><span class="c1"></span>        <span class="nx">groups</span>  <span class="p">[]</span><span class="o">*</span><span class="nx">group</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">New</span><span class="p">()</span> <span class="o">*</span><span class="nx">Engine</span> <span class="p">{</span>
-        <span class="nx">e</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">Engine</span><span class="p">{</span><span class="nx">router</span><span class="p">:</span> <span class="nf">newRouter</span><span class="p">()}</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">group</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">group</span><span class="p">{</span><span class="nx">engine</span><span class="p">:</span> <span class="nx">e</span><span class="p">}</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">groups</span> <span class="p">=</span> <span class="p">[]</span><span class="o">*</span><span class="nx">group</span><span class="p">{</span><span class="nx">e</span><span class="p">.</span><span class="nx">group</span><span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="c1">// group.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geew</span>
-
-    <span class="c1">// Group is defines to create a new group
-</span><span class="c1"></span>    <span class="c1">// remember all groups share the same engine instance
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">group</span><span class="p">)</span> <span class="nf">Group</span><span class="p">(</span><span class="nx">prefix</span> <span class="kt">string</span><span class="p">)</span> <span class="o">*</span><span class="nx">group</span> <span class="p">{</span>
-        <span class="nx">e</span> <span class="o">:=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">engine</span>
-        <span class="nx">newg</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">group</span><span class="p">{</span>
-            <span class="nx">prefix</span><span class="p">:</span> <span class="nx">g</span><span class="p">.</span><span class="nx">prefix</span> <span class="o">+</span> <span class="nx">prefix</span><span class="p">,</span>
-            <span class="nx">parent</span><span class="p">:</span> <span class="nx">g</span><span class="p">,</span>
-            <span class="nx">engine</span><span class="p">:</span> <span class="nx">e</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="nx">e</span><span class="p">.</span><span class="nx">groups</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">groups</span><span class="p">,</span> <span class="nx">newg</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nx">newg</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">group</span><span class="p">)</span> <span class="nf">addRoute</span><span class="p">(</span><span class="nx">method</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">comp</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">pattern</span> <span class="o">:=</span> <span class="nx">g</span><span class="p">.</span><span class="nx">prefix</span> <span class="o">+</span> <span class="nx">comp</span>
-        <span class="c1">// add route to trie
-</span><span class="c1"></span>        <span class="nx">g</span><span class="p">.</span><span class="nx">engine</span><span class="p">.</span><span class="nx">router</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="c1">// GET defines the method to add GET req
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">group</span><span class="p">)</span> <span class="nf">GET</span><span class="p">(</span><span class="nx">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">g</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;GET&#34;</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="c1">// POST defines the method to add POST req
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">g</span> <span class="o">*</span><span class="nx">group</span><span class="p">)</span> <span class="nf">POST</span><span class="p">(</span><span class="nx">pattern</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">handler</span> <span class="nx">HandlerFunc</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">g</span><span class="p">.</span><span class="nf">addRoute</span><span class="p">(</span><span class="s">&#34;POST&#34;</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;仔细观察<code>addRoute</code>方法，调用了<code>group.engine.router.addRoute</code>来实现了路由的映射。由于<code>Engine</code>组合了<code>group</code>所有的属性和方法，，这样的实现，我们既可以像原来一样添加路由，也可以添加分组路由。</p>
-
+	// group.go
+	package geew
+	
+	// Group is defines to create a new group
+	// remember all groups share the same engine instance
+	func (g *group) Group(prefix string) *group {
+        e := g.engine
+        newg := &amp;group{
+            prefix: g.prefix + prefix,
+            parent: g,
+            engine: e,
+        }
+        e.groups = append(e.groups, newg)
+        return newg
+	}
+	
+	func (g *group) addRoute(method string, comp string, handler HandlerFunc) {
+        pattern := g.prefix + comp
+        // add route to trie
+        g.engine.router.addRoute(method, pattern, handler)
+	}
+	
+	// GET defines the method to add GET req
+	func (g *group) GET(pattern string, handler HandlerFunc) {
+        g.addRoute(&quot;GET&quot;, pattern, handler)
+	}
+	
+	// POST defines the method to add POST req
+	func (g *group) POST(pattern string, handler HandlerFunc) {
+        g.addRoute(&quot;POST&quot;, pattern, handler)
+	}
+</code></pre>
+<p>  仔细观察<code>addRoute</code>方法，调用了<code>group.engine.router.addRoute</code>来实现了路由的映射。由于<code>Engine</code>组合了<code>group</code>所有的属性和方法，，这样的实现，我们既可以像原来一样添加路由，也可以添加分组路由。</p>
 <h2 id="test">Test</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// example_test.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">example</span>
-
-    <span class="kd">func</span> <span class="nf">TestGroup</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">r</span> <span class="o">:=</span> <span class="nx">geew</span><span class="p">.</span><span class="nf">New</span><span class="p">()</span>
-        <span class="nx">r</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/index&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;&lt;h1&gt;Index Page&lt;/h1&gt;&#34;</span><span class="p">)</span>
-        <span class="p">})</span>
-        <span class="nx">v1</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/v1&#34;</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">v1</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">c</span><span class="p">.</span><span class="nf">HTML</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;&lt;h1&gt;Hello Geew&lt;/h1&gt;&#34;</span><span class="p">)</span>
-            <span class="p">})</span>
-
-            <span class="nx">v1</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-                <span class="c1">// expect /hello?name=geew
-</span><span class="c1"></span>                <span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;hello %s, you&#39;re at %s\n&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Query</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">),</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
-            <span class="p">})</span>
-        <span class="p">}</span>
-        <span class="nx">v2</span> <span class="o">:=</span> <span class="nx">r</span><span class="p">.</span><span class="nf">Group</span><span class="p">(</span><span class="s">&#34;/v2&#34;</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="nx">v2</span><span class="p">.</span><span class="nf">GET</span><span class="p">(</span><span class="s">&#34;/hello/:name&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-                <span class="c1">// expect /hello/geew
-</span><span class="c1"></span>                <span class="nx">c</span><span class="p">.</span><span class="nf">String</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="s">&#34;hello %s, you&#39;re at %s\n&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Param</span><span class="p">(</span><span class="s">&#34;name&#34;</span><span class="p">),</span> <span class="nx">c</span><span class="p">.</span><span class="nx">Path</span><span class="p">)</span>
-            <span class="p">})</span>
-            <span class="nx">v2</span><span class="p">.</span><span class="nf">POST</span><span class="p">(</span><span class="s">&#34;/login&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">geew</span><span class="p">.</span><span class="nx">Context</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">c</span><span class="p">.</span><span class="nf">JSON</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">,</span> <span class="nx">gee</span><span class="p">.</span><span class="nx">H</span><span class="p">{</span>
-                    <span class="s">&#34;username&#34;</span><span class="p">:</span> <span class="nx">c</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;username&#34;</span><span class="p">),</span>
-                    <span class="s">&#34;password&#34;</span><span class="p">:</span> <span class="nx">c</span><span class="p">.</span><span class="nf">PostForm</span><span class="p">(</span><span class="s">&#34;password&#34;</span><span class="p">),</span>
-                <span class="p">})</span>
-            <span class="p">})</span>
-
-        <span class="p">}</span>
-
-        <span class="nx">r</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="s">&#34;:9999&#34;</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<pre><code>    // example_test.go
+	package example
+	
+	func TestGroup(t *testing.T) {
+        r := geew.New()
+        r.GET(&quot;/index&quot;, func(c *geew.Context) {
+            c.HTML(http.StatusOK, &quot;&lt;h1&gt;Index Page&lt;/h1&gt;&quot;)
+        })
+        v1 := r.Group(&quot;/v1&quot;)
+        {
+            v1.GET(&quot;/&quot;, func(c *geew.Context) {
+                c.HTML(http.StatusOK, &quot;&lt;h1&gt;Hello Geew&lt;/h1&gt;&quot;)
+            })
+	
+            v1.GET(&quot;/hello&quot;, func(c *geew.Context) {
+                // expect /hello?name=geew
+                c.String(http.StatusOK, &quot;hello %s, you're at %s\n&quot;, c.Query(&quot;name&quot;), c.Path)
+            })
+        }
+        v2 := r.Group(&quot;/v2&quot;)
+        {
+            v2.GET(&quot;/hello/:name&quot;, func(c *geew.Context) {
+                // expect /hello/geew
+                c.String(http.StatusOK, &quot;hello %s, you're at %s\n&quot;, c.Param(&quot;name&quot;), c.Path)
+            })
+            v2.POST(&quot;/login&quot;, func(c *geew.Context) {
+                c.JSON(http.StatusOK, gee.H{
+                    &quot;username&quot;: c.PostForm(&quot;username&quot;),
+                    &quot;password&quot;: c.PostForm(&quot;password&quot;),
+                })
+            })
+	
+        }
+	
+        r.Run(&quot;:9999&quot;)
+	}
+</code></pre>
 <ul>
-<li><p>curl测试</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">// shell
-$ curl &#39;http://127.0.0.1:9999/v1/hello?name=geew&#39;
-hello geew, you`re at /v1/hello
-
-$ curl &#39;http://127.0.0.1:9999/v2/hello/geew&#39;
-hello geew, you`re at /hello/geew</pre></td></tr></table>
-</div>
-</div></li>
+<li>
+<p>curl测试</p>
+<pre><code>  // shell
+  $ curl 'http://127.0.0.1:9999/v1/hello?name=geew'
+  hello geew, you`re at /v1/hello
+	
+  $ curl 'http://127.0.0.1:9999/v2/hello/geew'
+  hello geew, you`re at /hello/geew
+</code></pre>
+</li>
 </ul>
 
     </div>

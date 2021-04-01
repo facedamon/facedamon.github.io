@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 &amp;e" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 若整个排序过程不需要访问外存" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/data-struct/sort/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[数据结构与算法 | 排序算法]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 &e" />
+<meta property="og:description" content="摘要 排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 若整个排序过程不需要访问外存" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/data-struct/sort/" />
-<meta property="article:published_time" content="2021-01-13T20:00:56&#43;08:00"/>
-<meta property="article:modified_time" content="2021-01-13T20:00:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/data-struct/sort/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-01-13T20:00:56&#43;08:00" />
+<meta property="article:modified_time" content="2021-01-13T20:00:56&#43;08:00" />
 
 <meta itemprop="name" content="[数据结构与算法 | 排序算法]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 &e">
-
-
-<meta itemprop="datePublished" content="2021-01-13T20:00:56&#43;08:00" />
+<meta itemprop="description" content="摘要 排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 若整个排序过程不需要访问外存"><meta itemprop="datePublished" content="2021-01-13T20:00:56&#43;08:00" />
 <meta itemprop="dateModified" content="2021-01-13T20:00:56&#43;08:00" />
-<meta itemprop="wordCount" content="6254">
-
-
-
-<meta itemprop="keywords" content="数据结构与算法," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="5624">
+<meta itemprop="keywords" content="数据结构与算法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[数据结构与算法 | 排序算法]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 &e"/>
+<meta name="twitter:description" content="摘要 排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 若整个排序过程不需要访问外存"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -133,8 +126,8 @@
             <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"> 数据结构与算法 </a>
             <a href="/categories/%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD/"> 未完待续 </a>
             </div>
-          <span class="more-meta"> 约 6254 字 </span>
-          <span class="more-meta"> 预计阅读 13 分钟 </span>
+          <span class="more-meta"> 约 5624 字 </span>
+          <span class="more-meta"> 预计阅读 12 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -143,45 +136,39 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#工具">工具</a></li>
-<li><a href="#交换排序">交换排序</a>
-<ul>
-<li><a href="#冒泡排序">冒泡排序</a></li>
-<li><a href="#快速排序">快速排序</a></li>
-</ul></li>
-<li><a href="#插入排序">插入排序</a>
-<ul>
-<li><a href="#直接插入排序">直接插入排序</a></li>
-<li><a href="#希尔排序">希尔排序</a></li>
-</ul></li>
-<li><a href="#选择排序">选择排序</a>
-<ul>
-<li><a href="#简单选择排序">简单选择排序</a></li>
-<li><a href="#堆排序">堆排序</a></li>
-</ul></li>
-<li><a href="#归并排序">归并排序</a></li>
-<li><a href="#计数排序">计数排序</a></li>
-<li><a href="#桶排序">桶排序</a></li>
-<li><a href="#基数排序">基数排序</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#工具">工具</a></li>
+    <li><a href="#交换排序">交换排序</a>
+      <ul>
+        <li><a href="#冒泡排序">冒泡排序</a></li>
+        <li><a href="#快速排序">快速排序</a></li>
+      </ul>
+    </li>
+    <li><a href="#插入排序">插入排序</a>
+      <ul>
+        <li><a href="#直接插入排序">直接插入排序</a></li>
+        <li><a href="#希尔排序">希尔排序</a></li>
+      </ul>
+    </li>
+    <li><a href="#选择排序">选择排序</a>
+      <ul>
+        <li><a href="#简单选择排序">简单选择排序</a></li>
+        <li><a href="#堆排序">堆排序</a></li>
+      </ul>
+    </li>
+    <li><a href="#归并排序">归并排序</a></li>
+    <li><a href="#计数排序">计数排序</a></li>
+    <li><a href="#桶排序">桶排序</a></li>
+    <li><a href="#基数排序">基数排序</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。</p>
-
-<p>&emsp;&emsp;<strong>若整个排序过程不需要访问外存便能完成，则称此类排序为内部排序。反之，若参加排序的记录数列很大，整个序列的排序过程不可能在内存中完成，则称此类排序为外部排序。</strong></p>
-
-<p>&emsp;&emsp;将杂乱无章的数据元素，通过一定的方法按关键字顺序排列的过程叫做排序。<strong>假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，即在原序列中，$R_i=R_j$，且$R_i$在$R_j$之前，而在排序后的序列中，$R_i$仍在$R_j$之前，则称这种排序算法是稳定的；否则称为不稳定。</strong></p>
-
+      <h1 id="摘要">摘要</h1>
+<p>  排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。</p>
+<p>  <strong>若整个排序过程不需要访问外存便能完成，则称此类排序为内部排序。反之，若参加排序的记录数列很大，整个序列的排序过程不可能在内存中完成，则称此类排序为外部排序。</strong></p>
+<p>  将杂乱无章的数据元素，通过一定的方法按关键字顺序排列的过程叫做排序。<strong>假定在待排序的记录序列中，存在多个具有相同的关键字的记录，若经过排序，这些记录的相对次序保持不变，即在原序列中，$R_i=R_j$，且$R_i$在$R_j$之前，而在排序后的序列中，$R_i$仍在$R_j$之前，则称这种排序算法是稳定的；否则称为不稳定。</strong></p>
 <table>
 <thead>
 <tr>
@@ -194,7 +181,6 @@
 <th>类型</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>冒泡排序</td>
@@ -205,7 +191,6 @@
 <td>稳定</td>
 <td>交换排序</td>
 </tr>
-
 <tr>
 <td>快速排序</td>
 <td>O(nlogn)</td>
@@ -215,7 +200,6 @@
 <td>不稳定</td>
 <td>交换排序</td>
 </tr>
-
 <tr>
 <td>直接插入排序</td>
 <td>O(n^2)</td>
@@ -225,7 +209,6 @@
 <td>稳定</td>
 <td>插入排序</td>
 </tr>
-
 <tr>
 <td>希尔排序</td>
 <td>O(nlogn)~O(n^2)</td>
@@ -235,7 +218,6 @@
 <td>不稳定</td>
 <td>插入排序</td>
 </tr>
-
 <tr>
 <td>简单选择排序</td>
 <td>O(n^2)</td>
@@ -245,7 +227,6 @@
 <td>不稳定</td>
 <td>选择排序</td>
 </tr>
-
 <tr>
 <td>堆排序</td>
 <td>o(nlogn)</td>
@@ -255,7 +236,6 @@
 <td>不稳定</td>
 <td>选择排序</td>
 </tr>
-
 <tr>
 <td>归并排序</td>
 <td>O(nlogn)</td>
@@ -265,7 +245,6 @@
 <td>稳定</td>
 <td>归并排序</td>
 </tr>
-
 <tr>
 <td>计数排序</td>
 <td>O(n+k)</td>
@@ -277,27 +256,8 @@
 </tr>
 </tbody>
 </table>
-
 <h2 id="工具">工具</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">/**
+<pre><code>/**
  * 交换数组a中，位置i和位置j的数据
  * @param a
  * @param i
@@ -310,28 +270,10 @@ private void swap(int[] a, int i, int j) {
     int temp = a[i];
     a[i] = a[j];
     a[j] = temp;
-}</pre></td></tr></table>
-</div>
-</div>
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">/**
+}
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>/**
  * 打印数组
  * @param a
  */
@@ -340,29 +282,13 @@ private void printArr(int[] a) {
         return;
     }
     for (int k : a) {
-        System.out.printf(&#34;%d\t&#34;, k);
+        System.out.printf(&quot;%d\t&quot;, k);
     }
     System.out.println();
-}</pre></td></tr></table>
-</div>
-</div>
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">private long start = 0;
+}
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>private long start = 0;
 
 @Before
 public void before() {
@@ -371,41 +297,13 @@ public void before() {
 
 @After
 public void after() {
-    System.out.printf(&#34;运行时间:%d毫秒\n&#34;, (System.currentTimeMillis() - start));
-}</pre></td></tr></table>
-</div>
-</div>
+    System.out.printf(&quot;运行时间:%d毫秒\n&quot;, (System.currentTimeMillis() - start));
+}
+</code></pre>
 <h2 id="交换排序">交换排序</h2>
-
 <h3 id="冒泡排序">冒泡排序</h3>
-
-<p>&emsp;&emsp;已知一组无序数据a[1]、a[2]、&hellip;a[n]，需将其按升序排序。首先比较a[1]与a[2]的值，若a[1]大于a[2]则交换两者的值，否则不变。再比较a[2]与a[3]的值，若a[2]大于a[3]则交换两者的值，否则不变。再比较a[3]与a[4]，以此类推，最后比较a[n-1]与a[n]的值。这样处理一轮后，a[n]的值一定是这组数据中最大的。再对a[1]~a[n-1]以相同方法处理一轮，则a[n-1]的值就一定是a[1]~a[n-1]中最大的。再对a[1]~a[n-2]以相同方法处理一轮，以此类推。共处理n-1轮后数组a就是以升序排列了。总的来讲，每一轮排序后最大或者小的数将移动到序列的最后，<strong>理论上总共要进行n(n-1)/2次交换</strong>。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public void bubbleSort(int[] a) {
+<p>  已知一组无序数据a[1]、a[2]、&hellip;a[n]，需将其按升序排序。首先比较a[1]与a[2]的值，若a[1]大于a[2]则交换两者的值，否则不变。再比较a[2]与a[3]的值，若a[2]大于a[3]则交换两者的值，否则不变。再比较a[3]与a[4]，以此类推，最后比较a[n-1]与a[n]的值。这样处理一轮后，a[n]的值一定是这组数据中最大的。再对a[1]~a[n-1]以相同方法处理一轮，则a[n-1]的值就一定是a[1]~a[n-1]中最大的。再对a[1]~a[n-2]以相同方法处理一轮，以此类推。共处理n-1轮后数组a就是以升序排列了。总的来讲，每一轮排序后最大或者小的数将移动到序列的最后，<strong>理论上总共要进行n(n-1)/2次交换</strong>。</p>
+<pre><code>public void bubbleSort(int[] a) {
     if (a == null || a.length &lt; 1) {
         return;
     }
@@ -423,22 +321,17 @@ public void testBubbleSort() {
     int[] a = {1, 2, 3, 4, 1, -1};
     bubbleSort(a);
     printArr(a);
-    //-1    1   1   2   3   4   
+    //-1	1	1	2	3	4	
     //运行时间:1毫秒
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <ul>
 <li>优点：稳定</li>
 <li>缺点：慢，每次只能移动相邻的两个元素。</li>
 </ul>
-
 <h3 id="快速排序">快速排序</h3>
-
-<p>&emsp;&emsp;设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用数组的第一个数）作为关键数据，然后将所有比它小的数都放到它前面，所有比它大的数都放到它后面，这个过程称为一趟快速排序。值得注意的是，快速排序不是一种稳定的排序算法，也就是说，多个相同的值的相对位置也许会在算法结束时产生变动。</p>
-
-<p>&emsp;&emsp;一趟快速排序的算法是：</p>
-
+<p>  设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用数组的第一个数）作为关键数据，然后将所有比它小的数都放到它前面，所有比它大的数都放到它后面，这个过程称为一趟快速排序。值得注意的是，快速排序不是一种稳定的排序算法，也就是说，多个相同的值的相对位置也许会在算法结束时产生变动。</p>
+<p>  一趟快速排序的算法是：</p>
 <ol>
 <li>设置两个变量i、j，排序开始的时候：i=0，j=N-1；</li>
 <li>以第一个数组元素作为关键数据，赋值给key，即key=A[0]；</li>
@@ -446,53 +339,21 @@ public void testBubbleSort() {
 <li>从i开始向后搜索，即由前开始向后搜索(i++)，找到第一个大于key的A[i]，将A[i]和A[j]互换；</li>
 <li>重复第3、4步，直到i=j； (3,4步中，没找到符合条件的值，即3中A[j]不小于key,4中A[i]不大于key的时候改变j、i的值，使得j=j-1，i=i+1，直至找到为止。找到符合条件的值，进行交换的时候i， j指针位置不变。另外，i==j这一过程一定正好是i+或j-完成的时候，此时令循环结束）。</li>
 </ol>
-
-<p>&emsp;&emsp;下面以数列a={30,40,60,10,20,50}为例，演示它的快速排序过程(如下图)。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/121659127078460.jpg" alt="avatar" /></p>
-
+<p>  下面以数列a={30,40,60,10,20,50}为例，演示它的快速排序过程(如下图)。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/121659127078460.jpg" alt="avatar"></p>
 <ol>
 <li>在第1趟中，设置x=a[i]，即x=30。</li>
-<li>从&rdquo;右 &ndash;&gt; 左&rdquo;查找小于x的数：找到满足条件的数a[j]=20，此时j=4；然后将a[j]赋值a[i]，此时i=0；接着从左往右遍历。</li>
-<li>从&rdquo;左 &ndash;&gt; 右&rdquo;查找大于x的数：找到满足条件的数a[i]=40，此时i=1；然后将a[i]赋值a[j]，此时j=4；接着从右往左遍历。</li>
-<li>从&rdquo;右 &ndash;&gt; 左&rdquo;查找小于x的数：找到满足条件的数a[j]=10，此时j=3；然后将a[j]赋值a[i]，此时i=1；接着从左往右遍历。</li>
-<li>从&rdquo;左 &ndash;&gt; 右&rdquo;查找大于x的数：找到满足条件的数a[i]=60，此时i=2；然后将a[i]赋值a[j]，此时j=3；接着从右往左遍历。</li>
-<li>从&rdquo;右 &ndash;&gt; 左&rdquo;查找小于x的数：没有找到满足条件的数。当i&gt;=j时，停止查找；然后将x赋值给a[i]。此趟遍历结束！</li>
+<li>从&quot;右 &ndash;&gt; 左&quot;查找小于x的数：找到满足条件的数a[j]=20，此时j=4；然后将a[j]赋值a[i]，此时i=0；接着从左往右遍历。</li>
+<li>从&quot;左 &ndash;&gt; 右&quot;查找大于x的数：找到满足条件的数a[i]=40，此时i=1；然后将a[i]赋值a[j]，此时j=4；接着从右往左遍历。</li>
+<li>从&quot;右 &ndash;&gt; 左&quot;查找小于x的数：找到满足条件的数a[j]=10，此时j=3；然后将a[j]赋值a[i]，此时i=1；接着从左往右遍历。</li>
+<li>从&quot;左 &ndash;&gt; 右&quot;查找大于x的数：找到满足条件的数a[i]=60，此时i=2；然后将a[i]赋值a[j]，此时j=3；接着从右往左遍历。</li>
+<li>从&quot;右 &ndash;&gt; 左&quot;查找小于x的数：没有找到满足条件的数。当i&gt;=j时，停止查找；然后将x赋值给a[i]。此趟遍历结束！</li>
 <li><strong>按照同样的方法，对子数列进行递归遍历。最后得到有序数组！</strong></li>
 </ol>
-
 <blockquote>
 <p>1~6 步</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">private int partition(int[] a, int left, int right) {
+<pre><code>private int partition(int[] a, int left, int right) {
     if (a == null || a.length &lt; 1 || left &lt; 0 || left &gt; right) {
         return -1;
     }
@@ -515,31 +376,14 @@ public void testBubbleSort() {
     }
     a[i] = x;
     return i;
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <blockquote>
 <p>递归版本</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public void quickSort(int[] a, int left, int right) {
+<pre><code>public void quickSort(int[] a, int left, int right) {
     if (a == null || a.length &lt; 1 || a.length &lt; right || left &lt; 0 || left &gt; right) {
-        throw new RuntimeException(&#34;quickSort param err.&#34;);
+        throw new RuntimeException(&quot;quickSort param err.&quot;);
     }
     int k = partition(a, left, right);
     if (k &gt; left) {
@@ -548,47 +392,14 @@ public void testBubbleSort() {
     if (k &lt; right) {
         quickSort(a, k + 1, right);
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <blockquote>
 <p>非递归版本</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public void quickSort2(int[] a, int left, int right) {
+<pre><code>public void quickSort2(int[] a, int left, int right) {
     if (a == null || a.length &lt; 1 || a.length &lt; right || left &lt; 0 || left &gt; right) {
-        throw new RuntimeException(&#34;quickSort param err.&#34;);
+        throw new RuntimeException(&quot;quickSort param err.&quot;);
     }
     Deque&lt;Integer&gt; stack = new ArrayDeque&lt;Integer&gt;();
     // 先押入右下标，再押入左下标
@@ -613,47 +424,13 @@ public void testBubbleSort() {
             }
         }
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="插入排序">插入排序</h2>
-
 <h3 id="直接插入排序">直接插入排序</h3>
-
-<p>&emsp;&emsp;直接插入排序(Straight Insertion Sort)的基本思想是：把n个待排序的元素看成为一个有序表和一个无序表。开始时有序表中只包含1个元素，无序表中包含有n-1个元素，排序过程中每次从无序表中取出第一个元素，将它插入到有序表中的适当位置，使之成为新的有序表，重复n-1次可完成排序过程。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/121755260214693.jpg" alt="avatar" /></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public void insertSort(int[] a) {
+<p>  直接插入排序(Straight Insertion Sort)的基本思想是：把n个待排序的元素看成为一个有序表和一个无序表。开始时有序表中只包含1个元素，无序表中包含有n-1个元素，排序过程中每次从无序表中取出第一个元素，将它插入到有序表中的适当位置，使之成为新的有序表，重复n-1次可完成排序过程。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/121755260214693.jpg" alt="avatar"></p>
+<pre><code>public void insertSort(int[] a) {
     if (a == null || a.length &lt; 1) {
         return;
     }
@@ -678,93 +455,18 @@ public void testBubbleSort() {
             a[k + 1] = temp;
         }
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h3 id="希尔排序">希尔排序</h3>
-
-<p>&emsp;&emsp;希尔排序(Shell Sort)是插入排序的一种，它是针对直接插入排序算法的改进。该方法又称缩小增量排序，因DL．Shell于1959年提出而得名。</p>
-
-<p>&emsp;&emsp;希尔排序实质上是一种分组插入方法。它的基本思想是：对于n个待排序的数列，取一个小于n的整数gap(gap被称为步长)将待排序元素分成若干个组子序列，<strong>所有距离为gap的倍数的记录放在同一个组中</strong>；然后，对各组内的元素进行直接插入排序。 这一趟排序完成之后，每一个组的元素都是有序的。然后减小gap的值，并重复执行上述的分组和排序。重复这样的操作，当gap=1时，整个数列就是有序的。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/122325434993142.jpg" alt="avatar" /></p>
-
+<p>  希尔排序(Shell Sort)是插入排序的一种，它是针对直接插入排序算法的改进。该方法又称缩小增量排序，因DL．Shell于1959年提出而得名。</p>
+<p>  希尔排序实质上是一种分组插入方法。它的基本思想是：对于n个待排序的数列，取一个小于n的整数gap(gap被称为步长)将待排序元素分成若干个组子序列，<strong>所有距离为gap的倍数的记录放在同一个组中</strong>；然后，对各组内的元素进行直接插入排序。 这一趟排序完成之后，每一个组的元素都是有序的。然后减小gap的值，并重复执行上述的分组和排序。重复这样的操作，当gap=1时，整个数列就是有序的。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/122325434993142.jpg" alt="avatar"></p>
 <ul>
 <li>时间复杂度：希尔排序的时间复杂度与步长gap选取有关，当gap=1，希尔排序退化为直接插入排序，此时时间复杂度为O(n^2).而Hibbard增量序列的取法为$𝐷𝑘=2^𝑘−1$：{1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191&hellip;}
-最坏时间复杂度为𝑂(𝑁^<sup>3</sup>&frasl;<sub>2</sub>)；平均时间复杂度约为𝑂(𝑁^<sup>5</sup>&frasl;<sub>4</sub>).</li>
+最坏时间复杂度为𝑂(𝑁^3/2)；平均时间复杂度约为𝑂(𝑁^5/4).</li>
 </ul>
-
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">/**
+<!-- raw HTML omitted -->
+<pre><code>/**
  * 𝐷𝑘=2^𝑘−1
  * ：{1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191...}
  * Hibbard增量
@@ -828,17 +530,12 @@ public void shellSort(int[] a) {
             gapSort(a, i, gap);
         }
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="选择排序">选择排序</h2>
-
 <h3 id="简单选择排序">简单选择排序</h3>
-
-<p>&emsp;&emsp;选择排序(Selection sort)是一种简单直观的排序算法。它的基本思想是：首先在未排序的数列中找到最小(or最大)元素，然后将其存放到数列的起始位置；接着，再从剩余未排序的元素中继续寻找最小(or最大)元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/130003333397123.jpg" alt="avatar" /></p>
-
+<p>  选择排序(Selection sort)是一种简单直观的排序算法。它的基本思想是：首先在未排序的数列中找到最小(or最大)元素，然后将其存放到数列的起始位置；接着，再从剩余未排序的元素中继续寻找最小(or最大)元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/130003333397123.jpg" alt="avatar"></p>
 <ol>
 <li>i=0。找出a[1&hellip;5]中的最小值a[3]=10，然后将a[0]和a[3]互换。 数列变化：20,40,30,10,60,50 &ndash; &gt; 10,40,30,20,60,50</li>
 <li>i=1。找出a[2&hellip;5]中的最小值a[3]=20，然后将a[1]和a[3]互换。 数列变化：10,40,30,20,60,50 &ndash; &gt; 10,20,30,40,60,50</li>
@@ -846,39 +543,8 @@ public void shellSort(int[] a) {
 <li>i=3。找出a[4&hellip;5]中的最小值，由于该最小值大于a[3]，该趟不做任何处理。</li>
 <li>i=4。交换a[4]和a[5]的数据。 数列变化：10,20,30,40,60,50 &ndash; &gt; 10,20,30,40,50,60</li>
 </ol>
-
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public void selectSort(int[] a) {
+<!-- raw HTML omitted -->
+<pre><code>public void selectSort(int[] a) {
     if (a == null || a.length &lt; 1) {
         return;
     }
@@ -903,108 +569,24 @@ public void shellSort(int[] a) {
             swap(a, i, min);
         }
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h3 id="堆排序">堆排序</h3>
-
 <blockquote>
 <p>未完待续</p>
 </blockquote>
-
 <h2 id="归并排序">归并排序</h2>
-
-<p>&emsp;&emsp;将两个的有序数列合并成一个有序数列，我们称之为&rdquo;归并&rdquo;。</p>
-
-<p>&emsp;&emsp;从下往上的归并排序：将待排序的数列分成若干个长度为1的子数列，然后将这些数列两两合并；得到若干个长度为2的有序数列，再将这些数列两两合并；得到若干个长度为4的有序数列，再将它们两两合并；直接合并成一个数列为止。这样就得到了我们想要的排序结果。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/151857010277686.jpg" alt="avatar" /></p>
-
+<p>  将两个的有序数列合并成一个有序数列，我们称之为&quot;归并&quot;。</p>
+<p>  从下往上的归并排序：将待排序的数列分成若干个长度为1的子数列，然后将这些数列两两合并；得到若干个长度为2的有序数列，再将这些数列两两合并；得到若干个长度为4的有序数列，再将它们两两合并；直接合并成一个数列为止。这样就得到了我们想要的排序结果。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/151857010277686.jpg" alt="avatar"></p>
 <ol>
 <li>将数组{80,30,60,40,20,10,50,70}看作由8个有序的子数组{80},{30},{60},{40},{20},{10},{50}和{70}组成。</li>
 <li>将这8个有序的子数列两两合并。得到4个有序的子树列{30,80},{40,60},{10,20}和{50,70}。</li>
 <li>将这4个有序的子数列两两合并。得到2个有序的子树列{30,40,60,80}和{10,20,50,70}。</li>
 <li>将这2个有序的子数列两两合并。得到1个有序的子树列{10,20,30,40,50,60,70,80}。</li>
 </ol>
-
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">/**
+<!-- raw HTML omitted -->
+<pre><code>/**
  * 将一个数组中的两个相邻有序区间合并成一个
  * @param a 包含两个有序区间
  * @param left 第一个有序区间的起始下标
@@ -1075,65 +657,20 @@ public void mergeSort(int[] a) {
     for (int i = 1; i &lt; len; i &lt;&lt;= 1) {
         mergeGroups(a, i);
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="计数排序">计数排序</h2>
-
-<p>&emsp;&emsp;计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的<code>正整数</code>。</p>
-
-<p>&emsp;&emsp;假设待排序的数组a中共有N个整数，并且已知数组a中数据的范围[0, MAX)。在排序时，创建容量为MAX的数组r，并将数组元素都初始化为0；在排序时，逐个遍历数组a，将数组a的值，作为&rdquo;辅助数组r&rdquo;的下标。当a中数据被读取时，就将辅助数组的值加1。例如，读取到数组a[3]=5，则将r[5]的值+1。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/152240225909832.jpg" alt="avatar" /></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">private int getMaxValue(int[] a) {
+<p>  计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的<code>正整数</code>。</p>
+<p>  假设待排序的数组a中共有N个整数，并且已知数组a中数据的范围[0, MAX)。在排序时，创建容量为MAX的数组r，并将数组元素都初始化为0；在排序时，逐个遍历数组a，将数组a的值，作为&quot;辅助数组r&quot;的下标。当a中数据被读取时，就将辅助数组的值加1。例如，读取到数组a[3]=5，则将r[5]的值+1。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/152240225909832.jpg" alt="avatar"></p>
+<pre><code>private int getMaxValue(int[] a) {
     if (a == null || a.length &lt; 1) {
         return -1;
     }
     int max = a[0];
     for (int v : a) {
         if (v &lt; 0) {
-            throw new IllegalArgumentException(&#34;number must grant than zero&#34;);
+            throw new IllegalArgumentException(&quot;number must grant than zero&quot;);
         }
         if (max &lt; v) {
             max = v;
@@ -1162,80 +699,18 @@ public void countSort(int[] a) {
             temp[j]--;
         }
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="桶排序">桶排序</h2>
-
-<p>&emsp;&emsp;桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。为了使桶排序更加高效，我们需要做到这两点：</p>
-
+<p>  桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。为了使桶排序更加高效，我们需要做到这两点：</p>
 <ol>
 <li>在额外空间充足的情况下，尽量增大桶的数量</li>
 <li>使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中</li>
 </ol>
-
-<p>&emsp;&emsp;当输入的数据可以均匀的分配到每一个桶中，最快。当输入的数据被分配到了同一个桶中，最慢。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/Bucket_sort_1.svg_.png" alt="avatar" />
-<img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/Bucket_sort_2.svg_.png" alt="avatar" /></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">/**
+<p>  当输入的数据可以均匀的分配到每一个桶中，最快。当输入的数据被分配到了同一个桶中，最慢。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/Bucket_sort_1.svg_.png" alt="avatar">
+<img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/Bucket_sort_2.svg_.png" alt="avatar"></p>
+<pre><code>/**
  * 桶排序
  * @param a
  * @param bucketSize 桶数
@@ -1287,9 +762,8 @@ private int[] append(int[] bucket, int i) {
     bucket = Arrays.copyOf(bucket, bucket.length + 1);
     bucket[bucket.length - 1] = i;
     return bucket;
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="基数排序">基数排序</h2>
 
     </div>

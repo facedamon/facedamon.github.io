@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>设计模式 on FaceDamon`s Blog</title>
@@ -6,10 +6,51 @@
     <description>Recent content in 设计模式 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 30 Oct 2020 14:05:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 01 Apr 2021 14:25:56 +0800</lastBuildDate><atom:link href="http://facedamon.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[设计模式 | 结构 | 装饰器模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 01 Apr 2021 14:25:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它</description>
+    </item>
     
-	<atom:link href="http://facedamon.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[设计模式 | 结构 | 享元模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 22 Mar 2021 15:21:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提</description>
+    </item>
     
+    <item>
+      <title>[设计模式 | 外观 | 模板模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 22 Mar 2021 15:06:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以</description>
+    </item>
+    
+    <item>
+      <title>[设计模式 | 结构 | 外观模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 20 Mar 2021 15:35:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，</description>
+    </item>
+    
+    <item>
+      <title>[设计模式 | 结构 | 代理模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 20 Mar 2021 11:11:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 在代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。在代理模式中，我们创建具有现有对象</description>
+    </item>
     
     <item>
       <title>[设计模式 | 创建 | 原型模式]</title>
@@ -17,7 +58,7 @@
       <pubDate>Fri, 30 Oct 2020 14:05:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 &amp;emsp;&amp;emsp;这</description>
+      <description>摘要 原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 这种模式是实现了一个原型接口，该接口用于创建当前对</description>
     </item>
     
     <item>
@@ -26,7 +67,7 @@
       <pubDate>Tue, 27 Oct 2020 17:34:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;Builder Pattern使用多个简单的对象一步一步构建一个复杂的对象。 介绍 意图：将一个复杂的构建与其表示相分离，使得同样的构建过程可以创建不同的</description>
+      <description>摘要 Builder Pattern使用多个简单的对象一步一步构建一个复杂的对象。 介绍 意图：将一个复杂的构建与其表示相分离，使得同样的构建过程可以创建不同的</description>
     </item>
     
     <item>
@@ -35,7 +76,7 @@
       <pubDate>Thu, 10 Sep 2020 20:01:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;单例模式(Singleton Pattern) 是Java中最简单的设计模式之一。它提供了一种创建对象的最佳方法。 &amp;emsp;&amp;e</description>
+      <description>摘要 单例模式(Singleton Pattern) 是Java中最简单的设计模式之一。它提供了一种创建对象的最佳方法。 这种模式涉及到一个单一的类，该类负责创建</description>
     </item>
     
     <item>
@@ -44,7 +85,7 @@
       <pubDate>Thu, 10 Sep 2020 15:51:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式</description>
+      <description>摘要 抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相</description>
     </item>
     
     <item>
@@ -53,7 +94,7 @@
       <pubDate>Thu, 10 Sep 2020 14:52:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;工厂模式(Factory Pattern)是Java中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提</description>
+      <description>摘要 工厂模式(Factory Pattern)是Java中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方</description>
     </item>
     
     <item>
@@ -62,7 +103,7 @@
       <pubDate>Wed, 02 Sep 2020 11:04:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E8%A7%82%E5%AF%9F%E8%80%85%E5%AE%9E%E8%B7%B5/</guid>
-      <description>什么是观察者模式 观察者观察被观察者，被观察者通知观察者 &amp;emsp;&amp;emsp;我们用&amp;rdquo;订阅通知&amp;rdquo;翻译下[观察者模式]</description>
+      <description>什么是观察者模式 观察者观察被观察者，被观察者通知观察者 我们用&amp;quot;订阅通知&amp;quot;翻译下[观察者模式]的概念： &amp;ldquo;订阅者</description>
     </item>
     
   </channel>

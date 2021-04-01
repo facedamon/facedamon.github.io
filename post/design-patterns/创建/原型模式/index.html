@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 &amp;emsp;&amp;emsp;这" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 这种模式是实现了一个原型接口，该接口用于创建当前对" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[设计模式 | 创建 | 原型模式]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 &emsp;&emsp;这" />
+<meta property="og:description" content="摘要 原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 这种模式是实现了一个原型接口，该接口用于创建当前对" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/" />
-<meta property="article:published_time" content="2020-10-30T14:05:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-10-30T14:05:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-10-30T14:05:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-10-30T14:05:56&#43;08:00" />
 
 <meta itemprop="name" content="[设计模式 | 创建 | 原型模式]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 &emsp;&emsp;这">
-
-
-<meta itemprop="datePublished" content="2020-10-30T14:05:56&#43;08:00" />
+<meta itemprop="description" content="摘要 原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 这种模式是实现了一个原型接口，该接口用于创建当前对"><meta itemprop="datePublished" content="2020-10-30T14:05:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-10-30T14:05:56&#43;08:00" />
-<meta itemprop="wordCount" content="1115">
-
-
-
-<meta itemprop="keywords" content="设计模式," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="953">
+<meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[设计模式 | 创建 | 原型模式]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 &emsp;&emsp;这"/>
+<meta name="twitter:description" content="摘要 原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 这种模式是实现了一个原型接口，该接口用于创建当前对"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%88%9B%E5%BB%BA/"> 设计模式/创建 </a>
             </div>
-          <span class="more-meta"> 约 1115 字 </span>
-          <span class="more-meta"> 预计阅读 3 分钟 </span>
+          <span class="more-meta"> 约 953 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,32 +135,20 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a></li>
-<li><a href="#介绍">介绍</a></li>
-<li><a href="#实现">实现</a>
-<ul>
-<li><a href="#创建一个实现了cloneable接口的抽象类">创建一个实现了Cloneable接口的抽象类</a></li>
-<li><a href="#创建扩展了抽象类的实体类">创建扩展了抽象类的实体类</a></li>
-<li><a href="#创建cache-模拟从数据库获取实体类-并存储在hashtable">创建Cache，模拟从数据库获取实体类，并存储在Hashtable</a></li>
-<li><a href="#获取克隆">获取克隆</a></li>
-</ul></li>
-<li><a href="#golang版本">Golang版本</a></li>
-</ul>
+  <ul>
+    <li><a href="#创建一个实现了cloneable接口的抽象类">创建一个实现了Cloneable接口的抽象类</a></li>
+    <li><a href="#创建扩展了抽象类的实体类">创建扩展了抽象类的实体类</a></li>
+    <li><a href="#创建cache模拟从数据库获取实体类并存储在hashtable">创建Cache，模拟从数据库获取实体类，并存储在Hashtable</a></li>
+    <li><a href="#获取克隆">获取克隆</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。</p>
-
-<p>&emsp;&emsp;这种模式是实现了一个原型接口，<code>该接口用于创建当前对象的克隆。当直接创建对象的代价比较大时，则采用这种模式</code>。例如，一个对象需要在一个高代价的数据库操作之后被创建。我们可以缓存该对象，在下一个请求时返回它的克隆，在需要的时候更新数据库，以此来减少数据库调用。</p>
-
+      <h1 id="摘要">摘要</h1>
+<p>  原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。</p>
+<p>  这种模式是实现了一个原型接口，<code>该接口用于创建当前对象的克隆。当直接创建对象的代价比较大时，则采用这种模式</code>。例如，一个对象需要在一个高代价的数据库操作之后被创建。我们可以缓存该对象，在下一个请求时返回它的克隆，在需要的时候更新数据库，以此来减少数据库调用。</p>
 <h1 id="介绍">介绍</h1>
-
 <ul>
 <li><strong>意图</strong>：用原型实例指定创建对象的种类，并且通过拷贝这些原型创建新的对象。</li>
 <li><strong>主要解决</strong>：在运行期建立和删除原型</li>
@@ -176,47 +157,11 @@
 <li><strong>使用场景</strong>：在实际项目中，原型模式很少单独出现，一般是和工厂方法模式一起出现，通过clone的方法创建一个对象，然后由工厂方法提供给调用者。原型模式已经与Java融为一体。</li>
 <li><strong>注意事项</strong>：与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象。浅拷贝实现Cloneable，重写，深拷贝是通过实现Serializable读取二进制流</li>
 </ul>
-
 <h1 id="实现">实现</h1>
-
-<p>&emsp;&emsp;我们将创建一个抽象类Shape和扩展了Shape类的实体类。下一步是定义类ShapeCache，该类把shape对象存储在一个Hashtable中，并在请求的时候返回它们的克隆。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/design-pattern/create/20201015-prototype-pattern.svg" alt="avatar" /></p>
-
+<p>  我们将创建一个抽象类Shape和扩展了Shape类的实体类。下一步是定义类ShapeCache，该类把shape对象存储在一个Hashtable中，并在请求的时候返回它们的克隆。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/design-pattern/create/20201015-prototype-pattern.svg" alt="avatar"></p>
 <h2 id="创建一个实现了cloneable接口的抽象类">创建一个实现了Cloneable接口的抽象类</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public abstract class Shape implements Cloneable {
+<pre><code>public abstract class Shape implements Cloneable {
     private String id;
     protected String type;
 
@@ -243,109 +188,44 @@
         }
         return clone;
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="创建扩展了抽象类的实体类">创建扩展了抽象类的实体类</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public class Rectangle extends Shape {
+<pre><code>public class Rectangle extends Shape {
     public Rectangle() {
-        type = &#34;Rectangle&#34;;
+        type = &quot;Rectangle&quot;;
     }
 
     @Override
     public void draw() {
-        sout(&#34;inside Rectangle:draw() method.&#34;);
+        sout(&quot;inside Rectangle:draw() method.&quot;);
     }
 }
 
 public class Square extends Shape {
     public Square() {
-        type = &#34;Square&#34;;
+        type = &quot;Square&quot;;
     }
 
     @Override
     public void draw() {
-        sout(&#34;inside Square:draw() method.&#34;)
+        sout(&quot;inside Square:draw() method.&quot;)
     }
 }
 
 public class Circle extends Shape {
     public Circle() {
-        type = &#34;Circle&#34;;
+        type = &quot;Circle&quot;;
     }
 
     @Override
     public void draw() {
-        sout(&#34;Inside Circle:draw() method.&#34;);
+        sout(&quot;Inside Circle:draw() method.&quot;);
     }
-}</pre></td></tr></table>
-</div>
-</div>
-<h2 id="创建cache-模拟从数据库获取实体类-并存储在hashtable">创建Cache，模拟从数据库获取实体类，并存储在Hashtable</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public class ShapeCache {
+}
+</code></pre>
+<h2 id="创建cache模拟从数据库获取实体类并存储在hashtable">创建Cache，模拟从数据库获取实体类，并存储在Hashtable</h2>
+<pre><code>public class ShapeCache {
     private static Hashtable&lt;String, Shape&gt; shapeMap = new Hashtable&lt;String, Shape&gt;();
 
     public static Shape getShape(String shapeId) {
@@ -356,135 +236,75 @@ public class Circle extends Shape {
     // 模拟加载数据库查询
     public static void loadCache() {
         Circle circle = new Circle();
-        circle.setId(&#34;1&#34;);
+        circle.setId(&quot;1&quot;);
         shapeMap.put(circle.getId(), circle);
 
         Square square = new Square();
-        square.setId(&#34;2&#34;);
+        square.setId(&quot;2&quot;);
         shapeMap.put(square.getId, square);
 
         Rectangle rectangle = new Rectangle();
-        rectangle.setId(&#34;3&#34;);
+        rectangle.setId(&quot;3&quot;);
         shapeMap.put(rectangle.getId(), rectangle);
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="获取克隆">获取克隆</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public class PrototyPatternDemo {
+<pre><code>public class PrototyPatternDemo {
     public static void main(String[] args) {
         ShapeCache.loadCache();
 
-        Shape clonedShape = (Shape) ShapeCache.getShape(&#34;1&#34;);
-        sout(&#34;Shape: &#34; + clonedShape.getType());
+        Shape clonedShape = (Shape) ShapeCache.getShape(&quot;1&quot;);
+        sout(&quot;Shape: &quot; + clonedShape.getType());
 
-        Shape cloedShape2 = (Shape) ShapeCache.getShape(&#34;2&#34;);
-        sout(&#34;Shape: &#34; + cloedShape2.getType());
+        Shape cloedShape2 = (Shape) ShapeCache.getShape(&quot;2&quot;);
+        sout(&quot;Shape: &quot; + cloedShape2.getType());
 
-        Shape cloedShape3 = (Shape) ShapeCache.getShape(&#34;3&#34;);
-        sout(&#34;Shape: &#34; + cloedShape3.getType());
+        Shape cloedShape3 = (Shape) ShapeCache.getShape(&quot;3&quot;);
+        sout(&quot;Shape: &quot; + cloedShape3.getType());
     }
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <blockquote>
 <p>Shape: Circle
-</br>
+<!-- raw HTML omitted -->
 Shape: Square
-</br>
+<!-- raw HTML omitted -->
 Shape: Rectangle</p>
 </blockquote>
-
 <h1 id="golang版本">Golang版本</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">prototype</span>
+<pre><code>package prototype
 
-<span class="c1">// cloneable是原型对象需要实现的接口
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Cloneable</span> <span class="kd">interface</span> <span class="p">{</span>
-    <span class="nf">Clone</span><span class="p">()</span> <span class="nx">Cloneable</span>
-<span class="p">}</span>
+// cloneable是原型对象需要实现的接口
+type Cloneable interface {
+    Clone() Cloneable
+}
 
-<span class="kd">type</span> <span class="nx">PrototypeManager</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">prototypes</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Cloneable</span>
-<span class="p">}</span>
+type PrototypeManager struct {
+    prototypes map[string]Cloneable
+}
 
-<span class="kd">func</span> <span class="nf">NewPrototypeManager</span><span class="p">()</span> <span class="o">*</span><span class="nx">PrototypeManager</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="o">&amp;</span><span class="nx">PrototypeManager</span><span class="p">{</span>
-        <span class="nx">prototypes</span><span class="p">:</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">Coleable</span><span class="p">),</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+func NewPrototypeManager() *PrototypeManager {
+    return &amp;PrototypeManager{
+        prototypes: make(map[string]Coleable),
+    }
+}
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">PrototypeManager</span><span class="p">)</span> <span class="nf">Get</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">Cloneable</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">p</span><span class="p">.</span><span class="nx">prototypes</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span>
-<span class="p">}</span>
+func (p *PrototypeManager) Get(name string) Cloneable {
+    return p.prototypes[name]
+}
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">PrototypeManager</span><span class="p">)</span> <span class="nf">Set</span><span class="p">(</span><span class="nx">name</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">prototype</span> <span class="nx">Cloneable</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">p</span><span class="p">.</span><span class="nx">prototypes</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="p">=</span> <span class="nx">prototype</span>
-<span class="p">}</span> </pre></td></tr></table>
-</div>
-</div>
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"><span class="kn">package</span> <span class="nx">prototype</span>
+func (p *PrototypeManager) Set(name string, prototype Cloneable) {
+    p.prototypes[name] = prototype
+} 
+</code></pre>
+<!-- raw HTML omitted -->
+<pre><code>package prototype
 
-<span class="kd">var</span> <span class="nx">manager</span> <span class="o">*</span><span class="nx">PrototypeManager</span>
+var manager *PrototypeManager
 
-<span class="kd">type</span> </pre></td></tr></table>
-</div>
-</div>
+type </code></pre>
+
     </div>
 
     <div class="post-copyright">

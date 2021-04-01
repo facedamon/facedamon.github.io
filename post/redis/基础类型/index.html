@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="基础类型 string list hash set zset string &amp;emsp;&amp;emsp;一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回e" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="基础类型 string list hash set zset string 一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回empty incr key 返回递增后的" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/redis/%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[Redis | 基础]" />
-<meta property="og:description" content="基础类型 string list hash set zset string &emsp;&emsp;一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回e" />
+<meta property="og:description" content="基础类型 string list hash set zset string 一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回empty incr key 返回递增后的" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/redis/%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B/" />
-<meta property="article:published_time" content="2020-08-14T10:14:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-08-14T10:14:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/redis/%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-08-14T10:14:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-08-14T10:14:56&#43;08:00" />
 
 <meta itemprop="name" content="[Redis | 基础]">
-<meta itemprop="description" content="基础类型 string list hash set zset string &emsp;&emsp;一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回e">
-
-
-<meta itemprop="datePublished" content="2020-08-14T10:14:56&#43;08:00" />
+<meta itemprop="description" content="基础类型 string list hash set zset string 一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回empty incr key 返回递增后的"><meta itemprop="datePublished" content="2020-08-14T10:14:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-08-14T10:14:56&#43;08:00" />
-<meta itemprop="wordCount" content="9920">
-
-
-
-<meta itemprop="keywords" content="Redis," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="8864">
+<meta itemprop="keywords" content="Redis," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[Redis | 基础]"/>
-<meta name="twitter:description" content="基础类型 string list hash set zset string &emsp;&emsp;一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回e"/>
+<meta name="twitter:description" content="基础类型 string list hash set zset string 一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回empty incr key 返回递增后的"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/redis/"> Redis </a>
             </div>
-          <span class="more-meta"> 约 9920 字 </span>
-          <span class="more-meta"> 预计阅读 20 分钟 </span>
+          <span class="more-meta"> 约 8864 字 </span>
+          <span class="more-meta"> 预计阅读 18 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,731 +135,458 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#基础类型">基础类型</a>
-<ul>
-<li><a href="#string">string</a>
-<ul>
-<li><a href="#文章访问量统计">文章访问量统计</a></li>
-<li><a href="#生成自增id">生成自增ID</a></li>
-<li><a href="#存储文章数据">存储文章数据</a></li>
-<li><a href="#位操作">位操作</a></li>
-</ul></li>
-<li><a href="#hash">hash</a>
-<ul>
-<li><a href="#命令">命令</a></li>
-<li><a href="#实践">实践</a></li>
-<li><a href="#命令拾遗">命令拾遗</a></li>
-</ul></li>
-<li><a href="#list">list</a>
-<ul>
-<li><a href="#简介">简介</a></li>
-<li><a href="#场景">场景</a></li>
-<li><a href="#实践-1">实践</a></li>
-<li><a href="#命令拾遗-1">命令拾遗</a></li>
-</ul></li>
-<li><a href="#set">set</a>
-<ul>
-<li><a href="#简介-1">简介</a></li>
-<li><a href="#命令-1">命令</a></li>
-<li><a href="#实践-2">实践</a></li>
-<li><a href="#命令拾遗-2">命令拾遗</a></li>
-</ul></li>
-<li><a href="#zset-最高级类型">zset(最高级类型)</a>
-<ul>
-<li><a href="#命令-2">命令</a></li>
-<li><a href="#实践-3">实践</a></li>
-<li><a href="#命令拾遗-3">命令拾遗</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#string">string</a>
+      <ul>
+        <li><a href="#文章访问量统计">文章访问量统计</a></li>
+        <li><a href="#生成自增id">生成自增ID</a></li>
+        <li><a href="#存储文章数据">存储文章数据</a></li>
+        <li><a href="#位操作">位操作</a></li>
+      </ul>
+    </li>
+    <li><a href="#hash">hash</a>
+      <ul>
+        <li><a href="#命令">命令</a></li>
+        <li><a href="#实践">实践</a></li>
+        <li><a href="#命令拾遗">命令拾遗</a></li>
+      </ul>
+    </li>
+    <li><a href="#list">list</a>
+      <ul>
+        <li><a href="#简介">简介</a></li>
+        <li><a href="#场景">场景</a></li>
+        <li><a href="#实践-1">实践</a></li>
+        <li><a href="#命令拾遗-1">命令拾遗</a></li>
+      </ul>
+    </li>
+    <li><a href="#set">set</a>
+      <ul>
+        <li><a href="#简介-1">简介</a></li>
+        <li><a href="#命令-1">命令</a></li>
+        <li><a href="#实践-2">实践</a></li>
+        <li><a href="#命令拾遗-2">命令拾遗</a></li>
+      </ul>
+    </li>
+    <li><a href="#zset最高级类型">zset(最高级类型)</a>
+      <ul>
+        <li><a href="#命令-2">命令</a></li>
+        <li><a href="#实践-3">实践</a></li>
+        <li><a href="#命令拾遗-3">命令拾遗</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="基础类型">基础类型</h1>
-
+      <h1 id="基础类型">基础类型</h1>
 <table>
 <thead>
 <tr>
-<th align="center">string</th>
-<th align="center">list</th>
-<th align="center">hash</th>
-<th align="center">set</th>
-<th align="center">zset</th>
+<th style="text-align:center">string</th>
+<th style="text-align:center">list</th>
+<th style="text-align:center">hash</th>
+<th style="text-align:center">set</th>
+<th style="text-align:center">zset</th>
 </tr>
 </thead>
-
-<tbody>
-</tbody>
 </table>
-
 <h2 id="string">string</h2>
-
-<p>&emsp;&emsp;一个字符串类型允许存储的数据的最大容量是512MB。</p>
-
+<p>  一个字符串类型允许存储的数据的最大容量是512MB。</p>
 <table>
 <thead>
 <tr>
-<th align="center">command</th>
-<th align="center">return</th>
+<th style="text-align:center">command</th>
+<th style="text-align:center">return</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">set key value</td>
-<td align="center">返回ok</td>
+<td style="text-align:center">set key value</td>
+<td style="text-align:center">返回ok</td>
 </tr>
-
 <tr>
-<td align="center">get key</td>
-<td align="center">当key不存在是返回empty</td>
+<td style="text-align:center">get key</td>
+<td style="text-align:center">当key不存在是返回empty</td>
 </tr>
-
 <tr>
-<td align="center">incr key</td>
-<td align="center">返回递增后的值(整数)，线程安全</td>
+<td style="text-align:center">incr key</td>
+<td style="text-align:center">返回递增后的值(整数)，线程安全</td>
 </tr>
-
 <tr>
-<td align="center">decr key</td>
-<td align="center">返回递减后的值(整数)，线程安全</td>
+<td style="text-align:center">decr key</td>
+<td style="text-align:center">返回递减后的值(整数)，线程安全</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="文章访问量统计">文章访问量统计</h3>
-
-<p>&emsp;&emsp;博客常见功能是统计文章的访问量，我们可以为每篇文章使用一个名为<code>post:文章ID:page.view</code>的键来记录文章的访问量，每次访问文章的时候使用<code>INCR</code>递增键值。</p>
-
-<p>&emsp;&emsp;Redis对于键的命名并没有强制的要求，但是比较好的实践是用<code>对象类型:对象ID:对象属性</code>来命名一个键，如使用键<code>user:1:friends</code>来存储ID为1的用户的好友列表。</p>
-
+<p>  博客常见功能是统计文章的访问量，我们可以为每篇文章使用一个名为<code>post:文章ID:page.view</code>的键来记录文章的访问量，每次访问文章的时候使用<code>INCR</code>递增键值。</p>
+<p>  Redis对于键的命名并没有强制的要求，但是比较好的实践是用<code>对象类型:对象ID:对象属性</code>来命名一个键，如使用键<code>user:1:friends</code>来存储ID为1的用户的好友列表。</p>
 <h3 id="生成自增id">生成自增ID</h3>
-
-<p>&emsp;&emsp;再关系型数据库中我们可以通过设置字段属性为<code>AUTO_INCREMENT</code>来实现每增加一条记录自动为其生成一个唯一的递增ID，而在Redis中可以通过另一种模式来实现：对于每一类对象使用名为<code>对象类型:count</code>的键(如<code>user:count</code>)来存储当前类型对象的数量，没增加一个新对象时都使用INCR命令递增该键的值。</p>
-
+<p>  再关系型数据库中我们可以通过设置字段属性为<code>AUTO_INCREMENT</code>来实现每增加一条记录自动为其生成一个唯一的递增ID，而在Redis中可以通过另一种模式来实现：对于每一类对象使用名为<code>对象类型:count</code>的键(如<code>user:count</code>)来存储当前类型对象的数量，没增加一个新对象时都使用INCR命令递增该键的值。</p>
 <h3 id="存储文章数据">存储文章数据</h3>
-
-<p>&emsp;&emsp;由于每个字符串类型键只能存储一个字符串，而一篇博客文章是由标题、正文、作者与发布时间等多个元素构成。为了存储这些元素，我们采用序列化函数将它们序列化成一个字符串，或者使用二进制存储(MessagePack)效率更高，占用空间更小。</p>
-
+<p>  由于每个字符串类型键只能存储一个字符串，而一篇博客文章是由标题、正文、作者与发布时间等多个元素构成。为了存储这些元素，我们采用序列化函数将它们序列化成一个字符串，或者使用二进制存储(MessagePack)效率更高，占用空间更小。</p>
 <table>
 <thead>
 <tr>
-<th align="center">command</th>
-<th align="center">return</th>
+<th style="text-align:center">command</th>
+<th style="text-align:center">return</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">incrby key increment</td>
-<td align="center">可以指定一次增加的值, 返回相加后的值</td>
+<td style="text-align:center">incrby key increment</td>
+<td style="text-align:center">可以指定一次增加的值, 返回相加后的值</td>
 </tr>
-
 <tr>
-<td align="center">decrby key decrement</td>
-<td align="center">可以指定一次递减的值，返回相减后的值</td>
+<td style="text-align:center">decrby key decrement</td>
+<td style="text-align:center">可以指定一次递减的值，返回相减后的值</td>
 </tr>
-
 <tr>
-<td align="center">incrbyfloat key increment</td>
-<td align="center">递增一个双精度浮点数，返回相加后的值</td>
+<td style="text-align:center">incrbyfloat key increment</td>
+<td style="text-align:center">递增一个双精度浮点数，返回相加后的值</td>
 </tr>
-
 <tr>
-<td align="center">append key value</td>
-<td align="center">返回值是追加后字符串的总长度</td>
+<td style="text-align:center">append key value</td>
+<td style="text-align:center">返回值是追加后字符串的总长度</td>
 </tr>
-
 <tr>
-<td align="center">strlen key</td>
-<td align="center">返回键值的长度， 不存在则返回0</td>
+<td style="text-align:center">strlen key</td>
+<td style="text-align:center">返回键值的长度， 不存在则返回0</td>
 </tr>
-
 <tr>
-<td align="center">mset k v [k v &hellip;]</td>
-<td align="center">设置多个键值对(mset k1 v1 k2 v2) 返回ok</td>
+<td style="text-align:center">mset k v [k v &hellip;]</td>
+<td style="text-align:center">设置多个键值对(mset k1 v1 k2 v2) 返回ok</td>
 </tr>
-
 <tr>
-<td align="center">mget k [k &hellip;]</td>
-<td align="center">获取对各键值对(mget k1 k2) 返回多个值</td>
+<td style="text-align:center">mget k [k &hellip;]</td>
+<td style="text-align:center">获取对各键值对(mget k1 k2) 返回多个值</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="位操作">位操作</h3>
-
 <table>
 <thead>
 <tr>
-<th align="center">位操作</th>
+<th style="text-align:center">位操作</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">setbit key offset value</td>
+<td style="text-align:center">setbit key offset value</td>
 </tr>
-
 <tr>
-<td align="center">getbit key offset</td>
+<td style="text-align:center">getbit key offset</td>
 </tr>
-
 <tr>
-<td align="center">bitcount key [start] [end]</td>
+<td style="text-align:center">bitcount key [start] [end]</td>
 </tr>
-
 <tr>
-<td align="center">bitop operation destkey key [key&hellip;]</td>
+<td style="text-align:center">bitop operation destkey key [key&hellip;]</td>
 </tr>
 </tbody>
 </table>
-
-<p>&emsp;&emsp;<code>set foo bar</code>, bar转换成ASCII码<code>98 97 114</code>, 转换成二进制 <code>01100010 01100001 01110010</code></p>
-
-<p>&emsp;&emsp;<code>getbit</code>可以获得一个字符串类型指定位置的二进制位的值，索引从0开始。<code>get bit foo 6</code>值为1。</p>
-
-<p>&emsp;&emsp;<code>setbit</code>可以设置字符串类型指定位置的二进制位的值，<strong>返回值是该位置的旧值</strong>。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">setbit foo 6 0
+<p>  <code>set foo bar</code>, bar转换成ASCII码<code>98 97 114</code>, 转换成二进制 <code>01100010 01100001 01110010</code></p>
+<p>  <code>getbit</code>可以获得一个字符串类型指定位置的二进制位的值，索引从0开始。<code>get bit foo 6</code>值为1。</p>
+<p>  <code>setbit</code>可以设置字符串类型指定位置的二进制位的值，<strong>返回值是该位置的旧值</strong>。</p>
+<pre><code>setbit foo 6 0
 setbit foo 7 1
 get foo
-aar</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<code>bitcount</code>可以获得字符串类型键中值是1的二进制位个数， <code>bitcount foo</code>返回10。如果我们只希望统计前两个字节：<code>bitcount foo 0 1</code>返回6</p>
-
-<p>&emsp;&emsp;<code>bitop</code>可以对多个字符串类型键进行位运算，并将结果存储在destkey参数指定的键中。<code>bitop</code>支持的运算操作有<code>and or xor not</code>:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">set foo1 bar
+aar
+</code></pre>
+<p>  <code>bitcount</code>可以获得字符串类型键中值是1的二进制位个数， <code>bitcount foo</code>返回10。如果我们只希望统计前两个字节：<code>bitcount foo 0 1</code>返回6</p>
+<p>  <code>bitop</code>可以对多个字符串类型键进行位运算，并将结果存储在destkey参数指定的键中。<code>bitop</code>支持的运算操作有<code>and or xor not</code>:</p>
+<pre><code>set foo1 bar
 ok
 set foo2 aar
 ok
 bitop or res foo1 foo2
 8
 get res
-&#34; car&#34;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<strong>位操作常用来存储布尔值</strong>。比如某网站的每个用户都有一个递增的整数ID，如果使用一个字符串类型键配合位操作来记录每个用户的性别(用户ID作为索引，二进制位值1和0表示男性和女性)，那么记录100万个用户的性别只需占用100KB的空间，而且二进制读取性能非常块。</p>
-
+&quot; car&quot;
+</code></pre>
+<p>  <strong>位操作常用来存储布尔值</strong>。比如某网站的每个用户都有一个递增的整数ID，如果使用一个字符串类型键配合位操作来记录每个用户的性别(用户ID作为索引，二进制位值1和0表示男性和女性)，那么记录100万个用户的性别只需占用100KB的空间，而且二进制读取性能非常块。</p>
 <h2 id="hash">hash</h2>
-
-<p>&emsp;&emsp;设想在博客文章列表页，每个文章只显示标题部分，可是使用上述方法，若想取得文章的标题，必须把整个文章数据字符串取出来反序列化，而其中占用空间最大的文章内容部分却是不需要的。在修改数据时，当你只想更改文章的标题时不得不把整个文章数据字符串更新一遍。</p>
-
-<p>&emsp;&emsp;<strong>散列类型适合存储对象：</strong>使用对象类别和ID构成键，使用字段表示对象的属性，而字段值则存储属性值。例如要存储ID为2的汽车对象，可以分别使用名为color、name和price的3个字段来存储该辆汽车的颜色、名称和价格：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/redis/epub_731187_28.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;回想在关系数据库中如果要存储汽车对象，存储结构如下图：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/redis/epub_731187_29.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;数据是以二维表的行式存储的，这就要求<strong>所有的记录都拥有同样的属性</strong>,无法单独为某一条记录增减属性。如果想为ID为1的汽车增加上产日期属性，就需要把数据表更改为如下图所示的结构：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/epub_731187_30.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;对于ID为2和3的两条记录而言date字段是冗余的。可想而知当不同的记录需要不同的属性时，表的字段数量会越来越多以至于难以维护。而且当使用ORM将关系数据库中的对象实体映射成程序中的实体时，修改表的结构往往意味着要中断服务。在关系型数据库中存储这种半结构化数据还需要额外的表才行。</p>
-
+<p>  设想在博客文章列表页，每个文章只显示标题部分，可是使用上述方法，若想取得文章的标题，必须把整个文章数据字符串取出来反序列化，而其中占用空间最大的文章内容部分却是不需要的。在修改数据时，当你只想更改文章的标题时不得不把整个文章数据字符串更新一遍。</p>
+<p>  **散列类型适合存储对象：**使用对象类别和ID构成键，使用字段表示对象的属性，而字段值则存储属性值。例如要存储ID为2的汽车对象，可以分别使用名为color、name和price的3个字段来存储该辆汽车的颜色、名称和价格：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/redis/epub_731187_28.jpg" alt="avatar"></p>
+<p>  回想在关系数据库中如果要存储汽车对象，存储结构如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/redis/epub_731187_29.jpg" alt="avatar"></p>
+<p>  数据是以二维表的行式存储的，这就要求<strong>所有的记录都拥有同样的属性</strong>,无法单独为某一条记录增减属性。如果想为ID为1的汽车增加上产日期属性，就需要把数据表更改为如下图所示的结构：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/epub_731187_30.jpg" alt="avatar"></p>
+<p>  对于ID为2和3的两条记录而言date字段是冗余的。可想而知当不同的记录需要不同的属性时，表的字段数量会越来越多以至于难以维护。而且当使用ORM将关系数据库中的对象实体映射成程序中的实体时，修改表的结构往往意味着要中断服务。在关系型数据库中存储这种半结构化数据还需要额外的表才行。</p>
 <h3 id="命令">命令</h3>
-
 <table>
 <thead>
 <tr>
-<th align="center">Hash</th>
+<th style="text-align:center">Hash</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">hset key field value</td>
+<td style="text-align:center">hset key field value</td>
 </tr>
-
 <tr>
-<td align="center">hget key field</td>
+<td style="text-align:center">hget key field</td>
 </tr>
-
 <tr>
-<td align="center">hmset key field value [field value &hellip;]</td>
+<td style="text-align:center">hmset key field value [field value &hellip;]</td>
 </tr>
-
 <tr>
-<td align="center">hmget key field [field &hellip;]</td>
+<td style="text-align:center">hmget key field [field &hellip;]</td>
 </tr>
-
 <tr>
-<td align="center">hgetall key</td>
+<td style="text-align:center">hgetall key</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hset car:1 price 500
+<pre><code>hset car:1 price 500
 (integer) 1
 hset car:1 name BMW
 (integer) 1
 hget car:1 name
-&#34;BMW&#34;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<code>hset</code>的方便之处在于不区分插入和更新操作，这意味修改数据时不用事先判断字段是否存在来决定要执行的是update还是insert。<strong>当执行的是插入操作时hset返回1，当执行的是更新操作时hset返回0</strong>。</p>
-
-<p>&emsp;&emsp;当需要同时设置多个字段时，可以使用<code>HMSET</code>命令。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hmset key field1 value1 field2 value2
-# hmset car:1 price 500 name bmw</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;相应地，<code>hmget</code>命令可以同时获得多个字段的值：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hmget key field1 field2
-# hmget car:1 price name</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;如果像获取键中所有字段和字段值却不知键中有哪些字段时，可以使用<code>hgetall</code>  :</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hgetall car:1
-1) &#34;price&#34;
-2) &#34;500&#34;
-3) &#34;name&#34;
-4) &#34;BMW&#34;</pre></td></tr></table>
-</div>
-</div>
+&quot;BMW&quot;
+</code></pre>
+<p>  <code>hset</code>的方便之处在于不区分插入和更新操作，这意味修改数据时不用事先判断字段是否存在来决定要执行的是update还是insert。<strong>当执行的是插入操作时hset返回1，当执行的是更新操作时hset返回0</strong>。</p>
+<p>  当需要同时设置多个字段时，可以使用<code>HMSET</code>命令。</p>
+<pre><code>hmset key field1 value1 field2 value2
+# hmset car:1 price 500 name bmw
+</code></pre>
+<p>  相应地，<code>hmget</code>命令可以同时获得多个字段的值：</p>
+<pre><code>hmget key field1 field2
+# hmget car:1 price name
+</code></pre>
+<p>  如果像获取键中所有字段和字段值却不知键中有哪些字段时，可以使用<code>hgetall</code>  :</p>
+<pre><code>hgetall car:1
+1) &quot;price&quot;
+2) &quot;500&quot;
+3) &quot;name&quot;
+4) &quot;BMW&quot;
+</code></pre>
 <ul>
 <li>判断字段是否存在</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="center">hexists key field</th>
-<th align="center">存在返回，否则0</th>
+<th style="text-align:center">hexists key field</th>
+<th style="text-align:center">存在返回，否则0</th>
 </tr>
 </thead>
-
-<tbody>
-</tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hexists car:1 model
+<pre><code>hexists car:1 model
 0
 hset car:1 model C200
 1
 hexists car:1 model
-1</pre></td></tr></table>
-</div>
-</div>
+1
+</code></pre>
 <ul>
 <li>当字段不存在时赋值(线程安全)</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="center">hsetnx key field value</th>
-<th align="center">与hset类似，区别在于如果字段存在，hsetnx不执行任何操作</th>
+<th style="text-align:center">hsetnx key field value</th>
+<th style="text-align:center">与hset类似，区别在于如果字段存在，hsetnx不执行任何操作</th>
 </tr>
 </thead>
-
-<tbody>
-</tbody>
 </table>
-
 <ul>
 <li>增加数字(线程安全)</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="center">hincrby key field increment</th>
-<th align="center">返回增值后的字段值</th>
+<th style="text-align:center">hincrby key field increment</th>
+<th style="text-align:center">返回增值后的字段值</th>
 </tr>
 </thead>
-
-<tbody>
-</tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hincrby person:1 score 60
-60</pre></td></tr></table>
-</div>
-</div>
+<pre><code>hincrby person:1 score 60
+60
+</code></pre>
 <ul>
 <li>删除字段(线程安全)</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="center">hdel key field [field &hellip;]</th>
-<th align="center">返回被删除的字段个数</th>
+<th style="text-align:center">hdel key field [field &hellip;]</th>
+<th style="text-align:center">返回被删除的字段个数</th>
 </tr>
 </thead>
-
-<tbody>
-</tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hdel car:1 price
+<pre><code>hdel car:1 price
 1
 hdel car:1 price
-0</pre></td></tr></table>
-</div>
-</div>
+0
+</code></pre>
 <h3 id="实践">实践</h3>
-
 <ol>
 <li>存储文章数据</li>
 </ol>
-
-<p>&emsp;&emsp;上节介绍了可以将文章对象序列化后使用一个字符串类型键存储，可是这种方法无法提供对单个字段的原子读写操作支持，从而产生竞态条件。此外，即使只需要文章标题，程序也不得不将包括文章内容在内的所有文章数据取出并反序列化，比较消耗资源。</p>
-
-<p>&emsp;&emsp;此外，还有一种方法时组合使用多个字符串类型键来存储文章的数据，如下图：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_34.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;使用这种方法的好处在于无论获取还是修改文章数据，都可以只针对某一个属性进行操作每十份方便，缺点是，对象过于松散且随着对象属性增加，键值也会增加，内存消耗非常可观且不易维护。</p>
-
-<p>&emsp;&emsp;还有一种散列类型存储结构如下图：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_35.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;从上图可以看出使用散列类型存储文章数据比上上图的方法看起来更加直观也更容易维护(比如可以使用<code>hgetall</code>获得一个对象的所有字段，删除一个对象时只需要删除一个键)，另外存储同样的庶几乎散列类型往往比字符串类型更加节约空间。</p>
-
-<ol>
+<p>  上节介绍了可以将文章对象序列化后使用一个字符串类型键存储，可是这种方法无法提供对单个字段的原子读写操作支持，从而产生竞态条件。此外，即使只需要文章标题，程序也不得不将包括文章内容在内的所有文章数据取出并反序列化，比较消耗资源。</p>
+<p>  此外，还有一种方法时组合使用多个字符串类型键来存储文章的数据，如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_34.jpg" alt="avatar"></p>
+<p>  使用这种方法的好处在于无论获取还是修改文章数据，都可以只针对某一个属性进行操作每十份方便，缺点是，对象过于松散且随着对象属性增加，键值也会增加，内存消耗非常可观且不易维护。</p>
+<p>  还有一种散列类型存储结构如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_35.jpg" alt="avatar"></p>
+<p>  从上图可以看出使用散列类型存储文章数据比上上图的方法看起来更加直观也更容易维护(比如可以使用<code>hgetall</code>获得一个对象的所有字段，删除一个对象时只需要删除一个键)，另外存储同样的庶几乎散列类型往往比字符串类型更加节约空间。</p>
+<ol start="2">
 <li>存储文章缩略名</li>
 </ol>
+<p>  我们可以使用一个散列类型的键slug.to.id来存储文章缩略名和ID之间的映射关系。其中字段用来记录缩略名，字段值用来记录缩略名对应的ID。<strong>这样就可以使用<code>hexists</code>来判断缩略名是否存在，使用<code>hget</code>获得缩略名对应的文章ID</strong>。</p>
+<ol start="3">
+<li>
+<p>伪代码</p>
+<pre><code> #获取文章ID
+ postId := incr posts:count
+ #判断用户输入的slug缩略名是否可用
+ is := hsetnx slug.to.id, slug, postId
+ if is == 0 {exit}
+ hmset post:postId title, $title, content, $content, slug, $slug
 
-<p>&emsp;&emsp;我们可以使用一个散列类型的键slug.to.id来存储文章缩略名和ID之间的映射关系。其中字段用来记录缩略名，字段值用来记录缩略名对应的ID。<strong>这样就可以使用<code>hexists</code>来判断缩略名是否存在，使用<code>hget</code>获得缩略名对应的文章ID</strong>。</p>
+ #当用户访问时
+ postId := hget slug.to.id slug
+ if postId == 0 {exit}
 
-<ol>
-<li><p>伪代码</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">#获取文章ID
-postId := incr posts:count
-#判断用户输入的slug缩略名是否可用
-is := hsetnx slug.to.id, slug, postId
-if is == 0 {exit}
-hmset post:postId title, $title, content, $content, slug, $slug
-
-#当用户访问时
-postId := hget slug.to.id slug
-if postId == 0 {exit}
-
-post := hgetall post:postId
-fmt.Printf(&#34;post title: %s\n&#34;, post.title)</pre></td></tr></table>
-</div>
-</div></li>
+ post := hgetall post:postId
+ fmt.Printf(&quot;post title: %s\n&quot;, post.title)
+</code></pre>
+</li>
 </ol>
-
 <h3 id="命令拾遗">命令拾遗</h3>
-
 <ol>
-<li><p>只获取字段名或字段值</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hkeys key
-hvals key</pre></td></tr></table>
-</div>
-</div></li>
-
-<li><p>获得字段数量</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">hlen key</pre></td></tr></table>
-</div>
-</div></li>
+<li>
+<p>只获取字段名或字段值</p>
+<pre><code> hkeys key
+ hvals key
+</code></pre>
+</li>
+<li>
+<p>获得字段数量</p>
+<pre><code> hlen key
+</code></pre>
+</li>
 </ol>
-
 <h2 id="list">list</h2>
-
-<p>&emsp;&emsp;正当我们信心满满地写着文章列表页地代码时，一个很重要地问题阻碍了开发。我们当前获取文章列表(分页)的逻辑是：</p>
-
+<p>  正当我们信心满满地写着文章列表页地代码时，一个很重要地问题阻碍了开发。我们当前获取文章列表(分页)的逻辑是：</p>
 <ol>
 <li>读取posts:count键获得博客中最大的文章ID</li>
-<li>规定每页显示10片文章，按照ID倒序排列，如第n页的文章ID范围是从 最大的文章<code>ID - (n-1) * 10</code>到 <code>max(最大文章ID - n * 10 +1, 1)</code></li>
+<li>规定每页显示10片文章，按照ID倒序排列，如第n页的文章ID范围是从 最大的文章<code>ID - (n-1) * 10 </code>到 <code>max(最大文章ID - n * 10 +1, 1)</code></li>
 <li>对每个ID使用<code>hmget</code>来获得文章数据</li>
 </ol>
-
-<p>&emsp;&emsp;可是这种方式要求用户不能删除文章以保证ID的连续性，否则就必须在程序中使用<code>exists</code>判断某个ID是否存在，不存是则跳过。都不得不从最大的文章ID开始遍历来获得当前页面应该显示哪些文章。</p>
-
+<p>  可是这种方式要求用户不能删除文章以保证ID的连续性，否则就必须在程序中使用<code>exists</code>判断某个ID是否存在，不存是则跳过。都不得不从最大的文章ID开始遍历来获得当前页面应该显示哪些文章。</p>
 <h3 id="简介">简介</h3>
-
-<p>&emsp;&emsp;列表类型可以存储一个有序的字符串列表，常用的操作是向列表两端添加元素，或者获得列表的某一个片段。内部采用双向链表实现，所以向列表两端添加元素的时间复杂度为O(1)。</p>
-
+<p>  列表类型可以存储一个有序的字符串列表，常用的操作是向列表两端添加元素，或者获得列表的某一个片段。内部采用双向链表实现，所以向列表两端添加元素的时间复杂度为O(1)。</p>
 <h3 id="场景">场景</h3>
-
-<p>&emsp;&emsp;我们都知道，链表在首尾两端操作数据实践复杂度为O(1)，但是在遍历上很慢，每次都要从头节点往后遍历，因为它没有下标，只有指针。但是，正式由于这种特性，一些场景非常适合列表。</p>
-
-<p>&emsp;&emsp;如社交网站的新鲜事，我们只关心最新的内容，使用列表类型存储，即使新鲜事的总数达到几千万个，获取其中最新的100条数据也是极快的。</p>
-
-<p>&emsp;&emsp;借助列表类型，Redis还可以作为队列使用。</p>
-
+<p>  我们都知道，链表在首尾两端操作数据实践复杂度为O(1)，但是在遍历上很慢，每次都要从头节点往后遍历，因为它没有下标，只有指针。但是，正式由于这种特性，一些场景非常适合列表。</p>
+<p>  如社交网站的新鲜事，我们只关心最新的内容，使用列表类型存储，即使新鲜事的总数达到几千万个，获取其中最新的100条数据也是极快的。</p>
+<p>  借助列表类型，Redis还可以作为队列使用。</p>
 <table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
-<th align="center">返回</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">返回</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">lpush key value [value &hellip;]</td>
-<td align="center">列表左侧添加元素</td>
-<td align="center">增加后列表的长度</td>
+<td style="text-align:center">lpush key value [value &hellip;]</td>
+<td style="text-align:center">列表左侧添加元素</td>
+<td style="text-align:center">增加后列表的长度</td>
 </tr>
-
 <tr>
-<td align="center">rpush key value [value &hellip;]</td>
-<td align="center">列表右侧添加元素</td>
-<td align="center">增加后列表的长度</td>
+<td style="text-align:center">rpush key value [value &hellip;]</td>
+<td style="text-align:center">列表右侧添加元素</td>
+<td style="text-align:center">增加后列表的长度</td>
 </tr>
-
 <tr>
-<td align="center">lpop key</td>
-<td align="center">列表左侧弹出元素</td>
-<td align="center">弹出元素的值</td>
+<td style="text-align:center">lpop key</td>
+<td style="text-align:center">列表左侧弹出元素</td>
+<td style="text-align:center">弹出元素的值</td>
 </tr>
-
 <tr>
-<td align="center">rpop key</td>
-<td align="center">列表右侧弹出元素</td>
-<td align="center">弹出元素的值</td>
+<td style="text-align:center">rpop key</td>
+<td style="text-align:center">列表右侧弹出元素</td>
+<td style="text-align:center">弹出元素的值</td>
 </tr>
-
 <tr>
-<td align="center">llen key</td>
-<td align="center">获取列表中元素的个数</td>
-<td align="center">返回列表中元素的个数</td>
+<td style="text-align:center">llen key</td>
+<td style="text-align:center">获取列表中元素的个数</td>
+<td style="text-align:center">返回列表中元素的个数</td>
 </tr>
-
 <tr>
-<td align="center">lrange key start end</td>
-<td align="center">获得列表片段</td>
-<td align="center">返回[start,end]包括边界的元素</td>
+<td style="text-align:center">lrange key start end</td>
+<td style="text-align:center">获得列表片段</td>
+<td style="text-align:center">返回[start,end]包括边界的元素</td>
 </tr>
-
 <tr>
-<td align="center">lrem key count value</td>
-<td align="center">删除列表中指定的值</td>
-<td align="center">实际删除的元素个数</td>
+<td style="text-align:center">lrem key count value</td>
+<td style="text-align:center">删除列表中指定的值</td>
+<td style="text-align:center">实际删除的元素个数</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">lpush num 2 3 1
+<pre><code>lpush num 2 3 1
 (integer) 3
 # [1 3 2]
 rpush num 0 -1
 (integer) 5
 # [1 3 2 0 -1]
 lop num
-&#34;1&#34;
+&quot;1&quot;
 rpop num
-&#34;-1&#34;
+&quot;-1&quot;
 # [3 2 0]
 lrange num 0 2
-&#34;3&#34;
-&#34;0&#34;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;综合上面提到的4个命令可以使用列表类型来模拟栈和队列的操作：如果像把列表当作栈，则搭配使用<code>lpush</code>和<code>lpop</code>或<code>rpush</code>和<code>rpop</code>，如果想当成队列，则搭配使用<code>lpush</code>和<code>rpop</code>或<code>rpush</code>和<code>lpop</code>。</p>
-
-<p>&emsp;&emsp;<code>llen</code>功能类似sql语句<code>select count(1) from table_name</code>，但是<code>llen</code>的时间复杂度为O(1)，使用时Redis会直接读取现成的值，而不需要像关系型数据库那样需要遍历一遍数据表来统计条目数量。</p>
-
-<p>&emsp;&emsp;<code>lrange</code>支持负索引，表示从右边开始计算序数，如&rdquo;-1&rdquo;表示最右边第一个元素，&rdquo;-2&rdquo;表示最右边第二个元素，以此类推：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">lrange num -2 -1
-&#34;2&#34;
-&#34;0&#34;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;显然，<code>lrange num 0 -1</code>可以获取列表中的所有元素。还有一些特殊情况：</p>
-
+&quot;3&quot;
+&quot;0&quot;
+</code></pre>
+<p>  综合上面提到的4个命令可以使用列表类型来模拟栈和队列的操作：如果像把列表当作栈，则搭配使用<code>lpush</code>和<code>lpop</code>或<code>rpush</code>和<code>rpop</code>，如果想当成队列，则搭配使用<code>lpush</code>和<code>rpop</code>或<code>rpush</code>和<code>lpop</code>。</p>
+<p>  <code>llen</code>功能类似sql语句<code>select count(1) from table_name</code>，但是<code>llen</code>的时间复杂度为O(1)，使用时Redis会直接读取现成的值，而不需要像关系型数据库那样需要遍历一遍数据表来统计条目数量。</p>
+<p>  <code>lrange</code>支持负索引，表示从右边开始计算序数，如&quot;-1&quot;表示最右边第一个元素，&quot;-2&quot;表示最右边第二个元素，以此类推：</p>
+<pre><code>lrange num -2 -1
+&quot;2&quot;
+&quot;0&quot;
+</code></pre>
+<p>  显然，<code>lrange num 0 -1</code>可以获取列表中的所有元素。还有一些特殊情况：</p>
 <ol>
 <li>如果start的索引位置比end的索引位置靠后，则会返回空列表</li>
 <li>如果end大于实际的索引范围，则会返回列表最右边的元素</li>
 </ol>
-
-<p>&emsp;&emsp;<code>lrem</code>会删除列表中前<code>count</code>个值为<code>value</code>的元素，返回值是实际删除的元素个数。根据<code>count</code>值的不同，<code>lrem</code>的执行方式会略有差异：</p>
-
+<p>  <code>lrem</code>会删除列表中前<code>count</code>个值为<code>value</code>的元素，返回值是实际删除的元素个数。根据<code>count</code>值的不同，<code>lrem</code>的执行方式会略有差异：</p>
 <ul>
-<li>当<strong>count &gt; 0</strong>时<code>lrem</code>会从列表左边开始删除前<code>count</code>个值为<code>value</code>的元素</li>
-<li>当<strong>count &lt; 0</strong>时<code>lrem</code>会从列表右边开始删除前<code>|count|</code>个值为<code>value</code>的元素</li>
-
-<li><p>当<strong>count = 0</strong>时<code>lrem</code>会删除所有值为<code>value</code>的元素</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">rpush num 1
-(inetger) 4
-# [3 2 0 1]
-lrange num 0-1
-&#34;3&#34;
-&#34;2&#34;
-&#34;0&#34;
-&#34;1&#34;
-lrem num -1 2
-(integer) 1
-lrange num 0-1
-&#34;3&#34;
-&#34;0&#34;
-&#34;1&#34;</pre></td></tr></table>
-</div>
-</div></li>
+<li>
+<p>当<strong>count &gt; 0</strong>时<code>lrem</code>会从列表左边开始删除前<code>count</code>个值为<code>value</code>的元素</p>
+</li>
+<li>
+<p>当<strong>count &lt; 0</strong>时<code>lrem</code>会从列表右边开始删除前<code>|count|</code>个值为<code>value</code>的元素</p>
+</li>
+<li>
+<p>当<strong>count = 0</strong>时<code>lrem</code>会删除所有值为<code>value</code>的元素</p>
+<pre><code>  rpush num 1
+  (inetger) 4
+  # [3 2 0 1]
+  lrange num 0-1
+  &quot;3&quot;
+  &quot;2&quot;
+  &quot;0&quot;
+  &quot;1&quot;
+  lrem num -1 2
+  (integer) 1
+  lrange num 0-1
+  &quot;3&quot;
+  &quot;0&quot;
+  &quot;1&quot;
+</code></pre>
+</li>
 </ul>
-
 <h3 id="实践-1">实践</h3>
-
-<p>&emsp;&emsp;为了解决之前遇到的分页问题，我们使用列表类型键<code>posts:list</code>记录文章ID列表。当发布新文章时使用<code>lpush</code>把新文章的ID加入到这个列表中，另外删除文章时也要把列表中的文章ID删除，像这样: <strong>lrem posts:list 1 要删除的文章ID</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma"># 分页伪代码
+<p>  为了解决之前遇到的分页问题，我们使用列表类型键<code>posts:list</code>记录文章ID列表。当发布新文章时使用<code>lpush</code>把新文章的ID加入到这个列表中，另外删除文章时也要把列表中的文章ID删除，像这样: <strong>lrem posts:list 1 要删除的文章ID</strong></p>
+<pre><code># 分页伪代码
 postsPerPage := 10
 start := (currentPage - 1) * postsPerPage
 end := currentPage * postPerPage - 1
@@ -874,651 +594,399 @@ postsId := lrange posts:list start end
 
 for id := range postId {
     post := hgetall post:id
-    fmt.Printf(&#34;title: %s\n&#34;, post.title)
-}</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;这样显示的文章列表是根据加入列表的顺序倒序的，如果想让最旧的文章显示在前面，可以使用<code>lrange</code>获取需要的部分并在客户端中将顺序反转显示。</p>
-
-<p>&emsp;&emsp;分页问题就此解决了，美中不足的是一点的散列类型没有类似字符串类型的<code>mget</code>那样可以通过一条命令同时获得多个键的键值的版本，所以对于每个文章ID修需要请求一次数据库，之后我们会介绍使用管道和脚本来优化这个问题。</p>
-
-<p>&emsp;&emsp;另外使用列表类型存储文章ID列表有以下两个问题：</p>
-
+    fmt.Printf(&quot;title: %s\n&quot;, post.title)
+}
+</code></pre>
+<p>  这样显示的文章列表是根据加入列表的顺序倒序的，如果想让最旧的文章显示在前面，可以使用<code>lrange</code>获取需要的部分并在客户端中将顺序反转显示。</p>
+<p>  分页问题就此解决了，美中不足的是一点的散列类型没有类似字符串类型的<code>mget</code>那样可以通过一条命令同时获得多个键的键值的版本，所以对于每个文章ID修需要请求一次数据库，之后我们会介绍使用管道和脚本来优化这个问题。</p>
+<p>  另外使用列表类型存储文章ID列表有以下两个问题：</p>
 <ol>
 <li>文章的发布时间不宜修改：修改文章的发布时间不仅要修改post:文章ID中的time字段，还需要按照实际的发布时间重新排列posts:list中的元素顺序。</li>
 <li>当文章数量较多时访问中间的页面性能较差：列表类型时通过链表实现的，所以当列表元素非常多时访问中间的元素效率并不高。</li>
 </ol>
-
 <h3 id="命令拾遗-1">命令拾遗</h3>
-
 <table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
-<th align="center">返回值</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">返回值</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">lindex key index</td>
-<td align="center">获取指定索引的元素</td>
-<td align="center">返回指定索引的元素，从0开始</td>
+<td style="text-align:center">lindex key index</td>
+<td style="text-align:center">获取指定索引的元素</td>
+<td style="text-align:center">返回指定索引的元素，从0开始</td>
 </tr>
-
 <tr>
-<td align="center">lset key index value</td>
-<td align="center">设置指定索引的元素</td>
-<td align="center">返回OK</td>
+<td style="text-align:center">lset key index value</td>
+<td style="text-align:center">设置指定索引的元素</td>
+<td style="text-align:center">返回OK</td>
 </tr>
-
 <tr>
-<td align="center">ltrim key start end</td>
-<td align="center">删除[start, end]索引范围之外的所有元素</td>
-<td align="center">OK</td>
+<td style="text-align:center">ltrim key start end</td>
+<td style="text-align:center">删除[start, end]索引范围之外的所有元素</td>
+<td style="text-align:center">OK</td>
 </tr>
-
 <tr>
-<td align="center">linsert key before|after pivot value</td>
-<td align="center">指定位置插入元素</td>
-<td align="center">列表元素个数</td>
+<td style="text-align:center">linsert key before|after pivot value</td>
+<td style="text-align:center">指定位置插入元素</td>
+<td style="text-align:center">列表元素个数</td>
 </tr>
-
 <tr>
-<td align="center">rpoplpush source dest</td>
-<td align="center">将元素从一个列表转到另一个列表</td>
-<td align="center"></td>
+<td style="text-align:center">rpoplpush source dest</td>
+<td style="text-align:center">将元素从一个列表转到另一个列表</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">lindex num 0
-&#34;2&#34;
+<pre><code>lindex num 0
+&quot;2&quot;
 #如果index是负数则表示从右边开始计算的索引，最后边元素的索引是-1
 lindex num -1
-&#34;0&#34;
+&quot;0&quot;
 lset num 1 7
 OK
 lindex num 1
-&#34;7&#34;
+&quot;7&quot;
 lrange num 0-1
-&#34;1&#34;
-&#34;2&#34;
-&#34;7&#34;
-&#34;3&#34;
+&quot;1&quot;
+&quot;2&quot;
+&quot;7&quot;
+&quot;3&quot;
 ltrim num 1 2
 OK
 lrange num 0-1
-&#34;2&#34;
-&#34;7&#34;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<code>linsert</code>命令首先在列表中从左到右查找值为<code>pivot</code>的元素，然后根据第二个参数<code>before</code>还是<code>after</code>来决定将<code>value</code>插入到该元素的前面还是后面。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">lrange num 0-1
-&#34;2&#34;
-&#34;7&#34;
-&#34;0&#34;
+&quot;2&quot;
+&quot;7&quot;
+</code></pre>
+<p>  <code>linsert</code>命令首先在列表中从左到右查找值为<code>pivot</code>的元素，然后根据第二个参数<code>before</code>还是<code>after</code>来决定将<code>value</code>插入到该元素的前面还是后面。</p>
+<pre><code>lrange num 0-1
+&quot;2&quot;
+&quot;7&quot;
+&quot;0&quot;
 linsert num after 7 3
 (integer) 4
 lrange num 0-1
-&#34;2&#34;
-&#34;7&#34;
-&#34;3&#34;
-&#34;0&#34;
+&quot;2&quot;
+&quot;7&quot;
+&quot;3&quot;
+&quot;0&quot;
 linsert num before 2 1
-&#34;1&#34;
-&#34;2&#34;
-&#34;7&#34;
-&#34;3&#34;
-&#34;0&#34;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;<code>rpoplpush</code>是个很有意思的命令，从名字就可以看出它的功能：限制性<code>rpop</code>命令再执行<code>lpush</code>命令。<code>rpoplpush</code>命令会先从<code>source</code>列表类型键的右边弹出一个元素，然后将其加入到<code>dest</code>列表类型键的左边，并返回这个元素的值，整个过程是原子的。</p>
-
-<p>&emsp;&emsp;当把列表类型作为队列使用时，<code>rpoplpush</code>命令可以很直观地在多个队列中传递数据，当<code>source</code>和<code>dest</code>相同时，<code>rpoplpush</code>命令会不断地将队尾地元素移到队首，借助这个特性我们可以实现一个网站监控系统：使用一个队列存储需要监控地网址，然后监控程序不断地使用<code>rpoplpush</code>命令循环取出一个网址来测试可用性。</p>
-
+&quot;1&quot;
+&quot;2&quot;
+&quot;7&quot;
+&quot;3&quot;
+&quot;0&quot;
+</code></pre>
+<p>  <code>rpoplpush</code>是个很有意思的命令，从名字就可以看出它的功能：限制性<code>rpop</code>命令再执行<code>lpush</code>命令。<code>rpoplpush</code>命令会先从<code>source</code>列表类型键的右边弹出一个元素，然后将其加入到<code>dest</code>列表类型键的左边，并返回这个元素的值，整个过程是原子的。</p>
+<p>  当把列表类型作为队列使用时，<code>rpoplpush</code>命令可以很直观地在多个队列中传递数据，当<code>source</code>和<code>dest</code>相同时，<code>rpoplpush</code>命令会不断地将队尾地元素移到队首，借助这个特性我们可以实现一个网站监控系统：使用一个队列存储需要监控地网址，然后监控程序不断地使用<code>rpoplpush</code>命令循环取出一个网址来测试可用性。</p>
 <h2 id="set">set</h2>
-
-<p>&emsp;&emsp;到目前位置，博客系统大部分功能还算比较完善，还有一个问题：如何在Redis中存储文章标签。使用散列类型或列表类型存储，虽然都能实现，但还是颇有不妥。Redis有一中数据类型很适合存储文章的标签，它就是集合类型。</p>
-
+<p>  到目前位置，博客系统大部分功能还算比较完善，还有一个问题：如何在Redis中存储文章标签。使用散列类型或列表类型存储，虽然都能实现，但还是颇有不妥。Redis有一中数据类型很适合存储文章的标签，它就是集合类型。</p>
 <h3 id="简介-1">简介</h3>
-
-<p>&emsp;&emsp;集合的概念高中的数学课就学习过。在集合中的每个元素都是不同的，且没有顺序。一个集合类型键可以存储至多2^32 - 1个字符串。集合类型和列表类型有相似之处，但很容易将它们区分开来：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_42.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;集合类型的常用操作是向集合中加入或删除元素、判断某个元素是否存在，由于集合类型在Redis内部是使用值为空的散列表(hash table)实现的，所以这些操作的时间复杂度都是O(1)。</p>
-
+<p>  集合的概念高中的数学课就学习过。在集合中的每个元素都是不同的，且没有顺序。一个集合类型键可以存储至多2^32 - 1个字符串。集合类型和列表类型有相似之处，但很容易将它们区分开来：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_42.jpg" alt="avatar"></p>
+<p>  集合类型的常用操作是向集合中加入或删除元素、判断某个元素是否存在，由于集合类型在Redis内部是使用值为空的散列表(hash table)实现的，所以这些操作的时间复杂度都是O(1)。</p>
 <h3 id="命令-1">命令</h3>
-
 <table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
-<th align="center">返回</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">返回</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">sadd key member [member&hellip;]</td>
-<td align="center">向集合中添加一个或多个元素</td>
-<td align="center">成功加入的元素数量</td>
+<td style="text-align:center">sadd key member [member&hellip;]</td>
+<td style="text-align:center">向集合中添加一个或多个元素</td>
+<td style="text-align:center">成功加入的元素数量</td>
 </tr>
-
 <tr>
-<td align="center">srem key member [member&hellip;]</td>
-<td align="center">从集合中删除一个或多个元素</td>
-<td align="center">删除成功的个数</td>
+<td style="text-align:center">srem key member [member&hellip;]</td>
+<td style="text-align:center">从集合中删除一个或多个元素</td>
+<td style="text-align:center">删除成功的个数</td>
 </tr>
-
 <tr>
-<td align="center">smembers key</td>
-<td align="center">获得集合中的所有元素</td>
-<td align="center">集合中的所有元素</td>
+<td style="text-align:center">smembers key</td>
+<td style="text-align:center">获得集合中的所有元素</td>
+<td style="text-align:center">集合中的所有元素</td>
 </tr>
-
 <tr>
-<td align="center">sismember key member</td>
-<td align="center">判断元素是否在集合中</td>
-<td align="center"><sup>1</sup>&frasl;<sub>0</sub></td>
+<td style="text-align:center">sismember key member</td>
+<td style="text-align:center">判断元素是否在集合中</td>
+<td style="text-align:center">1/0</td>
 </tr>
-
 <tr>
-<td align="center">sdiff key [key &hellip;]</td>
-<td align="center">差集</td>
-<td align="center">差集结果</td>
+<td style="text-align:center">sdiff key [key &hellip;]</td>
+<td style="text-align:center">差集</td>
+<td style="text-align:center">差集结果</td>
 </tr>
-
 <tr>
-<td align="center">sinter key [key &hellip;]</td>
-<td align="center">交集</td>
-<td align="center">交集结果</td>
+<td style="text-align:center">sinter key [key &hellip;]</td>
+<td style="text-align:center">交集</td>
+<td style="text-align:center">交集结果</td>
 </tr>
-
 <tr>
-<td align="center">sunion key [key &hellip;]</td>
-<td align="center">并集</td>
-<td align="center">并集结果</td>
+<td style="text-align:center">sunion key [key &hellip;]</td>
+<td style="text-align:center">并集</td>
+<td style="text-align:center">并集结果</td>
 </tr>
 </tbody>
 </table>
-
-<p>&emsp;&emsp;<code>sadd</code>如果键不存在则会自动创建，因为在一个集合中不能有相同的元素，所以如果要加入的元素已经存在于集合中就会忽略这个元素。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">sadd letters a
+<p>  <code>sadd</code>如果键不存在则会自动创建，因为在一个集合中不能有相同的元素，所以如果要加入的元素已经存在于集合中就会忽略这个元素。</p>
+<pre><code>sadd letters a
 (integer) 1
 sadd letters a b c
 (integer) 2
 srem letters c d
 (integer) 1
 smembers letters
-&#34;b&#34;
-&#34;a&#34;
+&quot;b&quot;
+&quot;a&quot;
 sismember letters a
 (integer) 1
 # 布隆过滤器 O(1)
 sismember letters d
-(integer) 0</pre></td></tr></table>
-</div>
-</div>
+(integer) 0
+</code></pre>
 <ol>
 <li><code>sdiff</code>命令用来对多个集合执行差集运算。集合A与集合B的差集表示为A-B，代表所有属于A且不属于B的元素构成的集合。$$A-B= \lbrace x|x \subseteq A and x \notin  B \rbrace$$</li>
 </ol>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_43.jpg" alt="avatar" /></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_43.jpg" alt="avatar"></p>
 <p>$$\lbrace 1, 2, 3 \rbrace - \lbrace 2, 3, 4 \rbrace = \lbrace 1 \rbrace$$
 $$\lbrace 2, 3, 4 \rbrace - \lbrace 1, 2, 3 \rbrace = \lbrace 4 \rbrace$$</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">sadd setA 1 2 3
+<pre><code>sadd setA 1 2 3
 (integer) 3
 sadd setB 2 3 4
 (integer) 3
 sdiff setA setB
-&#34;1&#34;
+&quot;1&quot;
 sdiff setB setA
-&#34;4&#34;</pre></td></tr></table>
-</div>
-</div>
-<ol>
+&quot;4&quot;
+</code></pre>
+<ol start="2">
 <li><code>sinter</code>用来对多个集合执行交集运算。集合A与集合B的交集表示为A∩B，代表所有署于A且署于B的元素构成的集合。$$A∩B= \lbrace x|x \subseteq A and x \subseteq B \rbrace$$</li>
 </ol>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_44.jpg" alt="avatar" /></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_44.jpg" alt="avatar"></p>
 <p>$$\lbrace 1, 2, 3 \rbrace ∩ \lbrace 2, 3, 4 \rbrace = \lbrace 2, 3 \rbrace$$</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">sinter setA setB
-&#34;2&#34;
-&#34;3&#34;
+<pre><code>sinter setA setB
+&quot;2&quot;
+&quot;3&quot;
 #支持多个键
 sinter setA setB setC
-&#34;2&#34;
-&#34;3&#34;</pre></td></tr></table>
-</div>
-</div>
-<ol>
+&quot;2&quot;
+&quot;3&quot;
+</code></pre>
+<ol start="3">
 <li><code>sunion</code>用来对多个集合执行并集运算。集合A与集合B的并集表示为A∪B，代表所有署于A或属于B的元素构成的集合。$$A∪B= \lbrace x|x \subseteq A or x \subseteq B \rbrace$$</li>
 </ol>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_45.jpg" alt="avatar" /></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_45.jpg" alt="avatar"></p>
 <p>$$\lbrace 1, 2, 3 \rbrace ∪ \lbrace 2, 3, 4 \rbrace = \lbrace 1, 2, 3, 4 \rbrace$$</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">sunion setA setB
-&#34;1&#34;
-&#34;2&#34;
-&#34;3&#34;
-&#34;4&#34;
+<pre><code>sunion setA setB
+&quot;1&quot;
+&quot;2&quot;
+&quot;3&quot;
+&quot;4&quot;
 # 支持多个键
 sunion setA setB setC
-&#34;1&#34;
-&#34;2&#34;
-&#34;3&#34;
-&#34;4&#34;</pre></td></tr></table>
-</div>
-</div>
+&quot;1&quot;
+&quot;2&quot;
+&quot;3&quot;
+&quot;4&quot;
+</code></pre>
 <h3 id="实践-2">实践</h3>
-
 <ol>
 <li>存储标签</li>
 </ol>
-
-<p>&emsp;&emsp;对每篇文章使用名为 &ldquo;post:ID:tags&rdquo;的键存储该片文章的标签，伪代码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">#给ID为42的文章添加标签
+<p>  对每篇文章使用名为 &ldquo;post:ID:tags&quot;的键存储该片文章的标签，伪代码：</p>
+<pre><code>#给ID为42的文章添加标签
 sadd post:42:tags 技术文章，golang，redis
 # 删除标签
 srem post:42:tags 技术文章
 # 显示所有的标签
 tags := smembers post:42:tags
-fmt.Printf(&#34;tags=%s\n&#34;, tags)</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;使用集合类型键存储标签适合需要单独增加或删除标签的场合。如在WordPress博客程序中无论是添加还是删除标签都是针对单个标签的，可以直观地使用<code>sadd</code>和<code>srem</code>命令完成操作。</p>
-
-<p>&emsp;&emsp;另一方面，有些地方需要用户直接设置所有标签后一起上传修改，用户编辑自己的爱好后提交，程序直接覆盖原来的标签数据，整个过程没有针对单个标签的操作，并利用到集合类型的优势，所以此时也可以直接使用字符串类型键存储标签数据。</p>
-
-<p>&emsp;&emsp;在实践中的差别是想说明对于Redis存储方式的选择并没有绝对的规则，在一些特定的场合下散列类型甚至字符串类型可能更适合。</p>
-
-<ol>
+fmt.Printf(&quot;tags=%s\n&quot;, tags)
+</code></pre>
+<p>  使用集合类型键存储标签适合需要单独增加或删除标签的场合。如在WordPress博客程序中无论是添加还是删除标签都是针对单个标签的，可以直观地使用<code>sadd</code>和<code>srem</code>命令完成操作。</p>
+<p>  另一方面，有些地方需要用户直接设置所有标签后一起上传修改，用户编辑自己的爱好后提交，程序直接覆盖原来的标签数据，整个过程没有针对单个标签的操作，并利用到集合类型的优势，所以此时也可以直接使用字符串类型键存储标签数据。</p>
+<p>  在实践中的差别是想说明对于Redis存储方式的选择并没有绝对的规则，在一些特定的场合下散列类型甚至字符串类型可能更适合。</p>
+<ol start="2">
 <li>通过标签搜索文章</li>
 </ol>
-
-<p>&emsp;&emsp;有时我们还需要列出某个标签下的所有文章，甚至需要获得同时属于某几个标签的文章列表，这种需求在传统关系型数据库中实现起来比较复杂。</p>
-
-<p>&emsp;&emsp;假设，现在有三张表，即posts、tags和posts_tags，分别存储文章数据、标签、文章与标签的对应关系。</p>
-
+<p>  有时我们还需要列出某个标签下的所有文章，甚至需要获得同时属于某几个标签的文章列表，这种需求在传统关系型数据库中实现起来比较复杂。</p>
+<p>  假设，现在有三张表，即posts、tags和posts_tags，分别存储文章数据、标签、文章与标签的对应关系。</p>
 <table>
 <thead>
 <tr>
-<th align="center">字段名</th>
-<th align="center">说明</th>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">说明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">post_id</td>
-<td align="center">文章ID</td>
+<td style="text-align:center">post_id</td>
+<td style="text-align:center">文章ID</td>
 </tr>
-
 <tr>
-<td align="center">post_title</td>
-<td align="center">文章标题</td>
+<td style="text-align:center">post_title</td>
+<td style="text-align:center">文章标题</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
-<th align="center">字段名</th>
-<th align="center">说明</th>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">说明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">tag_id</td>
-<td align="center">标签ID</td>
+<td style="text-align:center">tag_id</td>
+<td style="text-align:center">标签ID</td>
 </tr>
-
 <tr>
-<td align="center">tag_name</td>
-<td align="center">标签名称</td>
+<td style="text-align:center">tag_name</td>
+<td style="text-align:center">标签名称</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
-<th align="center">字段名</th>
-<th align="center">说明</th>
+<th style="text-align:center">字段名</th>
+<th style="text-align:center">说明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">post_id</td>
-<td align="center">对应的文章ID</td>
+<td style="text-align:center">post_id</td>
+<td style="text-align:center">对应的文章ID</td>
 </tr>
-
 <tr>
-<td align="center">tag_id</td>
-<td align="center">对应的标签ID</td>
+<td style="text-align:center">tag_id</td>
+<td style="text-align:center">对应的标签ID</td>
 </tr>
 </tbody>
 </table>
-
-<p>&emsp;&emsp;为了找到同时属于&rdquo;Java&rdquo;、&rdquo;MySQL&rdquo;和&rdquo;Redis&rdquo;这3个标签文章，需要使用如下的SQL语句:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">select p.post_title
+<p>  为了找到同时属于&quot;Java&rdquo;、&ldquo;MySQL&quot;和&quot;Redis&quot;这3个标签文章，需要使用如下的SQL语句:</p>
+<pre><code>select p.post_title
 from posts_tags pt, posts p, tags t
 where pt.tag_id = t.tag_id
-    and (t.tag_name IN(&#39;Java&#39;, &#39;MySQL&#39;, &#39;Redis&#39;))
+    and (t.tag_name IN('Java', 'MySQL', 'Redis'))
     and pt.post_id = p.post_id
-    group by p.post_id having count(p.post_id) = 3</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;可以很明显看到这样的SQL语句不仅效率相对较低，而且不易阅读和维护。而使用Redis可以很简单直接地实现这一需求。</p>
-
-<p>&emsp;&emsp;具体做法是为每个标签使用一个名为 &ldquo;tag:标签名称:posts&rdquo;的集合类型键存储标有该标签的文章ID列表。假设现在又3篇文章，ID分别为1、2、3，其中ID为1的文章标签是&rdquo;Java&rdquo;，ID为2的文章标签是&rdquo;Java&rdquo;、&rdquo;MySQL&rdquo;，ID为3的文章标签是&rdquo;Java&rdquo;、&rdquo;MySQL&rdquo;和&rdquo;Redis&rdquo;，则有关标签的存储结构如下图：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_52.jpg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;最简单的，当需要获取标记&rdquo;MySQL&rdquo;标签的文章时只需要使用<code>smembers tags:MySQL:posts</code>即可。如果要实现找到同时属于Java、MySQL和Redis这3个标签的文章，只需要将<code>tag:Java:posts</code>、<code>tag:MySQL:posts</code>和<code>tag:Redis:posts</code>这3个键<strong>取交集</strong>，借助<code>sinter</code>即可完成。</p>
-
+    group by p.post_id having count(p.post_id) = 3
+</code></pre>
+<p>  可以很明显看到这样的SQL语句不仅效率相对较低，而且不易阅读和维护。而使用Redis可以很简单直接地实现这一需求。</p>
+<p>  具体做法是为每个标签使用一个名为 &ldquo;tag:标签名称:posts&quot;的集合类型键存储标有该标签的文章ID列表。假设现在又3篇文章，ID分别为1、2、3，其中ID为1的文章标签是&quot;Java&rdquo;，ID为2的文章标签是&quot;Java&rdquo;、&ldquo;MySQL&rdquo;，ID为3的文章标签是&quot;Java&quot;、&ldquo;MySQL&quot;和&quot;Redis&rdquo;，则有关标签的存储结构如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/redis/epub_731187_52.jpg" alt="avatar"></p>
+<p>  最简单的，当需要获取标记&quot;MySQL&quot;标签的文章时只需要使用<code>smembers tags:MySQL:posts</code>即可。如果要实现找到同时属于Java、MySQL和Redis这3个标签的文章，只需要将<code>tag:Java:posts</code>、<code>tag:MySQL:posts</code>和<code>tag:Redis:posts</code>这3个键<strong>取交集</strong>，借助<code>sinter</code>即可完成。</p>
 <h3 id="命令拾遗-2">命令拾遗</h3>
-
 <table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
-<th align="center">返回</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">返回</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">scard key</td>
-<td align="center">获得集合中元素个数</td>
-<td align="center">集合中元素个数</td>
+<td style="text-align:center">scard key</td>
+<td style="text-align:center">获得集合中元素个数</td>
+<td style="text-align:center">集合中元素个数</td>
 </tr>
-
 <tr>
-<td align="center">sdiffstore dest key [key &hellip;]</td>
-<td align="center">取差集并存储到dest中</td>
-<td align="center"></td>
+<td style="text-align:center">sdiffstore dest key [key &hellip;]</td>
+<td style="text-align:center">取差集并存储到dest中</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">sinterstore dest key [key &hellip;]</td>
-<td align="center">取交集并存储到dest中</td>
-<td align="center"></td>
+<td style="text-align:center">sinterstore dest key [key &hellip;]</td>
+<td style="text-align:center">取交集并存储到dest中</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">sunionstore dest key [key &hellip;]</td>
-<td align="center">取并集并存储到dest中</td>
-<td align="center"></td>
+<td style="text-align:center">sunionstore dest key [key &hellip;]</td>
+<td style="text-align:center">取并集并存储到dest中</td>
+<td></td>
 </tr>
-
 <tr>
-<td align="center">srandmember key [count]</td>
-<td align="center">随机获得集合中的元素</td>
-<td align="center">随机返回count个元素</td>
+<td style="text-align:center">srandmember key [count]</td>
+<td style="text-align:center">随机获得集合中的元素</td>
+<td style="text-align:center">随机返回count个元素</td>
 </tr>
-
 <tr>
-<td align="center">spop key</td>
-<td align="center">从集合中随机弹出一个元素</td>
-<td align="center">弹出元素值</td>
+<td style="text-align:center">spop key</td>
+<td style="text-align:center">从集合中随机弹出一个元素</td>
+<td style="text-align:center">弹出元素值</td>
 </tr>
 </tbody>
 </table>
-
 <ol>
 <li>当count为正数时，<code>srandmember</code>会随机从集合里获得count个不重复的元素的元素。如果count的值大于集合中的元素个数，则<code>srandmember</code>会返回集合中的全部元素。</li>
 <li>当count为负数时，<code>srandmember</code>会随机从集合里获得<code>|count|</code>个元素，这些元素有可能相同。</li>
 </ol>
-
-<p>&emsp;&emsp;其实<code>srandmember</code>并不是严格的随机性，而是<strong>伪随机</strong>的。集合类型采用的存储结构时散列表，散列表使用散列函数将元素映射到不同的桶上以实现O(1)实践复杂度的元素查找。当使用散列表存储元素b时，使用散列函数计算出b的散列值是0，所以将b存储编号为0的桶中，下次要查找b时就可以用同样的散列函数再次计算b的散列值并直接接到相应的桶中找到b。当两个不同的元素的散列值相同时会出现冲突，Redis使用拉链法来解决冲突，即将散列值冲突的元素以链表的形式存入同一桶中，查找元素时先找到元素对应的桶，然后再从桶中的链表中找到对应的元素。使用<code>srandmember</code>从集合中获得一个随机元素时，Redis首先会从所有桶中随机选择一个桶，然后再从桶中的所有元素中随机选择一个元素，所以元素所在的桶中的元素数量越少，其被随机选中的可能性就越大。</p>
-
-<h2 id="zset-最高级类型">zset(最高级类型)</h2>
-
-<p>&emsp;&emsp;加入想要给文章访问量排序的话，就需要使用一种有序的数据结构了。有序集合类型(sorted set)在集合类型的基础上为集合中的每个元素都关联了一个<strong>分数(score)</strong>，这使得我们不仅可以完成插入、删除和判断元素是否存在等集合类型支持的操作，还能获得分数最高或最低的前N个元素、获得指定分数范围内的元素等于分数有关的操作。</p>
-
-<p>&emsp;&emsp;有序集合在某些方面和列表类型非常相似：
-1. 二者都是有序的
-2. 二者都可以获得某一范围的元素</p>
-
-<p>&emsp;&emsp;但二者有着很大的区别，这使得它们的应用场景也是不同的。
-1. <strong>列表类型是通过链表实现的</strong>，获取靠近两端的数据速度极快，而当元素增多后，访问中间数据的速度会较慢，所以它更加适合实现如&rdquo;热点&rdquo;这样很少访问中间元素的应用。
-2. <strong>有序集合类型是使用散列表和跳跃表(Skiplist)实现的</strong>，所以即使读取位于中间部分的数据速度也很快。
-3. 列表中不能简单地调整某个元素地位置，但是有序集合可以。
-4. 有序集合要比列表类型更耗费内存。</p>
-
+<p>  其实<code>srandmember</code>并不是严格的随机性，而是<strong>伪随机</strong>的。集合类型采用的存储结构时散列表，散列表使用散列函数将元素映射到不同的桶上以实现O(1)实践复杂度的元素查找。当使用散列表存储元素b时，使用散列函数计算出b的散列值是0，所以将b存储编号为0的桶中，下次要查找b时就可以用同样的散列函数再次计算b的散列值并直接接到相应的桶中找到b。当两个不同的元素的散列值相同时会出现冲突，Redis使用拉链法来解决冲突，即将散列值冲突的元素以链表的形式存入同一桶中，查找元素时先找到元素对应的桶，然后再从桶中的链表中找到对应的元素。使用<code>srandmember</code>从集合中获得一个随机元素时，Redis首先会从所有桶中随机选择一个桶，然后再从桶中的所有元素中随机选择一个元素，所以元素所在的桶中的元素数量越少，其被随机选中的可能性就越大。</p>
+<h2 id="zset最高级类型">zset(最高级类型)</h2>
+<p>  加入想要给文章访问量排序的话，就需要使用一种有序的数据结构了。有序集合类型(sorted set)在集合类型的基础上为集合中的每个元素都关联了一个<strong>分数(score)</strong>，这使得我们不仅可以完成插入、删除和判断元素是否存在等集合类型支持的操作，还能获得分数最高或最低的前N个元素、获得指定分数范围内的元素等于分数有关的操作。</p>
+<p>  有序集合在某些方面和列表类型非常相似：</p>
+<ol>
+<li>二者都是有序的</li>
+<li>二者都可以获得某一范围的元素</li>
+</ol>
+<p>  但二者有着很大的区别，这使得它们的应用场景也是不同的。</p>
+<ol>
+<li><strong>列表类型是通过链表实现的</strong>，获取靠近两端的数据速度极快，而当元素增多后，访问中间数据的速度会较慢，所以它更加适合实现如&quot;热点&quot;这样很少访问中间元素的应用。</li>
+<li><strong>有序集合类型是使用散列表和跳跃表(Skiplist)实现的</strong>，所以即使读取位于中间部分的数据速度也很快。</li>
+<li>列表中不能简单地调整某个元素地位置，但是有序集合可以。</li>
+<li>有序集合要比列表类型更耗费内存。</li>
+</ol>
 <h3 id="命令-2">命令</h3>
-
 <table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
-<th align="center">返回</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">返回</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">zadd key score member [score member &hellip;]</td>
-<td align="center">加入一个元素和该元素的分数</td>
-<td align="center">新加入地元素个数</td>
+<td style="text-align:center">zadd key score member [score member &hellip;]</td>
+<td style="text-align:center">加入一个元素和该元素的分数</td>
+<td style="text-align:center">新加入地元素个数</td>
 </tr>
-
 <tr>
-<td align="center">zscore key member</td>
-<td align="center">获得元素的分数</td>
-<td align="center">member的分数</td>
+<td style="text-align:center">zscore key member</td>
+<td style="text-align:center">获得元素的分数</td>
+<td style="text-align:center">member的分数</td>
 </tr>
-
 <tr>
-<td align="center">zrange key start stop [withscores]</td>
-<td align="center">获取某个范围的元素列表(从小到大)</td>
-<td align="center">元素列表</td>
+<td style="text-align:center">zrange key start stop [withscores]</td>
+<td style="text-align:center">获取某个范围的元素列表(从小到大)</td>
+<td style="text-align:center">元素列表</td>
 </tr>
-
 <tr>
-<td align="center">zrevrange key srart stop [withscores]</td>
-<td align="center">获取某个范围的元素列表(从大到小)</td>
-<td align="center">元素列表</td>
+<td style="text-align:center">zrevrange key srart stop [withscores]</td>
+<td style="text-align:center">获取某个范围的元素列表(从大到小)</td>
+<td style="text-align:center">元素列表</td>
 </tr>
-
 <tr>
-<td align="center">zrangebyscore key min max [withscores] [limit offset count]</td>
-<td align="center">获得指定分数范围的元素</td>
-<td align="center">元素列表</td>
+<td style="text-align:center">zrangebyscore key min max [withscores] [limit offset count]</td>
+<td style="text-align:center">获得指定分数范围的元素</td>
+<td style="text-align:center">元素列表</td>
 </tr>
-
 <tr>
-<td align="center">zincrby key increment member</td>
-<td align="center">增加member的分数</td>
-<td align="center">更改后的分数</td>
+<td style="text-align:center">zincrby key increment member</td>
+<td style="text-align:center">增加member的分数</td>
+<td style="text-align:center">更改后的分数</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">zadd scoreboard 89 tom 67 peter 100 david
+<pre><code>zadd scoreboard 89 tom 67 peter 100 david
 (integer) 3
 zadd scoreboard 76 peter
 (integer) 0
@@ -1527,137 +995,95 @@ zadd testboard 1.5 b
 zadd testboard 17E+307 a
 
 zscore scoreboard tom
-&#34;89&#34;
+&quot;89&quot;
 
 zrange scoreboard 0 2
-&#34;peter&#34;
-&#34;tom&#34;
-&#34;david&#34;
+&quot;peter&quot;
+&quot;tom&quot;
+&quot;david&quot;
 zrange scoreboard 1-1
-&#34;tom&#34;
-&#34;david&#34;
+&quot;tom&quot;
+&quot;david&quot;
 zrange scoreboard 0-1 withscores
-&#34;peter&#34;
-&#34;76&#34;
-&#34;tom&#34;
-&#34;89&#34;
-&#34;david&#34;
-&#34;100&#34;
+&quot;peter&quot;
+&quot;76&quot;
+&quot;tom&quot;
+&quot;89&quot;
+&quot;david&quot;
+&quot;100&quot;
 
 zrangebyscore scoreboard 80 100
-&#34;tom&#34;
-&#34;david&#34;
+&quot;tom&quot;
+&quot;david&quot;
 # 高于80,不包含80， +inf正无穷， -inf负无穷
 zrangebyscore scoreboard (80 +inf
-&#34;tom&#34;
-&#34;david&#34;
+&quot;tom&quot;
+&quot;david&quot;
 zadd scoreboard 56 jerry 92 wendy 67 yvonne
 zrangebyscore scoreboard 60 +inf limit 1 3
-&#34;peter&#34;
-&#34;tom&#34;
-&#34;wendy&#34;
+&quot;peter&quot;
+&quot;tom&quot;
+&quot;wendy&quot;
 zrevrangebyscore scoreboard 100 0 limit 0 3
-&#34;david&#34;
-&#34;wendy&#34;
-&#34;tom&#34;
+&quot;david&quot;
+&quot;wendy&quot;
+&quot;tom&quot;
 
 zincrby scoreboard 4 jerry
-&#34;60&#34;
+&quot;60&quot;
 zincrby scoreboard -4 jerry
-&#34;56&#34;</pre></td></tr></table>
-</div>
-</div>
+&quot;56&quot;
+</code></pre>
 <h3 id="实践-3">实践</h3>
-
-<p>&emsp;&emsp;要按照文章的点击量排序，就必须再额外使用一个有序集合类型的键来实现。以文章的ID作为元素，以该文章的点击量作为该元素的分数：<code>posts:page:view</code>，每次用户访问一篇文章时，博客程序就通过<code>zincrby posts:page:view 1 ID</code>更新访问量。</p>
-
+<p>  要按照文章的点击量排序，就必须再额外使用一个有序集合类型的键来实现。以文章的ID作为元素，以该文章的点击量作为该元素的分数：<code>posts:page:view</code>，每次用户访问一篇文章时，博客程序就通过<code>zincrby posts:page:view 1 ID</code>更新访问量。</p>
 <h3 id="命令拾遗-3">命令拾遗</h3>
-
 <table>
 <thead>
 <tr>
-<th align="center">命令</th>
-<th align="center">描述</th>
-<th align="center">返回</th>
+<th style="text-align:center">命令</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">返回</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="center">zcard key</td>
-<td align="center">获得集合中元素的数量</td>
-<td align="center">元素数量</td>
+<td style="text-align:center">zcard key</td>
+<td style="text-align:center">获得集合中元素的数量</td>
+<td style="text-align:center">元素数量</td>
 </tr>
-
 <tr>
-<td align="center">zcount key min max</td>
-<td align="center">获得指定分数范围内的元素个数</td>
-<td align="center">元素数量</td>
+<td style="text-align:center">zcount key min max</td>
+<td style="text-align:center">获得指定分数范围内的元素个数</td>
+<td style="text-align:center">元素数量</td>
 </tr>
-
 <tr>
-<td align="center">zrem key member [member &hellip;]</td>
-<td align="center">删除一个或多个元素</td>
-<td align="center">成功删除的元素数量</td>
+<td style="text-align:center">zrem key member [member &hellip;]</td>
+<td style="text-align:center">删除一个或多个元素</td>
+<td style="text-align:center">成功删除的元素数量</td>
 </tr>
-
 <tr>
-<td align="center">zremrangebyrank key start stop</td>
-<td align="center">按照元素分数从小打到顺序删除处在指定排名范围内(索引)的所有元素</td>
-<td align="center">删除的元素数量</td>
+<td style="text-align:center">zremrangebyrank key start stop</td>
+<td style="text-align:center">按照元素分数从小打到顺序删除处在指定排名范围内(索引)的所有元素</td>
+<td style="text-align:center">删除的元素数量</td>
 </tr>
-
 <tr>
-<td align="center">zremrangebyscore key min max</td>
-<td align="center">删除[min,max]分数范围内的所有元素</td>
-<td align="center">删除的元素数量</td>
+<td style="text-align:center">zremrangebyscore key min max</td>
+<td style="text-align:center">删除[min,max]分数范围内的所有元素</td>
+<td style="text-align:center">删除的元素数量</td>
 </tr>
-
 <tr>
-<td align="center">zrank key member</td>
-<td align="center">获得元素的排名</td>
-<td align="center">排名</td>
+<td style="text-align:center">zrank key member</td>
+<td style="text-align:center">获得元素的排名</td>
+<td style="text-align:center">排名</td>
 </tr>
-
 <tr>
-<td align="center">zrevrank key member</td>
-<td align="center">获得元素的排名</td>
-<td align="center">排名</td>
+<td style="text-align:center">zrevrank key member</td>
+<td style="text-align:center">获得元素的排名</td>
+<td style="text-align:center">排名</td>
 </tr>
 </tbody>
 </table>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">zcard scoreboard
+<pre><code>zcard scoreboard
 (integer) 6
 zcount scoreboard 90 100
 (integer) 2
@@ -1672,78 +1098,49 @@ zadd testRem 1 a 2 b 3 c 4 d 5 e 6 f
 zremrangebyrank testRem 0 2
 (integer) 3
 zrange testRem 0-1
-&#34;d&#34;
-&#34;e&#34;
-&#34;f&#34;
+&quot;d&quot;
+&quot;e&quot;
+&quot;f&quot;
 zremrangebyscore testRem (4 5
 (integer) 1
 zrange testRem 0-1
-&#34;d&#34;
-&#34;f&#34;
+&quot;d&quot;
+&quot;f&quot;
 zrank scoreboard peter
 (integer) 0
 zrevrank scoreboard peter
-(integer) 4</pre></td></tr></table>
-</div>
-</div>
+(integer) 4
+</code></pre>
 <ul>
 <li><strong>zinterstore dest numkeys key [key &hellip;] [weights weight [weight &hellip;]] [aggregate sum|min|max]</strong></li>
 </ul>
-
-<p>&emsp;&emsp;<code>zinterstore</code>命令用来计算多个有序集合的交集并将结果存储再dest键中，返回值为dest键中的元素个数。</p>
-
+<p>  <code>zinterstore</code>命令用来计算多个有序集合的交集并将结果存储再dest键中，返回值为dest键中的元素个数。</p>
 <ol>
-<li><p>当<code>aggregate</code>是<code>sum</code>时，dest键中元素的分数是每个参与计算的集合中该元素分数的和。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">zadd srotedSets1 1 a 2 b
-(integer) 2
-zadd sortedSets2 10 a 20 b
-(integer) 2
-zinterstore sortedSetsResult 2 sortedSets1 sortedSets2
-(integer) 2
-zrange sortedSetsREsult 0-1 withscores
-&#34;a&#34;
-&#34;11&#34;
-&#34;b&#34;
-&#34;22&#34;</pre></td></tr></table>
-</div>
-</div></li>
-
-<li><p>当<code>aggregate</code>是<code>min</code>时，dest键中元素的分数是每个参与计算的集合中该元素分数的最小值(max同理)。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">zinterstore sortedSetsResult 2 sortedSets1 sortedSets2 aggregate min
-(integer) 2
-zrange sortedSetsREsult 0-1 withscores
-&#34;a&#34;
-&#34;1&#34;
-&#34;b&#34;
-&#34;2&#34;</pre></td></tr></table>
-</div>
-</div></li>
+<li>
+<p>当<code>aggregate</code>是<code>sum</code>时，dest键中元素的分数是每个参与计算的集合中该元素分数的和。</p>
+<pre><code> zadd srotedSets1 1 a 2 b
+ (integer) 2
+ zadd sortedSets2 10 a 20 b
+ (integer) 2
+ zinterstore sortedSetsResult 2 sortedSets1 sortedSets2
+ (integer) 2
+ zrange sortedSetsREsult 0-1 withscores
+ &quot;a&quot;
+ &quot;11&quot;
+ &quot;b&quot;
+ &quot;22&quot;
+</code></pre>
+</li>
+<li>
+<p>当<code>aggregate</code>是<code>min</code>时，dest键中元素的分数是每个参与计算的集合中该元素分数的最小值(max同理)。</p>
+<pre><code> zinterstore sortedSetsResult 2 sortedSets1 sortedSets2 aggregate min
+ (integer) 2
+ zrange sortedSetsREsult 0-1 withscores
+ &quot;a&quot;
+ &quot;1&quot;
+ &quot;b&quot;
+ &quot;2&quot;</code></pre>
+</li>
 </ol>
 
     </div>

@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/golang%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/" />
@@ -41,22 +41,15 @@
 <meta property="og:title" content="[杂谈 | golang设计哲学 ]" />
 <meta property="og:description" content="世界是并行的 先不说宇宙，就整个地球来说，世界万物都是并行发生的；天生对并发支持良好的go语言更容易描述并行的世界。 #世界是由物质组合构成的 微" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/golang%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/" />
-<meta property="article:published_time" content="2020-01-02T14:21:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-01-02T14:21:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/golang%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-01-02T14:21:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-01-02T14:21:56&#43;08:00" />
 
 <meta itemprop="name" content="[杂谈 | golang设计哲学 ]">
-<meta itemprop="description" content="世界是并行的 先不说宇宙，就整个地球来说，世界万物都是并行发生的；天生对并发支持良好的go语言更容易描述并行的世界。 #世界是由物质组合构成的 微">
-
-
-<meta itemprop="datePublished" content="2020-01-02T14:21:56&#43;08:00" />
+<meta itemprop="description" content="世界是并行的 先不说宇宙，就整个地球来说，世界万物都是并行发生的；天生对并发支持良好的go语言更容易描述并行的世界。 #世界是由物质组合构成的 微"><meta itemprop="datePublished" content="2020-01-02T14:21:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-02T14:21:56&#43;08:00" />
 <meta itemprop="wordCount" content="1589">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[杂谈 | golang设计哲学 ]"/>
 <meta name="twitter:description" content="世界是并行的 先不说宇宙，就整个地球来说，世界万物都是并行发生的；天生对并发支持良好的go语言更容易描述并行的世界。 #世界是由物质组合构成的 微"/>
 
@@ -141,17 +134,11 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#go-哲学">Go 哲学</a></li>
-</ul>
-</nav>
+    <nav id="TableOfContents"></nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<ul>
+      <ul>
 <li>世界是并行的
 先不说宇宙，就整个地球来说，世界万物都是并行发生的；天生对并发支持良好的go语言更容易描述并行的世界。</li>
 <li>#世界是由物质组合构成的
@@ -177,9 +164,7 @@ go很好的遵循了这个规律，go的多个特性之间都是正交的：goro
 所谓异常就是没有预料到的非期望的事情发生了，所谓错误就是预料到的非期望的事情发生了；go语言把两种情况终于给分清楚了；什么是防御性编程，怎么保持程序的健壮性；
 每次调用都检查error确实让代码挺不美观的，个人认为为了健壮性，进行防御性的编程也是可以接收的；通过一定的技巧是可以避免错误代码冗余性；</li>
 </ul>
-
 <h1 id="go-哲学">Go 哲学</h1>
-
 <ol>
 <li>面向接口编程</li>
 <li>使用组合编程</li>
@@ -188,11 +173,8 @@ go很好的遵循了这个规律，go的多个特性之间都是正交的：goro
 <li>并发语言层面支持：兵法更好利用多核，有更强的表现力来模拟真实世界</li>
 <li>开放性：开源，语言的实现对程序员不是黑盒子，任何想了解语言实现的人都可以参与进来</li>
 </ol>
-
-<hr />
-
-<p>&emsp;&emsp;go 没有像JAVA一样，宗教式的完全面向对象设计；完全面向对象设计就是一刀切的宗教式的设计，但其并不能很好的表述这个世界，这就导致其表现力不足，最后通过设计模式和面向切面等设计技巧来弥补语言方面的缺陷；go是面向工程的实用主义者，其糅合了面向对象的设计，函数式设计和过程式设计的优点；原来通过各种设计模式的设计通过函数、接口、组合等简单方式就搞定了；go有更多胶水的东西比如：接口，函数，闭包等等，可以轻松的的把模块衔接和驱动起来； JAVA就好比：手里握着是锤子，看什么都是钉子，什么都是类的对象，这个和现实世界不符，类表示单个事物还可以，一旦表示多个事物及其交互，其表现力也就会遇到各种挑战。</p>
-
+<hr>
+<p>  go 没有像JAVA一样，宗教式的完全面向对象设计；完全面向对象设计就是一刀切的宗教式的设计，但其并不能很好的表述这个世界，这就导致其表现力不足，最后通过设计模式和面向切面等设计技巧来弥补语言方面的缺陷；go是面向工程的实用主义者，其糅合了面向对象的设计，函数式设计和过程式设计的优点；原来通过各种设计模式的设计通过函数、接口、组合等简单方式就搞定了；go有更多胶水的东西比如：接口，函数，闭包等等，可以轻松的的把模块衔接和驱动起来； JAVA就好比：手里握着是锤子，看什么都是钉子，什么都是类的对象，这个和现实世界不符，类表示单个事物还可以，一旦表示多个事物及其交互，其表现力也就会遇到各种挑战。</p>
 <blockquote>
 <p>是时候该转变观念了，不要动不动就提面向对象设计，动不动就提设计模式（特指某些招聘伪专家）；编程的世界是多样的，编程思想和范式是丰富多彩的，不要再沿着错误的路线继续前进了，拥抱go吧</p>
 </blockquote>

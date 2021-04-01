@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/java/collection/copyonwritearraylist/" />
@@ -41,22 +41,15 @@
 <meta property="og:title" content="[Java | CopyOnWriteArrayList]" />
 <meta property="og:description" content="摘要 CopyOnWriteArrayList位于java.util.concurrent包下，可想而知，这个类是为并发而设计的。 CopyOn" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/java/collection/copyonwritearraylist/" />
-<meta property="article:published_time" content="2021-01-07T18:34:56&#43;08:00"/>
-<meta property="article:modified_time" content="2021-01-07T18:34:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/java/collection/copyonwritearraylist/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-01-07T18:34:56&#43;08:00" />
+<meta property="article:modified_time" content="2021-01-07T18:34:56&#43;08:00" />
 
 <meta itemprop="name" content="[Java | CopyOnWriteArrayList]">
-<meta itemprop="description" content="摘要 CopyOnWriteArrayList位于java.util.concurrent包下，可想而知，这个类是为并发而设计的。 CopyOn">
-
-
-<meta itemprop="datePublished" content="2021-01-07T18:34:56&#43;08:00" />
+<meta itemprop="description" content="摘要 CopyOnWriteArrayList位于java.util.concurrent包下，可想而知，这个类是为并发而设计的。 CopyOn"><meta itemprop="datePublished" content="2021-01-07T18:34:56&#43;08:00" />
 <meta itemprop="dateModified" content="2021-01-07T18:34:56&#43;08:00" />
-<meta itemprop="wordCount" content="1615">
-
-
-
-<meta itemprop="keywords" content="Java," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1478">
+<meta itemprop="keywords" content="Java," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[Java | CopyOnWriteArrayList]"/>
 <meta name="twitter:description" content="摘要 CopyOnWriteArrayList位于java.util.concurrent包下，可想而知，这个类是为并发而设计的。 CopyOn"/>
 
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/java/%E9%9B%86%E5%90%88/"> Java/集合 </a>
             </div>
-          <span class="more-meta"> 约 1615 字 </span>
-          <span class="more-meta"> 预计阅读 4 分钟 </span>
+          <span class="more-meta"> 约 1478 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,27 +135,19 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#添加元素">添加元素</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#添加元素">添加元素</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
+      <h1 id="摘要">摘要</h1>
 <ol>
 <li>CopyOnWriteArrayList位于java.util.concurrent包下，可想而知，这个类是为并发而设计的。</li>
-<li>CopyOnWriteArrayList，顾名思义，Write的时候总是要Copy，也就是说<strong>对于CopyOnWriteArrayList，任何可变操作(add,set,remove等）都是伴随复制这个动作的，</strong>后面会解读底层实现机制。</li>
+<li>CopyOnWriteArrayList，顾名思义，Write的时候总是要Copy，也就是说**对于CopyOnWriteArrayList，任何可变操作(add,set,remove等）都是伴随复制这个动作的，**后面会解读底层实现机制。</li>
 </ol>
-
-<p>&emsp;&emsp;对于集合，我认为关注的点主要有四点：</p>
-
+<p>  对于集合，我认为关注的点主要有四点：</p>
 <table>
 <thead>
 <tr>
@@ -170,55 +155,27 @@
 <th>结论</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>CopyOnWriteArrayList是否允许null</td>
 <td>允许</td>
 </tr>
-
 <tr>
 <td>CopyOnWriteArrayList是否允许重复数据</td>
 <td>允许</td>
 </tr>
-
 <tr>
 <td>CopyOnWriteArrayList是否有序</td>
 <td>有序</td>
 </tr>
-
 <tr>
 <td>CopyOnWriteArrayList是否线程安全</td>
 <td>线程安全</td>
 </tr>
 </tbody>
 </table>
-
 <h2 id="添加元素">添加元素</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public class CopyOnWriteArrayList&lt;E&gt;
+<pre><code>public class CopyOnWriteArrayList&lt;E&gt;
     implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable {
     private static final long serialVersionUID = 8673264195747942595L;
 
@@ -236,29 +193,10 @@
     final void setArray(Object[] a) {
         array = a;
     }
-}</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;看到，底层还是一个Object[] array,<strong>默认大小为0</strong>。来看看add的源码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">public boolean add(E e) {
+}
+</code></pre>
+<p>  看到，底层还是一个Object[] array,<strong>默认大小为0</strong>。来看看add的源码：</p>
+<pre><code>public boolean add(E e) {
     final ReentrantLock = this.lock;
     lock.lock();
     try {
@@ -271,15 +209,11 @@
     } finally {
         lock.unlock();
     }
-}</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;看一下逻辑图：</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20151206205856722-1595736205.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;由于array被<code>transient, volatile</code>修饰，保证了内存的非重排性。</p>
-
+}
+</code></pre>
+<p>  看一下逻辑图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/801753-20151206205856722-1595736205.png" alt="avatar"></p>
+<p>  由于array被<code>transient, volatile</code>修饰，保证了内存的非重排性。</p>
 <ol>
 <li>加锁</li>
 <li>拿到原数组，得到新数组大小(原数组大小+1)，实例化出一个新的数组来</li>
@@ -288,9 +222,7 @@
 <li>把Object array引用指向新数组</li>
 <li>解锁</li>
 </ol>
-
-<p>&emsp;&emsp;另外，插入、删除、修改操作也都是一样的，每一次的操作都是以对Object[] array进行一次复制为基础的，如果上面的流程看懂了，那么研究插入、删除、修改的源代码就不难。</p>
-
+<p>  另外，插入、删除、修改操作也都是一样的，每一次的操作都是以对Object[] array进行一次复制为基础的，如果上面的流程看懂了，那么研究插入、删除、修改的源代码就不难。</p>
 <table>
 <thead>
 <tr>
@@ -298,7 +230,6 @@
 <th>缺点</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>绝对的线程安全</td>
@@ -306,23 +237,16 @@
 </tr>
 </tbody>
 </table>
-
-<p>&emsp;&emsp;CopyOnWriteArrayList这个并发组件，其实反映的是两个十分重要的分布式理念：</p>
-
+<p>  CopyOnWriteArrayList这个并发组件，其实反映的是两个十分重要的分布式理念：</p>
 <ol>
 <li><strong>读写分离</strong></li>
 </ol>
-
-<p>&emsp;&emsp;我们读取CopyOnWriteArrayList的时候读取的是CopyOnWriteArrayList中的Object[] array，但是修改的时候，操作的是一个新的Object[] array，读和写操作的不是同一个对象，这就是读写分离。这种技术数据库用的非常多，在高并发下为了缓解数据库的压力，即使做了缓存也要对数据库做读写分离，读的时候使用读库，写的时候使用写库，然后读库、写库之间进行一定的同步，这样就避免同一个库上读、写的IO操作太多</p>
-
-<ol>
+<p>  我们读取CopyOnWriteArrayList的时候读取的是CopyOnWriteArrayList中的Object[] array，但是修改的时候，操作的是一个新的Object[] array，读和写操作的不是同一个对象，这就是读写分离。这种技术数据库用的非常多，在高并发下为了缓解数据库的压力，即使做了缓存也要对数据库做读写分离，读的时候使用读库，写的时候使用写库，然后读库、写库之间进行一定的同步，这样就避免同一个库上读、写的IO操作太多</p>
+<ol start="2">
 <li><strong>最终一致</strong></li>
 </ol>
-
-<p>&emsp;&emsp;对CopyOnWriteArrayList来说，线程1读取集合里面的数据，未必是最新的数据。因为线程2、线程3、线程4四个线程都修改了CopyOnWriteArrayList里面的数据，但是线程1拿到的还是最老的那个Object[] array，新添加进去的数据并没有，所以线程1读取的内容未必准确。不过这些数据虽然对于线程1是不一致的，但是对于之后的线程一定是一致的，它们拿到的Object[] array一定是三个线程都操作完毕之后的Object array[]，这就是最终一致。最终一致对于分布式系统也非常重要，它通过容忍一定时间的数据不一致，提升整个分布式系统的可用性与分区容错性。当然，最终一致并不是任何场景都适用的，像火车站售票这种系统用户对于数据的实时性要求非常非常高，就必须做成强一致性的。</p>
-
-<p>&emsp;&emsp;最后总结一点，随着CopyOnWriteArrayList中元素的增加，CopyOnWriteArrayList的修改代价将越来越昂贵，因此，</p>
-
+<p>  对CopyOnWriteArrayList来说，线程1读取集合里面的数据，未必是最新的数据。因为线程2、线程3、线程4四个线程都修改了CopyOnWriteArrayList里面的数据，但是线程1拿到的还是最老的那个Object[] array，新添加进去的数据并没有，所以线程1读取的内容未必准确。不过这些数据虽然对于线程1是不一致的，但是对于之后的线程一定是一致的，它们拿到的Object[] array一定是三个线程都操作完毕之后的Object array[]，这就是最终一致。最终一致对于分布式系统也非常重要，它通过容忍一定时间的数据不一致，提升整个分布式系统的可用性与分区容错性。当然，最终一致并不是任何场景都适用的，像火车站售票这种系统用户对于数据的实时性要求非常非常高，就必须做成强一致性的。</p>
+<p>  最后总结一点，随着CopyOnWriteArrayList中元素的增加，CopyOnWriteArrayList的修改代价将越来越昂贵，因此，</p>
 <blockquote>
 <p>CopyOnWriteArrayList适用于读操作远多于修改操作的并发场景中。</p>
 </blockquote>

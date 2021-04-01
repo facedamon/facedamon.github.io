@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>未完待续 on FaceDamon`s Blog</title>
@@ -6,10 +6,15 @@
     <description>Recent content in 未完待续 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 21 Oct 2020 15:14:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/tags/%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 20 Mar 2021 15:01:56 +0800</lastBuildDate><atom:link href="http://facedamon.github.io/tags/%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[mybatis源码(二) | 核心组件]</title>
+      <link>http://facedamon.github.io/post/java/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Sat, 20 Mar 2021 15:01:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</guid>
+      <description>摘要 SqlSession是MyBatis提供的面向用户的操作数据库API。那么MyBatis底层是如何工作的呢？为了解开MyBatis的神秘</description>
+    </item>
     
     <item>
       <title>[分布式缓存 (七) | Protobuf]</title>
@@ -26,7 +31,7 @@
       <pubDate>Mon, 31 Aug 2020 16:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/redis/%E8%BF%9B%E9%98%B6/</guid>
-      <description>事务 &amp;emsp;&amp;emsp;在微博中，用户之间是&amp;rdquo;关注&amp;rdquo;和&amp;rdquo;被关注&amp;rdquo;的关系。如果要使用Red</description>
+      <description>事务 在微博中，用户之间是&amp;quot;关注&amp;quot;和&amp;quot;被关注&amp;quot;的关系。如果要使用Redis存储这样的关系可以使用集合类</description>
     </item>
     
     <item>
@@ -35,7 +40,7 @@
       <pubDate>Mon, 24 Aug 2020 16:55:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/3.-%E9%9B%86%E6%88%90/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;微服务之间通信方式的选择非常多样化，但哪个是正确的呢？SOAP? XML-RPC? REST? Protocol Buffers? 后面会逐一讨论，在此之前需要考虑的是，我</description>
+      <description>摘要 微服务之间通信方式的选择非常多样化，但哪个是正确的呢？SOAP? XML-RPC? REST? Protocol Buffers? 后面会逐一讨论，在此之前需要考虑的是，我们到底希望从这些技术中得</description>
     </item>
     
     <item>
@@ -44,7 +49,7 @@
       <pubDate>Tue, 09 Jun 2020 09:09:42 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/mongodb/1.-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</guid>
-      <description>基本操作 创建document 1 2 #use dbname use chapter; 删除document 1 2 3 #db.dropDatabase() use chapter; db.dropDatabase() 创建collection 1 2 3 #db.createCollection(name, options) # example 集合空间大小614299KB</description>
+      <description>基本操作 创建document #use dbname use chapter; 删除document #db.dropDatabase() use chapter; db.dropDatabase() 创建collection #db.createCollection(name, options) # example 集合空间大小614299KB,文档最大个数为</description>
     </item>
     
     <item>
@@ -53,7 +58,7 @@
       <pubDate>Thu, 16 Apr 2020 14:23:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/nginx/1.nginx%E5%9F%BA%E7%A1%80/</guid>
-      <description>准备环境 &amp;emsp;&amp;emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在l</description>
+      <description>准备环境 首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用selec</description>
     </item>
     
     <item>
@@ -80,7 +85,7 @@
       <pubDate>Mon, 14 Oct 2019 01:41:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%BA%8C-go-command/</guid>
-      <description>转载自 https://www.flysnow.org Go开发工具概览 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 Go is a tool for managing for Go source code. Usage: go command [arguments] The command are: build compile packages and dependencies clean remove object files doc show documentation for package or symbol env print Go environment information</description>
+      <description>转载自 https://www.flysnow.org Go开发工具概览 Go is a tool for managing for Go source code. Usage: go command [arguments] The command are: build compile packages and dependencies clean remove object files doc show documentation for package or symbol env print Go environment information bug start a bug report fix run go tool fix on packages fmt run gofmt on package sources generate generate</description>
     </item>
     
   </channel>

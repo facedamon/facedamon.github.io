@@ -1,23 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java/集合 on FaceDamon`s Blog</title>
     <link>http://facedamon.github.io/categories/java/%E9%9B%86%E5%90%88/</link>
     <description>Recent content in Java/集合 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Mon, 11 Jan 2021 16:26:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/categories/java/%E9%9B%86%E5%90%88/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language><atom:link href="http://facedamon.github.io/categories/java/%E9%9B%86%E5%90%88/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Java | TreeMap]</title>
       <link>http://facedamon.github.io/post/java/collection/treemap/</link>
       <pubDate>Mon, 11 Jan 2021 16:26:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/treemap/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;之前的文章讲解了两种Map，分别是HashMap与LinkedHashMap，它们保证了以O(1)的时间复杂度进</description>
+      <description>摘要 之前的文章讲解了两种Map，分别是HashMap与LinkedHashMap，它们保证了以O(1)的时间复杂度进行增、删、改、查，从存储</description>
     </item>
     
     <item>
@@ -26,7 +21,7 @@
       <pubDate>Mon, 11 Jan 2021 14:34:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/linkedhashmap/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;大多数情况下，只要不涉及线程安全问题，Map基本都可以使用HashMap，不过HashMap有一个问题，就是迭代</description>
+      <description>摘要 大多数情况下，只要不涉及线程安全问题，Map基本都可以使用HashMap，不过HashMap有一个问题，就是迭代HashMap的顺序并不</description>
     </item>
     
     <item>
@@ -35,7 +30,7 @@
       <pubDate>Sat, 09 Jan 2021 18:11:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/concurrenthashmap/</guid>
-      <description>背景 线程不安全的HashMap &amp;emsp;&amp;emsp;因为多线程环境下，使用HashMap扩容操作会引起死循环，导致CPU利用率接近100%</description>
+      <description>背景 线程不安全的HashMap 因为多线程环境下，使用HashMap扩容操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使</description>
     </item>
     
     <item>
@@ -44,7 +39,7 @@
       <pubDate>Sat, 09 Jan 2021 15:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/hashmaprehash/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;上一篇文章了解了HashMap的实现原理，讲到了HashMap不是线程安全的。那么HashMap在多线程环境下又</description>
+      <description>摘要 上一篇文章了解了HashMap的实现原理，讲到了HashMap不是线程安全的。那么HashMap在多线程环境下又会有什么问题呢？先来看一</description>
     </item>
     
     <item>
@@ -53,7 +48,7 @@
       <pubDate>Fri, 08 Jan 2021 16:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/hashmap/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 Hash</description>
+      <description>摘要 对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 HashMap是否允许重复数据 K</description>
     </item>
     
     <item>
@@ -62,7 +57,7 @@
       <pubDate>Thu, 07 Jan 2021 19:10:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/linkedlist/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;LinkedList是基于链表实现的，所以先讲解一下什么是链表。链表原先是C/C++的概念，是一种线性的存储结构</description>
+      <description>摘要 LinkedList是基于链表实现的，所以先讲解一下什么是链表。链表原先是C/C++的概念，是一种线性的存储结构，意思是将要存储的数据存</description>
     </item>
     
     <item>
@@ -80,7 +75,7 @@
       <pubDate>Thu, 07 Jan 2021 18:04:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/arraylist/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 ArrayList是否允许null 允许 ArrayList是否允许重</description>
+      <description>摘要 对于集合，我认为关注的点主要有四点： 关注点 结论 ArrayList是否允许null 允许 ArrayList是否允许重复数据 允许 ArrayLi</description>
     </item>
     
     <item>

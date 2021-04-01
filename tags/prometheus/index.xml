@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Prometheus on FaceDamon`s Blog</title>
@@ -6,11 +6,7 @@
     <description>Recent content in Prometheus on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 03 Jul 2020 15:43:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/tags/prometheus/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 03 Jul 2020 15:43:56 +0800</lastBuildDate><atom:link href="http://facedamon.github.io/tags/prometheus/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[系统监控 | Prometheus (二)]</title>
       <link>http://facedamon.github.io/post/promethues/prometheus%E4%BA%8C/</link>
@@ -26,7 +22,7 @@
       <pubDate>Fri, 03 Jul 2020 11:03:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/promethues/prometheus%E4%B8%80/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点</description>
+      <description>摘要 由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点。 系统架构 简略解释 Pro</description>
     </item>
     
   </channel>

@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="事务 &amp;emsp;&amp;emsp;在微博中，用户之间是&amp;rdquo;关注&amp;rdquo;和&amp;rdquo;被关注&amp;rdquo;的关系。如果要使用Red" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="事务 在微博中，用户之间是&amp;quot;关注&amp;quot;和&amp;quot;被关注&amp;quot;的关系。如果要使用Redis存储这样的关系可以使用集合类" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/redis/%E8%BF%9B%E9%98%B6/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[Redis | 进阶]" />
-<meta property="og:description" content="事务 &emsp;&emsp;在微博中，用户之间是&rdquo;关注&rdquo;和&rdquo;被关注&rdquo;的关系。如果要使用Red" />
+<meta property="og:description" content="事务 在微博中，用户之间是&quot;关注&quot;和&quot;被关注&quot;的关系。如果要使用Redis存储这样的关系可以使用集合类" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/redis/%E8%BF%9B%E9%98%B6/" />
-<meta property="article:published_time" content="2020-08-31T16:14:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-08-31T16:14:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/redis/%E8%BF%9B%E9%98%B6/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-08-31T16:14:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-08-31T16:14:56&#43;08:00" />
 
 <meta itemprop="name" content="[Redis | 进阶]">
-<meta itemprop="description" content="事务 &emsp;&emsp;在微博中，用户之间是&rdquo;关注&rdquo;和&rdquo;被关注&rdquo;的关系。如果要使用Red">
-
-
-<meta itemprop="datePublished" content="2020-08-31T16:14:56&#43;08:00" />
+<meta itemprop="description" content="事务 在微博中，用户之间是&quot;关注&quot;和&quot;被关注&quot;的关系。如果要使用Redis存储这样的关系可以使用集合类"><meta itemprop="datePublished" content="2020-08-31T16:14:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-08-31T16:14:56&#43;08:00" />
-<meta itemprop="wordCount" content="1426">
-
-
-
-<meta itemprop="keywords" content="Redis,未完待续," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="1244">
+<meta itemprop="keywords" content="Redis,未完待续," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[Redis | 进阶]"/>
-<meta name="twitter:description" content="事务 &emsp;&emsp;在微博中，用户之间是&rdquo;关注&rdquo;和&rdquo;被关注&rdquo;的关系。如果要使用Red"/>
+<meta name="twitter:description" content="事务 在微博中，用户之间是&quot;关注&quot;和&quot;被关注&quot;的关系。如果要使用Redis存储这样的关系可以使用集合类"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/redis/"> Redis </a>
             </div>
-          <span class="more-meta"> 约 1426 字 </span>
+          <span class="more-meta"> 约 1244 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,152 +135,83 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#事务">事务</a>
-<ul>
-<li><a href="#概述">概述</a></li>
-<li><a href="#错误处理">错误处理</a></li>
-<li><a href="#watch">watch</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#事务">事务</a>
+      <ul>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#错误处理">错误处理</a></li>
+        <li><a href="#watch">watch</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h2 id="事务">事务</h2>
-
-<p>&emsp;&emsp;在微博中，用户之间是&rdquo;关注&rdquo;和&rdquo;被关注&rdquo;的关系。如果要使用Redis存储这样的关系可以使用集合类型。思路是对每个用户使用两个集合类型键，分别名为<code>user:用户ID:followers</code>和<code>user:用户ID:following</code>，用来存储关注该用户的用户集合该用户关注的用户集合。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">func follow(currentUser, targetUser string) {
+      <h2 id="事务">事务</h2>
+<p>  在微博中，用户之间是&quot;关注&quot;和&quot;被关注&quot;的关系。如果要使用Redis存储这样的关系可以使用集合类型。思路是对每个用户使用两个集合类型键，分别名为<code>user:用户ID:followers</code>和<code>user:用户ID:following</code>，用来存储关注该用户的用户集合该用户关注的用户集合。</p>
+<pre><code>func follow(currentUser, targetUser string) {
     sadd user:currentUser:following targetUser
     sadd user:targetUser:followers currentUser
-}</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;如ID为1的用户A想关注ID为2的用户B，只需要执行follow(1, 2)即可。</p>
-
-<p>&emsp;&emsp;然而在实现该功能的时候有一个问题：完成关注操作需要依次执行两条Redis命令，如果在第一条命令执行完后因为某种原因导致第二条命令没有执行，就会出现一个奇怪的现象：A查看自己关注的用户列表时会发现B，而B查看关注自己的用户列表时却没有A。</p>
-
+}
+</code></pre>
+<p>  如ID为1的用户A想关注ID为2的用户B，只需要执行follow(1, 2)即可。</p>
+<p>  然而在实现该功能的时候有一个问题：完成关注操作需要依次执行两条Redis命令，如果在第一条命令执行完后因为某种原因导致第二条命令没有执行，就会出现一个奇怪的现象：A查看自己关注的用户列表时会发现B，而B查看关注自己的用户列表时却没有A。</p>
 <h3 id="概述">概述</h3>
-
-<p>&emsp;&emsp;Redis的事务是一组命令的集合。事务同命令一样都是Redis的最小执行单位，一个事务中的命令要么都执行，要么都不执行。事务的原理是先将属于一个事务的命令发送给Redis，然后再让Redis依次执行这些命令。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    multi
+<p>  Redis的事务是一组命令的集合。事务同命令一样都是Redis的最小执行单位，一个事务中的命令要么都执行，要么都不执行。事务的原理是先将属于一个事务的命令发送给Redis，然后再让Redis依次执行这些命令。</p>
+<pre><code>    multi
     sadd user:1:following 2
     queued
     sadd user:2followers 1
     queued
     exec
     (integer) 1
-    (integer) 2</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;可以看到Redis没有立刻执行这些命令，而是返回<code>queued</code>表示这两条ml已经进入等待执行的事务队列中了。当把所有要在同一个事务中执行的命令都发给Redis后，我们使用<code>exec</code>命令告诉Redis将等待执行的事务队列中的所有命令按照发送顺序依次执行。<code>exec</code>命令返回值就是这些命令的返回值组成的列表，返回值顺序和命令的顺序相同。</p>
-
-<p>&emsp;&emsp;除此之外，Redis事务还能保证一个事务内的命令依次执行而不被其它命令插入。</p>
-
+    (integer) 2
+</code></pre>
+<p>  可以看到Redis没有立刻执行这些命令，而是返回<code>queued</code>表示这两条ml已经进入等待执行的事务队列中了。当把所有要在同一个事务中执行的命令都发给Redis后，我们使用<code>exec</code>命令告诉Redis将等待执行的事务队列中的所有命令按照发送顺序依次执行。<code>exec</code>命令返回值就是这些命令的返回值组成的列表，返回值顺序和命令的顺序相同。</p>
+<p>  除此之外，Redis事务还能保证一个事务内的命令依次执行而不被其它命令插入。</p>
 <h3 id="错误处理">错误处理</h3>
-
-<p>&emsp;&emsp;如果一个事务中的某个命令执行出错，Redis会怎么处理？</p>
-
+<p>  如果一个事务中的某个命令执行出错，Redis会怎么处理？</p>
 <ol>
-<li><p><strong>语法错误</strong>。语法错误指命令不存在或者命令参数不对</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">multi
-set key value
-queued
-set key
-(error) err wrong number of arguments for &#39;set&#39; command
-errorcommand key
-(error) err unknown command &#39;errorcommand&#39;
-exec
-(error) execabort transaction disarded because of previoud errors</pre></td></tr></table>
-</div>
-</div></li>
+<li>
+<p><strong>语法错误</strong>。语法错误指命令不存在或者命令参数不对</p>
+<pre><code> multi
+ set key value
+ queued
+ set key
+ (error) err wrong number of arguments for 'set' command
+ errorcommand key
+ (error) err unknown command 'errorcommand'
+ exec
+ (error) execabort transaction disarded because of previoud errors
+</code></pre>
+</li>
 </ol>
-
-<p>&emsp;&emsp;跟在<code>multi</code>命令后执行了3个命令：一个是正确的，成功的加入事务队列；其余两个命令都有语法错误，只要有一个命令有语法错误，执行exec命令后Redis就会直接返回错误，连语法正确的命令也不会执行。</p>
-
-<ol>
-<li><p><strong>运行错误</strong>。运行错误指在命令执行时出现错误，比如使用散列类型的命令操作集合类型的键，这种错误在实际执行之前Redis是无法发现的，所以在事务里这样的命令是会被Redis接受并执行的。如果事务里的一条命令出现了运行错误，事务里其它的命令依然会继续执行。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">multi
-set key 1
-queued
-sadd key 2
-queued
-set key 3
-queued
-exec
-ok
-(error) err operation against a key holding the wrong kind of value
-ok
-get key
-&#34;3&#34;</pre></td></tr></table>
-</div>
-</div></li>
+<p>  跟在<code>multi</code>命令后执行了3个命令：一个是正确的，成功的加入事务队列；其余两个命令都有语法错误，只要有一个命令有语法错误，执行exec命令后Redis就会直接返回错误，连语法正确的命令也不会执行。</p>
+<ol start="2">
+<li>
+<p><strong>运行错误</strong>。运行错误指在命令执行时出现错误，比如使用散列类型的命令操作集合类型的键，这种错误在实际执行之前Redis是无法发现的，所以在事务里这样的命令是会被Redis接受并执行的。如果事务里的一条命令出现了运行错误，事务里其它的命令依然会继续执行。</p>
+<pre><code> multi
+ set key 1
+ queued
+ sadd key 2
+ queued
+ set key 3
+ queued
+ exec
+ ok
+ (error) err operation against a key holding the wrong kind of value
+ ok
+ get key
+ &quot;3&quot;
+</code></pre>
+</li>
 </ol>
-
-<p>&emsp;&emsp;可见，虽然<code>sadd key 2</code>出现了错误，但是<code>set key 3</code>依然执行了。Redis事务没有关系数据库事务提供的回滚功能，为此开发者必须在事务执行出错后自己收拾剩下的摊子。</p>
-
+<p>  可见，虽然<code>sadd key 2</code>出现了错误，但是<code>set key 3</code>依然执行了。Redis事务没有关系数据库事务提供的回滚功能，为此开发者必须在事务执行出错后自己收拾剩下的摊子。</p>
 <h3 id="watch">watch</h3>
-
-<p>&emsp;&emsp;我们已经知道在一个事务中只有当所有都依次执行完后才能饿到每个结果的返回值。可是有些情况下需要先获得一条命令的返回值，然后再根据这个值执行下一条命令。</p>
-
-<p>&emsp;&emsp;肯定会有很多读者想到可以用事务来实现<code>incr</code>以防止竞态条件，可是因为事务中的每个命令的执行结果狗屎最后一起返回的，所以无法将前一条命令的结果作为下一条命令的参数。</p>
-
-<p>&emsp;&emsp;为了解决这个问题，我们需要换一个思路。</p>
+<p>  我们已经知道在一个事务中只有当所有都依次执行完后才能饿到每个结果的返回值。可是有些情况下需要先获得一条命令的返回值，然后再根据这个值执行下一条命令。</p>
+<p>  肯定会有很多读者想到可以用事务来实现<code>incr</code>以防止竞态条件，可是因为事务中的每个命令的执行结果狗屎最后一起返回的，所以无法将前一条命令的结果作为下一条命令的参数。</p>
+<p>  为了解决这个问题，我们需要换一个思路。</p>
 
     </div>
 

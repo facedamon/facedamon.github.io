@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>[mybatis源码(一) | 工具类] - FaceDamon`s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="facedamon" /><meta name="description" content="工具类 SQL构造器 为了解决代码中sql拼接问题，mybatis中提供了一个sql工具类。使用这个工具类，我们可以很方便地在Java代码中动态" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
+
+
+<link rel="canonical" href="http://facedamon.github.io/post/java/mybatis/%E5%B7%A5%E5%85%B7%E7%B1%BB/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="[mybatis源码(一) | 工具类]" />
+<meta property="og:description" content="工具类 SQL构造器 为了解决代码中sql拼接问题，mybatis中提供了一个sql工具类。使用这个工具类，我们可以很方便地在Java代码中动态" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://facedamon.github.io/post/java/mybatis/%E5%B7%A5%E5%85%B7%E7%B1%BB/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-03-19T11:42:56&#43;08:00" />
+<meta property="article:modified_time" content="2021-03-19T11:42:56&#43;08:00" />
+
+<meta itemprop="name" content="[mybatis源码(一) | 工具类]">
+<meta itemprop="description" content="工具类 SQL构造器 为了解决代码中sql拼接问题，mybatis中提供了一个sql工具类。使用这个工具类，我们可以很方便地在Java代码中动态"><meta itemprop="datePublished" content="2021-03-19T11:42:56&#43;08:00" />
+<meta itemprop="dateModified" content="2021-03-19T11:42:56&#43;08:00" />
+<meta itemprop="wordCount" content="4903">
+<meta itemprop="keywords" content="Java," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="[mybatis源码(一) | 工具类]"/>
+<meta name="twitter:description" content="工具类 SQL构造器 为了解决代码中sql拼接问题，mybatis中提供了一个sql工具类。使用这个工具类，我们可以很方便地在Java代码中动态"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">FaceDamon</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about-me/">
+        <li class="mobile-menu-item">About Me</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">FaceDamon</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about-me/">About Me</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">[mybatis源码(一) | 工具类]</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-19 </span>
+        <div class="post-category">
+            <a href="/categories/java/%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/"> Java/源码学习 </a>
+            </div>
+          <span class="more-meta"> 约 4903 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#sql构造器">SQL构造器</a></li>
+    <li><a href="#scriptrunner">ScriptRunner</a></li>
+    <li><a href="#sqlrunner">SqlRunner</a></li>
+    <li><a href="#metaobject">MetaObject</a></li>
+    <li><a href="#metaclass">MetaClass</a></li>
+    <li><a href="#objectfactory">ObjectFactory</a></li>
+    <li><a href="#proxyfactory">ProxyFactory</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="工具类">工具类</h1>
+<h2 id="sql构造器">SQL构造器</h2>
+<p>  为了解决代码中sql拼接问题，mybatis中提供了一个sql工具类。使用这个工具类，我们可以很方便地在Java代码中动态构建SQL语句。</p>
+<pre><code>    @Test
+    public void testSelectSql() {
+        String sql = new SQL() {{
+            SELECT(&quot;P.ID, P.USERNAME, P.USERNAME, P.PASSWORD, P.FULL_NAME&quot;);
+            SELECT(&quot;P.LAST_NAME, P.CREATED_CN, P.UPDATED_ON&quot;);
+            FROM(&quot;PERSON P&quot;);
+            FROM(&quot;ACCOUNT A&quot;);
+            INNER_JOIN(&quot;DEPARTMENT D on D.ID = P.DEPARTMENT_ID&quot;);
+            INNER_JOIN(&quot;COMPANY C on D.COMPANY_ID = C.ID&quot;);
+            WHERE(&quot;P.ID = A.ID&quot;);
+            WHERE(&quot;P.FIRST_NAME like ?&quot;);
+            OR();
+            HAVING(&quot;P.FIRST_NAME like ?&quot;);
+            ORDER_BY(&quot;P.ID&quot;);
+            ORDER_BY(&quot;P.FULL_NAME&quot;);
+        }}.toString();
+        System.out.println(sql);
+    }
+
+    //output:
+    SELECT P.ID, P.USERNAME, P.USERNAME, P.PASSWORD, P.FULL_NAME, P.LAST_NAME, P.CREATED_CN, P.UPDATED_ON
+    FROM PERSON P, ACCOUNT A
+    INNER JOIN DEPARTMENT D on D.ID = P.DEPARTMENT_ID
+    INNER JOIN COMPANY C on D.COMPANY_ID = C.ID
+    WHERE (P.ID = A.ID AND P.FIRST_NAME like ?) 
+    OR ()
+    HAVING (P.FIRST_NAME like ?)
+    ORDER BY P.ID, P.FULL_NAME
+</code></pre>
+<p>  在匿名子类的初始化代码块中，调用SELECT()、FROM()等方法构建SQL语句，这种方式能够很好地避免字符串拼接过程中缺少空格或者偶然间重复出现的AND关键字导致的SQL语句不正确。除了SELECT语句外，SQL工具类也可以用作构建UPDATE、INSERT等语句</p>
+<p>  在学习完SQL工具类的使用后，接下来我们简单地了解一下SQL工具类的实现源码。SQL继承至AbstractSQL类，只重写了该类的getSelf()方法，代码如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616128050.png" alt="avatar"></p>
+<p>  所有的功能由AbstractSQL类完成，AbstractSQL类中维护了一个SQLStatement内部类的实例和一系列前面提到过的构造SQL语句的方法，例如SELECT()、UPDATE()等方法。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616129394.jpg" alt="avatar"></p>
+<p>SQLStatement内部类用于描述一个SQL语句，该类中通过StatementType确定SQL语句的类型。SQLStatement类中还维护了一系列的ArrayList属性，当调用SELECT()、UPDATE()等方法时，这些方法的参数内容会记录在这些ArrayList对象中。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616133619.jpg" alt="avatar"></p>
+<p>  Appendable是一个追加模式的接口，AbstractSQL默认的实现是StringBuilder.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616133913.jpg" alt="avatar"></p>
+<p>  SQLStatement对象的sql()方法实现代码如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616134167.jpg" alt="avatar"></p>
+<p>  如上面的代码所示，该方法中会判断SQL语句的类型，以UPDATE语句为例，会调用SQLStatement对象的updateSql()方法生成UPDATE语句。updateSql()方法代码如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616134333.jpg" alt="avatar"></p>
+<p>  updateSql()方法中，最终会调用sqlCalause()方法完成SQL语句的拼接。sqlCalause()方法实现代码如下:</p>
+<pre><code>    /**
+    *   @param builder 字符串构建对象
+    *   @param keyword sql关键字
+    *   @param parts 关键字子句内容
+    *   @param open 关键字后开始字符
+    *   @param close 关键字后结束字符
+    *   @param conjunction sql链接关键字，通常为and或or
+    */
+    private void sqlClause(AbstractSQL.SafeAppendable builder, String keyword, List&lt;String&gt; parts, String open, String close, String conjunction) {
+        if (!parts.isEmpty()) {
+            if (!builder.isEmpty()) {
+                builder.append(&quot;\n&quot;);
+            }
+
+            builder.append(keyword);
+            builder.append(&quot; &quot;);
+            builder.append(open);
+            String last = &quot;________&quot;;
+            int i = 0;
+            // 拼接关键字后开始字符
+            for(int n = parts.size(); i &lt; n; ++i) {
+                String part = (String)parts.get(i);
+                // 如果sql关键字对应的子句内容不为OR或AND，则追加连接关键字
+                if (i &gt; 0 &amp;&amp; !part.equals(&quot;) \nAND (&quot;) &amp;&amp; !part.equals(&quot;) \nOR (&quot;) &amp;&amp; !last.equals(&quot;) \nAND (&quot;) &amp;&amp; !last.equals(&quot;) \nOR (&quot;)) {
+                    builder.append(conjunction);
+                }
+                // 追加子句内容
+                builder.append(part);
+                last = part;
+            }
+
+            builder.append(close);
+        }
+    }
+</code></pre>
+<h2 id="scriptrunner">ScriptRunner</h2>
+<p>  该工具类用于读取脚本文件中的SQL语句并执行，使用起来比较简单。下面是一个使用ScriptRunner执行SQL脚本的案例。</p>
+<pre><code>    @Test
+    public void testScriptRunner() {
+        try {
+            Connection connection = DriverManager.getConnection(&quot;jdbc:mysql://xxx:yy/zz&quot;);
+            ScriptRunner scriptRunner = new ScriptRunner(connection);
+            scriptRunner.runScript(Resources.getResourceAsReader(&quot;create-table.sql&quot;));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+</code></pre>
+<p>  ScriptRunner工具类的构造方法需要一个java.sql.Connection对象作为参数。创建ScriptRunner对象后，调用该对象的runScript()方法即可，该方法接收一个读取SQL脚本文件的Reader对象作为参数。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616135784.jpg" alt="avatar"></p>
+<p>  ScriptRunner类的runScript()方法的逻辑比较清晰，具体做了以下几件事情：</p>
+<ol>
+<li>调用setAutoCommit()方法，根据autoCommit属性的值设置事务是否自动提交。</li>
+<li>判断sendFullScript属性值，如果值为true，则调用executeFullScript()方法一次性读取SQL脚本文件中的所有内容，然后调用JDBC中Statement对象的execute()方法一次性执行脚本中的所有SQL语句。</li>
+<li>如果sendFullScript属性值为false，则调用executeLineByLine()方法逐行读取SQL脚本文件，以分号作为一条SQL语句结束的标志，逐条执行SQL语句。</li>
+</ol>
+<h2 id="sqlrunner">SqlRunner</h2>
+<p>  该类对JDBC做了很好的封装，结合SQL工具类，能够很方便地通过Java代码执行SQL语句并检索SQL执行结果。</p>
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>desc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>closeConnection</td>
+<td>关闭Connection对象</td>
+</tr>
+<tr>
+<td>selectOne(String sql, Object&hellip; args)</td>
+<td>执行select语句，sql语句可以使用占位符，该方法只返回一条记录，若查询结果行数不等于一，则会抛出SQLException</td>
+</tr>
+<tr>
+<td>selectAll(String sql, Object&hellip; args)</td>
+<td>返回多条记录，返回值为List&lt;Map&gt;，每个Map对应数据库中的一行记录</td>
+</tr>
+<tr>
+<td>insert(String sql, Object&hellip; args)</td>
+<td>插入一条记录</td>
+</tr>
+<tr>
+<td>update(String sql, Object&hellip; args)</td>
+<td>更新若干条记录</td>
+</tr>
+<tr>
+<td>delete(String sql, Object&hellip; args)</td>
+<td>删除若干条记录</td>
+</tr>
+<tr>
+<td>run(String sql)</td>
+<td>执行任意一条SQL语句</td>
+</tr>
+</tbody>
+</table>
+<pre><code>    @Test
+    public void testDelete() {
+        try {
+            SqlRunner sqlRunner = new SqlRunner(DriverManager.getConnection(&quot;jdbc:mysql://xxx:yy/zz&quot;));
+            String deleteUserSql = new SQL() {{
+                DELETE_FROM(&quot;user&quot;);
+                WHERE(&quot;id = ?&quot;);
+            }}.toString();
+            sqlRunner.delete(deleteUserSql, Integer.valueOf(1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testInsert() {
+        try {
+            SqlRunner sqlRunner = new SqlRunner(DriverManager.getConnection(&quot;jdbc:mysql://xxx:yy/zz&quot;));
+            String insertUserSql = new SQL() {{
+                INSERT_INTO(&quot;user&quot;);
+                VALUES(&quot;create_time, name, password, phone, nick_name&quot;,
+                        &quot;?,?,?,?,?&quot;);
+            }}.toString();
+            String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss&quot;));
+            sqlRunner.insert(insertUserSql, createTime, &quot;Jane&quot;, &quot;test&quot;, &quot;187&quot;, &quot;J&quot;);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+</code></pre>
+<p>  熟悉了SqlRunner工具类的使用后，接下来我们了解一下SqlRunner工具类的实现。以selectAll()方法为例，该方法代码如下:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616137403.png" alt="avatar"></p>
+<ol>
+<li>调用Connection对象的prepareStatement()方法获取PreparedStatement对象，调用setParamters()方法为SQL中的参数占位符赋值</li>
+<li>调用PreparedStatement的executeQuery()方法执行查询操作</li>
+<li>调用getResults()方法，将ResultSet对象转换为List对象，其中List对象中的每个Map对象对应数据库中的一条记录</li>
+</ol>
+<p>  接下来我们来看一下setParameters()方法的实现.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616137601.jpg" alt="avatar"></p>
+<ol>
+<li>如果参数为null,则抛出异常</li>
+<li>如果参数为NULL枚举类型，则通过NULL枚举转换数据库类型</li>
+<li>根绝参数类型获取对应的TypeHandler对象，调用TypeHandler对象的setParamter方法为参数赋值</li>
+</ol>
+<p>  最后，我们再来看一下getResultSet()方法处理结果集的过程：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/mybatis/1616137987.jpg" alt="avatar"></p>
+<ol>
+<li>获取ResultSetMetaData对象，通过ResultSetMetaData对象获取所有列名</li>
+<li>获取列的JDBC类型，根据类型获取TypeHandler对象</li>
+<li>遍历ResultSet对象，将ResultSet对象中的记录行转换为Map对象</li>
+<li>通过TypeHandler对象的getResult方法将JDBC类型转换为JAVA类型</li>
+</ol>
+<h2 id="metaobject">MetaObject</h2>
+<p>  MetaObject是MyBatis中的反射工具类，该工具类在MyBatis源码中出现的频率非常高。使用MetaObject工具类，我们可以很优雅地获取和设置对象的属性值。</p>
+<p>  假设我们有两个实体类：User和Order，User类用于描述用户信息，Order类用于描述订单信息，一个用户可以有多笔订单，User类中通过一个List对象记录用户的订单信息。User和Order实体类的代码如下：</p>
+<pre><code>    @Data
+    @AllArgsConstructor
+    public class Order {
+        String orderNo;
+        String goodsName;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public class User {
+        List&lt;Order&gt; orders;
+        String name;
+        Integer age;
+    }
+
+    @Test
+    public void testMetaObject() {
+        List&lt;Order&gt; orders = new ArrayList&lt;Order&gt;() {
+            {
+                add(new Order(&quot;order20210320&quot;, &quot;mybatis 源码深度解析&quot;));
+                add(new Order(&quot;order20210321&quot;, &quot;tx mybatis 入门与进阶&quot;));
+            }
+        };
+        User user = new User(orders, &quot;damon&quot;, 3);
+        MetaObject metaObject = SystemMetaObject.forObject(user);
+        //获取第一笔订单的商品名称
+        System.out.println(metaObject.getValue(&quot;orders[0].goodsName&quot;));
+        //获取第二笔订单的商品名称
+        System.out.println(metaObject.getValue(&quot;orders[1].goodsName&quot;));
+        //为属性设置值
+        metaObject.setValue(&quot;orders[1].orderNo&quot;, &quot;order20181103&quot;);
+        //判断user对象是否有orderNo属性
+        System.out.println(metaObject.hasGetter(&quot;orderNo&quot;));
+        //判断user对象是否有name属性
+        System.out.println(metaObject.hasGetter(&quot;name&quot;));
+    }
+
+    //output:
+    mybatis 源码深度解析
+    tx mybatis 入门与进阶
+    false
+    true
+</code></pre>
+<p>  如上面的代码所示，我们创建了一个User对象并初始化User对象的属性值，接着调用SystemMetaObject类的forObject()静态方法创建一个与User对象关联的MetaObject对象。我们可以通过MetaObject对象的getValue()方法以表达式的方式获取User对象的属性值。我们还可以使用MetaObject对象的setValue()方法以表达式的方式为User对象的属性设置值。<strong>当类的层级比较深时，使用MetaObject工具能够很方便地获取和设置对象的属性值</strong>。除此之外，我们还可以使用MetaObject工具类的hasSetter()和hasGetter()方法通过名称判断对象是否有某个属性且该属性有对应的Getter/Setter方法。</p>
+<h2 id="metaclass">MetaClass</h2>
+<p>  MetaClass是MyBatis中的反射工具类，与MetaOjbect不同的是，<strong>MetaObject用于获取和设置对象的属性值，而MetaClass则用于获取类相关的信息</strong>。例如，我们可以使用MetaClass判断某个类是否有默认构造方法，还可以判断类的属性是否有对应的Getter/Setter方法。</p>
+<pre><code>    @Test
+    public void testMetaClass() {
+        MetaClass metaClass = MetaClass.forClass(Order.class, new DefaultReflectorFactory());
+        //获取所有有getter方法的属性名
+        String[] getterNames = metaClass.getGetterNames();
+        System.out.println(JSON.toJSONString(getterNames));
+        //某属性是否有getter/setter方法
+        System.out.println(String.format(&quot;%s:%b&quot;, &quot;orderNo属性是否有Getter方法&quot;,metaClass.hasGetter(&quot;orderNo&quot;)));
+        System.out.println(String.format(&quot;%s:%b&quot;, &quot;orderNo属性是否有Setter方法&quot;,metaClass.hasSetter(&quot;orderNo&quot;)));
+        System.out.println(String.format(&quot;%s:%s&quot;, &quot;orderNo属性类型&quot;, metaClass.getGetterType(&quot;orderNo&quot;)));
+        //获取属性Getter方法
+        Invoker invoker = metaClass.getGetInvoker(&quot;orderNo&quot;);
+        try {
+            Object orderNo = invoker.invoke(new Order(&quot;order20210319&quot;, &quot;mybatis&quot;), null);
+            System.out.println(orderNo);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    //output:
+    [&quot;orderNo&quot;,&quot;goodsName&quot;]
+    orderNo属性是否有Getter方法:true
+    orderNo属性是否有Setter方法:true
+    orderNo属性类型:class java.lang.String
+    order20210319
+</code></pre>
+<p>  我们通过MetaClass获取了Java类的基本信息，包括Java类中所有的Getter方法对应的属性名称。除此之外，我们还可以通过MetaClass获取Getter/Setter方法对应的Invoker对象，然后通过Invoker对象调用Getter/Setter方法。Invoker接口有2个不同的实现，分别为GetFieldInvoker、SetFieldInvoker，对应Java类的Getter方法、Setter方法。</p>
+<h2 id="objectfactory">ObjectFactory</h2>
+<p>  ObjectFactory是MyBatis中的对象工厂，MyBatis每次创建Mapper映射结果对象的新实例时，都会使用一个对象工厂（ObjectFactory）实例来完成。ObjectFactory接口只有一个默认的实现，即DefaultObjectFactory，默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认构造方法，要么在参数映射存在的时候通过参数构造方法来实例化。</p>
+<pre><code>    @Test
+    public void testObjectFactory() {
+        ObjectFactory objectFactory = new DefaultObjectFactory();
+        List&lt;Integer&gt; list = objectFactory.create(List.class);
+        Map&lt;String, String&gt; map = objectFactory.create(Map.class);
+        list.addAll(Arrays.asList(1, 2, 3));
+        map.put(&quot;test&quot;, &quot;test&quot;);
+        System.out.println(list);
+        System.out.println(map);
+    }
+
+    //output:
+    [1, 2, 3]
+    {test=test}
+</code></pre>
+<p>  DefaultObjectFactory实现类支持通过接口的方式创建对象，例如当我们指定创建java.util.List实例时，实际上创建的是java.util.ArrayList对象。List、Map、Set接口对应的实现分别为ArrayList、HashMap、HashSet。</p>
+<blockquote>
+<p>关于工厂模式请参考 <a href="http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">abstract factory</a></p>
+</blockquote>
+<h2 id="proxyfactory">ProxyFactory</h2>
+<p>  ProxyFactory是MyBatis中的代理工厂，主要用于创建动态代理对象，ProxyFactory接口有两个不同的实现，分别为CglibProxyFactory和JavassistProxyFactory。从实现类的名称可以看出，MyBatis支持两种动态代理策略，分别为Cglib和Javassist动态代理。ProxyFactory主要用于实现MyBatis的懒加载功能。当开启懒加载后，MyBatis创建Mapper映射结果对象后，会通过ProxyFactory创建映射结果对象的代理对象。当我们调用代理对象的Getter方法获取数据时，会执行CglibProxyFactory或JavassistProxyFactory中定义的拦截逻辑，然后执行一次额外的查询。</p>
+<pre><code>    @Test
+    public void testProxyFactory() {
+        //创建ProxyFactory对象
+        ProxyFactory proxyFactory = new JavassistProxyFactory();
+        Order order = new Order(&quot;gn20210319&quot;, &quot;mybatis&quot;);
+        ObjectFactory objectFactory = new DefaultObjectFactory();
+        //调用ProxyFactory对象的createProxy方法创建代理对象
+        Object proxyOrder = proxyFactory.createProxy(order,
+                Mockito.mock(ResultLoaderMap.class),
+                Mockito.mock(Configuration.class),
+                objectFactory,
+                Arrays.asList(String.class, String.class),
+                Arrays.asList(order.getOrderNo(), order.getGoodsName()));
+        System.out.println(proxyOrder.getClass());
+        System.out.println(((Order)proxyOrder).getOrderNo());
+    }
+
+    //output:
+    class org.facedamon.Order_$$_jvst745_0
+    gn20210319
+</code></pre>
+<p>  我们创建了一个Order对象，然后通过JavassistProxyFactory实例创建了一个Order对象的动态代理对象。代理对象创建完毕后，会把原始对象的属性复制到代理对象中，调用代理对象的Getter方法获取属性值时，会执行JavassistProxyFactory中的拦截逻辑。</p>
+<blockquote>
+<p>关于代理模式请参考 <a href="http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">proxy pattern</a></p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">facedamon</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-19
+        
+    </span>
+  </p>
+  <p class="copyright-item">
+      <span class="item-title">原始文档</span>
+      <span class="item-content"><a class="link-to-markdown" href="http://facedamon.github.io/post/java/mybatis/%E5%B7%A5%E5%85%B7%E7%B1%BB/index.md" target="_blank">查看本文 Markdown 版本 »</a></span>
+    </p>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://www.gnu.org/licenses/gpl-3.0.html" target="_self"><img src="https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)"></img></a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">Java</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">[设计模式 | 结构 | 代理模式]</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java/thread/4.producer/">
+            <span class="next-text nav-default">[Java | 生产消费问题]</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:facedamon@163.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://github.com/facedamon" class="iconfont icon-github" title="github"></a>
+  <a href="http://facedamon.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">FaceDamon</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/raphael@2.2.7/raphael.min.js" integrity="sha256-67By+NpOtm9ka1R6xpUefeGOY8kWWHHRAKlvaTJ7ONI=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/flowchart.js@1.8.0/release/flowchart.min.js" integrity="sha256-zNGWjubXoY6rb5MnmpBNefO0RgoVYfle9p0tvOQM+6k=" crossorigin="anonymous"></script><script></script><script src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/snapsvg@0.5.1/dist/snap.svg-min.js" integrity="sha256-oI+elz+sIm+jpn8F/qEspKoKveTc5uKeFHNNVexe6d8=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/npm/underscore@1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script> <script src="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.js" integrity="sha384-8748Vn52gHJYJI0XEuPB2QlPVNUkJlJn9tHqKec6J3q2r9l8fvRxrgn/E5ZHV0sP" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bramp/js-sequence-diagrams@2.0.1/dist/sequence-diagram-min.css" integrity="sha384-6QbLKJMz5dS3adWSeINZe74uSydBGFbnzaAYmp+tKyq60S7H2p6V7g1TysM5lAaF" crossorigin="anonymous">
+
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      TeX: {equationNumbers: {autoNumber: "AMS"}},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

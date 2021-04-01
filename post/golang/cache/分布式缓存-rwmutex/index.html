@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="摘要 &amp;emsp;&amp;emsp;在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="摘要 在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支持并发的读写。(对于并发" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-rwmutex/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[分布式缓存 (二) | 确保一致性]" />
-<meta property="og:description" content="摘要 &emsp;&emsp;在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支" />
+<meta property="og:description" content="摘要 在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支持并发的读写。(对于并发" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-rwmutex/" />
-<meta property="article:published_time" content="2020-07-20T15:42:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-07-20T15:42:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-rwmutex/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-07-20T15:42:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-07-20T15:42:56&#43;08:00" />
 
 <meta itemprop="name" content="[分布式缓存 (二) | 确保一致性]">
-<meta itemprop="description" content="摘要 &emsp;&emsp;在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支">
-
-
-<meta itemprop="datePublished" content="2020-07-20T15:42:56&#43;08:00" />
+<meta itemprop="description" content="摘要 在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支持并发的读写。(对于并发"><meta itemprop="datePublished" content="2020-07-20T15:42:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-07-20T15:42:56&#43;08:00" />
-<meta itemprop="wordCount" content="2444">
-
-
-
-<meta itemprop="keywords" content="golang," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="2172">
+<meta itemprop="keywords" content="golang," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[分布式缓存 (二) | 确保一致性]"/>
-<meta name="twitter:description" content="摘要 &emsp;&emsp;在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支"/>
+<meta name="twitter:description" content="摘要 在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支持并发的读写。(对于并发"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/golang/%E6%89%8B%E5%86%99%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/"> golang/手写分布式缓存 </a>
             </div>
-          <span class="more-meta"> 约 2444 字 </span>
+          <span class="more-meta"> 约 2172 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,293 +135,138 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a></li>
-<li><a href="#主体结构-group">主体结构 Group</a>
-<ul>
-<li><a href="#回调getter">回调Getter</a></li>
-<li><a href="#group定义">Group定义</a></li>
-<li><a href="#group的get方法">Group的Get方法</a></li>
-</ul></li>
-<li><a href="#测试">测试</a></li>
-</ul>
+  <ul>
+    <li><a href="#回调getter">回调Getter</a></li>
+    <li><a href="#group定义">Group定义</a></li>
+    <li><a href="#group的get方法">Group的Get方法</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用<code>sync.RWMutex</code>封装LRU的几个方法，使之支持并发的读写。(<strong>对于并发编程的详细介绍详见[golang并发编程]</strong>)。在这之前，我们抽象了一个只读数据结构<code>ByteView</code> <strong>用来表示缓存值</strong>，是geec主要的数据结构之一。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// byteview.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geec</span>
-
-    <span class="c1">// ByteView holds an immutable view of bytes
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">ByteView</span> <span class="kd">struct</span> <span class="p">{</span>
-            <span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span>
-    <span class="p">}</span>
-
-    <span class="c1">// Len returns that view`s length
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">v</span> <span class="nx">ByteView</span><span class="p">)</span> <span class="nf">Len</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">b</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="c1">// ByteSlice returns a copy of data as a byte slice
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">v</span> <span class="nx">ByteView</span><span class="p">)</span> <span class="nf">ByteSlice</span><span class="p">()</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nf">cloneBytes</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">b</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="c1">// Implement String interface
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">v</span> <span class="nx">ByteView</span><span class="p">)</span> <span class="nf">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nb">string</span><span class="p">(</span><span class="nx">v</span><span class="p">.</span><span class="nx">b</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">cloneBytes</span><span class="p">(</span><span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
-            <span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">b</span><span class="p">))</span>
-            <span class="nb">copy</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nx">c</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+      <h1 id="摘要">摘要</h1>
+<p>  在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用<code>sync.RWMutex</code>封装LRU的几个方法，使之支持并发的读写。(<strong>对于并发编程的详细介绍详见[golang并发编程]</strong>)。在这之前，我们抽象了一个只读数据结构<code>ByteView</code> <strong>用来表示缓存值</strong>，是geec主要的数据结构之一。</p>
+<pre><code>    // byteview.go
+	package geec
+	
+	// ByteView holds an immutable view of bytes
+	type ByteView struct {
+            b []byte
+	}
+	
+	// Len returns that view`s length
+	func (v ByteView) Len() int {
+            return len(v.b)
+	}
+	
+	// ByteSlice returns a copy of data as a byte slice
+	func (v ByteView) ByteSlice() []byte {
+            return cloneBytes(v.b)
+	}
+	
+	// Implement String interface
+	func (v ByteView) String() string {
+            return string(v.b)
+	}
+	
+	func cloneBytes(b []byte) []byte {
+            c := make([]byte, len(b))
+            copy(c, b)
+            return c
+	}
+</code></pre>
 <ul>
 <li>ByteView只有一个数据成员，<code>b []byte</code>，b将会存储真实的缓存值。选择byte类型是为了能够支持任意的数据类型的存储，例如字符串、图片等。</li>
 <li>实现<code>Len() int</code>方法，我们在lru.Cache的实现中，要求被缓存对象必须实现Value接口，返回其所占的内存的大小。</li>
 <li><code>b</code>是只读的，使用<code>ByteSlice()</code>方法返回一个拷贝，防止缓存值被外部程序修改。</li>
 </ul>
-
-<p>&emsp;&emsp;接下来就可以为lru.Cache添加并发特性了。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// cache.go
-</span><span class="c1"></span>    <span class="kn">package</span> <span class="nx">geec</span>
-
-    <span class="kn">import</span> <span class="p">(</span>
-            <span class="s">&#34;geec/lru&#34;</span>
-            <span class="s">&#34;sync&#34;</span>
-    <span class="p">)</span>
-
-    <span class="kd">type</span> <span class="nx">cache</span> <span class="kd">struct</span> <span class="p">{</span>
-            <span class="nx">mu</span>         <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
-            <span class="nx">lru</span>        <span class="o">*</span><span class="nx">lru</span><span class="p">.</span><span class="nx">Cache</span>
-            <span class="nx">cacheBytes</span> <span class="kt">int64</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">cache</span><span class="p">)</span> <span class="nf">add</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="nx">ByteView</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-            <span class="k">defer</span> <span class="nx">c</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nx">c</span><span class="p">.</span><span class="nx">lru</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-                    <span class="nx">c</span><span class="p">.</span><span class="nx">lru</span> <span class="p">=</span> <span class="nx">lru</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">cacheBytes</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
-            <span class="p">}</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nx">lru</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="o">*</span><span class="nx">cache</span><span class="p">)</span> <span class="nf">get</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">value</span> <span class="nx">ByteView</span><span class="p">,</span> <span class="nx">ok</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">c</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-            <span class="k">defer</span> <span class="nx">c</span><span class="p">.</span><span class="nx">mu</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nx">c</span><span class="p">.</span><span class="nx">lru</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-                    <span class="k">return</span>
-            <span class="p">}</span>
-            <span class="k">if</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">lru</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span> <span class="nx">ok</span> <span class="p">{</span>
-                    <span class="k">return</span> <span class="nx">v</span><span class="p">.(</span><span class="nx">ByteView</span><span class="p">),</span> <span class="nx">ok</span>
-            <span class="p">}</span>
-            <span class="k">return</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<p>  接下来就可以为lru.Cache添加并发特性了。</p>
+<pre><code>    // cache.go
+	package geec
+	
+	import (
+            &quot;geec/lru&quot;
+            &quot;sync&quot;
+	)
+	
+	type cache struct {
+            mu         sync.Mutex
+            lru        *lru.Cache
+            cacheBytes int64
+	}
+	
+	func (c *cache) add(key string, value ByteView) {
+            c.mu.Lock()
+            defer c.mu.Unlock()
+            if c.lru == nil {
+                    c.lru = lru.New(c.cacheBytes, nil)
+            }
+            c.lru.Add(key, value)
+	}
+	
+	func (c *cache) get(key string) (value ByteView, ok bool) {
+            c.mu.Lock()
+            defer c.mu.Unlock()
+            if c.lru == nil {
+                    return
+            }
+            if v, ok := c.lru.Get(key); ok {
+                    return v.(ByteView), ok
+            }
+            return
+	}
+</code></pre>
 <ul>
 <li><code>cache.go</code>的实现非常简单，实例化lru，邓庄get和add方法，并添加互斥锁mu。</li>
 <li>在<code>add</code>方法中，判断了<code>c.lru</code>是否为nil，如果不等于nil再创建实例。这种方法称之为<strong>延迟初始化</strong><code>Lazy Initialization</code>，一个对象的延迟初始化意味着该对象的创建将会延迟至第一次使用该对象时。主要用于提高性能，并减少程序内存要求。</li>
 </ul>
-
 <h1 id="主体结构-group">主体结构 Group</h1>
-
-<p>&emsp;&emsp;Group是geec最核心的数据结构，负责与用户的交互，并且控制缓存值存储和获取的流程。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    接收key --&gt; 检查是否被缓存 ---是---&gt; 返回缓存值(1)
+<p>  Group是geec最核心的数据结构，负责与用户的交互，并且控制缓存值存储和获取的流程。</p>
+<pre><code>    接收key --&gt; 检查是否被缓存 ---是---&gt; 返回缓存值(1)
                     |否
                     |------&gt;是否应当从远程节点获取 ------&gt; 与远程节点交互 ---&gt; 返回缓存值(2)
                                 ｜否
-                                ｜------&gt; 调用`回调函数`，获取值并添加到缓存 --&gt; 返回缓存值(3)</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;接下来我们将实现流程(1)和(3)，远程交互的部分后续再实现。</p>
-
+                                ｜------&gt; 调用`回调函数`，获取值并添加到缓存 --&gt; 返回缓存值(3)
+</code></pre>
+<p>  接下来我们将实现流程(1)和(3)，远程交互的部分后续再实现。</p>
 <h2 id="回调getter">回调Getter</h2>
-
-<p>&emsp;&emsp;我们思考一下，如果缓存不存在，应该从数据源(文件、数据库等)获取数据并添加到缓存中。geec是否应该支持多种数据源的配置呢？不应该，一是数据源的种类太多，没办法实现；二是扩展性不好。<strong>如果从源头获取数据，应该是用户决定的事情，</strong>我们就把这件事交给用户好了。因此，我们设计了一个回调函数(callback)，在缓存不在时，调用这个函数，得到源数据。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="s">``</span><span class="err">`</span><span class="k">go</span>
-    <span class="kn">package</span> <span class="nx">geec</span>
-
-    <span class="c1">// Getter loads data for a key
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">Getter</span> <span class="kd">interface</span> <span class="p">{</span>
-            <span class="nf">Get</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
-    <span class="p">}</span>
-
-    <span class="c1">// GetterFunc impl Getter with a function
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">GetterFunc</span> <span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
-
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="nx">GetterFunc</span><span class="p">)</span> <span class="nf">Get</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="nf">f</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<p>  我们思考一下，如果缓存不存在，应该从数据源(文件、数据库等)获取数据并添加到缓存中。geec是否应该支持多种数据源的配置呢？不应该，一是数据源的种类太多，没办法实现；二是扩展性不好。**如果从源头获取数据，应该是用户决定的事情，**我们就把这件事交给用户好了。因此，我们设计了一个回调函数(callback)，在缓存不在时，调用这个函数，得到源数据。</p>
+<pre><code>    ```go
+	package geec
+	
+	// Getter loads data for a key
+	type Getter interface {
+            Get(key string) ([]byte, error)
+	}
+	
+	// GetterFunc impl Getter with a function
+	type GetterFunc func(key string) ([]byte, error)
+	
+	func (f GetterFunc) Get(key string) ([]byte, error) {
+            return f(key)
+	}
+</code></pre>
 <ul>
 <li>定义接口Getter和回调函数<code>Get(key string)([]byte, error)</code>,参数是key，返回值[]byte。</li>
 <li>GetterFunc函数型接口。</li>
 </ul>
-
 <h2 id="group定义">Group定义</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // Group is a cache namespace and associated data loaded spread over
-    type Group struct {
+<pre><code>    // Group is a cache namespace and associated data loaded spread over
+	type Group struct {
             name      string
             getter    Getter
             mainCache cache
-    }
-
-    var (
+	}
+	
+	var (
             mu     sync.RWMutex
             groups = make(map[string]*Group)
-    )
-
-    // NewGroup create a new instance of Group
-    func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
+	)
+	
+	// NewGroup create a new instance of Group
+	func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
             if getter == nil {
-                    panic(&#34;nil Getter&#34;)
+                    panic(&quot;nil Getter&quot;)
             }
             mu.Lock()
             defer mu.Unlock()
@@ -439,18 +277,17 @@
             }
             groups[name] = g
             return g
-    }
-
-    // GetGroup returns the named group previously created with NewGroup,
-    // oe nil if there`s no such group.
-    func GetGroup(name string) *Group {
+	}
+	
+	// GetGroup returns the named group previously created with NewGroup,
+	// oe nil if there`s no such group.
+	func GetGroup(name string) *Group {
             mu.RLock()
             defer mu.RUnlock()
             g := groups[name]
             return g
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <ul>
 <li>一个Group可以认为是一个缓存的命名空间，每个Group用拥有一个唯一的名称name。比如可以创建三个Group，缓存学生的成绩命名为scores，缓存学生信息的命名为info，缓存学生课程的命名为courses。</li>
 <li>第二个属性是<code>getter Getter</code>，即缓存未命中时获取源数据的回调。</li>
@@ -458,62 +295,26 @@
 <li>构建函数<code>NewGroup</code>实例化Group，并将group存储在全局变量groups中。</li>
 <li><code>GetGroup</code>用来特定名称的Group，这里使用了只读锁<code>RLock()</code>，因为不涉及任何冲突变量的写操作。</li>
 </ul>
-
 <h2 id="group的get方法">Group的Get方法</h2>
-
-<p>&emsp;&emsp;这是geec最为核心的方法。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    // Get value for a key from cache
-    func (g *Group) Get(key string) (ByteView, error) {
-            if key == &#34;&#34; {
-                    return ByteView{}, fmt.Errorf(&#34;key is required&#34;)
+<p>  这是geec最为核心的方法。</p>
+<pre><code>    // Get value for a key from cache
+	func (g *Group) Get(key string) (ByteView, error) {
+            if key == &quot;&quot; {
+                    return ByteView{}, fmt.Errorf(&quot;key is required&quot;)
             }
-
+	
             if v, ok := g.mainCache.get(key); ok {
-                    log.Println(&#34;[geec] hit&#34;)
+                    log.Println(&quot;[geec] hit&quot;)
                     return v, nil
             }
             return g.load(key)
-    }
-
-    func (g *Group) load(key string) (value ByteView, err error) {
+	}
+	
+	func (g *Group) load(key string) (value ByteView, err error) {
             return g.getLocally(key)
-    }
-
-    func (g *Group) getLocally(key string) (ByteView, error) {
+	}
+	
+	func (g *Group) getLocally(key string) (ByteView, error) {
             bytes, err := g.getter.Get(key)
             if err != nil {
                     return ByteView{}, err
@@ -521,155 +322,88 @@
             value := ByteView{b: cloneBytes(bytes)}
             g.populateCache(key, value)
             return value, nil
-    }
-
-    func (g *Group) populateCache(key string, value ByteView) {
+	}
+	
+	func (g *Group) populateCache(key string, value ByteView) {
             g.mainCache.add(key, value)
-    }</pre></td></tr></table>
-</div>
-</div>
+	}
+</code></pre>
 <ul>
 <li>Get方法实现了上述所说的流程(1)和(3)。</li>
 <li>流程(1): 从mainCache中查找缓存，如果存在则返回缓存值。</li>
 <li>流程(3): 缓存不存在，则调用load方法，load调用getLocally(分布式场景下会调用getFromPeer从其它节点获取)，getLocally调用用户回调函数<code>g.getter.Get()</code>获取源数据，并且将源数据添加到缓存mainCache中。</li>
 </ul>
-
 <h1 id="测试">测试</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    <span class="c1">// geec_test.go
-</span><span class="c1"></span>
-    <span class="kn">package</span> <span class="nx">geec</span>
-
-    <span class="kn">import</span> <span class="p">(</span>
-            <span class="s">&#34;fmt&#34;</span>
-            <span class="s">&#34;log&#34;</span>
-            <span class="s">&#34;testing&#34;</span>
-    <span class="p">)</span>
-
-    <span class="kd">var</span> <span class="nx">db</span> <span class="p">=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span>
-            <span class="s">&#34;Tom&#34;</span><span class="p">:</span>  <span class="s">&#34;630&#34;</span><span class="p">,</span>
-            <span class="s">&#34;Jack&#34;</span><span class="p">:</span> <span class="s">&#34;589&#34;</span><span class="p">,</span>
-            <span class="s">&#34;Sam&#34;</span><span class="p">:</span>  <span class="s">&#34;567&#34;</span><span class="p">,</span>
-    <span class="p">}</span>
-
-    <span class="kd">func</span> <span class="nf">TestGet</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">loadCounts</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">db</span><span class="p">))</span>
-            <span class="nx">g</span> <span class="o">:=</span> <span class="nf">NewGroup</span><span class="p">(</span><span class="s">&#34;scores&#34;</span><span class="p">,</span> <span class="mi">2</span><span class="o">&lt;&lt;</span><span class="mi">10</span><span class="p">,</span> <span class="nf">GetterFunc</span><span class="p">(</span>
-                    <span class="kd">func</span><span class="p">(</span><span class="nx">key</span> <span class="kt">string</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;[SlowDB] search key:&#34;</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">db</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span> <span class="nx">ok</span> <span class="p">{</span>
-                                    <span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">loadCounts</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
-                                            <span class="nx">loadCounts</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="p">=</span> <span class="mi">0</span>
-                                    <span class="p">}</span>
-                                    <span class="nx">loadCounts</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                                    <span class="k">return</span> <span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">v</span><span class="p">),</span> <span class="kc">nil</span>
-                            <span class="p">}</span>
-                            <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;%s not exist&#34;</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
-                    <span class="p">},</span>
-            <span class="p">))</span>
-
-            <span class="k">for</span> <span class="nx">k</span><span class="p">,</span> <span class="nx">v</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">db</span> <span class="p">{</span>
-                    <span class="k">if</span> <span class="nx">view</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">g</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">k</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">||</span> <span class="nx">view</span><span class="p">.</span><span class="nf">String</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">v</span> <span class="p">{</span>
-                            <span class="nx">t</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;failed to get value of Tom&#34;</span><span class="p">)</span>
-                    <span class="p">}</span>
-                    <span class="c1">// load from callback func
-</span><span class="c1"></span>                    <span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">g</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">k</span><span class="p">);</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="o">||</span> <span class="nx">loadCounts</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">&gt;</span> <span class="mi">1</span> <span class="p">{</span>
-                            <span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;cache %s miss&#34;</span><span class="p">,</span> <span class="nx">k</span><span class="p">)</span>
-                    <span class="p">}</span>
-                    <span class="c1">// cache hit
-</span><span class="c1"></span>            <span class="p">}</span>
-
-            <span class="k">if</span> <span class="nx">view</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">g</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;unknown&#34;</span><span class="p">);</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-                    <span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;the value of unknow should be empty, but %s got&#34;</span><span class="p">,</span> <span class="nx">view</span><span class="p">)</span>
-            <span class="p">}</span>
-    <span class="p">}</span></pre></td></tr></table>
-</div>
-</div>
+<pre><code>    // geec_test.go
+	
+	package geec
+	
+	import (
+            &quot;fmt&quot;
+            &quot;log&quot;
+            &quot;testing&quot;
+	)
+	
+	var db = map[string]string{
+            &quot;Tom&quot;:  &quot;630&quot;,
+            &quot;Jack&quot;: &quot;589&quot;,
+            &quot;Sam&quot;:  &quot;567&quot;,
+	}
+	
+	func TestGet(t *testing.T) {
+            loadCounts := make(map[string]int, len(db))
+            g := NewGroup(&quot;scores&quot;, 2&lt;&lt;10, GetterFunc(
+                    func(key string) ([]byte, error) {
+                            log.Println(&quot;[SlowDB] search key:&quot;, key)
+                            if v, ok := db[key]; ok {
+                                    if _, ok := loadCounts[key]; !ok {
+                                            loadCounts[key] = 0
+                                    }
+                                    loadCounts[key] += 1
+                                    return []byte(v), nil
+                            }
+                            return nil, fmt.Errorf(&quot;%s not exist&quot;, key)
+                    },
+            ))
+	
+            for k, v := range db {
+                    if view, err := g.Get(k); err != nil || view.String() != v {
+                            t.Fatal(&quot;failed to get value of Tom&quot;)
+                    }
+                    // load from callback func
+                    if _, err := g.Get(k); err != nil || loadCounts[k] &gt; 1 {
+                            t.Fatalf(&quot;cache %s miss&quot;, k)
+                    }
+                    // cache hit
+            }
+	
+            if view, err := g.Get(&quot;unknown&quot;); err == nil {
+                    t.Fatalf(&quot;the value of unknow should be empty, but %s got&quot;, view)
+            }
+	}
+</code></pre>
 <ul>
 <li>在这个测试用例中，我们主要测试了2中情况</li>
+</ul>
+<ol>
 <li>在缓存为空的情况下，能够通过回调函数获取到源数据。</li>
 <li>在缓存已经存在的情况下，是否直接从缓存中获取，为了实现这一点，使用loadCounts统计某个键调用回调函数的次数，如果次数大于1，则表示调用了对此回调函数，没有缓存。</li>
-</ul>
-
+</ol>
 <blockquote>
 <p>测试结果</p>
 </blockquote>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ go test -run TestGet
-    2020/07/24 14:59:52 [SlowDB] search key: Tom
-    2020/07/24 14:59:52 [geec] hit
-    2020/07/24 14:59:52 [SlowDB] search key: Jack
-    2020/07/24 14:59:52 [geec] hit
-    2020/07/24 14:59:52 [SlowDB] search key: Sam
-    2020/07/24 14:59:52 [geec] hit
-    2020/07/24 14:59:52 [SlowDB] search key: unknown
-    PASS
-    ok      geec    0.148s</pre></td></tr></table>
-</div>
-</div>
+<pre><code>    $ go test -run TestGet
+	2020/07/24 14:59:52 [SlowDB] search key: Tom
+	2020/07/24 14:59:52 [geec] hit
+	2020/07/24 14:59:52 [SlowDB] search key: Jack
+	2020/07/24 14:59:52 [geec] hit
+	2020/07/24 14:59:52 [SlowDB] search key: Sam
+	2020/07/24 14:59:52 [geec] hit
+	2020/07/24 14:59:52 [SlowDB] search key: unknown
+	PASS
+	ok      geec    0.148s
+</code></pre>
+
     </div>
 
     <div class="post-copyright">

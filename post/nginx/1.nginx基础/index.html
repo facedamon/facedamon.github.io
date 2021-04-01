@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="准备环境 &amp;emsp;&amp;emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在l" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="准备环境 首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用selec" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/nginx/1.nginx%E5%9F%BA%E7%A1%80/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[nginx (一) | nginx准备]" />
-<meta property="og:description" content="准备环境 &emsp;&emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在l" />
+<meta property="og:description" content="准备环境 首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用selec" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/nginx/1.nginx%E5%9F%BA%E7%A1%80/" />
-<meta property="article:published_time" content="2020-04-16T14:23:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-04-16T14:23:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/nginx/1.nginx%E5%9F%BA%E7%A1%80/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-04-16T14:23:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-04-16T14:23:56&#43;08:00" />
 
 <meta itemprop="name" content="[nginx (一) | nginx准备]">
-<meta itemprop="description" content="准备环境 &emsp;&emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在l">
-
-
-<meta itemprop="datePublished" content="2020-04-16T14:23:56&#43;08:00" />
+<meta itemprop="description" content="准备环境 首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用selec"><meta itemprop="datePublished" content="2020-04-16T14:23:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-04-16T14:23:56&#43;08:00" />
-<meta itemprop="wordCount" content="2724">
-
-
-
-<meta itemprop="keywords" content="nginx,未完待续," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="2625">
+<meta itemprop="keywords" content="nginx,未完待续," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[nginx (一) | nginx准备]"/>
-<meta name="twitter:description" content="准备环境 &emsp;&emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在l"/>
+<meta name="twitter:description" content="准备环境 首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用selec"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/nginx/"> nginx </a>
             </div>
-          <span class="more-meta"> 约 2724 字 </span>
+          <span class="more-meta"> 约 2625 字 </span>
           <span class="more-meta"> 预计阅读 6 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,407 +135,307 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#准备环境">准备环境</a></li>
-<li><a href="#必备软件">必备软件</a></li>
-<li><a href="#了解磁盘目录">了解磁盘目录</a></li>
-<li><a href="#获取源码">获取源码</a></li>
-<li><a href="#configure详解">configure详解</a>
-<ul>
-<li><a href="#模块参数">模块参数</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#准备环境">准备环境</a></li>
+    <li><a href="#必备软件">必备软件</a></li>
+    <li><a href="#了解磁盘目录">了解磁盘目录</a></li>
+    <li><a href="#获取源码">获取源码</a></li>
+    <li><a href="#configure详解">configure详解</a>
+      <ul>
+        <li><a href="#模块参数">模块参数</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h2 id="准备环境">准备环境</h2>
-
-<p>&emsp;&emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用select或poll来解决事件的多路复用，是无法解决高并发压力问题的。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ uname -a
-    Linux VM_0_8_centos 3.10.0-1062.9.1.el7.x86_64 #1 SMP Fri Dec 6 15:49:49 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux</pre></td></tr></table>
-</div>
-</div>
+      <h2 id="准备环境">准备环境</h2>
+<p>  首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用select或poll来解决事件的多路复用，是无法解决高并发压力问题的。</p>
+<pre><code>    $ uname -a
+	Linux VM_0_8_centos 3.10.0-1062.9.1.el7.x86_64 #1 SMP Fri Dec 6 15:49:49 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
 <h2 id="必备软件">必备软件</h2>
-
 <ul>
 <li>GCC</li>
 </ul>
-
-<p>&emsp;&emsp;GCC可用来编译C语言程序。我们可以使用yum或者采用tar.gz源码的方式安装，由于我们的侧重点是Nginx，所以在此我们采用yum安装</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ sudo yum install -y gcc</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;如果想使用C++来编写Nginx HTTP模块，这时就需要用到G++编译器了。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ sudo yum install -y gcc-c++</pre></td></tr></table>
-</div>
-</div>
+<p>  GCC可用来编译C语言程序。我们可以使用yum或者采用tar.gz源码的方式安装，由于我们的侧重点是Nginx，所以在此我们采用yum安装</p>
+<pre><code>    $ sudo yum install -y gcc
+</code></pre>
+<p>  如果想使用C++来编写Nginx HTTP模块，这时就需要用到G++编译器了。</p>
+<pre><code>    $ sudo yum install -y gcc-c++
+</code></pre>
 <ul>
 <li>PCRE</li>
 </ul>
-
-<p>&emsp;&emsp;PCRE(Perl Compatible Regular Expressions)是由Philip Hazel开发的函数库，目前为很多软件所使用，该库支持正则表达式。它由RegEx演化而来，实际上，Perl正则也是源自Henry Spencer写的RegEX。</p>
-
-<p>&emsp;&emsp;如果我们在配置文件nginx.conf中使用了正则表达式，那么我们在编译Nginx时就必须把Pcre库编译进Nginx。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ sudo yum install -y pcre pcre-devel</pre></td></tr></table>
-</div>
-</div>
+<p>  PCRE(Perl Compatible Regular Expressions)是由Philip Hazel开发的函数库，目前为很多软件所使用，该库支持正则表达式。它由RegEx演化而来，实际上，Perl正则也是源自Henry Spencer写的RegEX。</p>
+<p>  如果我们在配置文件nginx.conf中使用了正则表达式，那么我们在编译Nginx时就必须把Pcre库编译进Nginx。</p>
+<pre><code>    $ sudo yum install -y pcre pcre-devel
+</code></pre>
 <ul>
 <li>zlib</li>
 </ul>
-
-<p>&emsp;&emsp;zlib库用于对HTTP包的内容做gzip格式的压缩，如果我们在nginx.conf里配置了gzip on，并指定对于某些类型(content-type)的HTTP响应使用gzip来进行压缩以减少网络传输量，那么，在编译时就必须把zlib编译进Nginx</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ sudo yum install -y zlib zlib-devel</pre></td></tr></table>
-</div>
-</div>
+<p>  zlib库用于对HTTP包的内容做gzip格式的压缩，如果我们在nginx.conf里配置了gzip on，并指定对于某些类型(content-type)的HTTP响应使用gzip来进行压缩以减少网络传输量，那么，在编译时就必须把zlib编译进Nginx</p>
+<pre><code>    $ sudo yum install -y zlib zlib-devel
+</code></pre>
 <ul>
 <li>OpenSSL</li>
 </ul>
-
-<p>&emsp;&emsp;如果我们的服务器需要在更安全的SSL协议上传输HTTP，那么就需要拥有OpenSSL。另外，如果我们想要使用MD5、SHA1等散列函数，那么也需要安装它。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ sudo yum install -y openssl openssl-devel</pre></td></tr></table>
-</div>
-</div>
-<hr />
-
-<p>&emsp;&emsp;上面所列的4个库致使完成Web服务器最基本功能所必需的。Nginx是高度自由化的web服务器，它的功能是由需要模块来支持的。而这些模块可根据我们的使用需求来定制，如果某些模块不需要使用则完全不必理会它。同样，如果使用了某个模块，而这个模块使用了一些类似zlib或者OpenSSL等的第三方库，那么就必须先安装这些软件。</p>
-
+<p>  如果我们的服务器需要在更安全的SSL协议上传输HTTP，那么就需要拥有OpenSSL。另外，如果我们想要使用MD5、SHA1等散列函数，那么也需要安装它。</p>
+<pre><code>    $ sudo yum install -y openssl openssl-devel
+</code></pre>
+<hr>
+<p>  上面所列的4个库致使完成Web服务器最基本功能所必需的。Nginx是高度自由化的web服务器，它的功能是由需要模块来支持的。而这些模块可根据我们的使用需求来定制，如果某些模块不需要使用则完全不必理会它。同样，如果使用了某个模块，而这个模块使用了一些类似zlib或者OpenSSL等的第三方库，那么就必须先安装这些软件。</p>
 <h2 id="了解磁盘目录">了解磁盘目录</h2>
-
 <ul>
 <li>Nginx源码存放目录 -&gt; 一般存放在/usr/local/src</li>
 <li>Nginx编译阶段产生的中间文件存放目录 -&gt; /usr/local/src/nginx/objs</li>
 <li>部署目录 -&gt; /usr/local/nginx</li>
 <li>日志目录 -&gt; /usr/local/nginx/logs</li>
-<li>更多目录更查看[configure参数详解]()</li>
+<li>更多目录更查看<a href="">configure参数详解</a></li>
 </ul>
-
 <h2 id="获取源码">获取源码</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ sudo mkdir /usr/local/src
-    $ cd /usr/local/src
-    $ sudo wget http://nginx.org/download/nginx-1.0.14tar.gz
-    $ sudo tar -zxvf nginx-1.0.14.tar.gz</pre></td></tr></table>
-</div>
-</div>
+<pre><code>    $ sudo mkdir /usr/local/src
+	$ cd /usr/local/src
+	$ sudo wget http://nginx.org/download/nginx-1.0.14tar.gz
+	$ sudo tar -zxvf nginx-1.0.14.tar.gz
+</code></pre>
 <h2 id="configure详解">configure详解</h2>
-
 <ul>
 <li>configure支持的路径相关参数</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="left">参数名称</th>
-<th align="center">意义</th>
-<th align="center">默认值</th>
+<th style="text-align:left">参数名称</th>
+<th style="text-align:center">意义</th>
+<th style="text-align:center">默认值</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="left">--prefix=PATH</td>
-<td align="center">Nginx安装部署后的根目录</td>
-<td align="center">默认为/usr/local/nginx.注意:这个目标的设置会影响其它参数中的相对目录。例如，如果设置了&ndash;sbin-path=sbin/nginx,那么实际上可执行文件会被放到/usr/local/nginx/sbin/nginx</td>
+<td style="text-align:left">--prefix=PATH</td>
+<td style="text-align:center">Nginx安装部署后的根目录</td>
+<td style="text-align:center">默认为/usr/local/nginx.注意:这个目标的设置会影响其它参数中的相对目录。例如，如果设置了&ndash;sbin-path=sbin/nginx,那么实际上可执行文件会被放到/usr/local/nginx/sbin/nginx</td>
 </tr>
-
 <tr>
-<td align="left">--sbin-path=PATH</td>
-<td align="center">可执行文件的放置路径</td>
-<td align="center">&lt;prefix&gt;/sbin/nginx</td>
+<td style="text-align:left">--sbin-path=PATH</td>
+<td style="text-align:center">可执行文件的放置路径</td>
+<td style="text-align:center">&lt;prefix&gt;/sbin/nginx</td>
 </tr>
-
 <tr>
-<td align="left">--conf-path=PATH</td>
-<td align="center">配置文件的放置路径</td>
-<td align="center">&lt;prefix&gt;/conf/nginx.conf</td>
+<td style="text-align:left">--conf-path=PATH</td>
+<td style="text-align:center">配置文件的放置路径</td>
+<td style="text-align:center">&lt;prefix&gt;/conf/nginx.conf</td>
 </tr>
-
 <tr>
-<td align="left">--error-path=PATH</td>
-<td align="center">error日志的放置路径,error日志用于定位问题，可输出多种级别(包括debug调试级别)的日志.它的配置非常灵活，可以在nginx.conf里配置为不同请求的日志并输出到不同的log文件中.这里是默认的nginx核心日志路径</td>
-<td align="center">&lt;prefix&gt;/logs/error.log</td>
+<td style="text-align:left">--error-path=PATH</td>
+<td style="text-align:center">error日志的放置路径,error日志用于定位问题，可输出多种级别(包括debug调试级别)的日志.它的配置非常灵活，可以在nginx.conf里配置为不同请求的日志并输出到不同的log文件中.这里是默认的nginx核心日志路径</td>
+<td style="text-align:center">&lt;prefix&gt;/logs/error.log</td>
 </tr>
-
 <tr>
-<td align="left">--pid-path=PATH</td>
-<td align="center">pid文件的存量路径，这个文件里仅以ASCII码存放这Nginx master的进程ID。有了这个进程ID，在使用命令行(eg:nginx -s reload)通过读取master进程ID向master进程发送信号时，才能对运行中的Ngin服务产生作用</td>
-<td align="center">&lt;prefix&gt;/logs/nginx.pid</td>
+<td style="text-align:left">--pid-path=PATH</td>
+<td style="text-align:center">pid文件的存量路径，这个文件里仅以ASCII码存放这Nginx master的进程ID。有了这个进程ID，在使用命令行(eg:nginx -s reload)通过读取master进程ID向master进程发送信号时，才能对运行中的Ngin服务产生作用</td>
+<td style="text-align:center">&lt;prefix&gt;/logs/nginx.pid</td>
 </tr>
-
 <tr>
-<td align="left">--lock-path=PATH</td>
-<td align="center">lock文件的放置路径</td>
-<td align="center">&lt;prefix&gt;/logs/nginx.lock</td>
+<td style="text-align:left">--lock-path=PATH</td>
+<td style="text-align:center">lock文件的放置路径</td>
+<td style="text-align:center">&lt;prefix&gt;/logs/nginx.lock</td>
 </tr>
-
 <tr>
-<td align="left">--builddir=DIR</td>
-<td align="center">configure执行时与编译期间产生的临时文件放置的目录，包括产生的MakeFile,C源文件，目标文件，可执行文件</td>
-<td align="center">&lt;nginx source path&gt;/objs</td>
+<td style="text-align:left">--builddir=DIR</td>
+<td style="text-align:center">configure执行时与编译期间产生的临时文件放置的目录，包括产生的MakeFile,C源文件，目标文件，可执行文件</td>
+<td style="text-align:center">&lt;nginx source path&gt;/objs</td>
 </tr>
-
 <tr>
-<td align="left">--with-perl=PATH</td>
-<td align="center">perl binary放置路径,如果配置的nginx会执行Perl脚本，那么就必须要设置此路径</td>
-<td align="center">无</td>
+<td style="text-align:left">--with-perl=PATH</td>
+<td style="text-align:center">perl binary放置路径,如果配置的nginx会执行Perl脚本，那么就必须要设置此路径</td>
+<td style="text-align:center">无</td>
 </tr>
-
 <tr>
-<td align="left">--http-log-path=PATH</td>
-<td align="center">access日志放置位置，每一个HTTP请求在结束时都会记录的访问日志</td>
-<td align="center">&lt;prefix&gt;/logs/access.log</td>
+<td style="text-align:left">--http-log-path=PATH</td>
+<td style="text-align:center">access日志放置位置，每一个HTTP请求在结束时都会记录的访问日志</td>
+<td style="text-align:center">&lt;prefix&gt;/logs/access.log</td>
 </tr>
-
 <tr>
-<td align="left">--http-client-body-temp-path=PATH</td>
-<td align="center">处理HTTP请求时如果请求的包体需要暂时存放到临时磁盘文件中，则把这样的临时文件放置到该路径下</td>
-<td align="center">&lt;prefix&gt;/client_body_temp</td>
+<td style="text-align:left">--http-client-body-temp-path=PATH</td>
+<td style="text-align:center">处理HTTP请求时如果请求的包体需要暂时存放到临时磁盘文件中，则把这样的临时文件放置到该路径下</td>
+<td style="text-align:center">&lt;prefix&gt;/client_body_temp</td>
 </tr>
-
 <tr>
-<td align="left">--http-proxy-temp-path=PATH</td>
-<td align="center">Nginx作为HTTP反向代理服务器时，上游服务器产生的HTTP包体在需要临时存放在磁盘文件时，这样的临时文件将存放到该路径下</td>
-<td align="center">&lt;prefix&gt;/proxy_temp</td>
+<td style="text-align:left">--http-proxy-temp-path=PATH</td>
+<td style="text-align:center">Nginx作为HTTP反向代理服务器时，上游服务器产生的HTTP包体在需要临时存放在磁盘文件时，这样的临时文件将存放到该路径下</td>
+<td style="text-align:center">&lt;prefix&gt;/proxy_temp</td>
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>configure支持的编译相关参数</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="left">编译参数</th>
-<th align="center">意义</th>
+<th style="text-align:left">编译参数</th>
+<th style="text-align:center">意义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="left">--with-cc=PATH</td>
-<td align="center">C编译器的路径</td>
+<td style="text-align:left">--with-cc=PATH</td>
+<td style="text-align:center">C编译器的路径</td>
 </tr>
-
 <tr>
-<td align="left">--with-cpp=PATH</td>
-<td align="center">C与编译器的路径</td>
+<td style="text-align:left">--with-cpp=PATH</td>
+<td style="text-align:center">C与编译器的路径</td>
 </tr>
-
 <tr>
-<td align="left">--with-cc-opt=OPTIONS</td>
-<td align="center">如果希望在Nginx编译期间指定加入一些编译选项，如指定宏或者使用-I加入某些需要包含的目录，这时可以使用该参数达成目的</td>
+<td style="text-align:left">--with-cc-opt=OPTIONS</td>
+<td style="text-align:center">如果希望在Nginx编译期间指定加入一些编译选项，如指定宏或者使用-I加入某些需要包含的目录，这时可以使用该参数达成目的</td>
 </tr>
-
 <tr>
-<td align="left">--with-Id-opt=OPTIONS</td>
-<td align="center">最终的二进制可执行文件是由编译后生成的目标文件与一些第三方库链接生成的，在执行链接操作时可能会需要指定链接参数，--with-Id-opt就是用于加入链接时的参数，例如，如果我们希望将某个库链接到Nginx中，需要在这里加入--with-Id-opt=libraryName-LibraryPath,其中libraryName是目标库的名称，librarypath则是目标库所在路径</td>
+<td style="text-align:left">--with-Id-opt=OPTIONS</td>
+<td style="text-align:center">最终的二进制可执行文件是由编译后生成的目标文件与一些第三方库链接生成的，在执行链接操作时可能会需要指定链接参数，--with-Id-opt就是用于加入链接时的参数，例如，如果我们希望将某个库链接到Nginx中，需要在这里加入--with-Id-opt=libraryName-LibraryPath,其中libraryName是目标库的名称，librarypath则是目标库所在路径</td>
 </tr>
-
 <tr>
-<td align="left">--with-cpu-opt=CPU</td>
-<td align="center">指定CPU处理器架构，只能从以下取值中选择：pentium, pentiumpro, pentium3, pentium4, athlon, opteron, sparc32, sparc64, ppc64</td>
+<td style="text-align:left">--with-cpu-opt=CPU</td>
+<td style="text-align:center">指定CPU处理器架构，只能从以下取值中选择：pentium, pentiumpro, pentium3, pentium4, athlon, opteron, sparc32, sparc64, ppc64</td>
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>PCRE参数设置</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="left">PCRE库的设置参数</th>
-<th align="center">意义</th>
+<th style="text-align:left">PCRE库的设置参数</th>
+<th style="text-align:center">意义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="left">--without-pcre</td>
-<td align="center">如果确认Nginx不用解析正则，nginx.conf配置文件中不会出现正则，那么可以使用这个参数</td>
+<td style="text-align:left">--without-pcre</td>
+<td style="text-align:center">如果确认Nginx不用解析正则，nginx.conf配置文件中不会出现正则，那么可以使用这个参数</td>
 </tr>
-
 <tr>
-<td align="left">--with-pcre</td>
-<td align="center">强制使用PCRE库</td>
+<td style="text-align:left">--with-pcre</td>
+<td style="text-align:center">强制使用PCRE库</td>
 </tr>
-
 <tr>
-<td align="left">--with-pcre=DIR</td>
-<td align="center">指定PCRE库的源码位置，在编译Nginx时会进入该目录编译PCRE源码</td>
+<td style="text-align:left">--with-pcre=DIR</td>
+<td style="text-align:center">指定PCRE库的源码位置，在编译Nginx时会进入该目录编译PCRE源码</td>
 </tr>
-
 <tr>
-<td align="left">--with-pcre-opt=OPTIONS</td>
-<td align="center">编译PCRE源码时希望加入的编译选项</td>
+<td style="text-align:left">--with-pcre-opt=OPTIONS</td>
+<td style="text-align:center">编译PCRE源码时希望加入的编译选项</td>
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>OpenSSL参数设置</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="left">OpenSSL库的设置参数</th>
-<th align="center">意义</th>
+<th style="text-align:left">OpenSSL库的设置参数</th>
+<th style="text-align:center">意义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="left">--with-openssl=DIR</td>
-<td align="center">指定OpenSSL库的源码位置，在编译Nginx时会进入该目录编译OpenSSL源码。如果要使用HTTPS，则必须使用OpenSSL</td>
+<td style="text-align:left">--with-openssl=DIR</td>
+<td style="text-align:center">指定OpenSSL库的源码位置，在编译Nginx时会进入该目录编译OpenSSL源码。如果要使用HTTPS，则必须使用OpenSSL</td>
 </tr>
-
 <tr>
-<td align="left">--with-openssl-opt=OPTIONS</td>
-<td align="center">编译OpenSSL源码时希望加入的编译选项</td>
+<td style="text-align:left">--with-openssl-opt=OPTIONS</td>
+<td style="text-align:center">编译OpenSSL源码时希望加入的编译选项</td>
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>散列函数库设置参数</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="left">散列函数库</th>
-<th align="center">意义</th>
+<th style="text-align:left">散列函数库</th>
+<th style="text-align:center">意义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="left">--with-MD5=DIR</td>
-<td align="center">指定MD5库源码位置，在编译时Nginx会进入该目录编译MD5源码。注意：Nginx源码内部已经有了MD5的算法实现，如果没有特殊需求，那么完全可以使用Nginx自身实现的MD5算法</td>
+<td style="text-align:left">--with-MD5=DIR</td>
+<td style="text-align:center">指定MD5库源码位置，在编译时Nginx会进入该目录编译MD5源码。注意：Nginx源码内部已经有了MD5的算法实现，如果没有特殊需求，那么完全可以使用Nginx自身实现的MD5算法</td>
 </tr>
-
 <tr>
-<td align="left">--with-MD5-opt=OPTIONS</td>
-<td align="center">编译MD5源码时希望加入的编译选项</td>
+<td style="text-align:left">--with-MD5-opt=OPTIONS</td>
+<td style="text-align:center">编译MD5源码时希望加入的编译选项</td>
 </tr>
-
 <tr>
-<td align="left">--with-MD5-asm</td>
-<td align="center">使用MD5的汇编源码</td>
+<td style="text-align:left">--with-MD5-asm</td>
+<td style="text-align:center">使用MD5的汇编源码</td>
 </tr>
-
 <tr>
-<td align="left">--with-SHA1=DIR</td>
-<td align="center">指定SHA1库源码位置，在编译时Nginx会进入该目录编译SHA1源码。注意：OpenSSL中已经有了SHA1算法的实现，如果已经安装了OpenSSL那么完全可以使用OpenSSL实现的SHA1算法</td>
+<td style="text-align:left">--with-SHA1=DIR</td>
+<td style="text-align:center">指定SHA1库源码位置，在编译时Nginx会进入该目录编译SHA1源码。注意：OpenSSL中已经有了SHA1算法的实现，如果已经安装了OpenSSL那么完全可以使用OpenSSL实现的SHA1算法</td>
 </tr>
-
 <tr>
-<td align="left">--with-SHA1-opt=OPTIONS</td>
-<td align="center">编译SHA1源码时希望加入的编译选项</td>
+<td style="text-align:left">--with-SHA1-opt=OPTIONS</td>
+<td style="text-align:center">编译SHA1源码时希望加入的编译选项</td>
 </tr>
-
 <tr>
-<td align="left">--with-SHA-asm</td>
-<td align="center">使用SHA1的汇编源码</td>
+<td style="text-align:left">--with-SHA-asm</td>
+<td style="text-align:center">使用SHA1的汇编源码</td>
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>zlib库设置参数</li>
 </ul>
-
 <table>
 <thead>
 <tr>
-<th align="left">zlib库参数</th>
-<th align="center">意义</th>
+<th style="text-align:left">zlib库参数</th>
+<th style="text-align:center">意义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td align="left">--with-zlib=DIR</td>
-<td align="center">指定zlib库的源码位置，在编译Nginx时会进入该目录编译zlib源码，如果使用了gzip压缩功能，则需要zlib库的支持</td>
+<td style="text-align:left">--with-zlib=DIR</td>
+<td style="text-align:center">指定zlib库的源码位置，在编译Nginx时会进入该目录编译zlib源码，如果使用了gzip压缩功能，则需要zlib库的支持</td>
 </tr>
-
 <tr>
-<td align="left">--with-zlib-opt=OPTIONS</td>
-<td align="center">编译zlib源码时希望加入的编译选项</td>
+<td style="text-align:left">--with-zlib-opt=OPTIONS</td>
+<td style="text-align:center">编译zlib源码时希望加入的编译选项</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="模块参数">模块参数</h3>
-
 <ul>
-<li><p>事件模块
-<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_16.jpeg" alt="avatar" /></p></li>
-
-<li><p>默认编译进入Nginx的HTTP模块
-<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_17.jpeg" alt="avatar" /></p></li>
-
-<li><p>默认不编译进入Nginx的HTTP模块
-<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_18.jpeg" alt="avatar" /></p></li>
+<li>
+<p>事件模块
+<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_16.jpeg" alt="avatar"></p>
+</li>
+<li>
+<p>默认编译进入Nginx的HTTP模块
+<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_17.jpeg" alt="avatar"></p>
+</li>
+<li>
+<p>默认不编译进入Nginx的HTTP模块
+<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_18.jpeg" alt="avatar"></p>
+</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_19.jpeg" alt="avatar" /></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_19.jpeg" alt="avatar"></p>
 <ul>
-<li><p>邮件代理服务器mail模块
-<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_20.jpeg" alt="avatar" /></p></li>
-
-<li><p>其它模块
-<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_21.jpeg" alt="avatar" /></p></li>
+<li>
+<p>邮件代理服务器mail模块
+<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_20.jpeg" alt="avatar"></p>
+</li>
+<li>
+<p>其它模块
+<img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/nginx/epub_811745_21.jpeg" alt="avatar"></p>
+</li>
 </ul>
 
     </div>

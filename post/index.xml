@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on FaceDamon`s Blog</title>
@@ -6,10 +6,69 @@
     <description>Recent content in Posts on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 21 Jan 2021 18:42:56 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 01 Apr 2021 14:25:56 +0800</lastBuildDate><atom:link href="http://facedamon.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[设计模式 | 结构 | 装饰器模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 01 Apr 2021 14:25:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 装饰器模式（Decorator Pattern）允许向一个现有的对象添加新的功能，同时又不改变其结构。这种类型的设计模式属于结构型模式，它</description>
+    </item>
     
-	<atom:link href="http://facedamon.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[设计模式 | 结构 | 享元模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 22 Mar 2021 15:21:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 享元模式（Flyweight Pattern）主要用于减少创建对象的数量，以减少内存占用和提高性能。这种类型的设计模式属于结构型模式，它提</description>
+    </item>
     
+    <item>
+      <title>[设计模式 | 外观 | 模板模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 22 Mar 2021 15:06:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以</description>
+    </item>
+    
+    <item>
+      <title>[设计模式 | 结构 | 外观模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 20 Mar 2021 15:35:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。这种类型的设计模式属于结构型模式，</description>
+    </item>
+    
+    <item>
+      <title>[mybatis源码(二) | 核心组件]</title>
+      <link>http://facedamon.github.io/post/java/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</link>
+      <pubDate>Sat, 20 Mar 2021 15:01:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/mybatis/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6/</guid>
+      <description>摘要 SqlSession是MyBatis提供的面向用户的操作数据库API。那么MyBatis底层是如何工作的呢？为了解开MyBatis的神秘</description>
+    </item>
+    
+    <item>
+      <title>[设计模式 | 结构 | 代理模式]</title>
+      <link>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 20 Mar 2021 11:11:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/design-patterns/%E7%BB%93%E6%9E%84/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</guid>
+      <description>摘要 在代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。在代理模式中，我们创建具有现有对象</description>
+    </item>
+    
+    <item>
+      <title>[mybatis源码(一) | 工具类]</title>
+      <link>http://facedamon.github.io/post/java/mybatis/%E5%B7%A5%E5%85%B7%E7%B1%BB/</link>
+      <pubDate>Fri, 19 Mar 2021 11:42:56 +0800</pubDate>
+      
+      <guid>http://facedamon.github.io/post/java/mybatis/%E5%B7%A5%E5%85%B7%E7%B1%BB/</guid>
+      <description>工具类 SQL构造器 为了解决代码中sql拼接问题，mybatis中提供了一个sql工具类。使用这个工具类，我们可以很方便地在Java代码中动态</description>
+    </item>
     
     <item>
       <title>[Java | 生产消费问题]</title>
@@ -17,7 +76,7 @@
       <pubDate>Thu, 21 Jan 2021 18:42:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/thread/4.producer/</guid>
-      <description>模型 &amp;emsp;&amp;emsp;生产/消费者问题是个非常典型的多线程问题，涉及到的对象包括“生产者”、“消费者”、“仓库”和“产品”。他们之间的</description>
+      <description>模型 生产/消费者问题是个非常典型的多线程问题，涉及到的对象包括“生产者”、“消费者”、“仓库”和“产品”。他们之间的关系如下： 生产者仅仅在仓</description>
     </item>
     
     <item>
@@ -26,7 +85,7 @@
       <pubDate>Thu, 21 Jan 2021 15:50:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/thread/3.wait/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作</description>
+      <description>摘要 在Object.java中，定义了wait(), notify()和notifyAll()等接口。wait()的作用是让当前线程进入等待状</description>
     </item>
     
     <item>
@@ -35,7 +94,7 @@
       <pubDate>Wed, 20 Jan 2021 21:40:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/thread/2.synchronized/</guid>
-      <description>原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 &amp;emsp;&amp;emsp;当我们调用某个对象的synch</description>
+      <description>原理 在Java中，每一个对象有且仅有一个同步锁。这也意味着，同步锁是依赖于对象而存在的 当我们调用某个对象的synchronized方法时，就</description>
     </item>
     
     <item>
@@ -44,7 +103,7 @@
       <pubDate>Wed, 20 Jan 2021 20:08:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/thread/1.gainian/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;多线程是Java中不可避免的一个重要主体。从本章开始，我们将展开对多线程的学习。接下来的内容，是对“JDK中新增</description>
+      <description>摘要 多线程是Java中不可避免的一个重要主体。从本章开始，我们将展开对多线程的学习。接下来的内容，是对“JDK中新增JUC包”之前的Java</description>
     </item>
     
     <item>
@@ -53,7 +112,7 @@
       <pubDate>Tue, 19 Jan 2021 17:40:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/base/4.abstract-interface/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;抽象类与接口是java语言中对抽象概念进行定义的两种机制，正是由于他们的存在才赋予java强大的面向对象的能力。</description>
+      <description>摘要 抽象类与接口是java语言中对抽象概念进行定义的两种机制，正是由于他们的存在才赋予java强大的面向对象的能力。他们两者之间对抽象概念的</description>
     </item>
     
     <item>
@@ -62,7 +121,7 @@
       <pubDate>Tue, 19 Jan 2021 15:50:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/base/3.duotai/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;面向对象编程有三大特性：封装、继承、多态。 &amp;emsp;&amp;emsp;封装隐藏了类的内部实现机制，可以在不影响使用的</description>
+      <description>摘要 面向对象编程有三大特性：封装、继承、多态。 封装隐藏了类的内部实现机制，可以在不影响使用的情况下改变类的内部结构，同时也保护了数据。对外界</description>
     </item>
     
     <item>
@@ -71,7 +130,7 @@
       <pubDate>Sun, 17 Jan 2021 17:54:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/base/2.extends/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;在《Thinnk in Java》中有这样一句话：复用代码是Java众多引人注目的功能之一。但是要想成为极具革命性的语</description>
+      <description>摘要 在《Thinnk in Java》中有这样一句话：复用代码是Java众多引人注目的功能之一。但是要想成为极具革命性的语言，仅仅能够复制代码并对</description>
     </item>
     
     <item>
@@ -80,7 +139,7 @@
       <pubDate>Sun, 17 Jan 2021 17:04:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/base/1.fengzhuang/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;封装从字面上来理解就是包装的意思，就是隐藏信息，是指利用抽象数据类型将数据和基于数据的操作封装在一起，使其构成一</description>
+      <description>摘要 封装从字面上来理解就是包装的意思，就是隐藏信息，是指利用抽象数据类型将数据和基于数据的操作封装在一起，使其构成一个不可分割的独立实体，数</description>
     </item>
     
     <item>
@@ -89,7 +148,7 @@
       <pubDate>Wed, 13 Jan 2021 20:00:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/sort/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 &amp;e</description>
+      <description>摘要 排序是计算机内经常进行的一种操作，其目的是将一组“无序”的记录序列调整为“有序”记录。分内部排序和外部排序。 若整个排序过程不需要访问外存</description>
     </item>
     
     <item>
@@ -98,7 +157,7 @@
       <pubDate>Wed, 13 Jan 2021 15:54:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/find/</guid>
-      <description>转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 &amp;emsp;&amp;emsp;查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的</description>
+      <description>转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介</description>
     </item>
     
     <item>
@@ -107,7 +166,7 @@
       <pubDate>Mon, 11 Jan 2021 16:26:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/treemap/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;之前的文章讲解了两种Map，分别是HashMap与LinkedHashMap，它们保证了以O(1)的时间复杂度进</description>
+      <description>摘要 之前的文章讲解了两种Map，分别是HashMap与LinkedHashMap，它们保证了以O(1)的时间复杂度进行增、删、改、查，从存储</description>
     </item>
     
     <item>
@@ -116,7 +175,7 @@
       <pubDate>Mon, 11 Jan 2021 14:34:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/linkedhashmap/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;大多数情况下，只要不涉及线程安全问题，Map基本都可以使用HashMap，不过HashMap有一个问题，就是迭代</description>
+      <description>摘要 大多数情况下，只要不涉及线程安全问题，Map基本都可以使用HashMap，不过HashMap有一个问题，就是迭代HashMap的顺序并不</description>
     </item>
     
     <item>
@@ -125,7 +184,7 @@
       <pubDate>Sat, 09 Jan 2021 18:11:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/concurrenthashmap/</guid>
-      <description>背景 线程不安全的HashMap &amp;emsp;&amp;emsp;因为多线程环境下，使用HashMap扩容操作会引起死循环，导致CPU利用率接近100%</description>
+      <description>背景 线程不安全的HashMap 因为多线程环境下，使用HashMap扩容操作会引起死循环，导致CPU利用率接近100%，所以在并发情况下不能使</description>
     </item>
     
     <item>
@@ -134,7 +193,7 @@
       <pubDate>Sat, 09 Jan 2021 15:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/hashmaprehash/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;上一篇文章了解了HashMap的实现原理，讲到了HashMap不是线程安全的。那么HashMap在多线程环境下又</description>
+      <description>摘要 上一篇文章了解了HashMap的实现原理，讲到了HashMap不是线程安全的。那么HashMap在多线程环境下又会有什么问题呢？先来看一</description>
     </item>
     
     <item>
@@ -143,7 +202,7 @@
       <pubDate>Fri, 08 Jan 2021 16:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/hashmap/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 Hash</description>
+      <description>摘要 对于集合，我认为关注的点主要有四点： 关注点 结论 HashMap是否允许null Key和Value都允许为空 HashMap是否允许重复数据 K</description>
     </item>
     
     <item>
@@ -152,7 +211,7 @@
       <pubDate>Thu, 07 Jan 2021 19:10:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/linkedlist/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;LinkedList是基于链表实现的，所以先讲解一下什么是链表。链表原先是C/C++的概念，是一种线性的存储结构</description>
+      <description>摘要 LinkedList是基于链表实现的，所以先讲解一下什么是链表。链表原先是C/C++的概念，是一种线性的存储结构，意思是将要存储的数据存</description>
     </item>
     
     <item>
@@ -170,7 +229,7 @@
       <pubDate>Thu, 07 Jan 2021 18:04:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/collection/arraylist/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;对于集合，我认为关注的点主要有四点： 关注点 结论 ArrayList是否允许null 允许 ArrayList是否允许重</description>
+      <description>摘要 对于集合，我认为关注的点主要有四点： 关注点 结论 ArrayList是否允许null 允许 ArrayList是否允许重复数据 允许 ArrayLi</description>
     </item>
     
     <item>
@@ -188,7 +247,7 @@
       <pubDate>Sat, 02 Jan 2021 17:28:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/thread/sync/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;乐观锁和悲观锁是两种思想，用于解决并发场景下的数据竞争问题。 乐观锁：乐观锁在操作数据时非常乐观，认为别人不会同时</description>
+      <description>摘要 乐观锁和悲观锁是两种思想，用于解决并发场景下的数据竞争问题。 乐观锁：乐观锁在操作数据时非常乐观，认为别人不会同时修改数据。因此乐观锁不会</description>
     </item>
     
     <item>
@@ -197,7 +256,7 @@
       <pubDate>Sat, 02 Jan 2021 14:03:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/hash/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;符号表是一种用于存储键值对（key-value pair）的数据结构，我们平常经常使用的数组也可以看做是一个特殊的</description>
+      <description>摘要 符号表是一种用于存储键值对（key-value pair）的数据结构，我们平常经常使用的数组也可以看做是一个特殊的符号表，数组中的“键”即</description>
     </item>
     
     <item>
@@ -206,7 +265,7 @@
       <pubDate>Wed, 30 Dec 2020 16:46:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%A4%A7%E5%9E%8B%E7%BD%91%E7%AB%99%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95/</guid>
-      <description>转载自 https://www.cnblogs.com/xuwc/p/9123078.html 问题描述 &amp;emsp;&amp;emsp;某天A君突然发现自己的接口请求量突然涨到之前的10倍，没多久该接口几乎不可使用，并引发连锁反应导致整</description>
+      <description>转载自 https://www.cnblogs.com/xuwc/p/9123078.html 问题描述 某天A君突然发现自己的接口请求量突然涨到之前的10倍，没多久该接口几乎不可使用，并引发连锁反应导致整个系统崩溃。如何应对这种</description>
     </item>
     
     <item>
@@ -215,7 +274,7 @@
       <pubDate>Thu, 24 Dec 2020 16:25:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/java/thread/%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/</guid>
-      <description>转载自 https://www.cnblogs.com/lixinjie/p/a-answer-about-thread-safety-in-a-interview.html 不是线程的安全 &amp;emsp;&amp;emsp;面试官问：“什么是线程安全”，如果你不能很好的回答，那就请往下看吧。 &amp;emsp;&amp;emsp;论</description>
+      <description>转载自 https://www.cnblogs.com/lixinjie/p/a-answer-about-thread-safety-in-a-interview.html 不是线程的安全 面试官问：“什么是线程安全”，如果你不能很好的回答，那就请往下看吧。 论语中有句叫“学而优则仕”，相信很多人都觉得是“学</description>
     </item>
     
     <item>
@@ -224,7 +283,7 @@
       <pubDate>Sat, 14 Nov 2020 11:29:55 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/uid/%E5%88%86%E5%B8%83%E5%BC%8Fid%E7%94%9F%E6%88%90%E7%AD%96%E7%95%A5/</guid>
-      <description>美团 背景 &amp;emsp;&amp;emsp;在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等</description>
+      <description>美团 背景 在复杂分布式系统中，往往需要对大量的数据和消息进行唯一标识。如在美团点评的金融、支付、餐饮、酒店、猫眼电影等产品的系统中，数据日渐增</description>
     </item>
     
     <item>
@@ -233,7 +292,7 @@
       <pubDate>Fri, 30 Oct 2020 14:05:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 &amp;emsp;&amp;emsp;这</description>
+      <description>摘要 原型模式(Propertype Pattern)是用于创建重复的对象，同时又能保证性能。 这种模式是实现了一个原型接口，该接口用于创建当前对</description>
     </item>
     
     <item>
@@ -242,7 +301,7 @@
       <pubDate>Tue, 27 Oct 2020 17:34:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;Builder Pattern使用多个简单的对象一步一步构建一个复杂的对象。 介绍 意图：将一个复杂的构建与其表示相分离，使得同样的构建过程可以创建不同的</description>
+      <description>摘要 Builder Pattern使用多个简单的对象一步一步构建一个复杂的对象。 介绍 意图：将一个复杂的构建与其表示相分离，使得同样的构建过程可以创建不同的</description>
     </item>
     
     <item>
@@ -269,7 +328,7 @@
       <pubDate>Tue, 20 Oct 2020 10:40:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-%E5%88%86%E5%B8%83%E5%BC%8F%E8%8A%82%E7%82%B9/</guid>
-      <description>流程回顾 1 2 3 4 5 接收key --&amp;gt; 检查是否被缓存 ---是---&amp;gt; 返回缓存值(1) |否 |------&amp;gt;是否应当从远程节点获取 ------&amp;gt; 与远程节</description>
+      <description>流程回顾 接收key --&amp;gt; 检查是否被缓存 ---是---&amp;gt; 返回缓存值(1) |否 |------&amp;gt;是否应当从远程节点获取 ------&amp;gt; 与远程节点交互 ---&amp;gt; 返</description>
     </item>
     
     <item>
@@ -278,7 +337,7 @@
       <pubDate>Mon, 19 Oct 2020 09:21:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-hash/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;今天我们要实现的是一致性哈希算法，一致性哈希算法是Geec从单节点走向分布式节点的一个重要的环节。 我该访问谁 &amp;e</description>
+      <description>摘要 今天我们要实现的是一致性哈希算法，一致性哈希算法是Geec从单节点走向分布式节点的一个重要的环节。 我该访问谁 对于分布式缓存来说，当一个节</description>
     </item>
     
     <item>
@@ -287,7 +346,7 @@
       <pubDate>Fri, 25 Sep 2020 09:46:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/saas/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;SaaS区别于其他应用程序的主要特征就是能够使客户在使用应用程序时按照使用量付费。他们不需要为软件购买许可，也不</description>
+      <description>摘要 SaaS区别于其他应用程序的主要特征就是能够使客户在使用应用程序时按照使用量付费。他们不需要为软件购买许可，也不需要安装、托管和管理它。</description>
     </item>
     
     <item>
@@ -296,7 +355,7 @@
       <pubDate>Thu, 17 Sep 2020 10:17:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/</guid>
-      <description>转载自 https://juejin.im/post/6844903734753886216 作者 caison@aliyun.com 摘要 &amp;emsp;&amp;emsp;这篇文章主要介绍什么是分布式事务，分布式事务解决什么问题，对分布式事务实现的难点，解决思路，不同场</description>
+      <description>转载自 https://juejin.im/post/6844903734753886216 作者 caison@aliyun.com 摘要 这篇文章主要介绍什么是分布式事务，分布式事务解决什么问题，对分布式事务实现的难点，解决思路，不同场景下的选择，通过图解的方</description>
     </item>
     
     <item>
@@ -305,7 +364,7 @@
       <pubDate>Thu, 10 Sep 2020 20:01:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;单例模式(Singleton Pattern) 是Java中最简单的设计模式之一。它提供了一种创建对象的最佳方法。 &amp;emsp;&amp;e</description>
+      <description>摘要 单例模式(Singleton Pattern) 是Java中最简单的设计模式之一。它提供了一种创建对象的最佳方法。 这种模式涉及到一个单一的类，该类负责创建</description>
     </item>
     
     <item>
@@ -314,7 +373,7 @@
       <pubDate>Thu, 10 Sep 2020 15:51:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式</description>
+      <description>摘要 抽象工厂模式(Abstract Factory Pattern)用于生成产品族的工厂。该工厂又称为其它工厂的工厂。在抽象工厂模式中，接口是负责创建一个相</description>
     </item>
     
     <item>
@@ -323,7 +382,7 @@
       <pubDate>Thu, 10 Sep 2020 14:52:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E5%88%9B%E5%BB%BA/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;工厂模式(Factory Pattern)是Java中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提</description>
+      <description>摘要 工厂模式(Factory Pattern)是Java中最常用的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方</description>
     </item>
     
     <item>
@@ -332,7 +391,7 @@
       <pubDate>Wed, 02 Sep 2020 11:04:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/design-patterns/%E8%A1%8C%E4%B8%BA/%E8%A7%82%E5%AF%9F%E8%80%85%E5%AE%9E%E8%B7%B5/</guid>
-      <description>什么是观察者模式 观察者观察被观察者，被观察者通知观察者 &amp;emsp;&amp;emsp;我们用&amp;rdquo;订阅通知&amp;rdquo;翻译下[观察者模式]</description>
+      <description>什么是观察者模式 观察者观察被观察者，被观察者通知观察者 我们用&amp;quot;订阅通知&amp;quot;翻译下[观察者模式]的概念： &amp;ldquo;订阅者</description>
     </item>
     
     <item>
@@ -341,7 +400,7 @@
       <pubDate>Mon, 31 Aug 2020 16:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/redis/%E8%BF%9B%E9%98%B6/</guid>
-      <description>事务 &amp;emsp;&amp;emsp;在微博中，用户之间是&amp;rdquo;关注&amp;rdquo;和&amp;rdquo;被关注&amp;rdquo;的关系。如果要使用Red</description>
+      <description>事务 在微博中，用户之间是&amp;quot;关注&amp;quot;和&amp;quot;被关注&amp;quot;的关系。如果要使用Redis存储这样的关系可以使用集合类</description>
     </item>
     
     <item>
@@ -350,7 +409,7 @@
       <pubDate>Mon, 24 Aug 2020 16:55:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/3.-%E9%9B%86%E6%88%90/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;微服务之间通信方式的选择非常多样化，但哪个是正确的呢？SOAP? XML-RPC? REST? Protocol Buffers? 后面会逐一讨论，在此之前需要考虑的是，我</description>
+      <description>摘要 微服务之间通信方式的选择非常多样化，但哪个是正确的呢？SOAP? XML-RPC? REST? Protocol Buffers? 后面会逐一讨论，在此之前需要考虑的是，我们到底希望从这些技术中得</description>
     </item>
     
     <item>
@@ -359,7 +418,7 @@
       <pubDate>Fri, 14 Aug 2020 10:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/redis/%E5%9F%BA%E7%A1%80%E7%B1%BB%E5%9E%8B/</guid>
-      <description>基础类型 string list hash set zset string &amp;emsp;&amp;emsp;一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回e</description>
+      <description>基础类型 string list hash set zset string 一个字符串类型允许存储的数据的最大容量是512MB。 command return set key value 返回ok get key 当key不存在是返回empty incr key 返回递增后的</description>
     </item>
     
     <item>
@@ -368,7 +427,7 @@
       <pubDate>Thu, 13 Aug 2020 14:16:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/redis/%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5/</guid>
-      <description>转载自 https://coolshell.cn/articles/17416.html 问题引入 &amp;emsp;&amp;emsp;很多人在写更新缓存数据代码时，先删除缓存，然后再更新数据库，而后续的操作会把数据再装载到缓存中。这是</description>
+      <description>转载自 https://coolshell.cn/articles/17416.html 问题引入 很多人在写更新缓存数据代码时，先删除缓存，然后再更新数据库，而后续的操作会把数据再装载到缓存中。这是有问题的。 假设，一个更新</description>
     </item>
     
     <item>
@@ -377,7 +436,7 @@
       <pubDate>Wed, 12 Aug 2020 09:16:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/redis/redis%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98%E6%90%AD%E5%BB%BA/</guid>
-      <description>转载自 https://www.cnblogs.com/esofar/p/10486621.html 摘要 &amp;emsp;&amp;emsp;Redis Cluster 即 Redis 集群，是 Redis 官方在 3.0 版本推出的一套分布式存储方案。完全去中心化，由多个节点组成，所有节点彼此互联。Redis 客户端可以直接</description>
+      <description>转载自 https://www.cnblogs.com/esofar/p/10486621.html 摘要 Redis Cluster 即 Redis 集群，是 Redis 官方在 3.0 版本推出的一套分布式存储方案。完全去中心化，由多个节点组成，所有节点彼此互联。Redis 客户端可以直接</description>
     </item>
     
     <item>
@@ -386,7 +445,7 @@
       <pubDate>Tue, 28 Jul 2020 16:26:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/tree-struct/trie/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。</description>
+      <description>摘要 前缀树，又称字典树。之前在手写http框架(路由)中已经略有介绍。这次我们专门做一个关于前缀树的详细介绍及应用。 前缀树主要应用于统计，排</description>
     </item>
     
     <item>
@@ -395,7 +454,7 @@
       <pubDate>Fri, 24 Jul 2020 16:58:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-http/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;分布式缓存需要实现节点间通信，建立基于HTTP的通信机制是比较常见的做法。如果一个节点启动了HTTP服务， 那么这</description>
+      <description>摘要 分布式缓存需要实现节点间通信，建立基于HTTP的通信机制是比较常见的做法。如果一个节点启动了HTTP服务， 那么这个节点就可以被其它节点访</description>
     </item>
     
     <item>
@@ -404,7 +463,7 @@
       <pubDate>Mon, 20 Jul 2020 15:42:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-rwmutex/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支</description>
+      <description>摘要 在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支持并发的读写。(对于并发</description>
     </item>
     
     <item>
@@ -413,7 +472,7 @@
       <pubDate>Mon, 20 Jul 2020 10:32:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-lru/</guid>
-      <description>淘汰算法简介 &amp;emsp;&amp;emsp;geec的缓存全部存储在内存中，内存是有限的，因此不可能无限制添加数据。假定，我们设置缓存能够使用的内存</description>
+      <description>淘汰算法简介 geec的缓存全部存储在内存中，内存是有限的，因此不可能无限制添加数据。假定，我们设置缓存能够使用的内存大小为N,那么在某一个时</description>
     </item>
     
     <item>
@@ -422,7 +481,7 @@
       <pubDate>Mon, 20 Jul 2020 09:51:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E8%B0%88%E8%B0%88%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;第一次请求时将一些耗时操作的结果暂存，以后遇到相同的请求，直接返回暂存的数据。我想这是大部分人对于缓存的理解。在</description>
+      <description>摘要 第一次请求时将一些耗时操作的结果暂存，以后遇到相同的请求，直接返回暂存的数据。我想这是大部分人对于缓存的理解。在计算机系统中，缓存无处不</description>
     </item>
     
     <item>
@@ -431,7 +490,7 @@
       <pubDate>Fri, 17 Jul 2020 09:22:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-recover/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;在go中，比较常见的错误处理方式是返回error，由调用者巨顶后续如何处理。但是如果是无法恢复的错误，可以手动触</description>
+      <description>摘要 在go中，比较常见的错误处理方式是返回error，由调用者巨顶后续如何处理。但是如果是无法恢复的错误，可以手动触发panic，当然如果在</description>
     </item>
     
     <item>
@@ -440,7 +499,7 @@
       <pubDate>Thu, 16 Jul 2020 10:30:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-middleware/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不</description>
+      <description>摘要 中间件(middleware)，简单的说，就是非业务的技术类组件。http框架本身不可能去理解所有的业务，因而不可能实现所有的功能。因此</description>
     </item>
     
     <item>
@@ -449,7 +508,7 @@
       <pubDate>Thu, 16 Jul 2020 09:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-group/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行</description>
+      <description>摘要 分组控制是http框架提供的基础功能之一。所谓分组，是指路由的分组。如果没有路由分组，我们需要针对每一个路由进行控制。但是真实的业务场景</description>
     </item>
     
     <item>
@@ -458,7 +517,7 @@
       <pubDate>Tue, 14 Jul 2020 16:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-router/</guid>
-      <description>摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 &amp;emsp;&amp;emsp;上一节，我们用了一个非常简单的</description>
+      <description>摘要 使用trie树实现动态路由解析 支持两种模式:name和*filepath trie树 上一节，我们用了一个非常简单的map结果来存储了路由表</description>
     </item>
     
     <item>
@@ -476,7 +535,7 @@
       <pubDate>Fri, 03 Jul 2020 11:03:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/promethues/prometheus%E4%B8%80/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点</description>
+      <description>摘要 由于该系统涉及较多的概念和技术，为了快速上手，第一篇文档主要讲解环境搭建。后期系列文档会逐一解释每一个关键的结点。 系统架构 简略解释 Pro</description>
     </item>
     
     <item>
@@ -485,7 +544,7 @@
       <pubDate>Wed, 24 Jun 2020 11:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-context/</guid>
-      <description># 摘要 将路由router独立出来，方便之后增强。 设计上下文context，封装Request和Response，提供对JSON、HTML等返</description>
+      <description>摘要 将路由router独立出来，方便之后增强。 设计上下文context，封装Request和Response，提供对JSON、HTML等返回</description>
     </item>
     
     <item>
@@ -494,7 +553,7 @@
       <pubDate>Tue, 23 Jun 2020 15:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/http/golang-%E6%89%8B%E5%86%99http%E6%A1%86%E6%9E%B6-httphandler/</guid>
-      <description>摘要 简单介绍net/http库以及http.Handler接口 搭建Gee框架的雏形 标准库启动Web服务 &amp;emsp;&amp;emsp;Go语言内置了</description>
+      <description>摘要 简单介绍net/http库以及http.Handler接口 搭建Gee框架的雏形 标准库启动Web服务 Go语言内置了net/http库，封装</description>
     </item>
     
     <item>
@@ -503,7 +562,7 @@
       <pubDate>Sat, 20 Jun 2020 10:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/http/golang-http%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/</guid>
-      <description>重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler 1 2 3 type Handler interface { ServeHTTP(ResponseWriter, *Request) } &amp;emsp;&amp;emsp;Handler接口是一个</description>
+      <description>重要接口 接口名称 简略含义 Handler 处理请求接口 ResponseWriter 返回响应接口 ServeMux 路由 Conn tcp连接 Handler type Handler interface { ServeHTTP(ResponseWriter, *Request) } Handler接口是一个逻辑接口，所有的请求都会进入该</description>
     </item>
     
     <item>
@@ -512,7 +571,7 @@
       <pubDate>Tue, 09 Jun 2020 09:09:42 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/mongodb/1.-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</guid>
-      <description>基本操作 创建document 1 2 #use dbname use chapter; 删除document 1 2 3 #db.dropDatabase() use chapter; db.dropDatabase() 创建collection 1 2 3 #db.createCollection(name, options) # example 集合空间大小614299KB</description>
+      <description>基本操作 创建document #use dbname use chapter; 删除document #db.dropDatabase() use chapter; db.dropDatabase() 创建collection #db.createCollection(name, options) # example 集合空间大小614299KB,文档最大个数为</description>
     </item>
     
     <item>
@@ -521,7 +580,7 @@
       <pubDate>Tue, 02 Jun 2020 14:45:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/</guid>
-      <description>环境 &amp;emsp;&amp;emsp;一名工程师在萌芽之中，特别容易自我劝退，偏安一隅。他们有一点解决自己温饱的技术，有一份较为稳定的工作，但他们态度</description>
+      <description>环境 一名工程师在萌芽之中，特别容易自我劝退，偏安一隅。他们有一点解决自己温饱的技术，有一份较为稳定的工作，但他们态度恶劣，从来不学习如何学习</description>
     </item>
     
     <item>
@@ -530,7 +589,7 @@
       <pubDate>Fri, 22 May 2020 09:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/golang%E6%8E%A5%E5%8F%A3%E5%9E%8B%E5%87%BD%E6%95%B0/</guid>
-      <description>转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 &amp;emsp;&amp;emsp;接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接</description>
+      <description>转载自 https://www.flysnow.org/2016/12/30/golang-function-interface.html 简介 接口型函数，指的是用函数实现接口，这样在调用的时候就会非常简便，这种方式使用于只有一个函数的接口。 原始接口 我们以迭代一个map为</description>
     </item>
     
     <item>
@@ -539,7 +598,7 @@
       <pubDate>Mon, 11 May 2020 14:09:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/golang-database/sql%E4%BD%BF%E7%94%A8/</guid>
-      <description>转载自 https://segmentfault.com/a/1190000003036452 概述 &amp;emsp;&amp;emsp;sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正</description>
+      <description>转载自 https://segmentfault.com/a/1190000003036452 概述 sql.DB不是一个连接，它是数据库的抽象接口。它可以根据driver打开关闭数据库连接，管理连接池。正在使用的连接被标记为繁忙</description>
     </item>
     
     <item>
@@ -548,7 +607,7 @@
       <pubDate>Fri, 01 May 2020 14:50:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/life/travel/2.%E5%B7%9D%E8%A5%BF%E5%B0%8F%E7%8E%AF%E7%BA%BF/</guid>
-      <description>前言 &amp;emsp;&amp;emsp;2019年国庆是一个值得纪念的日子。这是我第一次长途旅行，这次我放弃了贴吧寻找驴友，上面人多眼杂。几经转折后，相</description>
+      <description>前言 **2019年国庆是一个值得纪念的日子。**这是我第一次长途旅行，这次我放弃了贴吧寻找驴友，上面人多眼杂。几经转折后，相中了8264户外</description>
     </item>
     
     <item>
@@ -557,7 +616,7 @@
       <pubDate>Thu, 30 Apr 2020 09:44:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/4.-git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 &amp;emsp;&amp;em</description>
+      <description>摘要 案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 正在此时，你接到通知，有一个很严重的bug</description>
     </item>
     
     <item>
@@ -566,7 +625,7 @@
       <pubDate>Wed, 29 Apr 2020 16:04:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/3.-git%E5%88%86%E6%94%AF%E5%8E%9F%E7%90%86/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 &amp;e</description>
+      <description>摘要 之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 为了真正理解Git处理分支的</description>
     </item>
     
     <item>
@@ -575,7 +634,7 @@
       <pubDate>Mon, 27 Apr 2020 10:44:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/2.-git%E4%B8%8A%E6%89%8B/</guid>
-      <description>概要 &amp;emsp;&amp;emsp;希望通过这一节学习，能够快速掌握配置初始化仓库(repository)、开始或停止跟踪(track)文件、暂存(</description>
+      <description>概要 希望通过这一节学习，能够**快速**掌握配置初始化仓库(repository)、开始或停止跟踪(track)文件、暂存(stage)、提</description>
     </item>
     
     <item>
@@ -584,7 +643,7 @@
       <pubDate>Mon, 27 Apr 2020 09:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/1.-git%E7%8A%B6%E6%80%81%E5%92%8C%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/</guid>
-      <description>三种状态 &amp;emsp;&amp;emsp;Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表</description>
+      <description>三种状态 Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本</description>
     </item>
     
     <item>
@@ -593,7 +652,7 @@
       <pubDate>Sat, 25 Apr 2020 14:09:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/life/travel/1.%E7%89%9B%E8%83%8C%E5%B1%B1/</guid>
-      <description>四川牛背山之旅 前言 &amp;emsp;&amp;emsp;依稀记得，在2019年元旦时，初来成都，除了工作上的同事，自己没有几个耍得来的要好朋友。一次偶然的</description>
+      <description>四川牛背山之旅 前言 依稀记得，在2019年元旦时，初来成都，除了工作上的同事，自己没有几个耍得来的要好朋友。一次偶然的机会，在冲浪成都豆瓣时，</description>
     </item>
     
     <item>
@@ -602,7 +661,7 @@
       <pubDate>Thu, 16 Apr 2020 14:23:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/nginx/1.nginx%E5%9F%BA%E7%A1%80/</guid>
-      <description>准备环境 &amp;emsp;&amp;emsp;首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在l</description>
+      <description>准备环境 首先需要一个内核为Linux 2.6及以上版本的操作系统，因为Linux 2.6及以上内核才支持epoll。在linux上使用selec</description>
     </item>
     
     <item>
@@ -611,7 +670,7 @@
       <pubDate>Mon, 13 Apr 2020 09:55:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/2.-%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A8%A1%E6%9C%8D%E5%8A%A1/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨</description>
+      <description>摘要 同过上节的讨论，我们已经知道什么是微服务了，你可能已经迫不及待地想要实现它了。但是从何做起呢？在本节中，我们会讨论如何确定服务之间的边界</description>
     </item>
     
     <item>
@@ -620,7 +679,7 @@
       <pubDate>Sun, 12 Apr 2020 13:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/1.-%E5%BE%AE%E6%9C%8D%E5%8A%A1/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而</description>
+      <description>摘要 随着领域驱动设计、持续交付、按需虚拟化、基础设施自动化、小型自治团队、大型集群系统、模块化的流行，微服务也应运而生。它并不是被发明出来的</description>
     </item>
     
     <item>
@@ -638,7 +697,7 @@
       <pubDate>Thu, 05 Mar 2020 15:29:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/10.%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/</guid>
-      <description>广度优先算法 为爬虫实战做好准备 应用广泛，综合性强 面试常见 &amp;emsp;&amp;emsp;上图中是一个6*5的迷宫，0 代表可以走，1 代表墙，从左上角进</description>
+      <description>广度优先算法 为爬虫实战做好准备 应用广泛，综合性强 面试常见 上图中是一个6*5的迷宫，0 代表可以走，1 代表墙，从左上角进右下角出，只能上左下右，</description>
     </item>
     
     <item>
@@ -647,7 +706,7 @@
       <pubDate>Thu, 05 Mar 2020 14:48:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/9.http%E6%A0%87%E5%87%86%E5%BA%93/</guid>
-      <description>http 使用http客户端发送请求 使用http.Client控制请求头部等 使用httputil简化工作 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22</description>
+      <description>http 使用http客户端发送请求 使用http.Client控制请求头部等 使用httputil简化工作 package main func main(){ // 访问手机版imooc r, err := http.NewRequest(http.MethodGet, &amp;quot;http://www.imooc.com&amp;quot;, nil) r.Header.Add(&amp;quot;User-Agent&amp;quot;,</description>
     </item>
     
     <item>
@@ -656,7 +715,7 @@
       <pubDate>Wed, 04 Mar 2020 20:01:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/8.channel/</guid>
-      <description>转载自 https://www.cnblogs.com/sparkdev/ 转载自 https://go-zh.org/ref/mem golang官网内存模型分析 转载自 https://taohuawu.club/high-performance-implementation-of-goroutine-pool 忠告 &amp;emsp;&amp;emsp;程序在修改被多个Go程同时访问的数据时必须序列化该访问。要序</description>
+      <description>转载自 https://www.cnblogs.com/sparkdev/ 转载自 https://go-zh.org/ref/mem golang官网内存模型分析 转载自 https://taohuawu.club/high-performance-implementation-of-goroutine-pool 忠告 程序在修改被多个Go程同时访问的数据时必须序列化该访问。要序列化访问，需要通过Cha</description>
     </item>
     
     <item>
@@ -665,7 +724,7 @@
       <pubDate>Wed, 04 Mar 2020 20:00:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/8.-goroutine/</guid>
-      <description>goroutine 1 2 3 4 5 6 7 8 9 10 11 12 package main func main() { for i := 0; i &amp;lt; 10; i++ { go func(i int){ for { fmt.Printf(&amp;#34;Hello from goroutine %d\n&amp;#34;, i) } }(i) } time.Sleep(time.Millisecond) } &amp;emsp;&amp;emsp;如果不加go关键字的话，就是外循</description>
+      <description>goroutine package main func main() { for i := 0; i &amp;lt; 10; i++ { go func(i int){ for { fmt.Printf(&amp;quot;Hello from goroutine %d\n&amp;quot;, i) } }(i) } time.Sleep(time.Millisecond) } 如果不加go关键字的话，就是外循环进来一次一直执行匿名函数，不会退出。加了go关</description>
     </item>
     
     <item>
@@ -674,7 +733,7 @@
       <pubDate>Sun, 01 Mar 2020 13:05:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/7.%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</guid>
-      <description>Debugging Sucks and Testing Rocks 测试 传统测试 VS 表格驱动测试 传统测试 1 2 3 4 @Test public void testAdd() { assertEquals(3, add(1, 2)); assertEquals(Integer.MIN_VALUE, add(1, Integer.MAX_VALUE)); } 测试数据和测试逻辑混在一起 出错信息不明确 一旦一个数据出错测试全部</description>
+      <description>Debugging Sucks and Testing Rocks 测试 传统测试 VS 表格驱动测试 传统测试 @Test public void testAdd() { assertEquals(3, add(1, 2)); assertEquals(Integer.MIN_VALUE, add(1, Integer.MAX_VALUE)); } 测试数据和测试逻辑混在一起 出错信息不明确 一旦一个数据出错测试全部结束 表格</description>
     </item>
     
     <item>
@@ -683,7 +742,7 @@
       <pubDate>Fri, 28 Feb 2020 17:45:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/6.%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</guid>
-      <description>资源管理与出错处理 defer调用 确保在函数结束时调用 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 package main func tryDefer() { defer fmt.Println(1) defer fmt.Println(2) fmt.Println(3) panic(&amp;#34;error occurr&amp;#34;) /</description>
+      <description>资源管理与出错处理 defer调用 确保在函数结束时调用 package main func tryDefer() { defer fmt.Println(1) defer fmt.Println(2) fmt.Println(3) panic(&amp;quot;error occurr&amp;quot;) //触发return fmt.Println(4) } func writeFile(filename string) { file, err := os.OpenFile(filename, os.O_EXCL|os.O_CREATE, 0666) if err != nil { panic(err) } defer file.Close() writer</description>
     </item>
     
     <item>
@@ -692,7 +751,7 @@
       <pubDate>Fri, 28 Feb 2020 17:36:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/5.%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/</guid>
-      <description>函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main func adder() func(int) int { sum := 0 // 自由变</description>
+      <description>函数式编程 函数式编程 VS 函数指针 函数是一等公民：参数，变量，返回值都可以是函数 闭包 package main func adder() func(int) int { sum := 0 // 自由变量 return func (v int) int { sum += v //v 局部变量 return</description>
     </item>
     
     <item>
@@ -710,7 +769,7 @@
       <pubDate>Fri, 28 Feb 2020 17:07:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/3.%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</guid>
-      <description>结构体和方法 golang仅支持封装，不支持继承和多态 golang没有class，只有struct golang结构体没有构造方法这一说法 1 2 3</description>
+      <description>结构体和方法 golang仅支持封装，不支持继承和多态 golang没有class，只有struct golang结构体没有构造方法这一说法 type treeNode struct</description>
     </item>
     
     <item>
@@ -719,7 +778,7 @@
       <pubDate>Fri, 28 Feb 2020 15:09:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/2.%E5%86%85%E5%BB%BA%E5%AE%B9%E5%99%A8/</guid>
-      <description>数组 &amp;emsp;&amp;emsp;数量写在类型的前面 1 2 3 4 5 6 7 8 9 10 11 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需</description>
+      <description>数组 数量写在类型的前面 func main() { // var 需要确定大小，可以不用初始化赋值 var arr1 [5]int // 简化，需要确定大小，需要初始化赋值 arr2 := [3]int{1, 3, 5} // ... 编译器根据初始化赋值</description>
     </item>
     
     <item>
@@ -728,7 +787,7 @@
       <pubDate>Fri, 28 Feb 2020 14:09:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/base/1.%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/</guid>
-      <description>变量定义 &amp;emsp;&amp;emsp;在golang中变量名在前变量类型在后 &amp;emsp;&amp;emsp;这样设计的初衷是什么?我们回想一下使用其它语言</description>
+      <description>变量定义 在golang中变量名在前变量类型在后 这样设计的初衷是什么?我们回想一下使用其它语言的变量的时候是先想到变量的名字还是先想到变量类型</description>
     </item>
     
     <item>
@@ -755,7 +814,7 @@
       <pubDate>Thu, 02 Jan 2020 12:36:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/golang%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92/</guid>
-      <description>什么是值传递 &amp;emsp;&amp;emsp;值传递的意思是：函数传递总是原来这个东西的一个副本，一幅拷贝。比如我们传递一个int类型的参数，传递的其</description>
+      <description>什么是值传递 值传递的意思是：函数传递总是原来这个东西的一个副本，一幅拷贝。比如我们传递一个int类型的参数，传递的其实是这个参数的一个副本；</description>
     </item>
     
     <item>
@@ -764,7 +823,7 @@
       <pubDate>Thu, 07 Nov 2019 17:19:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/tree-struct/bstree/</guid>
-      <description>转载自 https://www.cnblogs.com/skywang12345/ 转载《算法导论》 转载 https://github.com/emirpasic/gods 概要 &amp;emsp;&amp;emsp;本节先对二叉树的相关理论知识进行介绍，然后给出Java的详细实现。关于二叉树的学习</description>
+      <description>转载自 https://www.cnblogs.com/skywang12345/ 转载《算法导论》 转载 https://github.com/emirpasic/gods 概要 本节先对二叉树的相关理论知识进行介绍，然后给出Java的详细实现。关于二叉树的学习，需要说明的是：它并不难</description>
     </item>
     
     <item>
@@ -773,7 +832,7 @@
       <pubDate>Tue, 05 Nov 2019 17:21:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/linear-struct/%E9%98%9F%E5%88%97/</guid>
-      <description>转载自 https://www.cnblogs.com/skywang12345/ 概要 &amp;emsp;&amp;emsp;本节介绍队列的基本原理，然后分别给出队列的Java、Golang两种语言的实现。 队列的介绍 &amp;emsp;&amp;</description>
+      <description>转载自 https://www.cnblogs.com/skywang12345/ 概要 本节介绍队列的基本原理，然后分别给出队列的Java、Golang两种语言的实现。 队列的介绍 队列是一种线性存储结构。它有以下特点：</description>
     </item>
     
     <item>
@@ -782,7 +841,7 @@
       <pubDate>Tue, 05 Nov 2019 10:21:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/linear-struct/%E6%A0%88/</guid>
-      <description>转载自 https://www.cnblogs.com/skywang12345/ 概要 &amp;emsp;&amp;emsp;本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 &amp;em</description>
+      <description>转载自 https://www.cnblogs.com/skywang12345/ 概要 本节会现对栈的原理进行介绍，然后分别通过Java/Golang三种语言来演示栈的实现示例。 栈的介绍 栈是一种线性存储结构，它有以下</description>
     </item>
     
     <item>
@@ -791,7 +850,7 @@
       <pubDate>Thu, 24 Oct 2019 15:31:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/data-struct/linear-struct/%E6%95%B0%E7%BB%84-%E5%8D%95%E9%93%BE%E8%A1%A8-%E5%8F%8C%E5%90%91%E9%93%BE%E8%A1%A8/</guid>
-      <description>转载自 https://www.cnblogs.com/skywang12345/ 概要 &amp;emsp;&amp;emsp;线性表是一种线性结构，它是具有相同类型的n(n&amp;gt;=0)个元素的有序序列。本节介绍线性表的几个基本组</description>
+      <description>转载自 https://www.cnblogs.com/skywang12345/ 概要 线性表是一种线性结构，它是具有相同类型的n(n&amp;gt;=0)个元素的有序序列。本节介绍线性表的几个基本组成部分：数组、单向链表、</description>
     </item>
     
     <item>
@@ -818,7 +877,7 @@
       <pubDate>Mon, 14 Oct 2019 02:00:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%BA%8C%E5%8D%81%E4%B8%80-go-struct-tag/</guid>
-      <description>转载自 https://www.flysnow.org JSON字符串对象转换 1 2 3 4 5 6 7 8 9 10 11 12 13 14 type User struct{ Name string `name` Age int `age` } func main(){ var u User h := `{&amp;#34;name&amp;#34;: &amp;#34;张三&amp;#34;, &amp;#34;age&amp;#34;:15}` err := json.Unmarshall([]byte(h), &amp;amp;u) if err != nil {</description>
+      <description>转载自 https://www.flysnow.org JSON字符串对象转换 type User struct{ Name string `name` Age int `age` } func main(){ var u User h := `{&amp;quot;name&amp;quot;: &amp;quot;张三&amp;quot;, &amp;quot;age&amp;quot;:15}` err := json.Unmarshall([]byte(h), &amp;amp;u) if err != nil { fmt.Println(err) }else{ fmt.Println(u) } } 上面的例子就是</description>
     </item>
     
     <item>
@@ -989,7 +1048,7 @@
       <pubDate>Mon, 14 Oct 2019 01:41:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/effective-golang/%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0%E4%BA%8C-go-command/</guid>
-      <description>转载自 https://www.flysnow.org Go开发工具概览 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 Go is a tool for managing for Go source code. Usage: go command [arguments] The command are: build compile packages and dependencies clean remove object files doc show documentation for package or symbol env print Go environment information</description>
+      <description>转载自 https://www.flysnow.org Go开发工具概览 Go is a tool for managing for Go source code. Usage: go command [arguments] The command are: build compile packages and dependencies clean remove object files doc show documentation for package or symbol env print Go environment information bug start a bug report fix run go tool fix on packages fmt run gofmt on package sources generate generate</description>
     </item>
     
     <item>
@@ -1016,7 +1075,7 @@
       <pubDate>Sat, 12 Oct 2019 01:37:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/interview/golang-1/</guid>
-      <description>此Golang面试题摘自网络，已经找不到作者了，所以使用someone代替。 1. 写出下面代码输出内容 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 package main import ( &amp;#34;fmt&amp;#34;</description>
+      <description>此Golang面试题摘自网络，已经找不到作者了，所以使用someone代替。 1. 写出下面代码输出内容 package main import ( &amp;quot;fmt&amp;quot; ) func main() { defer_call() } func defer_call() { defer func() { fmt.</description>
     </item>
     
   </channel>

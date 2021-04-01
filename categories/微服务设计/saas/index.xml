@@ -1,23 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>微服务设计/SaaS on FaceDamon`s Blog</title>
     <link>http://facedamon.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/saas/</link>
     <description>Recent content in 微服务设计/SaaS on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Fri, 25 Sep 2020 09:46:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/saas/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language><atom:link href="http://facedamon.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/saas/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[微服务设计 | SaaS]</title>
       <link>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/saas/</link>
       <pubDate>Fri, 25 Sep 2020 09:46:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/books/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/saas/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;SaaS区别于其他应用程序的主要特征就是能够使客户在使用应用程序时按照使用量付费。他们不需要为软件购买许可，也不</description>
+      <description>摘要 SaaS区别于其他应用程序的主要特征就是能够使客户在使用应用程序时按照使用量付费。他们不需要为软件购买许可，也不需要安装、托管和管理它。</description>
     </item>
     
   </channel>

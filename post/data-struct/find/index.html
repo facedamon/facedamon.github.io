@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Poll的笔记" /><meta name="description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 &amp;emsp;&amp;emsp;查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="Poll的笔记" /><meta name="description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/data-struct/find/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[数据结构与算法 | 查找算法]" />
-<meta property="og:description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 &emsp;&emsp;查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的" />
+<meta property="og:description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/data-struct/find/" />
-<meta property="article:published_time" content="2021-01-13T15:54:56&#43;08:00"/>
-<meta property="article:modified_time" content="2021-01-13T15:54:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/data-struct/find/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-01-13T15:54:56&#43;08:00" />
+<meta property="article:modified_time" content="2021-01-13T15:54:56&#43;08:00" />
 
 <meta itemprop="name" content="[数据结构与算法 | 查找算法]">
-<meta itemprop="description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 &emsp;&emsp;查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的">
-
-
-<meta itemprop="datePublished" content="2021-01-13T15:54:56&#43;08:00" />
+<meta itemprop="description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介"><meta itemprop="datePublished" content="2021-01-13T15:54:56&#43;08:00" />
 <meta itemprop="dateModified" content="2021-01-13T15:54:56&#43;08:00" />
-<meta itemprop="wordCount" content="5865">
-
-
-
-<meta itemprop="keywords" content="数据结构与算法," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="5249">
+<meta itemprop="keywords" content="数据结构与算法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[数据结构与算法 | 查找算法]"/>
-<meta name="twitter:description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 &emsp;&emsp;查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的"/>
+<meta name="twitter:description" content="转载自 https://www.cnblogs.com/maybe2030/p/4715035.html#_label0 摘要 查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,8 +125,8 @@
         <div class="post-category">
             <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"> 数据结构与算法 </a>
             </div>
-          <span class="more-meta"> 约 5865 字 </span>
-          <span class="more-meta"> 预计阅读 12 分钟 </span>
+          <span class="more-meta"> 约 5249 字 </span>
+          <span class="more-meta"> 预计阅读 11 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -142,103 +135,66 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#顺序查找">顺序查找</a></li>
-<li><a href="#二分查找">二分查找</a></li>
-<li><a href="#插值查找">插值查找</a></li>
-<li><a href="#斐波那契查找">斐波那契查找</a></li>
-<li><a href="#二叉查找树">二叉查找树</a></li>
-<li><a href="#分块查找">分块查找</a>
-<ul>
-<li><a href="#特点">特点</a></li>
-</ul></li>
-<li><a href="#哈希查找">哈希查找</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#顺序查找">顺序查找</a></li>
+    <li><a href="#二分查找">二分查找</a></li>
+    <li><a href="#插值查找">插值查找</a></li>
+    <li><a href="#斐波那契查找">斐波那契查找</a></li>
+    <li><a href="#二叉查找树">二叉查找树</a></li>
+    <li><a href="#分块查找">分块查找</a>
+      <ul>
+        <li><a href="#特点">特点</a></li>
+      </ul>
+    </li>
+    <li><a href="#哈希查找">哈希查找</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<blockquote>
+      <blockquote>
 <p>转载自 <a href="https://www.cnblogs.com/maybe2030/p/4715035.html#_label0">https://www.cnblogs.com/maybe2030/p/4715035.html#_label0</a></p>
 </blockquote>
-
 <h1 id="摘要">摘要</h1>
-
-<p>&emsp;&emsp;查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介绍了常见的七种查找算法，说是七种，其实二分查找、插值查找以及斐波那契查找都可以归为一类——插值查找。插值查找和斐波那契查找是在二分查找的基础上的优化查找算法。树表查找和哈希查找会在后续的博文中进行详细介绍。</p>
-
+<p>  查找是在大量的信息中寻找一个特定的信息元素，在计算机应用中，查找是常用的基本运算，例如编译程序中符号表的查找。本文简单概括性的介绍了常见的七种查找算法，说是七种，其实二分查找、插值查找以及斐波那契查找都可以归为一类——插值查找。插值查找和斐波那契查找是在二分查找的基础上的优化查找算法。树表查找和哈希查找会在后续的博文中进行详细介绍。</p>
 <ul>
 <li>查找定义：根据给定的某个值，在查找表中确定一个其关键字等于给定值的数据元素</li>
 <li>查找算法分类：</li>
 </ul>
-
 <ol>
 <li>静态查找和动态查找(静态或动态都是针对查找表而言的。动态表指查找表中有删除和插入操作的表)</li>
 <li>无序查找和有序查找
-
 <ol>
 <li>无序查找：被查找数列有序无序均可</li>
 <li>有序查找：被查找数列必须为有序数列</li>
-</ol></li>
 </ol>
-
+</li>
+</ol>
 <ul>
 <li>平均查找长度(Average Search Length, ASL): 由于所费时间在关键字的比较上，所以把平均需要和待查找值比较的关键字次数称为平均查找长度。</li>
 </ul>
-
 <p>$$
 ASL=\sum_{i=1}^nP_iC_i
 $$</p>
-
-<p>&emsp;&emsp;其中n为查找表中元素个数，Pi为查找第i个元素的概率，通常假设每个元素查找概率相同，Pi=1/n，Ci是找到第i个元素的比较次数。</p>
-
+<p>  其中n为查找表中元素个数，Pi为查找第i个元素的概率，通常假设每个元素查找概率相同，Pi=1/n，Ci是找到第i个元素的比较次数。</p>
 <blockquote>
 <p>一个算法的ASL越大，说明时间性能差，反之，时间性能好.</p>
 </blockquote>
-
 <h2 id="顺序查找">顺序查找</h2>
-
 <ul>
 <li>说明：顺序查找适合于存储结构为顺序存储或链接存储的线性表。</li>
 <li>基本思想：顺序查找也称为线形查找，属于无序查找算法。从数据结构线形表的一端开始，顺序扫描，依次将扫描到的结点关键字与给定值k相比较，若相等则表示查找成功；若扫描结束仍没有找到关键字等于k的结点，表示查找失败。</li>
 <li>复杂度分析
-
 <ul>
 <li>假设每个元素查找概率相同，$P_i=\frac1n$</li>
-<li>Ci在于这个元素在查找表中的位置，如第0号元素就需要比较一次，第一号元素比较2次&hellip;&hellip;第n号元素要比较n+1次。所以Ci=i；所以
-<br /></li>
-</ul></li>
+<li>Ci在于这个元素在查找表中的位置，如第0号元素就需要比较一次，第一号元素比较2次&hellip;&hellip;第n号元素要比较n+1次。所以Ci=i；所以</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/1539112-20190108133107514-1052426163.png" alt="avatar" /></p>
-
-<p>&emsp;&emsp;可以看出，顺序查找方法查找成功的平均 比较次数约为表长的一半</p>
-
-<p>&emsp;&emsp;<strong>当待查找元素不在查找表中时，也就是扫描整个表都没有找到，即比较了n次，查找失败O(n)</strong></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">// 顺序查找
+</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/1539112-20190108133107514-1052426163.png" alt="avatar"></p>
+<p>  可以看出，顺序查找方法查找成功的平均 比较次数约为表长的一半</p>
+<p>  <strong>当待查找元素不在查找表中时，也就是扫描整个表都没有找到，即比较了n次，查找失败O(n)</strong></p>
+<pre><code>// 顺序查找
 int sequenceFind(int[] a, int value, int n) {
     if (a == null || a.length != n || n &lt; 1) {
         return -1;
@@ -252,87 +208,16 @@ int sequenceFind(int[] a, int value, int n) {
         }
     }
     return -1;
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="二分查找">二分查找</h2>
-
 <ul>
 <li>说明：元素必须是有序的，如果是无序的则要先进行排序操作。</li>
 <li>基本思想：也称为是折半查找，属于有序查找算法。用给定值k先与中间结点的关键字比较，中间结点把线形表分成两个子表，若相等则查找成功；若不相等，再根据k与该中间结点关键字的比较结果确定下一步查找哪个子表，这样递归进行，直到查找到或查找结束发现表中没有这样的结点。</li>
 <li>复杂度分析：<strong>最坏情况下，关键词比较次数为log2(n+1)，且期望时间复杂度为O(log2n)</strong></li>
 </ul>
-
-<p>&emsp;&emsp;注：折半查找的前提条件是需要有序表顺序存储，对于静态查找表，一次排序后不再变化，折半查找能得到不错的效率。但对于需要频繁执行插入或删除操作的数据集来说，维护有序的排序会带来不小的工作量，那就不建议使用。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">// 二分查找
+<p>  注：折半查找的前提条件是需要有序表顺序存储，对于静态查找表，一次排序后不再变化，折半查找能得到不错的效率。但对于需要频繁执行插入或删除操作的数据集来说，维护有序的排序会带来不小的工作量，那就不建议使用。</p>
+<pre><code>// 二分查找
 int binaryFind(int[] a, int value, int n) {
     if (a == null || a.length != n || n &lt; 1) {
         return -1;
@@ -395,96 +280,28 @@ public void testBinaryFindRev() {
     //int[] a = {1};
     //int[] a = {1,2};
     System.out.println(binaryFindRev(a, 3, 0, a.length - 1));
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="插值查找">插值查找</h2>
-
-<p>&emsp;&emsp;在介绍插值查找之前，首先考虑一个新问题，为什么上述算法一定要是折半，而不是折四分之一或者折更多呢？</p>
-
-<p>&emsp;&emsp;打个比方，在英文字典里面查“apple”，你下意识翻开字典是翻前面的书页还是后面的书页呢？如果再让你查“zoo”，你又怎么查？很显然，这里你绝对不会是从中间开始查起，而是有一定目的的往前或往后翻。</p>
-
-<p>&emsp;&emsp;同样的，比如要在取值范围1 ~ 10000 之间 100 个元素从小到大均匀分布的数组中查找5， 我们自然会考虑从数组下标较小的开始查找。</p>
-
-<p>&emsp;&emsp;经过以上分析，折半查找这种查找方式，<strong>不是自适应的（也就是说是傻瓜式的）</strong>。二分查找中查找点计算如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">                                        // offset
-mid = (low + high) / 2; ==&gt; mid = low + 1/2 * (high - low);</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;通过类比，我们可以将查找的点改进为如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">            // offset
-mid = low + (key - a[low])/(a[high] - a[low]) * (high - low);</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;也就是将上述的比例参数1/2改进为自适应的，<strong>根据关键字在整个有序表中所处的位置，让mid值的变化更靠近关键字key</strong>，这样也就间接地减少了比较次数。</p>
-
-<p>&emsp;&emsp;基本思想：基于二分查找算法，将查找点的选择改进为自适应选择，可以提高查找效率。当然，差值查找也属于有序查找。</p>
-
-<p>&emsp;&emsp;<strong>注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。</strong></p>
-
+<p>  在介绍插值查找之前，首先考虑一个新问题，为什么上述算法一定要是折半，而不是折四分之一或者折更多呢？</p>
+<p>  打个比方，在英文字典里面查“apple”，你下意识翻开字典是翻前面的书页还是后面的书页呢？如果再让你查“zoo”，你又怎么查？很显然，这里你绝对不会是从中间开始查起，而是有一定目的的往前或往后翻。</p>
+<p>  同样的，比如要在取值范围1 ~ 10000 之间 100 个元素从小到大均匀分布的数组中查找5， 我们自然会考虑从数组下标较小的开始查找。</p>
+<p>  经过以上分析，折半查找这种查找方式，<strong>不是自适应的（也就是说是傻瓜式的）</strong>。二分查找中查找点计算如下：</p>
+<pre><code>                                        // offset
+mid = (low + high) / 2; ==&gt; mid = low + 1/2 * (high - low);
+</code></pre>
+<p>  通过类比，我们可以将查找的点改进为如下：</p>
+<pre><code>            // offset
+mid = low + (key - a[low])/(a[high] - a[low]) * (high - low);
+</code></pre>
+<p>  也就是将上述的比例参数1/2改进为自适应的，<strong>根据关键字在整个有序表中所处的位置，让mid值的变化更靠近关键字key</strong>，这样也就间接地减少了比较次数。</p>
+<p>  基本思想：基于二分查找算法，将查找点的选择改进为自适应选择，可以提高查找效率。当然，差值查找也属于有序查找。</p>
+<p>  <strong>注：对于表长较大，而关键字分布又比较均匀的查找表来说，插值查找算法的平均性能比折半查找要好的多。反之，数组中如果分布非常不均匀，那么插值查找未必是很合适的选择。</strong></p>
 <ul>
 <li>复杂度分析：<strong>查找成功或者失败的时间复杂度均为O(log2(log2n))。</strong></li>
 </ul>
-
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">int insertionFind(int[] a, int value, int n) {
+<!-- raw HTML omitted -->
+<pre><code>int insertionFind(int[] a, int value, int n) {
     if (a == null || a.length != n || n &lt; 1) {
         return -1;
     }
@@ -524,111 +341,29 @@ public void testInsertionFind() {
     //int[] a = {1,2,3};
     //int[] a = {1,2,4};
     System.out.println(insertionFind(a, 3, a.length));
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="斐波那契查找">斐波那契查找</h2>
-
-<p>&emsp;&emsp;在介绍斐波那契查找算法之前，我们先介绍一下很它紧密相连并且大家都熟知的一个概念——黄金分割。</p>
-
-<p>&emsp;&emsp;黄金比例又称黄金分割，是指事物各部分间一定的数学比例关系，即将整体一分为二，较大部分与较小部分之比等于整体与较大部分之比，其比值约为1:0.618或1.618:1。</p>
-
-<p>&emsp;&emsp;0.618被公认为最具有审美意义的比例数字，这个数值的作用不仅仅体现在诸如绘画、雕塑、音乐、建筑等艺术领域，而且在管理、工程设计等方面也有着不可忽视的作用。因此被称为黄金分割。</p>
-
-<p>&emsp;&emsp;大家记不记得斐波那契数列：1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89…….（从第三个数开始，后边每一个数都是前两个数的和）。然后我们会发现，随着斐波那契数列的递增，前后两个数的比值会越来越接近0.618，利用这个特性，我们就可以将黄金比例运用到查找技术中。</p>
-
+<p>  在介绍斐波那契查找算法之前，我们先介绍一下很它紧密相连并且大家都熟知的一个概念——黄金分割。</p>
+<p>  黄金比例又称黄金分割，是指事物各部分间一定的数学比例关系，即将整体一分为二，较大部分与较小部分之比等于整体与较大部分之比，其比值约为1:0.618或1.618:1。</p>
+<p>  0.618被公认为最具有审美意义的比例数字，这个数值的作用不仅仅体现在诸如绘画、雕塑、音乐、建筑等艺术领域，而且在管理、工程设计等方面也有着不可忽视的作用。因此被称为黄金分割。</p>
+<p>  大家记不记得斐波那契数列：1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89…….（从第三个数开始，后边每一个数都是前两个数的和）。然后我们会发现，随着斐波那契数列的递增，前后两个数的比值会越来越接近0.618，利用这个特性，我们就可以将黄金比例运用到查找技术中。</p>
 <ul>
 <li>基本思想：也是二分查找的一种提升算法，通过运用黄金比例的概念在数列中选择查找点进行查找，提高查找效率。同样地，斐波那契查找也属于一种有序查找算法。</li>
 </ul>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/20150323100632467.jpeg" alt="avatar" /></p>
-
-<p>&emsp;&emsp;斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他<strong>要求开始表中记录的个数为某个斐波那契数小1，及n=F(k)-1</strong>;</p>
-
-<p>&emsp;&emsp;开始将k值与第F(k-1)位置的记录比较,mid=low+F(k-1)+1,比较结果分为三种：</p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/markdownps2@master/collection/20150323100632467.jpeg" alt="avatar"></p>
+<p>  斐波那契查找与折半查找很相似，他是根据斐波那契序列的特点对有序表进行分割的。他<strong>要求开始表中记录的个数为某个斐波那契数小1，及n=F(k)-1</strong>;</p>
+<p>  开始将k值与第F(k-1)位置的记录比较,mid=low+F(k-1)+1,比较结果分为三种：</p>
 <ol>
 <li>相等，返回mid</li>
 <li>大于，low=mid+1，k-=2；(说明：low=mid+1说明待查找的元素在[mid+1,high]范围内，k-=2 说明范围[mid+1,high]内的元素个数为n-(F(k-1))= Fk-1-F(k-1)=Fk-F(k-1)-1=F(k-2)-1个，所以可以递归的应用斐波那契查找。)</li>
 <li>小于，high=mid-1,k-=1;(说明：low=mid+1说明待查找的元素在[low,mid-1]范围内，k-=1 说明范围[low,mid-1]内的元素个数为F(k-1)-1个，所以可以递归 的应用斐波那契查找。)</li>
 </ol>
-
 <ul>
 <li>复杂度分析：<strong>最坏情况下，时间复杂度为O(log2n)，且其期望复杂度也为O(log2n)</strong>。</li>
 </ul>
-
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">// 斐波那契数组的长度
+<!-- raw HTML omitted -->
+<pre><code>// 斐波那契数组的长度
 private static final int MAX_SIZE = 20;
 
 // 构造一个斐波那契数组
@@ -693,129 +428,36 @@ public void testFibonacciFind() {
     //int[] a = {99};
     //int[] a = {};
     System.out.println(fibonacciFind(a, 99));
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h2 id="二叉查找树">二叉查找树</h2>
-
 <ul>
-<li>基本思想：二叉查找树是先对待查找的数据进行生成树，确保树的左分支的值小于右分支的值，然后在就行和每个节点的父节点比较大小，查找最适合的范围。 这个算法的查找效率很高，但是如果使用这种查找方法要首先创建树。</li>
-
-<li><p>有关二叉查找树的详细说明，请移步<a href="http://facedamon.github.io/http://127.0.0.1:1313/post/data-struct/tree-struct/bstree/">二叉查找树</a></p></li>
-
-<li><p>复杂度分析：<strong>它和二分查找一样，插入和查找的时间复杂度均为O(logn)，但是在最坏的情况下仍然会有O(n)的时间复杂度</strong>。原因在于插入和删除元素的时候，树没有保持平衡。我们追求的是在最坏的情况下仍然有较好的时间复杂度，这就是平衡查找树设计的初衷。</p></li>
-
-<li><p>基于二叉查找树进行优化，进而可以得到其他的树表查找算法，如平衡树、红黑树等高效算法。</p></li>
+<li>
+<p>基本思想：二叉查找树是先对待查找的数据进行生成树，确保树的左分支的值小于右分支的值，然后在就行和每个节点的父节点比较大小，查找最适合的范围。 这个算法的查找效率很高，但是如果使用这种查找方法要首先创建树。</p>
+</li>
+<li>
+<p>有关二叉查找树的详细说明，请移步<a href="http://facedamon.github.io/http://127.0.0.1:1313/post/data-struct/tree-struct/bstree/">二叉查找树</a></p>
+</li>
+<li>
+<p>复杂度分析：<strong>它和二分查找一样，插入和查找的时间复杂度均为O(logn)，但是在最坏的情况下仍然会有O(n)的时间复杂度</strong>。原因在于插入和删除元素的时候，树没有保持平衡。我们追求的是在最坏的情况下仍然有较好的时间复杂度，这就是平衡查找树设计的初衷。</p>
+</li>
+<li>
+<p>基于二叉查找树进行优化，进而可以得到其他的树表查找算法，如平衡树、红黑树等高效算法。</p>
+</li>
 </ul>
-
 <h2 id="分块查找">分块查找</h2>
-
-<p>&emsp;&emsp;分块查找又称索引顺序查找，它是顺序查找的一种改进方法。</p>
-
+<p>  分块查找又称索引顺序查找，它是顺序查找的一种改进方法。</p>
 <ul>
-<li>将n个数据元素&rdquo;按块有序&rdquo;划分为m块（m ≤ n）。每一块中的结点不必有序，但块与块之间必须&rdquo;按块有序&rdquo;；即第1块中任一元素的关键字都必须小于第2块中任一元素的关键字；而第2块中任一元素又都必须小于第3块中的任一元素，……</li>
+<li>将n个数据元素&quot;按块有序&quot;划分为m块（m ≤ n）。每一块中的结点不必有序，但块与块之间必须&quot;按块有序&quot;；即第1块中任一元素的关键字都必须小于第2块中任一元素的关键字；而第2块中任一元素又都必须小于第3块中的任一元素，……</li>
 <li>算法流程
-
 <ul>
 <li>先选取各块中的最大关键字构成一个索引表</li>
 <li>查找分两个部分：先对索引表进行二分查找或者顺序查找，以确定待查记录在哪一块中；然后，在已确定的块中用顺序法进行查找</li>
-</ul></li>
 </ul>
-
-<p></br></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span><span class="lnt">86
-</span><span class="lnt">87
-</span><span class="lnt">88
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">private static class BlockFind {
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<pre><code>private static class BlockFind {
     // 索引表
     private int[] index;
     // 块
@@ -830,7 +472,7 @@ public void testFibonacciFind() {
                 lists[i] = new ArrayList&lt;Integer&gt;();
             }
         } else {
-            throw new RuntimeException(&#34;index cannot be null or empty.&#34;);
+            throw new RuntimeException(&quot;index cannot be null or empty.&quot;);
         }
     }
 
@@ -859,7 +501,7 @@ public void testFibonacciFind() {
     public void printAll() {
         for (int i = 0; i &lt; lists.length; i++) {
             ArrayList list = lists[i];
-            System.out.println(&#34;ArrayList &#34; + i + &#34;:&#34;);
+            System.out.println(&quot;ArrayList &quot; + i + &quot;:&quot;);
             System.out.println(lists[i].toString());
         }
     }
@@ -875,10 +517,10 @@ public void testFibonacciFind() {
         int i = binaryFind(data);
         for (int j = 0; j &lt; lists[i].size(); j++) {
             if (data == lists[i].get(j)) {
-                return String.format(&#34;在第%d块，第%d个&#34;,i+1, j+1);
+                return String.format(&quot;在第%d块，第%d个&quot;,i+1, j+1);
             }
         }
-        return String.format(&#34;%d 不存在&#34;, data);
+        return String.format(&quot;%d 不存在&quot;, data);
     }
 }
 
@@ -902,54 +544,41 @@ public void testBlockFind() {
 
     System.out.println(blockFind.find(18));
     System.out.println(blockFind.find(29));
-}</pre></td></tr></table>
-</div>
-</div>
+}
+</code></pre>
 <h3 id="特点">特点</h3>
-
-<p>&emsp;&emsp;分块查找的特点其实显而易见，那就是分块查找拥有顺序查找和二分查找的双重优势，即顺序查找不需要有序，二分查找的速度快。</p>
-
-<p>&emsp;&emsp;分块查找由于只需要索引表有序，所以特别适合用于在动态变化的数据元素序列中查找。但是如何分块比较复杂。如果分块过于稀疏，则可能导致每一块的内容过多，在顺序查找时效率很低；如果分块过密，则又会导致块数很多，无论是插入还是删除数据，都会频繁地进行二分查找；如果块数特别多，则基本上和直接二分查找的动态插入数据类似，这样分块查找就没有意义了。</p>
-
-<p>&emsp;&emsp;所以对于分块查找来说，可以根据数据量的大小及数据的区间来进行对分块的选择。二分查找的平均查找长度近似 log2(n+1)-1，这里的n是块数；顺序查找的平均查找长度为 (n+1)/2，这里的 n 是每块的个数。</p>
-
-<p>&emsp;&emsp;尽量等分为固定的块，假设块数为 a，每个块内的元素数量为 b，则 b=n/a，那么接下来就好办了，如果给定一个数据量 n 进行分块，则总的平均查找长度为 (b+1)/2+log2(a+1)-1，这样就可以解出 a 和 b 分别为多少了。</p>
-
+<p>  分块查找的特点其实显而易见，那就是分块查找拥有顺序查找和二分查找的双重优势，即顺序查找不需要有序，二分查找的速度快。</p>
+<p>  分块查找由于只需要索引表有序，所以特别适合用于在动态变化的数据元素序列中查找。但是如何分块比较复杂。如果分块过于稀疏，则可能导致每一块的内容过多，在顺序查找时效率很低；如果分块过密，则又会导致块数很多，无论是插入还是删除数据，都会频繁地进行二分查找；如果块数特别多，则基本上和直接二分查找的动态插入数据类似，这样分块查找就没有意义了。</p>
+<p>  所以对于分块查找来说，可以根据数据量的大小及数据的区间来进行对分块的选择。二分查找的平均查找长度近似 log2(n+1)-1，这里的n是块数；顺序查找的平均查找长度为 (n+1)/2，这里的 n 是每块的个数。</p>
+<p>  尽量等分为固定的块，假设块数为 a，每个块内的元素数量为 b，则 b=n/a，那么接下来就好办了，如果给定一个数据量 n 进行分块，则总的平均查找长度为 (b+1)/2+log2(a+1)-1，这样就可以解出 a 和 b 分别为多少了。</p>
 <h2 id="哈希查找">哈希查找</h2>
-
 <ul>
 <li>什么是哈希表（Hash）？</li>
 </ul>
-
-<p>&emsp;&emsp;我们使用一个下标范围比较大的数组来存储元素。可以设计一个函数（哈希函数， 也叫做散列函数），使得每个元素的关键字都与一个函数值（即数组下标）相对应，于是用这个数组单元来存储这个元素；也可以简单的理解为，按照关键字为每一个元素&rdquo;分类&rdquo;，然后将这个元素存储在相应&rdquo;类&rdquo;所对应的地方。但是，不能够保证每个元素的关键字与函数值是一一对应的，因此极有可能出现对于不同的元素，却计算出了相同的函数值，这样就产生了&rdquo;冲突&rdquo;，换句话说，就是把不同的元素分在了相同的&rdquo;类&rdquo;之中。后面我们将看到一种解决&rdquo;冲突&rdquo;的简便做法。</p>
-
+<p>  我们使用一个下标范围比较大的数组来存储元素。可以设计一个函数（哈希函数， 也叫做散列函数），使得每个元素的关键字都与一个函数值（即数组下标）相对应，于是用这个数组单元来存储这个元素；也可以简单的理解为，按照关键字为每一个元素&quot;分类&quot;，然后将这个元素存储在相应&quot;类&quot;所对应的地方。但是，不能够保证每个元素的关键字与函数值是一一对应的，因此极有可能出现对于不同的元素，却计算出了相同的函数值，这样就产生了&quot;冲突&quot;，换句话说，就是把不同的元素分在了相同的&quot;类&quot;之中。后面我们将看到一种解决&quot;冲突&quot;的简便做法。</p>
 <blockquote>
-<p>总的来说，&rdquo;直接定址&rdquo;与&rdquo;解决冲突&rdquo;是哈希表的两大特点。</p>
+<p>总的来说，&ldquo;直接定址&quot;与&quot;解决冲突&quot;是哈希表的两大特点。</p>
 </blockquote>
-
 <ul>
 <li>什么是哈希函数</li>
 </ul>
-
-<p>&emsp;&emsp;哈希函数的规则是：通过某种转换关系，使关键字适度的分散到指定大小的的顺序结构中，越分散，则以后查找的时间复杂度越小，空间复杂度越高。</p>
-
+<p>  哈希函数的规则是：通过某种转换关系，使关键字适度的分散到指定大小的的顺序结构中，越分散，则以后查找的时间复杂度越小，空间复杂度越高。</p>
 <ul>
 <li>算法思想：哈希的思路很简单，如果所有的键都是整数，那么就可以使用一个简单的无序数组来实现：将键作为索引，值即为其对应的值，这样就可以快速访问任意键的值。这是对于简单的键的情况，我们将其扩展到可以处理更加复杂的类型的键。</li>
 <li>算法流程
-
 <ul>
 <li>用给定的哈希函数构造哈希表；</li>
 <li>根据选择的冲突处理方法解决地址冲突；</li>
 <li>在哈希表的基础上执行哈希查找。</li>
-</ul></li>
+</ul>
+</li>
 <li>复杂度分析
-
 <ul>
 <li>单纯论查找复杂度：对于无冲突的Hash表而言，查找复杂度为O(1)（注意，在查找之前我们需要构建相应的Hash表）。</li>
-</ul></li>
 </ul>
-
-<p>&emsp;&emsp;有关哈希表的详细说明，请移步<a href="http://facedamon.github.io/post/data-struct/hash/">散列表</a></p>
+</li>
+</ul>
+<p>  有关哈希表的详细说明，请移步<a href="http://facedamon.github.io/post/data-struct/hash/">散列表</a></p>
 
     </div>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Git on FaceDamon`s Blog</title>
@@ -6,18 +6,14 @@
     <description>Recent content in Git on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 30 Apr 2020 09:44:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/categories/git/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 30 Apr 2020 09:44:56 +0800</lastBuildDate><atom:link href="http://facedamon.github.io/categories/git/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Git (四) | 分支管理(案例驱动)]</title>
       <link>http://facedamon.github.io/post/git/4.-git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/</link>
       <pubDate>Thu, 30 Apr 2020 09:44:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/4.-git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 &amp;emsp;&amp;em</description>
+      <description>摘要 案例，实际工作中你会用到类似的流程。 开发某个网站 为实现某个新的需求，创建分支 在该分支上开展工作 正在此时，你接到通知，有一个很严重的bug</description>
     </item>
     
     <item>
@@ -26,7 +22,7 @@
       <pubDate>Wed, 29 Apr 2020 16:04:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/3.-git%E5%88%86%E6%94%AF%E5%8E%9F%E7%90%86/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 &amp;e</description>
+      <description>摘要 之所以要将Git分支原理单独讲解，主要是想好好理解一下Git的分支模型，这对以后的分支管理学习大有裨益。 简介 为了真正理解Git处理分支的</description>
     </item>
     
     <item>
@@ -35,7 +31,7 @@
       <pubDate>Mon, 27 Apr 2020 10:44:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/2.-git%E4%B8%8A%E6%89%8B/</guid>
-      <description>概要 &amp;emsp;&amp;emsp;希望通过这一节学习，能够快速掌握配置初始化仓库(repository)、开始或停止跟踪(track)文件、暂存(</description>
+      <description>概要 希望通过这一节学习，能够**快速**掌握配置初始化仓库(repository)、开始或停止跟踪(track)文件、暂存(stage)、提</description>
     </item>
     
     <item>
@@ -44,7 +40,7 @@
       <pubDate>Mon, 27 Apr 2020 09:14:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/git/1.-git%E7%8A%B6%E6%80%81%E5%92%8C%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/</guid>
-      <description>三种状态 &amp;emsp;&amp;emsp;Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表</description>
+      <description>三种状态 Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本</description>
     </item>
     
   </channel>

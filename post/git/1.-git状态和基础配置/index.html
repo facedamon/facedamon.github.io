@@ -16,14 +16,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="facedamon" /><meta name="description" content="三种状态 &amp;emsp;&amp;emsp;Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="facedamon" /><meta name="description" content="三种状态 Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.55.6 with theme even" />
+<meta name="generator" content="Hugo 0.81.0 with theme even" />
 
 
 <link rel="canonical" href="http://facedamon.github.io/post/git/1.-git%E7%8A%B6%E6%80%81%E5%92%8C%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" />
@@ -39,26 +39,19 @@
 
 
 <meta property="og:title" content="[Git (一) | 三种状态和基础配置]" />
-<meta property="og:description" content="三种状态 &emsp;&emsp;Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表" />
+<meta property="og:description" content="三种状态 Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://facedamon.github.io/post/git/1.-git%E7%8A%B6%E6%80%81%E5%92%8C%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" />
-<meta property="article:published_time" content="2020-04-27T09:14:56&#43;08:00"/>
-<meta property="article:modified_time" content="2020-04-27T09:14:56&#43;08:00"/>
+<meta property="og:url" content="http://facedamon.github.io/post/git/1.-git%E7%8A%B6%E6%80%81%E5%92%8C%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-04-27T09:14:56&#43;08:00" />
+<meta property="article:modified_time" content="2020-04-27T09:14:56&#43;08:00" />
 
 <meta itemprop="name" content="[Git (一) | 三种状态和基础配置]">
-<meta itemprop="description" content="三种状态 &emsp;&emsp;Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表">
-
-
-<meta itemprop="datePublished" content="2020-04-27T09:14:56&#43;08:00" />
+<meta itemprop="description" content="三种状态 Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本"><meta itemprop="datePublished" content="2020-04-27T09:14:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-04-27T09:14:56&#43;08:00" />
-<meta itemprop="wordCount" content="840">
-
-
-
-<meta itemprop="keywords" content="Git," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="wordCount" content="731">
+<meta itemprop="keywords" content="Git," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="[Git (一) | 三种状态和基础配置]"/>
-<meta name="twitter:description" content="三种状态 &emsp;&emsp;Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表"/>
+<meta name="twitter:description" content="三种状态 Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -132,7 +125,7 @@
         <div class="post-category">
             <a href="/categories/git/"> Git </a>
             </div>
-          <span class="more-meta"> 约 840 字 </span>
+          <span class="more-meta"> 约 731 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,116 +135,64 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li><a href="#三种状态">三种状态</a>
-<ul>
-<li><a href="#基本的git工作流程">基本的Git工作流程：</a></li>
-</ul></li>
-<li><a href="#配置">配置</a>
-<ul>
-<li><a href="#配置个人信息">配置个人信息</a></li>
-<li><a href="#检查配置信息">检查配置信息</a></li>
-</ul></li>
-<li><a href="#获取帮助">获取帮助</a></li>
-</ul>
+  <ul>
+    <li><a href="#基本的git工作流程">基本的Git工作流程：</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#配置个人信息">配置个人信息</a></li>
+    <li><a href="#检查配置信息">检查配置信息</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      
-
-<h1 id="三种状态">三种状态</h1>
-
-<p>&emsp;&emsp;Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本地数据恐库中。已修改表示修改了文件，但还没保存到数据库中。已暂存表示对文件已修改的当前保本做了标记，使之包含在下次提交的快照中。</p>
-
-<p>&emsp;&emsp;以此引入Git的三个工作区域：Git仓库，工作目录以及暂存区域。</p>
-
-<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/git工作区域.png" alt="avatar" /></p>
-
+      <h1 id="三种状态">三种状态</h1>
+<p>  Git有三种状态：已提交(committed), 已修改(modified), 已暂存(staged)。已提交表示数据已经安全的保存在本地数据恐库中。已修改表示修改了文件，但还没保存到数据库中。已暂存表示对文件已修改的当前保本做了标记，使之包含在下次提交的快照中。</p>
+<p>  以此引入Git的三个工作区域：Git仓库，工作目录以及暂存区域。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/facedamon/MarkDownPhotos@master/books/git/git%E5%B7%A5%E4%BD%9C%E5%8C%BA%E5%9F%9F.png" alt="avatar"></p>
 <h2 id="基本的git工作流程">基本的Git工作流程：</h2>
-
 <ol>
 <li>在工作目录中修改文件</li>
 <li>暂存文件，将文件的快照放入暂存区域</li>
 <li>提交更新，找到暂存区域的文件，将快照永久性存储到Git仓库</li>
 </ol>
-
 <h1 id="配置">配置</h1>
-
-<p>&emsp;&emsp;Git自带一个git config的工具来帮助设置Git外观和行为的配置变量，这些变量存储在三个不同的位置。</p>
-
+<p>  Git自带一个git config的工具来帮助设置Git外观和行为的配置变量，这些变量存储在三个不同的位置。</p>
 <ol>
 <li><code>/etc/gitconfig</code>: 包含系统上每一个用户及他们仓库的通用配置。如果使用带有 <code>--system</code>选项的git config时，它会从此文件读取配置变量。</li>
 <li><code>~/.gitconfig 或 ~/.config/git/config</code>: 只针对当前用户。使用带有<code>--global</code>选项的git config时，从此文件读取配置变量。</li>
 <li><code>.git/config</code>: 只针对所在目录仓库</li>
 </ol>
-
-<p>&emsp;&emsp;每一个级别覆盖上一级别的配置，所以.git/config覆盖/etc/gitconfig</p>
-
+<p>  每一个级别覆盖上一级别的配置，所以.git/config覆盖/etc/gitconfig</p>
 <h2 id="配置个人信息">配置个人信息</h2>
-
 <p>$ git config &ndash;global user.name &ldquo;John&rdquo;
-$ git config &ndash;global user.email john@example.com
+$ git config &ndash;global user.email <a href="mailto:john@example.com">john@example.com</a>
 $ git config &ndash;global core.editor vim</p>
-
-<p>&emsp;&emsp;使用了<code>--global</code>选项，那么该命令控制个人目录下的git配置文件。如果你想针对特定目录下的仓库使用不同的用户名和邮件，可以在那个项目下运行没有&ndash;global选项的命令来配置。</p>
-
+<p>  使用了<code>--global</code>选项，那么该命令控制个人目录下的git配置文件。如果你想针对特定目录下的仓库使用不同的用户名和邮件，可以在那个项目下运行没有&ndash;global选项的命令来配置。</p>
 <h2 id="检查配置信息">检查配置信息</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ git config --list
+<pre><code>    $ git config --list
     user.name=John
     user.email=John@example.com
     color.status=auto
     color.branch=auto
-    core.editor=vim</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;你应该看到了重复的变量名，因为Git会从不同的文件中读取同一个配置，这种情况下，Git会使用它找到的每一个变量的最后一个配置。</p>
-
-<p>&emsp;&emsp;你也可以通过<code>git config &lt;key&gt;</code>来检查Git的某一项配置：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ git config user.name
-    John</pre></td></tr></table>
-</div>
-</div>
+    core.editor=vim
+</code></pre>
+<p>  你应该看到了重复的变量名，因为Git会从不同的文件中读取同一个配置，这种情况下，Git会使用它找到的每一个变量的最后一个配置。</p>
+<p>  你也可以通过<code>git config &lt;key&gt;</code>来检查Git的某一项配置：</p>
+<pre><code>    $ git config user.name
+    John
+</code></pre>
 <h1 id="获取帮助">获取帮助</h1>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ git help &lt;verb&gt;
+<pre><code>    $ git help &lt;verb&gt;
     $ git &lt;verb&gt; --help
-    $ man git-&lt;verb&gt;</pre></td></tr></table>
-</div>
-</div>
-<p>&emsp;&emsp;例如想获取config或log命令手册：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">    $ git help config
-    $ man git-log</pre></td></tr></table>
-</div>
-</div>
+    $ man git-&lt;verb&gt;
+</code></pre>
+<p>  例如想获取config或log命令手册：</p>
+<pre><code>    $ git help config
+    $ man git-log
+</code></pre>
+
     </div>
 
     <div class="post-copyright">

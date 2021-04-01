@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>golang/手写分布式缓存 on FaceDamon`s Blog</title>
     <link>http://facedamon.github.io/categories/golang/%E6%89%8B%E5%86%99%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/</link>
     <description>Recent content in golang/手写分布式缓存 on FaceDamon`s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 21 Oct 2020 15:14:56 +0800</lastBuildDate>
-    
-	<atom:link href="http://facedamon.github.io/categories/golang/%E6%89%8B%E5%86%99%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language><atom:link href="http://facedamon.github.io/categories/golang/%E6%89%8B%E5%86%99%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[分布式缓存 (七) | Protobuf]</title>
       <link>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-rpc/</link>
@@ -35,7 +30,7 @@
       <pubDate>Tue, 20 Oct 2020 10:40:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-%E5%88%86%E5%B8%83%E5%BC%8F%E8%8A%82%E7%82%B9/</guid>
-      <description>流程回顾 1 2 3 4 5 接收key --&amp;gt; 检查是否被缓存 ---是---&amp;gt; 返回缓存值(1) |否 |------&amp;gt;是否应当从远程节点获取 ------&amp;gt; 与远程节</description>
+      <description>流程回顾 接收key --&amp;gt; 检查是否被缓存 ---是---&amp;gt; 返回缓存值(1) |否 |------&amp;gt;是否应当从远程节点获取 ------&amp;gt; 与远程节点交互 ---&amp;gt; 返</description>
     </item>
     
     <item>
@@ -44,7 +39,7 @@
       <pubDate>Mon, 19 Oct 2020 09:21:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-hash/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;今天我们要实现的是一致性哈希算法，一致性哈希算法是Geec从单节点走向分布式节点的一个重要的环节。 我该访问谁 &amp;e</description>
+      <description>摘要 今天我们要实现的是一致性哈希算法，一致性哈希算法是Geec从单节点走向分布式节点的一个重要的环节。 我该访问谁 对于分布式缓存来说，当一个节</description>
     </item>
     
     <item>
@@ -53,7 +48,7 @@
       <pubDate>Fri, 24 Jul 2020 16:58:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-http/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;分布式缓存需要实现节点间通信，建立基于HTTP的通信机制是比较常见的做法。如果一个节点启动了HTTP服务， 那么这</description>
+      <description>摘要 分布式缓存需要实现节点间通信，建立基于HTTP的通信机制是比较常见的做法。如果一个节点启动了HTTP服务， 那么这个节点就可以被其它节点访</description>
     </item>
     
     <item>
@@ -62,7 +57,7 @@
       <pubDate>Mon, 20 Jul 2020 15:42:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-rwmutex/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支</description>
+      <description>摘要 在上一篇博客中，我们实现了LRU缓存淘汰策略。接下来我们使用sync.RWMutex封装LRU的几个方法，使之支持并发的读写。(对于并发</description>
     </item>
     
     <item>
@@ -71,7 +66,7 @@
       <pubDate>Mon, 20 Jul 2020 10:32:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98-lru/</guid>
-      <description>淘汰算法简介 &amp;emsp;&amp;emsp;geec的缓存全部存储在内存中，内存是有限的，因此不可能无限制添加数据。假定，我们设置缓存能够使用的内存</description>
+      <description>淘汰算法简介 geec的缓存全部存储在内存中，内存是有限的，因此不可能无限制添加数据。假定，我们设置缓存能够使用的内存大小为N,那么在某一个时</description>
     </item>
     
     <item>
@@ -80,7 +75,7 @@
       <pubDate>Mon, 20 Jul 2020 09:51:56 +0800</pubDate>
       
       <guid>http://facedamon.github.io/post/golang/cache/%E8%B0%88%E8%B0%88%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98/</guid>
-      <description>摘要 &amp;emsp;&amp;emsp;第一次请求时将一些耗时操作的结果暂存，以后遇到相同的请求，直接返回暂存的数据。我想这是大部分人对于缓存的理解。在</description>
+      <description>摘要 第一次请求时将一些耗时操作的结果暂存，以后遇到相同的请求，直接返回暂存的数据。我想这是大部分人对于缓存的理解。在计算机系统中，缓存无处不</description>
     </item>
     
   </channel>
